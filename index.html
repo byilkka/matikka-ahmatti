@@ -1428,8 +1428,15 @@ async function startGame(){
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   showScreen('gameScreen');
-  await srInit(); // lataa pelaajan oppimisdata Supabasesta
-  launchConfetti();buildTablesGrid();newProblem();
+  // Käynnistä peli heti — älä odota Supabasea
+  srData = srLocalLoad(pName, pChar, mode);
+  retryQueue=[]; roundHistory=[];
+  updDiffLabel();
+  launchConfetti(); buildTablesGrid(); newProblem();
+  // Lataa Supabase-data taustalla ja päivitä hiljaa
+  srRemoteLoad(pName, pChar, mode).then(remote => {
+    if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
+  }).catch(()=>{});
 }
 
 // ══ SCREEN NAV ═══════════════════════════════════
@@ -1991,7 +1998,12 @@ async function confirmSwitch(){
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   closeSwitch();
-  await srInit(); // lataa uuden pelaajan oppimisdata
+  // Lataa heti localStoragesta, päivitä Supabasesta taustalla
+  srData = srLocalLoad(pName, pChar, mode);
+  retryQueue=[]; roundHistory=[]; updDiffLabel();
+  srRemoteLoad(pName, pChar, mode).then(remote => {
+    if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
+  }).catch(()=>{});
   restartRound();
   setTimeout(launchConfetti,200);
 }
