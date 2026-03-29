@@ -922,6 +922,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="si">🔥 <span class="v" id="sStreak">0</span> putki</div>
     <div class="si">✅ <span class="v g" id="sCorr">0</span> oikein</div>
     <div class="si">⭐ <span class="v b" id="sPts">0</span> pistettä</div>
+    <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
   </div>
 
   <div class="mode-selector">
@@ -1238,11 +1239,13 @@ nameInp.addEventListener('input',()=>{nextBtn.disabled=nameInp.value.trim().leng
 nameInp.addEventListener('keydown',e=>{if(e.key==='Enter'&&nameInp.value.trim())goStep2();});
 function goStep2(){pName=nameInp.value.trim();document.getElementById('step1').classList.remove('active');document.getElementById('step2').classList.add('active');}
 function selChar(t){pChar=t;document.getElementById('boyCard').classList.toggle('selected',t==='boy');document.getElementById('girlCard').classList.toggle('selected',t==='girl');document.getElementById('startBtn').disabled=false;}
-function startGame(){
+async function startGame(){
   if(!pChar)return;
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
-  showScreen('gameScreen');launchConfetti();buildTablesGrid();newProblem();
+  showScreen('gameScreen');
+  await srInit(); // lataa pelaajan oppimisdata Supabasesta
+  launchConfetti();buildTablesGrid();newProblem();
 }
 
 // ══ SCREEN NAV ═══════════════════════════════════
@@ -1254,10 +1257,201 @@ async function showScores(){
 }
 function backToGame(){showScreen('gameScreen');}
 
-// ══ GAME ═════════════════════════════════════════
-let mode='h',range=10,selTable=2;
-let ans='',corr=0,streak=0,pts=0,rDone=0,rTotal=10;
-let prob=null,busy=false;
+// ══ GAME STATE ═══════════════════════════════════
+let mode='h', range=10, selTable=2;
+let ans='', corr=0, streak=0, pts=0, rDone=0, rTotal=10;
+let prob=null, busy=false;
+
+// ══ ADAPTIVE ENGINE ══════════════════════════════
+// Spaced repetition: jokainen tehtävätyyppi saa "weight" (paino)
+// Väärä vastaus → paino nousee (tehtävä tulee todennäköisemmin uudelleen)
+// Oikea vastaus → paino laskee hitaasti
+// Kierroksen sisällä: väärät tehtävät lisätään retry-jonoon
+
+const SR_KEY = 'matikka_sr_v1'; // localStorage avain
+
+// ── localStorage apufunktiot ──────────────────────
+function srLocalLoad(name, char, md) {
+  try {
+    const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
+    return all[`${name}:${char}:${md}`] || { weights:{}, roundsPlayed:0, diffLevel:1 };
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1 }; }
+}
+
+function srLocalSave(name, char, md, data) {
+  try {
+    const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
+    all[`${name}:${char}:${md}`] = data;
+    localStorage.setItem(SR_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+// ── Supabase SR: lataa pelaajan edistyminen ───────
+async function srRemoteLoad(name, char, md) {
+  try {
+    const url = `${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&mode=eq.${encodeURIComponent(md)}&select=*&limit=1`;
+    const res = await fetch(url, { headers: SB_HEADERS });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = await res.json();
+    if (!rows.length) return null;
+    const r = rows[0];
+    return {
+      weights:      r.weights      || {},
+      roundsPlayed: r.rounds_played || 0,
+      diffLevel:    r.diff_level    || 1
+    };
+  } catch (err) {
+    console.warn('SR remote load failed:', err.message);
+    return null;
+  }
+}
+
+// ── Supabase SR: tallenna / päivitä edistyminen ───
+async function srRemoteSave(name, char, md, data) {
+  try {
+    // UPSERT — luo uusi rivi tai päivitä olemassa oleva (UNIQUE constraint)
+    const res = await fetch(`${SB_URL}/rest/v1/player_progress`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify({
+        player_name:   name,
+        player_char:   char,
+        mode:          md,
+        weights:       data.weights,
+        diff_level:    data.diffLevel,
+        rounds_played: data.roundsPlayed,
+        updated_at:    new Date().toISOString()
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  } catch (err) {
+    console.warn('SR remote save failed:', err.message);
+  }
+}
+
+// ── Pääfunktio: lataa SR-data (Supabase → localStorage) ──
+async function srLoad() {
+  // Yritä Supabasesta ensin
+  const remote = await srRemoteLoad(pName, pChar, mode);
+  if (remote) {
+    // Synkronoi myös localStorageen
+    srLocalSave(pName, pChar, mode, remote);
+    return remote;
+  }
+  // Fallback: localStorage
+  return srLocalLoad(pName, pChar, mode);
+}
+
+// ── Pääfunktio: tallenna SR-data (molemmat) ──────
+function srSave(data) {
+  // Tallenna heti localStorageen (synkroninen, nopea)
+  srLocalSave(pName, pChar, mode, data);
+  // Tallenna Supabaseen taustalla (asynkroninen)
+  srRemoteSave(pName, pChar, mode, data);
+}
+
+// Muodostaa tehtävän "tunnisteen" painotusta varten
+function probKey(p) {
+  if (p.type === 'h') return `h:${p.t}`;
+  if (p.type === 'a') return `a:${p.a}+${p.b}`;
+  if (p.type === 's') return `s:${p.a}-${p.b}`;
+  if (p.type === 'm') return `m:${p.t}x${p.m}`;
+  return 'x';
+}
+
+// Neljä vaikeustasoa
+const DIFF_LEVELS = [
+  { label:'Taso 1', range:10,  color:'var(--accent3)' },
+  { label:'Taso 2', range:20,  color:'var(--accent4)' },
+  { label:'Taso 3', range:50,  color:'var(--accent)'  },
+  { label:'Taso 4', range:100, color:'var(--pink)'    },
+];
+
+// Adaptiivinen tila per kierros
+let srData       = { weights:{}, roundsPlayed:0, diffLevel:1 };
+let retryQueue   = [];
+let roundHistory = [];
+
+async function srInit() {
+  srData = await srLoad();
+  retryQueue = [];
+  roundHistory = [];
+  updDiffLabel();
+}
+
+function updDiffLabel() {
+  const lvl  = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
+  const info = DIFF_LEVELS[lvl];
+  const el   = document.getElementById('diffLabel');
+  if (el) { el.textContent = info.label; el.style.color = info.color; }
+}
+
+// Valitaan seuraava tehtävä — painotettu satunnaisuus + retry-jono
+function pickNextProblem() {
+  if (retryQueue.length > 0 && rDone >= Math.floor(rTotal * 0.5)) {
+    return retryQueue.shift();
+  }
+  const lvl = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
+  const effRange = Math.min(range, DIFF_LEVELS[lvl].range);
+  const candidates = [];
+  for (let i = 0; i < 6; i++) {
+    let p;
+    if      (mode === 'h') p = genH(effRange);
+    else if (mode === 'a') p = genA(effRange);
+    else if (mode === 's') p = genS(effRange);
+    else                   p = genM();
+    const w = srData.weights[probKey(p)] || 1.0;
+    candidates.push({ p, w });
+  }
+  const total = candidates.reduce((s, c) => s + c.w, 0);
+  let rnd = Math.random() * total;
+  for (const c of candidates) {
+    rnd -= c.w;
+    if (rnd <= 0) return c.p;
+  }
+  return candidates[0].p;
+}
+
+// Rekisteröi vastaus
+function srRecord(p, correct) {
+  const key = probKey(p);
+  const w   = srData.weights[key] || 1.0;
+  if (correct) {
+    srData.weights[key] = Math.max(0.5, w * 0.75);
+  } else {
+    srData.weights[key] = Math.min(5.0, w * 2.0);
+    const alreadyQueued = retryQueue.some(q => probKey(q) === key);
+    if (!alreadyQueued) retryQueue.push({ ...p });
+  }
+  roundHistory.push(correct);
+  srSave(srData); // tallentaa localStorageen + Supabaseen
+}
+
+// Kierroksen jälkeen: harkitse tasonvaihto
+function srEvaluateRound(pct) {
+  srData.roundsPlayed++;
+  if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
+    srData.diffLevel++;
+    updDiffLabel();
+    srSave(srData);
+    return { changed: true, up: true };
+  } else if (pct < 50 && srData.diffLevel > 1) {
+    srData.diffLevel--;
+    updDiffLabel();
+    srSave(srData);
+    return { changed: true, up: false };
+  }
+  srSave(srData);
+  return { changed: false };
+}
+
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+
+// Tehtävägeneraattorit ottavat nyt effRange-parametrin
+function genH(r=range){const t=rand(2,r),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
+function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
+function genS(r=range){const a=rand(2,r),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
+function genM(){const m=rand(1,10),bl=Math.random()<.5?'r':'m';return{type:'m',t:selTable,m,r:selTable*m,bl,answer:bl==='r'?selTable*m:m};}
 
 function buildTablesGrid(){
   const g=document.getElementById('tablesGrid');g.innerHTML='';
@@ -1265,14 +1459,15 @@ function buildTablesGrid(){
 }
 function setMode(m){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+m).classList.add('active');document.getElementById('rangeSection').style.display=m==='m'?'none':'block';document.getElementById('tableSection').style.display=m==='m'?'block':'none';restartRound();}
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';updProg();updStats();newProblem();}
+function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';updProg();updStats();newProblem();}
 
-function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function newProblem(){ans='';busy=false;document.getElementById('fb').textContent='';document.getElementById('fb').className='feedback';if(mode==='h')prob=genH();else if(mode==='a')prob=genA();else if(mode==='s')prob=genS();else prob=genM();render(prob);}
-function genH(){const t=rand(2,range),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
-function genA(){const a=rand(1,range),b=rand(1,Math.max(1,range-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
-function genS(){const a=rand(2,range),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
-function genM(){const m=rand(1,10),bl=Math.random()<.5?'r':'m';return{type:'m',t:selTable,m,r:selTable*m,bl,answer:bl==='r'?selTable*m:m};}
+function newProblem(){
+  ans='';busy=false;
+  document.getElementById('fb').textContent='';
+  document.getElementById('fb').className='feedback';
+  prob = pickNextProblem();
+  render(prob);
+}
 
 function render(p){
   const el=document.getElementById('pD'),hint=document.getElementById('pH');
@@ -1293,11 +1488,11 @@ function ck(){
   if(!ans||busy)return;
   const u=parseInt(ans),ok=u===prob.answer;busy=true;
   const fb=document.getElementById('fb'),bs=document.getElementById('bS');
+  srRecord(prob, ok); // ← adaptiivinen kirjaus
   if(ok){
     streak++;corr++;pts+=10+(streak>3?5*Math.min(streak-3,5):0);
     fb.textContent=okMsg();fb.className='feedback ok';
     if(bs)bs.style.color='var(--accent3)';
-    // Äänet: putki ensin tarkistetaan
     if(streak>=10&&streak%10===0)      sfxSuperStreak();
     else if(streak>=5&&streak%5===0)   sfxStreak();
     else                               sfxCorrect();
@@ -1324,7 +1519,19 @@ async function showResults(){
   if(p>=90){e='🏆';t='Mestari, '+pName+'!';}else if(p>=70){e='🌟';t='Hienoa, '+pName+'!';}else if(p>=50){e='👏';t='Hyvä yritys, '+pName+'!';}else{e='💡';t='Harjoitellaan lisää!';}
   document.getElementById('rEmoji').textContent=e;
   document.getElementById('rTitle').textContent=t;
-  document.getElementById('rScore').innerHTML=`<span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä<br><span id="saveStatus" style="font-size:.72rem;color:var(--muted);font-weight:600;">💾 Tallennetaan...</span>`;
+
+  // Arvioi kierros ja mahdollinen tasonvaihto
+  const lvlChange = srEvaluateRound(p);
+  let lvlMsg = '';
+  if (lvlChange.changed && lvlChange.up) {
+    const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
+    lvlMsg = `<br><span style="font-size:.78rem;font-weight:800;color:${newLvl.color}">⬆️ Taso nousi! ${newLvl.label}</span>`;
+  } else if (lvlChange.changed && !lvlChange.up) {
+    const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
+    lvlMsg = `<br><span style="font-size:.78rem;font-weight:700;color:var(--muted)">⬇️ Harjoitellaan tasolla ${newLvl.label}</span>`;
+  }
+
+  document.getElementById('rScore').innerHTML=`<span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä${lvlMsg}<br><span id="saveStatus" style="font-size:.72rem;color:var(--muted);font-weight:600;">💾 Tallennetaan...</span>`;
   if(p>=70)launchConfetti();
   sfxRoundEnd(p);
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
@@ -1332,14 +1539,11 @@ async function showResults(){
   const saved = await saveScore(entry);
   const statusEl = document.getElementById('saveStatus');
   if(statusEl){
-    if(saved){
-      statusEl.style.color='var(--accent3)';
-      statusEl.textContent='✅ Tallennettu Hall of Fameen!';
-    } else {
-      statusEl.style.color='var(--accent)';
-      statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';
-    }
+    if(saved){statusEl.style.color='var(--accent3)';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
+    else{statusEl.style.color='var(--accent)';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
   }
+  // Alusta SR seuraavaa kierrosta varten
+  retryQueue=[];roundHistory=[];
 }
 
 // ══ SCORES ═══════════════════════════════════════
@@ -1481,16 +1685,15 @@ function checkSwReady(){
   return ok;
 }
 
-function confirmSwitch(){
+async function confirmSwitch(){
   const newName=document.getElementById('switchNameInput').value.trim();
   if(!newName||!swChar)return;
-  pName=newName;
-  pChar=swChar;
+  pName=newName; pChar=swChar;
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   closeSwitch();
+  await srInit(); // lataa uuden pelaajan oppimisdata
   restartRound();
-  // Brief celebration
   setTimeout(launchConfetti,200);
 }
 
