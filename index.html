@@ -424,6 +424,49 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .cta-btn:active{transform:translateY(0);}
 .cta-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
 
+/* ══ PIN STYLES ══ */
+.pin-dots{
+  display:flex;justify-content:center;gap:clamp(12px,2.5vw,20px);
+  margin:clamp(18px,2.5vw,28px) 0 clamp(8px,1.2vw,14px);
+}
+.pin-dot{
+  width:clamp(16px,3.5vw,22px);height:clamp(16px,3.5vw,22px);
+  border-radius:50%;border:2.5px solid rgba(255,255,255,.2);
+  background:transparent;transition:all .15s;
+}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);transform:scale(1.15);}
+.pin-dot.error{background:var(--accent2);border-color:var(--accent2);}
+.pin-error{
+  text-align:center;font-size:clamp(.75rem,1.4vw,.88rem);
+  font-weight:700;color:var(--accent2);min-height:22px;
+  margin-bottom:clamp(8px,1.2vw,14px);
+  animation:shake .4s ease;
+}
+.pin-pad{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(7px,1.2vw,12px);
+  margin-bottom:clamp(10px,1.5vw,16px);
+}
+.pin-btn{
+  padding:clamp(14px,2.2vw,22px) 8px;
+  border-radius:clamp(10px,1.5vw,16px);
+  border:1.5px solid rgba(255,255,255,.1);
+  background:var(--card2);color:var(--text);
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.2rem,2.5vw,1.8rem);
+  cursor:pointer;transition:all .13s;touch-action:manipulation;
+}
+.pin-btn:hover{background:rgba(255,255,255,.1);}
+.pin-btn:active{transform:scale(.9);}
+.pin-clear{color:var(--accent2);border-color:rgba(255,107,107,.2);}
+.pin-ok{
+  background:linear-gradient(135deg,var(--accent3),#36d7b7);
+  color:#0b1520;border-color:transparent;
+  box-shadow:0 4px 14px rgba(93,232,181,.28);
+}
+.pin-ok:disabled{opacity:.3;cursor:not-allowed;}
+.pin-ok:not(:disabled):hover{box-shadow:0 6px 20px rgba(93,232,181,.4);}
+
 /* ══════════════════════════════════════════════════
    GAME SCREEN
 ══════════════════════════════════════════════════ */
@@ -773,8 +816,159 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ftab:hover{border-color:var(--accent4);color:var(--accent4);}
 .ftab.active{background:rgba(123,159,255,.12);border-color:var(--accent4);color:var(--accent4);}
 
-.score-list{display:flex;flex-direction:column;gap:var(--sc-card-gap);}
-.no-scores{text-align:center;padding:clamp(28px,5vh,55px) 20px;color:var(--muted);font-size:clamp(.9rem,1.8vw,1.1rem);font-weight:600;}
+/* ══ SCORE SCREEN SUB ══ */
+.score-screen-sub{font-size:clamp(.65rem,1.2vw,.82rem);color:var(--muted);font-weight:700;margin-top:4px;letter-spacing:.5px;}
+
+/* ══ MAIN TABS (Hall of Fame | Saavutukset) ══ */
+.main-tabs{
+  display:flex;gap:6px;margin-bottom:clamp(14px,2vh,22px);
+  background:var(--card);border-radius:16px;padding:5px;
+}
+.mtab{
+  flex:1;padding:clamp(9px,1.4vh,14px) 10px;border:none;
+  border-radius:12px;background:transparent;color:var(--muted);
+  font-family:'Fredoka One',cursive;font-size:clamp(.85rem,1.6vw,1.05rem);
+  cursor:pointer;transition:all .18s;
+}
+.mtab.active{
+  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
+  color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);
+}
+.mtab:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
+
+/* ══ HOF GRID — kortit rinnakkain ══ */
+.hof-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(clamp(160px,22vw,240px),1fr));
+  gap:clamp(8px,1.2vw,14px);
+  padding-bottom:20px;
+}
+
+.hof-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(14px,1.8vw,20px);
+  padding:clamp(14px,2vw,20px) clamp(12px,1.6vw,18px);
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(5px,.8vh,8px);
+  transition:all .2s;position:relative;overflow:hidden;
+  text-align:center;
+}
+.hof-card::before{
+  content:'';position:absolute;left:0;top:0;right:0;height:3px;border-radius:2px 2px 0 0;
+}
+.hof-card.rank-1::before{background:linear-gradient(90deg,#ffd700,#ff9f43);}
+.hof-card.rank-2::before{background:linear-gradient(90deg,#c0c0c0,#a0a0a0);}
+.hof-card.rank-3::before{background:linear-gradient(90deg,#cd7f32,#a0522d);}
+.hof-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.hof-card.goat-card{
+  background:linear-gradient(160deg,rgba(255,215,0,.12) 0%,rgba(22,32,48,1) 100%);
+  border:1.5px solid rgba(255,215,0,.4);
+  box-shadow:0 4px 24px rgba(255,180,0,.15);
+}
+.hof-card.me-card{border-color:rgba(247,201,72,.4);box-shadow:0 0 0 2px rgba(247,201,72,.15);}
+
+.hof-rank{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(.9rem,1.6vw,1.2rem);
+  color:var(--muted);
+}
+.hof-rank.r1{color:#ffd700;} .hof-rank.r2{color:#c0c0c0;} .hof-rank.r3{color:#cd7f32;}
+.hof-avatar{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
+.hof-name{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(.88rem,1.5vw,1.1rem);
+  color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%;
+}
+.hof-pts{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.3rem,2.5vw,1.8rem);
+  color:var(--accent);line-height:1;
+}
+.hof-pts-label{font-size:clamp(.58rem,1vw,.72rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.hof-correct{font-size:clamp(.68rem,1.1vw,.82rem);font-weight:700;color:var(--accent3);}
+.hof-rounds{font-size:clamp(.6rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
+.hof-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:2px;}
+.hof-me-badge{
+  font-size:clamp(.55rem,.9vw,.68rem);font-weight:700;
+  background:rgba(247,201,72,.15);color:var(--accent);
+  padding:1px 7px;border-radius:20px;
+}
+.hof-goat-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,#ffd700,#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  font-size:clamp(.7rem,1.2vw,.88rem);
+  padding:3px 10px;border-radius:40px;
+  box-shadow:0 2px 10px rgba(255,180,0,.35);
+}
+.hof-crown{
+  position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+  font-size:clamp(1rem,2vw,1.5rem);
+  filter:drop-shadow(0 2px 6px rgba(255,215,0,.5));
+  animation:crownBounce 2s ease-in-out infinite;
+}
+
+/* ══ ACHIEVEMENTS ══ */
+.ach-player-info{
+  display:flex;align-items:center;
+  background:var(--card);border-radius:16px;padding:12px 18px;
+  margin-bottom:clamp(14px,2vh,20px);
+  border:1px solid rgba(255,255,255,.07);
+}
+.ach-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(7px,1.2vw,14px);
+  padding-bottom:20px;
+}
+@media(min-width:600px){
+  .ach-grid{grid-template-columns:repeat(4,1fr);}
+}
+@media(min-width:900px){
+  .ach-grid{grid-template-columns:repeat(4,1fr);}
+}
+@media(min-width:1200px){
+  .ach-grid{grid-template-columns:repeat(4,1fr);}
+}
+.ach-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(14px,1.8vw,20px);
+  padding:clamp(16px,2.2vw,24px) clamp(12px,1.5vw,18px);
+  text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:8px;transition:all .2s;position:relative;
+}
+.ach-card.locked{opacity:.4;filter:grayscale(1);}
+.ach-card.unlocked{border-color:rgba(247,201,72,.3);box-shadow:0 0 0 1px rgba(247,201,72,.1);}
+.ach-card.unlocked::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.08),transparent 70%);
+}
+.ach-icon{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
+.ach-name{font-family:'Fredoka One',cursive;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
+.ach-desc{font-size:clamp(.62rem,1vw,.76rem);color:var(--muted);font-weight:600;line-height:1.3;}
+.ach-date{font-size:clamp(.58rem,.9vw,.68rem);color:var(--accent3);font-weight:700;margin-top:2px;}
+.ach-lock-icon{font-size:1.2rem;color:var(--muted);margin-top:2px;}
+
+/* ══ ACHIEVEMENT TOAST ══ */
+.ach-toast{
+  position:fixed;bottom:-120px;left:50%;transform:translateX(-50%);
+  background:var(--card);border:1.5px solid var(--accent);
+  border-radius:20px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(247,201,72,.15);
+  z-index:998;transition:bottom .4s cubic-bezier(.34,1.56,.64,1);
+  min-width:260px;max-width:90vw;
+}
+.ach-toast.show{bottom:clamp(16px,3vh,32px);}
+.ach-toast-icon{font-size:2.2rem;line-height:1;flex-shrink:0;}
+.ach-toast-text{flex:1;}
+.ach-toast-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
+.ach-toast-name{font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.2rem);color:var(--text);}
+
+/* No scores */
+.no-scores{text-align:center;padding:clamp(28px,5vh,55px) 20px;color:var(--muted);font-size:clamp(.9rem,1.8vw,1.1rem);font-weight:600;grid-column:1/-1;}
 .no-scores .big{font-size:clamp(2.5rem,5vw,4rem);display:block;margin-bottom:12px;}
 
 /* GOAT card — #1 only */
@@ -810,35 +1004,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .goat-name-row{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(5px,0.8vw,10px);margin-bottom:4px;}
 
-.sc-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(13px,1.5vw,22px);padding:var(--sc-card-pad);
-  display:flex;align-items:center;gap:var(--sc-gap);
-  transition:all .2s;position:relative;overflow:hidden;
-}
-.sc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:clamp(3px,0.4vw,5px);border-radius:2px 0 0 2px;}
-.sc-card.rank-1::before{background:linear-gradient(180deg,#ffd700,#ff9f43);}
-.sc-card.rank-2::before{background:linear-gradient(180deg,#c0c0c0,#a0a0a0);}
-.sc-card.rank-3::before{background:linear-gradient(180deg,#cd7f32,#a0522d);}
-.sc-card:hover{transform:translateX(4px);border-color:rgba(255,255,255,.14);}
-.sc-card.goat-card:hover{transform:translateX(4px) scale(1.005);}
-
-.sc-rank{font-family:'Fredoka One',cursive;font-size:var(--sc-rank-font);min-width:clamp(28px,3.5vw,50px);text-align:center;transition:font-size .3s;}
-.sc-rank.r1{color:#ffd700;}.sc-rank.r2{color:#c0c0c0;}.sc-rank.r3{color:#cd7f32;}.sc-rank.rn{color:var(--muted);}
-.sc-avatar{font-size:var(--sc-avatar-font);line-height:1;flex-shrink:0;transition:font-size .3s;}
-.sc-info{flex:1;min-width:0;}
-.sc-name{font-family:'Fredoka One',cursive;font-size:var(--sc-name-font);color:var(--text);margin-bottom:4px;transition:font-size .3s;}
-.sc-detail{font-size:var(--sc-detail-font);font-weight:700;color:var(--muted);display:flex;flex-wrap:wrap;gap:clamp(4px,0.6vw,8px);align-items:center;transition:font-size .3s;}
-.sc-tag{padding:clamp(2px,0.3vw,4px) clamp(6px,0.8vw,12px);border-radius:20px;font-size:var(--sc-tag-font);font-weight:700;transition:font-size .3s;}
-.sc-tag.mode-h{background:rgba(247,201,72,.14);color:var(--accent);}
-.sc-tag.mode-a{background:rgba(93,232,181,.14);color:var(--accent3);}
-.sc-tag.mode-s{background:rgba(255,107,107,.14);color:var(--accent2);}
-.sc-tag.mode-m{background:rgba(123,159,255,.14);color:var(--accent4);}
-.sc-tag.lvl{background:rgba(197,108,240,.14);color:var(--purple);}
-.sc-right{text-align:right;flex-shrink:0;}
-.sc-pts{font-family:'Fredoka One',cursive;font-size:var(--sc-pts-font);color:var(--accent);line-height:1;transition:font-size .3s;}
-.sc-pts-label{font-size:clamp(.58rem,1vw,.8rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-.sc-correct{font-size:var(--sc-correct-font);font-weight:700;color:var(--accent3);margin-top:2px;transition:font-size .3s;}
+@keyframes crownBounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-5deg);}50%{transform:translateX(-50%) translateY(-5px) rotate(5deg);}}
 
 /* ══════════════════════════════════════════════════
    SWITCH PLAYER MODAL
@@ -997,7 +1163,36 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
           <span class="char-badge">Tyttö</span>
         </div>
       </div>
-      <button class="cta-btn" id="startBtn" onclick="startGame()" disabled>Aloita seikkailu! 🚀</button>
+      <button class="cta-btn" id="charNextBtn" onclick="goStep3()" disabled>Seuraava →</button>
+    </div>
+    <!-- Step 3: PIN -->
+    <div class="step" id="step3">
+      <div class="step-title" id="pinTitle">🔐 Luo PIN-koodi</div>
+      <div class="step-sub" id="pinSub">Valitse 4-numeroinen PIN jonka muistat</div>
+      <!-- PIN dots display -->
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-error" id="pinError"></div>
+      <!-- PIN numpad -->
+      <div class="pin-pad">
+        <button class="pin-btn" onclick="pinPress(1)">1</button>
+        <button class="pin-btn" onclick="pinPress(2)">2</button>
+        <button class="pin-btn" onclick="pinPress(3)">3</button>
+        <button class="pin-btn" onclick="pinPress(4)">4</button>
+        <button class="pin-btn" onclick="pinPress(5)">5</button>
+        <button class="pin-btn" onclick="pinPress(6)">6</button>
+        <button class="pin-btn" onclick="pinPress(7)">7</button>
+        <button class="pin-btn" onclick="pinPress(8)">8</button>
+        <button class="pin-btn" onclick="pinPress(9)">9</button>
+        <button class="pin-btn pin-clear" onclick="pinClear()">⌫</button>
+        <button class="pin-btn" onclick="pinPress(0)">0</button>
+        <button class="pin-btn pin-ok" id="pinOkBtn" onclick="pinConfirm()" disabled>✓</button>
+      </div>
+      <div id="pinAttemptsLeft" style="text-align:center;font-size:.75rem;color:var(--accent2);font-weight:700;margin-top:8px;min-height:18px;"></div>
     </div>
   </div>
 </div>
@@ -1170,23 +1365,52 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </div>
 
-<!-- ════════ SCORES ════════ -->
+<!-- ════════ SCORES / ACHIEVEMENTS ════════ -->
 <div class="screen" id="scoreScreen">
   <div class="score-header">
     <div class="score-header-left">
-      <div class="score-title">🐐 Hall of Fame</div>
-      <div style="font-size:clamp(.65rem,1.2vw,.82rem);color:var(--muted);font-weight:700;margin-top:4px;letter-spacing:.5px;">Kaikkien aikojen parhaat matikka-ahmatit</div>
+      <div class="score-title" id="scoreScreenTitle">🐐 Hall of Fame</div>
+      <div class="score-screen-sub" id="scoreScreenSub">Kaikkien aikojen parhaat matikka-ahmatit</div>
     </div>
     <button class="back-btn" onclick="backToGame()">← Takaisin</button>
   </div>
-  <div class="filter-tabs">
-    <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
-    <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
-    <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
-    <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
-    <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
+
+  <!-- Main tabs: Hall of Fame | Saavutukset -->
+  <div class="main-tabs">
+    <button class="mtab active" id="mtab-hof"  onclick="switchMainTab('hof',this)">🐐 Hall of Fame</button>
+    <button class="mtab"        id="mtab-ach"  onclick="switchMainTab('ach',this)">🏅 Saavutukset</button>
   </div>
-  <div class="score-list" id="scoreList"></div>
+
+  <!-- Hall of Fame panel -->
+  <div id="hofPanel">
+    <div class="filter-tabs">
+      <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
+      <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
+      <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
+      <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
+      <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
+    </div>
+    <div class="hof-grid" id="scoreList"></div>
+  </div>
+
+  <!-- Achievements panel -->
+  <div id="achPanel" style="display:none">
+    <div class="ach-player-info">
+      <span id="achPlayerAv" style="font-size:2rem;">🤴</span>
+      <span id="achPlayerName" style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-left:8px;">—</span>
+      <span id="achCount" style="font-size:.8rem;color:var(--muted);font-weight:700;margin-left:8px;"></span>
+    </div>
+    <div class="ach-grid" id="achList"></div>
+  </div>
+</div>
+
+<!-- ════════ ACHIEVEMENT TOAST ════════ -->
+<div id="achToast" class="ach-toast">
+  <div class="ach-toast-icon" id="achToastIcon">🏅</div>
+  <div class="ach-toast-text">
+    <div class="ach-toast-title">Saavutus avattu!</div>
+    <div class="ach-toast-name" id="achToastName">—</div>
+  </div>
 </div>
 
 <!-- ════════ SWITCH PLAYER MODAL ════════ -->
@@ -1415,34 +1639,275 @@ async function loadScoresRemote(mode) {
   }
 }
 
-// ══ LOGIN ════════════════════════════════════════
-let pName='',pChar='';
-const nameInp=document.getElementById('nameInput');
-const nextBtn=document.getElementById('nextBtn');
-nameInp.addEventListener('input',()=>{nextBtn.disabled=nameInp.value.trim().length<1;});
-nameInp.addEventListener('keydown',e=>{if(e.key==='Enter'&&nameInp.value.trim())goStep2();});
-function goStep2(){pName=nameInp.value.trim();document.getElementById('step1').classList.remove('active');document.getElementById('step2').classList.add('active');}
-function selChar(t){pChar=t;document.getElementById('boyCard').classList.toggle('selected',t==='boy');document.getElementById('girlCard').classList.toggle('selected',t==='girl');document.getElementById('startBtn').disabled=false;}
+// ══ PIN SYSTEM ═══════════════════════════════════
+
+// ⚠️  VAIHDA TÄMÄ OMAKSI ADMIN-KOODIKSI ennen julkaisua
+const ADMIN_PIN = '0000';
+
+// Simple hash — XOR + rotate, riittävä lapsipelin PIN-suojaukseen
+function hashPin(pin, salt) {
+  let h = 0;
+  const s = pin + salt + 'matikka_ahmatti_salt_2024';
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) - h) + s.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h).toString(16);
+}
+
+// Supabase: hae pelaajan hash
+async function pinRemoteGet(name, char) {
+  try {
+    const url = `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=pin_hash&limit=1`;
+    const res = await fetch(url, {headers:SB_HEADERS});
+    if (!res.ok) throw new Error();
+    const rows = await res.json();
+    return rows.length ? rows[0].pin_hash : null;
+  } catch { return null; }
+}
+
+// Supabase: tallenna uusi pelaaja + hash
+async function pinRemoteSet(name, char, pin) {
+  const salt = name + char;
+  const hash = hashPin(pin, salt);
+  try {
+    await fetch(`${SB_URL}/rest/v1/players`, {
+      method:'POST',
+      headers:{...SB_HEADERS,'Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({player_name:name, player_char:char, pin_hash:hash})
+    });
+  } catch {}
+  // Tallenna myös localStorageen
+  try {
+    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+    all[`${name}:${char}`] = hash;
+    localStorage.setItem('matikka_pins', JSON.stringify(all));
+  } catch {}
+}
+
+// Supabase: päivitä PIN (reset)
+async function pinRemoteReset(name, char, newPin) {
+  const salt = name + char;
+  const hash = hashPin(newPin, salt);
+  try {
+    await fetch(`${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}`, {
+      method:'PATCH',
+      headers:{...SB_HEADERS,'Prefer':'return=minimal'},
+      body:JSON.stringify({pin_hash:hash})
+    });
+  } catch {}
+  try {
+    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+    all[`${name}:${char}`] = hash;
+    localStorage.setItem('matikka_pins', JSON.stringify(all));
+  } catch {}
+}
+
+// Tarkista PIN paikallisesti tai remotesti
+async function pinVerify(name, char, pin) {
+  // Admin-koodi ohittaa aina
+  if (pin === ADMIN_PIN) return true;
+  const salt = name + char;
+  const hash = hashPin(pin, salt);
+  // Yritä ensin localStorage
+  try {
+    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+    if (all[`${name}:${char}`]) return all[`${name}:${char}`] === hash;
+  } catch {}
+  // Sitten Supabase
+  const remoteHash = await pinRemoteGet(name, char);
+  if (remoteHash) {
+    // Tallenna localStorageen cacheksi
+    try {
+      const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+      all[`${name}:${char}`] = remoteHash;
+      localStorage.setItem('matikka_pins', JSON.stringify(all));
+    } catch {}
+    return remoteHash === hash;
+  }
+  return false;
+}
+
+// Tarkista onko pelaaja jo rekisteröity
+async function pinExists(name, char) {
+  try {
+    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+    if (all[`${name}:${char}`]) return true;
+  } catch {}
+  const h = await pinRemoteGet(name, char);
+  return h !== null;
+}
+
+// ── PIN UI state ──
+let pinBuffer     = '';
+let pinMode       = 'new'; // 'new' | 'login' | 'reset' | 'confirm_new'
+let pinFirstEntry = '';    // tallennetaan uusi PIN vahvistusta varten
+let pinAttempts   = 0;
+const MAX_ATTEMPTS = 5;
+
+function pinUpdateDots() {
+  for (let i=0;i<4;i++) {
+    const d = document.getElementById('pd'+i);
+    if (!d) return;
+    d.classList.toggle('filled', i < pinBuffer.length);
+    d.classList.remove('error');
+  }
+  const okBtn = document.getElementById('pinOkBtn');
+  if (okBtn) okBtn.disabled = pinBuffer.length < 4;
+}
+
+function pinSetError(msg) {
+  const e = document.getElementById('pinError');
+  if (e) { e.textContent = msg; }
+  for (let i=0;i<4;i++) {
+    const d = document.getElementById('pd'+i);
+    if (d) d.classList.add('error');
+  }
+  setTimeout(()=>{ pinBuffer=''; pinUpdateDots(); if(e)e.textContent=''; }, 900);
+}
+
+function pinPress(n) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += n;
+  pinUpdateDots();
+  if (pinBuffer.length === 4) setTimeout(pinConfirm, 200);
+}
+
+function pinClear() {
+  pinBuffer = pinBuffer.slice(0,-1);
+  pinUpdateDots();
+}
+
+async function pinConfirm() {
+  if (pinBuffer.length < 4) return;
+  const pin = pinBuffer;
+  pinBuffer = '';
+  pinUpdateDots();
+
+  if (pinMode === 'new') {
+    // Ensimmäinen syöttö — pyydä vahvistus
+    pinFirstEntry = pin;
+    pinMode = 'confirm_new';
+    document.getElementById('pinTitle').textContent = '🔐 Vahvista PIN';
+    document.getElementById('pinSub').textContent   = 'Syötä sama PIN uudelleen';
+    document.getElementById('pinError').textContent = '';
+
+  } else if (pinMode === 'confirm_new') {
+    if (pin === pinFirstEntry) {
+      // Tallenna PIN ja käynnistä peli
+      await pinRemoteSet(pName, pChar, pin);
+      startGame();
+    } else {
+      pinMode = 'new';
+      pinFirstEntry = '';
+      document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
+      document.getElementById('pinSub').textContent   = 'PIN-koodit eivät täsmänneet, yritä uudelleen';
+      pinSetError('PIN-koodit eivät täsmänneet ❌');
+    }
+
+  } else if (pinMode === 'login') {
+    const ok = await pinVerify(pName, pChar, pin);
+    if (ok) {
+      if (pin === ADMIN_PIN) {
+        // Admin nollaa PIN:in — siirry uuden PIN:in luontiin
+        pinMode = 'new';
+        pinFirstEntry = '';
+        document.getElementById('pinTitle').textContent = '🔐 Luo uusi PIN';
+        document.getElementById('pinSub').textContent   = 'Admin-koodi hyväksytty! Luo uusi PIN';
+        document.getElementById('pinError').textContent = '';
+        document.getElementById('pinAttemptsLeft').textContent = '';
+      } else {
+        pinAttempts = 0;
+        startGame();
+      }
+    } else {
+      pinAttempts++;
+      const left = MAX_ATTEMPTS - pinAttempts;
+      if (pinAttempts >= MAX_ATTEMPTS) {
+        // Reset — anna mahdollisuus luoda uusi PIN
+        pinAttempts = 0;
+        pinMode = 'new';
+        pinFirstEntry = '';
+        document.getElementById('pinTitle').textContent = '🔐 Luo uusi PIN';
+        document.getElementById('pinSub').textContent   = '5 väärää yritystä — luo uusi PIN tai käytä admin-koodia';
+        document.getElementById('pinAttemptsLeft').textContent = '';
+        pinSetError('Liian monta yritystä — luo uusi PIN');
+      } else {
+        document.getElementById('pinAttemptsLeft').textContent =
+          `${left} yritys${left!==1?'tä':''} jäljellä`;
+        pinSetError(`Väärä PIN ❌`);
+      }
+    }
+  }
+}
+
+// ══ LOGIN FLOW ════════════════════════════════════
+let pName='', pChar='';
+const nameInp = document.getElementById('nameInput');
+const nextBtn  = document.getElementById('nextBtn');
+nameInp.addEventListener('input',()=>{ nextBtn.disabled=nameInp.value.trim().length<1; });
+nameInp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&nameInp.value.trim())goStep2(); });
+
+function goStep2() {
+  pName = nameInp.value.trim();
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+}
+
+function selChar(t) {
+  pChar=t;
+  document.getElementById('boyCard').classList.toggle('selected',t==='boy');
+  document.getElementById('girlCard').classList.toggle('selected',t==='girl');
+  document.getElementById('charNextBtn').disabled=false;
+}
+
+async function goStep3() {
+  if (!pChar) return;
+  // Tarkista onko pelaaja olemassa
+  const exists = await pinExists(pName, pChar);
+  pinBuffer = '';
+  pinAttempts = 0;
+
+  if (exists) {
+    pinMode = 'login';
+    document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
+    document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
+  } else {
+    pinMode = 'new';
+    pinFirstEntry = '';
+    document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
+    document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN jonka muistat';
+  }
+  document.getElementById('pinError').textContent = '';
+  document.getElementById('pinAttemptsLeft').textContent = '';
+  pinUpdateDots();
+
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+}
 async function startGame(){
   if(!pChar)return;
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   showScreen('gameScreen');
-  // Käynnistä peli heti — älä odota Supabasea
   srData = srLocalLoad(pName, pChar, mode);
   retryQueue=[]; roundHistory=[];
   updDiffLabel();
   launchConfetti(); buildTablesGrid(); newProblem();
-  // Lataa Supabase-data taustalla ja päivitä hiljaa
   srRemoteLoad(pName, pChar, mode).then(remote => {
     if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
   }).catch(()=>{});
+  // Init achievements — first_login check happens inside
+  achInit().then(()=>achCheck('first_login'));
 }
 
 // ══ SCREEN NAV ═══════════════════════════════════
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 async function showScores(){
   document.querySelectorAll('.ftab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.mtab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.getElementById('hofPanel').style.display='block';
+  document.getElementById('achPanel').style.display='none';
   showScreen('scoreScreen');
   await renderScores('all');
 }
@@ -1452,6 +1917,7 @@ function backToGame(){showScreen('gameScreen');}
 let mode='h', range=10, selTable=2;
 let ans='', corr=0, streak=0, pts=0, rDone=0, rTotal=10;
 let prob=null, busy=false;
+let roundStartTime = Date.now();
 
 // ══ ADAPTIVE ENGINE ══════════════════════════════
 // Spaced repetition: jokainen tehtävätyyppi saa "weight" (paino)
@@ -1650,7 +2116,7 @@ function buildTablesGrid(){
 }
 function setMode(m){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+m).classList.add('active');document.getElementById('rangeSection').style.display=m==='m'?'none':'block';document.getElementById('tableSection').style.display=m==='m'?'block':'none';restartRound();}
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
+function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
 
 function newProblem(){
   ans='';busy=false;
@@ -1778,6 +2244,9 @@ function monsterEatNumber(numText) {
   wrap.appendChild(el);
   setTimeout(() => el.remove(), 600);
 }
+function np(n){if(busy||ans.length>=4)return;ans+=n;updB();}
+function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
+function npa(){if(busy)return;ans='';updB();}
 function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
 
 function ck(){
@@ -1793,8 +2262,10 @@ function ck(){
     monsterEatNumber(prob.answer);
     if(streak>=10&&streak%10===0){
       sfxSuperStreak(); monsterFace('happy'); monsterAnimate('jump',800);
+      achCheck('streak_10');
     } else if(streak>=5&&streak%5===0){
       sfxStreak(); monsterFace('happy'); monsterAnimate('jump',700);
+      achCheck('streak_5');
     } else {
       sfxCorrect(); monsterFace('eat'); monsterAnimate('eat',600);
     }
@@ -1841,6 +2312,7 @@ async function showResults(){
   if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
+  checkAllAchievements(p, streak, mode);
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
   const saved = await saveScore(entry);
@@ -1852,7 +2324,17 @@ async function showResults(){
   retryQueue=[];roundHistory=[];
 }
 
-// ══ SCORES ═══════════════════════════════════════
+// ══ SCORES — HOF GRID ════════════════════════════
+
+function switchMainTab(tab, el) {
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const isHof = tab==='hof';
+  document.getElementById('hofPanel').style.display = isHof ? 'block' : 'none';
+  document.getElementById('achPanel').style.display = isHof ? 'none'  : 'block';
+  if (!isHof) renderAchievements();
+}
+
 function filterScores(f,el){
   document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -1861,91 +2343,276 @@ function filterScores(f,el){
 
 async function renderScores(f) {
   const list = document.getElementById('scoreList');
+  list.innerHTML = `<div class="no-scores"><span class="big" style="font-size:2rem;display:block;">⏳</span>Ladataan...</div>`;
 
-  // Show loading spinner
-  list.innerHTML = `<div class="no-scores">
-    <span class="big" style="font-size:2.5rem;animation:mFloat 1s ease-in-out infinite;display:block;">⏳</span>
-    Ladataan Hall of Famea...
-  </div>`;
-
-  // Try Supabase first
-  let scores = await loadScoresRemote(f);
-
-  // Fall back to localStorage if Supabase failed
-  if (scores === null) {
-    scores = localLoad();
-    if (f && f !== 'all') scores = scores.filter(s => s.mode === f);
-    // Show offline notice
-    list.insertAdjacentHTML('beforeend', `
-      <div style="text-align:center;padding:8px;font-size:.72rem;color:var(--accent2);font-weight:700;margin-bottom:8px;">
-        ⚠️ Offline-tila — näytetään omat tulokset
-      </div>`);
+  let raw = await loadScoresRemote(f);
+  if (raw === null) {
+    raw = localLoad();
+    if (f && f !== 'all') raw = raw.filter(s => s.mode === f);
   }
 
-  scores.sort((a, b) => b.pts - a.pts || b.corr - a.corr);
+  // ── Group by player: keep best score per player ──
+  const playerMap = new Map();
+  raw.forEach(s => {
+    const key = `${s.name}::${s.char}`;
+    const ex  = playerMap.get(key);
+    if (!ex || s.pts > ex.pts) {
+      playerMap.set(key, { ...s, totalRounds: 1 });
+    } else {
+      ex.totalRounds = (ex.totalRounds||1) + 1;
+    }
+  });
+  // Count total rounds per player from all entries
+  raw.forEach(s => {
+    const key = `${s.name}::${s.char}`;
+    const p   = playerMap.get(key);
+    if (p && s.pts <= p.pts) p.totalRounds = (p.totalRounds||0) + 1;
+  });
 
-  if (!scores.length) {
+  let players = Array.from(playerMap.values())
+    .sort((a,b) => b.pts - a.pts || b.corr - a.corr)
+    .slice(0, 200);
+
+  if (!players.length) {
     list.innerHTML = `<div class="no-scores"><span class="big">🎮</span>Ei tuloksia vielä!<br>Pelaa kierros ja tule takaisin.</div>`;
     return;
   }
 
-  const mc = {h:'mode-h', a:'mode-a', s:'mode-s', m:'mode-m'};
+  list.innerHTML = players.map((s, i) => {
+    const r      = i+1;
+    const isGoat = r===1;
+    const rc     = r===1?'r1':r===2?'r2':r===3?'r3':'';
+    const medal  = r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`;
+    const av     = s.char==='boy'?'🤴':'👸';
+    const isMe   = s.name===pName && s.char===pChar;
+    const rounds = s.totalRounds||1;
 
-  list.innerHTML = scores.map((s, i) => {
-    const r = i+1;
-    const isGoat = r === 1;
-    const rc = r===1?'r1':r===2?'r2':r===3?'r3':'rn';
-    const rs = r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`;
-    const cc = r<=3?`rank-${r}`:'';
-    const av = s.char==='boy'?'🤴':'👸';
-    const d  = new Date(s.ts).toLocaleDateString('fi-FI',{day:'numeric',month:'numeric'});
-    const isMe = s.name===pName && s.char===pChar;
-    const meBorder = isMe&&!isGoat ? 'border:1.5px solid rgba(247,201,72,.35);box-shadow:0 0 0 3px rgba(247,201,72,.08);' : '';
-    const meBadge  = isMe ? `<span style="font-size:clamp(.55rem,.9vw,.68rem);font-weight:700;background:rgba(247,201,72,.15);color:var(--accent);padding:1px 7px;border-radius:20px;white-space:nowrap;">Sinä ⭐</span>` : '';
+    const goatBadge  = isGoat ? `<div class="hof-goat-badge">🐐 GOAT</div>` : '';
+    const crown      = isGoat ? `<div class="hof-crown">👑</div>` : '';
+    const meBadge    = isMe   ? `<div class="hof-me-badge">Sinä ⭐</div>` : '';
+    const cardClass  = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
+    const ptsColor   = isGoat ? 'color:#ffd700;text-shadow:0 0 14px rgba(255,200,0,.4);' : '';
 
-    if (isGoat) {
-      return `<div class="sc-card goat-card rank-1" style="${isMe?'box-shadow:0 0 0 2px rgba(247,201,72,.5),0 8px 40px rgba(255,180,0,.25);':''}">
-        <div class="goat-crown">👑</div>
-        <div class="sc-rank r1" style="font-size:clamp(1.4rem,2.5vw,2.2rem);">${rs}</div>
-        <div class="sc-avatar" style="font-size:clamp(2.2rem,4vw,3.2rem);">${av}</div>
-        <div class="sc-info">
-          <div class="goat-name-row">
-            <span class="sc-name" style="font-size:clamp(1.05rem,2vw,1.5rem);">${s.name}</span>
-            ${meBadge}
-          </div>
-          <div class="goat-badge">🐐 GOAT — Kaikkien aikojen paras!</div>
-          <div class="sc-detail" style="margin-top:clamp(5px,0.7vw,8px);">
-            <span class="sc-tag ${mc[s.mode]||'mode-h'}">${s.modeLabel}</span>
-            <span class="sc-tag lvl">${s.level}</span>
-            <span style="color:var(--muted)">${d}</span>
-          </div>
-        </div>
-        <div class="sc-right">
-          <div class="sc-pts" style="font-size:clamp(1.8rem,3.5vw,2.8rem);color:#ffd700;text-shadow:0 0 20px rgba(255,200,0,.5);">${s.pts}</div>
-          <div class="sc-pts-label">pistettä</div>
-          <div class="sc-correct">${s.corr}/${s.total} oikein</div>
-        </div>
-      </div>`;
-    }
-
-    return `<div class="sc-card ${cc}" style="${meBorder}">
-      <div class="sc-rank ${rc}">${rs}</div>
-      <div class="sc-avatar">${av}</div>
-      <div class="sc-info">
-        <div class="sc-name">${s.name} ${meBadge}</div>
-        <div class="sc-detail">
-          <span class="sc-tag ${mc[s.mode]||'mode-h'}">${s.modeLabel}</span>
-          <span class="sc-tag lvl">${s.level}</span>
-          <span style="color:var(--muted)">${d}</span>
-        </div>
-      </div>
-      <div class="sc-right">
-        <div class="sc-pts">${s.pts}</div>
-        <div class="sc-pts-label">pistettä</div>
-        <div class="sc-correct">${s.corr}/${s.total} oikein</div>
-      </div>
+    return `<div class="${cardClass}">
+      ${crown}
+      <div class="hof-rank ${rc}">${medal}</div>
+      <div class="hof-avatar">${av}</div>
+      <div class="hof-name">${s.name}</div>
+      ${goatBadge}
+      ${meBadge}
+      <div class="hof-pts" style="${ptsColor}">${s.pts}</div>
+      <div class="hof-pts-label">paras kierros</div>
+      <div class="hof-correct">${s.corr}/${s.total} oikein</div>
+      <div class="hof-rounds">${rounds} kierros${rounds!==1?'ta':''}</div>
     </div>`;
   }).join('');
+}
+
+// ══ ACHIEVEMENTS SYSTEM ══════════════════════════
+
+const ACHIEVEMENTS = [
+  // — Alkuperäiset 8 —
+  { id:'first_login',    icon:'👋', name:'Tervetuloa!',          desc:'Kirjautui ensimmäisen kerran' },
+  { id:'perfect_round',  icon:'🌟', name:'Täydellinen!',         desc:'10/10 oikein yhdellä kierroksella' },
+  { id:'streak_5',       icon:'🔥', name:'Putkihaaste',          desc:'5 peräkkäin oikein' },
+  { id:'streak_10',      icon:'🔥🔥',name:'Superputki!',          desc:'10 peräkkäin oikein' },
+  { id:'all_tables',     icon:'✖️', name:'Kertotaulumestari',    desc:'Kaikki kertotaulut 1–10 pelattu' },
+  { id:'level_4',        icon:'🚀', name:'Taso 4!',              desc:'Saavutti vaikeimman tason' },
+  { id:'rounds_100',     icon:'🏆', name:'Satanen!',             desc:'100 kierrosta yhteensä' },
+  { id:'hof_1',          icon:'🐐', name:'GOAT',                 desc:'Hall of Famen #1 sija' },
+  // — Uudet 8 —
+  { id:'rounds_10',      icon:'🎮', name:'Harjoittelija',        desc:'10 kierrosta yhteensä' },
+  { id:'rounds_50',      icon:'🎯', name:'Ahkera ahmatti',       desc:'50 kierrosta yhteensä' },
+  { id:'perfect_3',      icon:'💎', name:'Kolme täydellistä',    desc:'3 täydellistä 10/10 kierrosta' },
+  { id:'all_modes',      icon:'🌈', name:'Monipuolinen',         desc:'Pelattu kaikkia 4 pelimoodia' },
+  { id:'streak_20',      icon:'⚡', name:'Salamaputki!',         desc:'20 peräkkäin oikein' },
+  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa' },
+  { id:'comeback',       icon:'💪', name:'Tekee paluun!',        desc:'Parani 3 peräkkäisellä kierroksella' },
+  { id:'early_bird',     icon:'🌅', name:'Aamulintu',            desc:'Pelasi ennen kello 8' },
+];
+
+const ACH_KEY = 'matikka_ach_v1';
+
+// localStorage: unlocked achievement ids per player
+function achLocalLoad() {
+  try {
+    const all = JSON.parse(localStorage.getItem(ACH_KEY)||'{}');
+    return new Set(all[`${pName}:${pChar}`]||[]);
+  } catch { return new Set(); }
+}
+function achLocalSave(ids) {
+  try {
+    const all = JSON.parse(localStorage.getItem(ACH_KEY)||'{}');
+    all[`${pName}:${pChar}`] = [...ids];
+    localStorage.setItem(ACH_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+// Supabase: load unlocked achievements for current player
+async function achRemoteLoad() {
+  try {
+    const url = `${SB_URL}/rest/v1/achievements?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=achievement_id`;
+    const res = await fetch(url, {headers:SB_HEADERS});
+    if (!res.ok) throw new Error();
+    const rows = await res.json();
+    return new Set(rows.map(r=>r.achievement_id));
+  } catch { return null; }
+}
+
+// Supabase: unlock a single achievement
+async function achRemoteUnlock(id) {
+  try {
+    await fetch(`${SB_URL}/rest/v1/achievements`, {
+      method:'POST',
+      headers:{...SB_HEADERS,'Prefer':'resolution=ignore-duplicates,return=minimal'},
+      body:JSON.stringify({player_name:pName,player_char:pChar,achievement_id:id})
+    });
+  } catch {}
+}
+
+let unlockedAch = new Set();
+
+async function achInit() {
+  // Local first, remote in background
+  unlockedAch = achLocalLoad();
+  achRemoteLoad().then(remote => {
+    if (remote) {
+      unlockedAch = new Set([...unlockedAch, ...remote]);
+      achLocalSave(unlockedAch);
+    }
+  }).catch(()=>{});
+}
+
+// Check and unlock achievement — show toast if new
+async function achCheck(id) {
+  if (unlockedAch.has(id)) return;
+  const def = ACHIEVEMENTS.find(a=>a.id===id);
+  if (!def) return;
+  unlockedAch.add(id);
+  achLocalSave(unlockedAch);
+  achRemoteUnlock(id);
+  showAchToast(def);
+}
+
+// Toast notification
+let toastTimer = null;
+function showAchToast(def) {
+  const toast = document.getElementById('achToast');
+  document.getElementById('achToastIcon').textContent = def.icon;
+  document.getElementById('achToastName').textContent = def.name;
+  toast.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 3500);
+}
+
+// Render achievements page
+async function renderAchievements() {
+  const list = document.getElementById('achList');
+  document.getElementById('achPlayerAv').textContent   = pChar==='boy'?'🤴':'👸';
+  document.getElementById('achPlayerName').textContent = pName;
+
+  // Refresh from remote
+  const remote = await achRemoteLoad();
+  if (remote) { unlockedAch = new Set([...unlockedAch,...remote]); achLocalSave(unlockedAch); }
+
+  const count = [...unlockedAch].filter(id=>ACHIEVEMENTS.some(a=>a.id===id)).length;
+  document.getElementById('achCount').textContent = `${count} / ${ACHIEVEMENTS.length} avattu`;
+
+  list.innerHTML = ACHIEVEMENTS.map(a => {
+    const ok   = unlockedAch.has(a.id);
+    const date = ok ? '' : '';
+    return `<div class="ach-card ${ok?'unlocked':'locked'}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+      ${ok ? `<div class="ach-date">✅ Avattu!</div>` : `<div class="ach-lock-icon">🔒</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ── Check achievements after each round / event ──
+async function checkAllAchievements(roundPct, currentStreak, currentMode) {
+  // First login — checked at startGame
+  achCheck('first_login');
+
+  // Perfect round
+  if (roundPct === 100) achCheck('perfect_round');
+
+  // Streak achievements
+  if (currentStreak >= 5)  achCheck('streak_5');
+  if (currentStreak >= 10) achCheck('streak_10');
+
+  // Level 4
+  if (srData.diffLevel >= 4) achCheck('level_4');
+
+  // All multiplication tables played
+  const tablesKey = `matikka_tables_${pName}:${pChar}`;
+  try {
+    const played = new Set(JSON.parse(localStorage.getItem(tablesKey)||'[]'));
+    if (currentMode==='m') played.add(selTable);
+    localStorage.setItem(tablesKey, JSON.stringify([...played]));
+    if (played.size >= 10) achCheck('all_tables');
+  } catch {}
+
+  // 100 rounds
+  if (srData.roundsPlayed >= 100) achCheck('rounds_100');
+
+  // Salamanopea — kierros alle 90 sekunnissa ja vähintään 8/10 oikein
+  const roundSecs = (Date.now() - roundStartTime) / 1000;
+  if (roundSecs < 90 && roundPct >= 80) achCheck('speed_demon');
+
+  // ── Uudet saavutukset ──
+
+  // 10 ja 50 kierrosta
+  if (srData.roundsPlayed >= 10)  achCheck('rounds_10');
+  if (srData.roundsPlayed >= 50)  achCheck('rounds_50');
+
+  // Streak 20
+  if (currentStreak >= 20) achCheck('streak_20');
+
+  // Kaikki 4 pelimoodia pelattu
+  const modesKey = `matikka_modes_${pName}:${pChar}`;
+  try {
+    const playedModes = new Set(JSON.parse(localStorage.getItem(modesKey)||'[]'));
+    playedModes.add(currentMode);
+    localStorage.setItem(modesKey, JSON.stringify([...playedModes]));
+    if (playedModes.size >= 4) achCheck('all_modes');
+  } catch {}
+
+  // Kolme täydellistä kierrosta
+  const perfectKey = `matikka_perfect_${pName}:${pChar}`;
+  try {
+    let perfectCount = parseInt(localStorage.getItem(perfectKey)||'0');
+    if (roundPct === 100) perfectCount++;
+    localStorage.setItem(perfectKey, perfectCount);
+    if (perfectCount >= 3) achCheck('perfect_3');
+  } catch {}
+
+  // Aamulintu — pelasi ennen kello 8
+  if (new Date().getHours() < 8) achCheck('early_bird');
+
+  // Tekee paluun — parantunut 3 peräkkäisellä kierroksella
+  const pctKey = `matikka_pcthistory_${pName}:${pChar}`;
+  try {
+    const history = JSON.parse(localStorage.getItem(pctKey)||'[]');
+    history.push(roundPct);
+    if (history.length > 4) history.shift();
+    localStorage.setItem(pctKey, JSON.stringify(history));
+    if (history.length >= 3 &&
+        history[history.length-1] > history[history.length-2] &&
+        history[history.length-2] > history[history.length-3]) {
+      achCheck('comeback');
+    }
+  } catch {}
+
+  // HOF #1 — check after scores saved
+  setTimeout(async () => {
+    const scores = await loadScoresRemote('all');
+    if (scores && scores.length > 0) {
+      const sorted = scores.slice().sort((a,b)=>b.pts-a.pts);
+      if (sorted[0]?.name===pName && sorted[0]?.char===pChar) achCheck('hof_1');
+    }
+  }, 2000);
 }
 
 // ══ SWITCH PLAYER MODAL ══════════════════════════
@@ -1994,18 +2661,41 @@ function checkSwReady(){
 async function confirmSwitch(){
   const newName=document.getElementById('switchNameInput').value.trim();
   if(!newName||!swChar)return;
-  pName=newName; pChar=swChar;
-  document.getElementById('pName').textContent=pName;
-  document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
-  closeSwitch();
-  // Lataa heti localStoragesta, päivitä Supabasesta taustalla
-  srData = srLocalLoad(pName, pChar, mode);
-  retryQueue=[]; roundHistory=[]; updDiffLabel();
-  srRemoteLoad(pName, pChar, mode).then(remote => {
-    if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
-  }).catch(()=>{});
-  restartRound();
-  setTimeout(launchConfetti,200);
+
+  // Tallenna väliaikaisesti ja tarkista PIN
+  const tmpName = newName;
+  const tmpChar = swChar;
+
+  // Tarkista onko pelaaja olemassa
+  const exists = await pinExists(tmpName, tmpChar);
+  if (exists) {
+    // Pyydä PIN modaalin sisällä
+    closeSwitch();
+    // Aseta tilapäisesti — PIN-vahvistus hoitaa loput
+    pName = tmpName; pChar = tmpChar;
+    pinBuffer=''; pinAttempts=0; pinMode='login';
+    document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
+    document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
+    document.getElementById('pinError').textContent = '';
+    document.getElementById('pinAttemptsLeft').textContent = '';
+    pinUpdateDots();
+    // Näytä PIN-step login-screenissä
+    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('step3').classList.add('active');
+    showScreen('loginScreen');
+  } else {
+    // Uusi pelaaja — aseta suoraan ja luo PIN
+    pName=tmpName; pChar=tmpChar;
+    closeSwitch();
+    pinBuffer=''; pinFirstEntry=''; pinMode='new';
+    document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
+    document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN';
+    document.getElementById('pinError').textContent = '';
+    pinUpdateDots();
+    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('step3').classList.add('active');
+    showScreen('loginScreen');
+  }
 }
 
 // ══ CONFETTI ═════════════════════════════════════
