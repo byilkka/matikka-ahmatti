@@ -468,6 +468,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .score-nav-btn:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(247,201,72,.12);}
 
+.mute-btn{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:40px;padding:var(--top-btn-pad);
+  font-size:var(--top-btn-font);cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;line-height:1;
+}
+.mute-btn:hover{border-color:rgba(255,255,255,.2);}
+.mute-btn.muted{opacity:.5;}
+
 /* Streak bar */
 .streak-bar{display:flex;gap:clamp(5px,1vw,10px);margin-bottom:clamp(16px,2.5vh,26px);flex-wrap:nowrap;}
 .si{
@@ -900,6 +909,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
     <div class="header-right">
       <button class="score-nav-btn" onclick="showScores()">🐐 Hall of Fame</button>
+      <button class="mute-btn" id="muteBtn" onclick="toggleMute()" title="Äänet päälle/pois">🔊</button>
       <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa">
         <span class="player-avatar-mini" id="pAvatar">🤴</span>
         <span class="player-name-mini" id="pName">Pelaaja</span>
@@ -1034,6 +1044,109 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
+// ══ AUDIO ENGINE — Pac-Man henkinen ══════════════
+// Matalat, pehmeät, nopeat piipitykset — ei kimeyttä
+
+let audioCtx = null;
+let muted = false;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function toggleMute() {
+  muted = !muted;
+  const btn = document.getElementById('muteBtn');
+  btn.textContent = muted ? '🔇' : '🔊';
+  btn.classList.toggle('muted', muted);
+}
+
+// Core: pehmeä piip — lowpass + triangle/square + pieni envelope
+function beep(ctx, freq, start, dur, vol = 0.07) {
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const lp   = ctx.createBiquadFilter();
+  lp.type = 'lowpass';
+  lp.frequency.value = 900; // leikkaa kaikki korkeat taajuudet
+  lp.Q.value = 0.5;
+  osc.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(freq, start);
+  gain.gain.setValueAtTime(0, start);
+  gain.gain.linearRampToValueAtTime(vol, start + 0.005);
+  gain.gain.setValueAtTime(vol, start + dur * 0.5);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  osc.start(start);
+  osc.stop(start + dur + 0.01);
+}
+
+// ✅ Oikea — Pac-Man syö pisteytyksen: kaksi matalaa nopeaa piippiä
+function sfxCorrect() {
+  if (muted) return;
+  const ctx = getAudioCtx();
+  const t   = ctx.currentTime;
+  beep(ctx, 440, t,        0.06, 0.07); // A4
+  beep(ctx, 554, t + 0.07, 0.08, 0.07); // C#5
+}
+
+// ❌ Väärä — Pac-Man kuolee: lyhyt laskeva kaksoispiippi
+function sfxWrong() {
+  if (muted) return;
+  const ctx = getAudioCtx();
+  const t   = ctx.currentTime;
+  beep(ctx, 330, t,        0.07, 0.06); // E4
+  beep(ctx, 277, t + 0.08, 0.09, 0.06); // C#4
+}
+
+// 🔥 Putki 5x — kolme nousevaa piippiä
+function sfxStreak() {
+  if (muted) return;
+  const ctx = getAudioCtx();
+  const t   = ctx.currentTime;
+  [330, 440, 554].forEach((f, i) =>
+    beep(ctx, f, t + i * 0.08, 0.08, 0.07)
+  );
+}
+
+// 🔥🔥 Putki 10x — viisi nopeaa nousevaa piippiä
+function sfxSuperStreak() {
+  if (muted) return;
+  const ctx = getAudioCtx();
+  const t   = ctx.currentTime;
+  [294, 330, 392, 440, 554].forEach((f, i) =>
+    beep(ctx, f, t + i * 0.07, 0.08, 0.07)
+  );
+}
+
+// 🏆 Kierros päättyy
+function sfxRoundEnd(pct) {
+  if (muted) return;
+  const ctx = getAudioCtx();
+  const t   = ctx.currentTime;
+
+  if (pct >= 90) {
+    // Mestari — Pac-Man bonustaso: nopea iloinen melodia matalana
+    [
+      [294,0.00],[330,0.07],[370,0.14],[294,0.21],
+      [370,0.28],[440,0.36],[370,0.46]
+    ].forEach(([f,dt]) => beep(ctx, f, t+dt, 0.10, 0.07));
+
+  } else if (pct >= 70) {
+    // Hyvä — kolme nousevaa piippiä
+    [330, 392, 440].forEach((f, i) =>
+      beep(ctx, f, t + i * 0.10, 0.10, 0.07)
+    );
+
+  } else {
+    // Harjoitellaan — kaksi laskevaa piippiä, ei surullinen
+    [370, 294].forEach((f, i) =>
+      beep(ctx, f, t + i * 0.12, 0.10, 0.055)
+    );
+  }
+}
+
 // ══ FLOATING BG ══════════════════════════════════
 const SYMS=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','5−1','9+6','8×3','12','15','24','½','π','∞','3²','√4'];
 const COLS=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,','rgba(255,107,107,','rgba(197,108,240,'];
@@ -1180,8 +1293,22 @@ function ck(){
   if(!ans||busy)return;
   const u=parseInt(ans),ok=u===prob.answer;busy=true;
   const fb=document.getElementById('fb'),bs=document.getElementById('bS');
-  if(ok){streak++;corr++;pts+=10+(streak>3?5*Math.min(streak-3,5):0);fb.textContent=okMsg();fb.className='feedback ok';if(bs)bs.style.color='var(--accent3)';if(streak>0&&streak%5===0)launchConfetti();}
-  else{streak=0;fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;fb.className='feedback no';if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}}
+  if(ok){
+    streak++;corr++;pts+=10+(streak>3?5*Math.min(streak-3,5):0);
+    fb.textContent=okMsg();fb.className='feedback ok';
+    if(bs)bs.style.color='var(--accent3)';
+    // Äänet: putki ensin tarkistetaan
+    if(streak>=10&&streak%10===0)      sfxSuperStreak();
+    else if(streak>=5&&streak%5===0)   sfxStreak();
+    else                               sfxCorrect();
+    if(streak>0&&streak%5===0)launchConfetti();
+  }else{
+    streak=0;
+    fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
+    fb.className='feedback no';
+    if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
+    sfxWrong();
+  }
   updStats();rDone++;updProg();
   setTimeout(()=>{if(rDone>=rTotal)showResults();else newProblem();},ok?600:1300);
 }
@@ -1199,6 +1326,7 @@ async function showResults(){
   document.getElementById('rTitle').textContent=t;
   document.getElementById('rScore').innerHTML=`<span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä<br><span id="saveStatus" style="font-size:.72rem;color:var(--muted);font-weight:600;">💾 Tallennetaan...</span>`;
   if(p>=70)launchConfetti();
+  sfxRoundEnd(p);
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
   const saved = await saveScore(entry);
