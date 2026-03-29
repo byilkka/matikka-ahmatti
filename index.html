@@ -559,6 +559,99 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .pe{color:var(--muted);}
 .pr{color:var(--accent4);}
 
+/* ═══ MÖRKÖ ANIMAATIOKONTTI ═══ */
+.monster-game-wrap{
+  display:flex;justify-content:center;align-items:flex-end;
+  margin-bottom:clamp(6px,1vh,12px);
+  position:relative;height:clamp(80px,14vw,130px);
+}
+.monster-game-svg{
+  width:clamp(80px,14vw,130px);
+  height:clamp(80px,14vw,130px);
+  filter:drop-shadow(0 6px 20px rgba(93,232,181,.35));
+  transition:filter .3s;
+  transform-origin:center bottom;
+  animation:monsterIdle 3s ease-in-out infinite;
+}
+
+/* Floating number that flies into mouth on correct answer */
+.eat-number{
+  position:absolute;
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.2rem,3vw,2rem);
+  color:var(--accent);
+  pointer-events:none;
+  animation:eatFly .55s cubic-bezier(.4,0,.2,1) forwards;
+  text-shadow:0 0 12px rgba(247,201,72,.6);
+  top:10%;left:50%;transform:translateX(-50%);
+}
+@keyframes eatFly{
+  0%  {opacity:1;transform:translateX(-50%) translateY(0) scale(1.2);}
+  60% {opacity:1;transform:translateX(-50%) translateY(55%) scale(.8);}
+  100%{opacity:0;transform:translateX(-50%) translateY(80%) scale(.3);}
+}
+
+/* ── Animaatiotilat ── */
+/* Perusleijunta */
+@keyframes monsterIdle{
+  0%,100%{transform:translateY(0) rotate(-1.5deg);}
+  50%    {transform:translateY(-8px) rotate(1.5deg);}
+}
+/* Oikea vastaus: pomppaa ylös ja alas */
+@keyframes monsterEat{
+  0%  {transform:translateY(0) scale(1);}
+  25% {transform:translateY(-18px) scale(1.12) rotate(-3deg);}
+  55% {transform:translateY(-6px) scale(1.06) rotate(2deg);}
+  75% {transform:translateY(-12px) scale(1.08) rotate(-2deg);}
+  100%{transform:translateY(0) scale(1) rotate(0deg);}
+}
+/* Väärä vastaus: ravistaa */
+@keyframes monsterShake{
+  0%,100%{transform:rotate(0deg) translateX(0);}
+  15%{transform:rotate(-8deg) translateX(-6px);}
+  30%{transform:rotate(8deg)  translateX(6px);}
+  45%{transform:rotate(-6deg) translateX(-5px);}
+  60%{transform:rotate(6deg)  translateX(5px);}
+  75%{transform:rotate(-3deg) translateX(-3px);}
+  90%{transform:rotate(3deg)  translateX(3px);}
+}
+/* Putki 5x: hyppy */
+@keyframes monsterJump{
+  0%  {transform:translateY(0) scale(1);}
+  20% {transform:translateY(-28px) scale(1.05) rotate(-5deg);}
+  40% {transform:translateY(-36px) scale(1.1) rotate(5deg);}
+  60% {transform:translateY(-22px) scale(1.05) rotate(-3deg);}
+  80% {transform:translateY(-6px)  scaleY(.9) scaleX(1.1);}
+  100%{transform:translateY(0) scale(1) rotate(0);}
+}
+/* Kierros päättyy hyvin: tanssi */
+@keyframes monsterDance{
+  0%  {transform:rotate(0) translateY(0);}
+  12% {transform:rotate(-12deg) translateY(-10px);}
+  25% {transform:rotate(12deg) translateY(-14px);}
+  37% {transform:rotate(-10deg) translateY(-8px);}
+  50% {transform:rotate(10deg) translateY(-14px);}
+  62% {transform:rotate(-8deg) translateY(-8px);}
+  75% {transform:rotate(8deg) translateY(-12px);}
+  87% {transform:rotate(-4deg) translateY(-5px);}
+  100%{transform:rotate(0) translateY(0);}
+}
+/* Kierros päättyy huonosti: surullinen */
+@keyframes monsterSad{
+  0%  {transform:translateY(0) rotate(0);}
+  30% {transform:translateY(4px) rotate(-4deg) scaleY(.95);}
+  60% {transform:translateY(6px) rotate(-5deg) scaleY(.93);}
+  80% {transform:translateY(4px) rotate(-3deg) scaleY(.95);}
+  100%{transform:translateY(0) rotate(0);}
+}
+
+/* Animaatioluokat jotka overridaavat idlen */
+.monster-game-svg.anim-eat   { animation:monsterEat  .6s ease forwards; }
+.monster-game-svg.anim-shake { animation:monsterShake .55s ease forwards; }
+.monster-game-svg.anim-jump  { animation:monsterJump  .7s ease forwards; }
+.monster-game-svg.anim-dance { animation:monsterDance 1.2s ease forwards; }
+.monster-game-svg.anim-sad   { animation:monsterSad   1.4s ease forwards; }
+
 /* Feedback */
 .feedback{
   text-align:center;height:var(--fb-h);display:flex;align-items:center;justify-content:center;
@@ -596,9 +689,34 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .results-panel{display:none;text-align:center;padding:clamp(14px,2vh,24px) 0 clamp(4px,0.6vh,8px);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
 .results-panel.show{display:block;}
 .re{font-size:var(--re-font);margin-bottom:clamp(6px,1vh,12px);display:block;animation:bounce .6s .2s both;transition:font-size .3s;}
-.rt{font-family:'Fredoka One',cursive;font-size:var(--rt-font);margin-bottom:6px;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:font-size .3s;}
+.rt{font-family:'Fredoka One',cursive;font-size:var(--rt-font);margin-bottom:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:font-size .3s;}
 .rs{font-size:var(--rs-font);color:var(--muted);margin-bottom:clamp(12px,2vh,20px);font-weight:700;}
 .rs span{color:var(--text);}
+
+/* Result panel sub-elements */
+.result-stat{
+  font-size:clamp(.95rem,2vw,1.2rem);font-weight:800;color:var(--muted);
+  margin-bottom:clamp(8px,1.2vh,14px);
+}
+.result-stat span{color:var(--text);}
+.result-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(.9rem,1.8vw,1.15rem);
+  font-weight:700;
+  padding:clamp(6px,1vw,10px) clamp(14px,2vw,22px);
+  border-radius:40px;
+  margin-bottom:clamp(8px,1.2vh,14px);
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.result-save{
+  font-size:clamp(.85rem,1.6vw,1.05rem);
+  font-weight:700;color:var(--muted);
+  margin-bottom:4px;
+  transition:color .3s;
+}
+.result-save--ok      { color:var(--accent3); }
+.result-save--offline { color:var(--accent); }
 .results-btns{display:flex;gap:clamp(6px,1vw,12px);justify-content:center;flex-wrap:wrap;}
 .try-btn{
   padding:var(--try-pad);border-radius:40px;border:none;
@@ -948,6 +1066,72 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <div id="exerciseView">
+
+      <!-- ═══ MÖRKÖ ═══ -->
+      <div class="monster-game-wrap" id="monsterWrap">
+        <svg class="monster-game-svg" id="monsterSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="mgbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
+            <radialGradient id="mgblyG" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#b0ffe8"/><stop offset="100%" stop-color="#5de8b5"/></radialGradient>
+            <filter id="mgGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <!-- Shadow -->
+          <ellipse cx="100" cy="194" rx="40" ry="7" fill="rgba(0,0,0,.18)"/>
+          <!-- Body -->
+          <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#mgbG)"/>
+          <ellipse cx="100" cy="140" rx="32" ry="30" fill="url(#mgblyG)" opacity=".5"/>
+          <!-- Horns -->
+          <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+          <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+          <circle cx="46" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#mgGlow)"/>
+          <circle cx="154" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#mgGlow)"/>
+          <!-- Head -->
+          <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#mgbG)"/>
+          <!-- Eyes — id'd so JS can swap them -->
+          <g id="mgEyes">
+            <!-- Normal eyes -->
+            <ellipse cx="78"  cy="76" rx="14" ry="16" fill="white" filter="url(#mgGlow)"/>
+            <ellipse cx="122" cy="76" rx="14" ry="16" fill="white" filter="url(#mgGlow)"/>
+            <circle cx="81"  cy="77" r="8" fill="#0f1923"/>
+            <circle cx="125" cy="77" r="8" fill="#0f1923"/>
+            <circle cx="84"  cy="73" r="3.5" fill="white" opacity=".9"/>
+            <circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+            <!-- Star pupils -->
+            <text id="mgPupilL" x="81"  y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+            <text id="mgPupilR" x="125" y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+          </g>
+          <!-- Eyebrows -->
+          <g id="mgBrows">
+            <path d="M62 58 Q78 51 94 57" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M106 57 Q122 51 138 58" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Mouth — id'd for state changes -->
+          <g id="mgMouth">
+            <!-- Default: happy open mouth -->
+            <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
+            <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
+            <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
+            <rect x="85"  y="104" width="11" height="10" rx="3" fill="white"/>
+            <rect x="100" y="104" width="11" height="10" rx="3" fill="white"/>
+            <rect x="115" y="104" width="10" height="10" rx="3" fill="white"/>
+            <ellipse id="mgTongue" cx="100" cy="122" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>
+          </g>
+          <!-- Cheeks -->
+          <ellipse cx="56"  cy="94" rx="11" ry="6" fill="#ff6b8a" opacity=".2" id="mgCheeks"/>
+          <ellipse cx="144" cy="94" rx="11" ry="6" fill="#ff6b8a" opacity=".2"/>
+          <!-- Arms -->
+          <path d="M48 122 Q26 108 32 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
+          <ellipse cx="30" cy="90" rx="9" ry="8" fill="#1a9068"/>
+          <circle cx="22" cy="85" r="5" fill="#1a9068"/><circle cx="32" cy="81" r="5" fill="#1a9068"/><circle cx="40" cy="87" r="5" fill="#1a9068"/>
+          <path d="M152 122 Q174 108 168 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
+          <ellipse cx="170" cy="90" rx="9" ry="8" fill="#1a9068"/>
+          <circle cx="178" cy="85" r="5" fill="#1a9068"/><circle cx="168" cy="81" r="5" fill="#1a9068"/><circle cx="160" cy="87" r="5" fill="#1a9068"/>
+          <!-- Feet -->
+          <ellipse cx="80"  cy="184" rx="19" ry="9" fill="#1a9068"/>
+          <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+        </svg>
+      </div>
+
       <div class="problem-area">
         <div class="ph" id="pH">Mikä luku puuttuu?</div>
         <div class="pd" id="pD"></div>
@@ -1459,7 +1643,7 @@ function buildTablesGrid(){
 }
 function setMode(m){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+m).classList.add('active');document.getElementById('rangeSection').style.display=m==='m'?'none':'block';document.getElementById('tableSection').style.display=m==='m'?'block':'none';restartRound();}
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';updProg();updStats();newProblem();}
+function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
 
 function newProblem(){
   ans='';busy=false;
@@ -1479,9 +1663,114 @@ function render(p){
   el.innerHTML=h;
 }
 
-function np(n){if(busy||ans.length>=4)return;ans+=n;updB();}
-function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
-function npa(){if(busy)return;ans='';updB();}
+// ══ MÖRKÖ ANIMAATIOT ═════════════════════════════
+
+function monsterAnimate(anim, duration=700) {
+  const svg = document.getElementById('monsterSvg');
+  if (!svg) return;
+  // Poista kaikki animaatioluokat
+  svg.classList.remove('anim-eat','anim-shake','anim-jump','anim-dance','anim-sad');
+  // Pakota reflow jotta animaatio käynnistyy uudelleen
+  void svg.offsetWidth;
+  svg.classList.add('anim-'+anim);
+  // Palaa idle-animaatioon
+  setTimeout(()=>{
+    svg.classList.remove('anim-eat','anim-shake','anim-jump','anim-dance','anim-sad');
+  }, duration);
+}
+
+// Vaihda mörkön ilme
+function monsterFace(state) {
+  const mouth  = document.getElementById('mgMouth');
+  const brows  = document.getElementById('mgBrows');
+  const pupilL = document.getElementById('mgPupilL');
+  const pupilR = document.getElementById('mgPupilR');
+  if (!mouth) return;
+
+  if (state === 'eat') {
+    // Iso auki oleva suu ahmimiseen, tähtisilmät
+    mouth.innerHTML = `
+      <path d="M60 102 Q100 145 140 102" fill="#0f1923"/>
+      <path d="M60 102 Q100 120 140 102" fill="#c0334d" opacity=".9"/>
+      <rect x="64"  y="102" width="13" height="11" rx="3" fill="white"/>
+      <rect x="81"  y="102" width="13" height="11" rx="3" fill="white"/>
+      <rect x="98"  y="102" width="13" height="11" rx="3" fill="white"/>
+      <rect x="115" y="102" width="12" height="11" rx="3" fill="white"/>
+      <ellipse cx="100" cy="122" rx="16" ry="10" fill="#ff8ed4" opacity=".9"/>`;
+    if(pupilL){ pupilL.textContent='★'; pupilL.setAttribute('fill','#f7c948'); }
+    if(pupilR){ pupilR.textContent='★'; pupilR.setAttribute('fill','#f7c948'); }
+    brows && (brows.innerHTML = `
+      <path d="M62 55 Q78 46 94 54" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M106 54 Q122 46 138 55" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
+
+  } else if (state === 'wrong') {
+    // Pettynyt suu, kulmat alas
+    mouth.innerHTML = `
+      <path d="M72 118 Q100 106 128 118" fill="none" stroke="#0f1923" stroke-width="5" stroke-linecap="round"/>`;
+    if(pupilL){ pupilL.textContent='×'; pupilL.setAttribute('fill','var(--accent2)'); }
+    if(pupilR){ pupilR.textContent='×'; pupilR.setAttribute('fill','var(--accent2)'); }
+    brows && (brows.innerHTML = `
+      <path d="M62 60 Q78 67 94 61" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M106 61 Q122 67 138 60" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
+
+  } else if (state === 'happy') {
+    // Leveä hymy, sydämet silmissä
+    mouth.innerHTML = `
+      <path d="M62 102 Q100 140 138 102" fill="#0f1923"/>
+      <path d="M62 102 Q100 118 138 102" fill="#c0334d" opacity=".85"/>
+      <rect x="66"  y="102" width="12" height="10" rx="3" fill="white"/>
+      <rect x="82"  y="102" width="12" height="10" rx="3" fill="white"/>
+      <rect x="98"  y="102" width="12" height="10" rx="3" fill="white"/>
+      <rect x="114" y="102" width="11" height="10" rx="3" fill="white"/>
+      <ellipse cx="100" cy="120" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>`;
+    if(pupilL){ pupilL.textContent='♥'; pupilL.setAttribute('fill','#ff8ed4'); }
+    if(pupilR){ pupilR.textContent='♥'; pupilR.setAttribute('fill','#ff8ed4'); }
+    brows && (brows.innerHTML = `
+      <path d="M62 56 Q78 48 94 56" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M106 56 Q122 48 138 56" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
+
+  } else if (state === 'sad') {
+    // Surullinen suu, kyyneleet
+    mouth.innerHTML = `
+      <path d="M72 122 Q100 110 128 122" fill="none" stroke="#0f1923" stroke-width="5" stroke-linecap="round"/>`;
+    if(pupilL){ pupilL.textContent='😢'.split('')[0]; pupilL.setAttribute('fill','#7b9fff'); }
+    if(pupilR){ pupilR.setAttribute('fill','#7b9fff'); }
+    brows && (brows.innerHTML = `
+      <path d="M62 62 Q78 68 94 62" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M106 62 Q122 68 138 62" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
+
+  } else {
+    // Normaalitila
+    mouth.innerHTML = `
+      <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
+      <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
+      <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
+      <rect x="85"  y="104" width="11" height="10" rx="3" fill="white"/>
+      <rect x="100" y="104" width="11" height="10" rx="3" fill="white"/>
+      <rect x="115" y="104" width="10" height="10" rx="3" fill="white"/>
+      <ellipse cx="100" cy="122" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>`;
+    if(pupilL){ pupilL.textContent='★'; pupilL.setAttribute('fill','#f7c948'); }
+    if(pupilR){ pupilR.textContent='★'; pupilR.setAttribute('fill','#f7c948'); }
+    brows && (brows.innerHTML = `
+      <path d="M62 58 Q78 51 94 57" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M106 57 Q122 51 138 58" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
+  }
+  // Palaa normaaliksi hetken päästä
+  if (state !== 'normal') {
+    setTimeout(() => monsterFace('normal'), state === 'sad' ? 3000 : state === 'happy' ? 2500 : 900);
+  }
+}
+
+// Lentävä numero mörkön suuhun
+function monsterEatNumber(numText) {
+  const wrap = document.getElementById('monsterWrap');
+  if (!wrap) return;
+  const el = document.createElement('div');
+  el.className = 'eat-number';
+  el.textContent = numText;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 600);
+}
 function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
 
 function ck(){
@@ -1493,16 +1782,22 @@ function ck(){
     streak++;corr++;pts+=10+(streak>3?5*Math.min(streak-3,5):0);
     fb.textContent=okMsg();fb.className='feedback ok';
     if(bs)bs.style.color='var(--accent3)';
-    if(streak>=10&&streak%10===0)      sfxSuperStreak();
-    else if(streak>=5&&streak%5===0)   sfxStreak();
-    else                               sfxCorrect();
+    // Mörkö ahmii vastauksen
+    monsterEatNumber(prob.answer);
+    if(streak>=10&&streak%10===0){
+      sfxSuperStreak(); monsterFace('happy'); monsterAnimate('jump',800);
+    } else if(streak>=5&&streak%5===0){
+      sfxStreak(); monsterFace('happy'); monsterAnimate('jump',700);
+    } else {
+      sfxCorrect(); monsterFace('eat'); monsterAnimate('eat',600);
+    }
     if(streak>0&&streak%5===0)launchConfetti();
   }else{
     streak=0;
     fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
     fb.className='feedback no';
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
-    sfxWrong();
+    sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
   }
   updStats();rDone++;updProg();
   setTimeout(()=>{if(rDone>=rTotal)showResults();else newProblem();},ok?600:1300);
@@ -1525,24 +1820,28 @@ async function showResults(){
   let lvlMsg = '';
   if (lvlChange.changed && lvlChange.up) {
     const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
-    lvlMsg = `<br><span style="font-size:.78rem;font-weight:800;color:${newLvl.color}">⬆️ Taso nousi! ${newLvl.label}</span>`;
+    lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
   } else if (lvlChange.changed && !lvlChange.up) {
     const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
-    lvlMsg = `<br><span style="font-size:.78rem;font-weight:700;color:var(--muted)">⬇️ Harjoitellaan tasolla ${newLvl.label}</span>`;
+    lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label}</div>`;
   }
 
-  document.getElementById('rScore').innerHTML=`<span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä${lvlMsg}<br><span id="saveStatus" style="font-size:.72rem;color:var(--muted);font-weight:600;">💾 Tallennetaan...</span>`;
-  if(p>=70)launchConfetti();
+  document.getElementById('rScore').innerHTML=`
+    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä</div>
+    ${lvlMsg}
+    <div class="result-save" id="saveStatus">💾 Tallennetaan...</div>
+  `;
+  if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
+  else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
   const saved = await saveScore(entry);
   const statusEl = document.getElementById('saveStatus');
   if(statusEl){
-    if(saved){statusEl.style.color='var(--accent3)';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
-    else{statusEl.style.color='var(--accent)';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
+    if(saved){statusEl.className='result-save result-save--ok';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
+    else{statusEl.className='result-save result-save--offline';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
   }
-  // Alusta SR seuraavaa kierrosta varten
   retryQueue=[];roundHistory=[];
 }
 
