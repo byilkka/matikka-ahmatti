@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ohjeet — Matikka-Ahmatti</title>
+<meta name="description" content="Näin pelaat Matikka-Ahmattia. Ohjeet lapsille ja vanhemmille.">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/ohjeet.html">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0b1520;--card:#162030;--card2:#1a2840;
+  --accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;
+  --accent4:#7b9fff;--pink:#ff8ed4;--text:#eef3ff;--muted:#6a82a0;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+#floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fn{position:absolute;font-family:'Fredoka One',cursive;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
+@keyframes fnFloat{0%{transform:translateY(0) rotate(var(--r0));opacity:0;}10%{opacity:var(--op);}90%{opacity:var(--op);}100%{transform:translateY(-110vh) rotate(var(--r1));opacity:0;}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,4vw,48px);background:rgba(11,21,32,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:clamp(6px,1.2vw,16px);}
+.nav-link{color:var(--muted);font-weight:700;font-size:.83rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
+.nav-cta{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.85rem;padding:8px 18px;border-radius:40px;text-decoration:none;transition:all .2s;}
+.nav-cta:hover{transform:translateY(-1px);}
+
+.page{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,40px) clamp(40px,8vw,80px);}
+
+.page-header{text-align:center;margin-bottom:clamp(40px,6vw,64px);}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(123,159,255,.1);border:1px solid rgba(123,159,255,.25);border-radius:40px;padding:6px 16px;font-size:.75rem;font-weight:800;color:var(--accent4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
+.page-title{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,6vw,3.5rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;line-height:1.1;}
+.page-sub{color:var(--muted);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:700;line-height:1.6;}
+
+/* Quick start */
+.quick-start{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:clamp(10px,1.8vw,16px);margin-bottom:clamp(40px,6vw,60px);}
+.qs-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:clamp(18px,2.5vw,28px) 16px;text-align:center;position:relative;}
+.qs-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+.qs-icon{font-size:clamp(2rem,4vw,2.8rem);display:block;margin:8px auto 10px;}
+.qs-title{font-family:'Fredoka One',cursive;font-size:clamp(.9rem,1.6vw,1.05rem);margin-bottom:6px;}
+.qs-desc{font-size:clamp(.7rem,1.1vw,.8rem);color:var(--muted);font-weight:600;line-height:1.5;}
+
+/* Sections */
+.guide-section{margin-bottom:clamp(36px,5vw,52px);}
+.guide-section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,2.8vw,1.8rem);display:flex;align-items:center;gap:12px;margin-bottom:clamp(16px,2.5vw,24px);padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07);}
+.guide-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(16px,2.5vw,26px) clamp(18px,3vw,28px);margin-bottom:clamp(8px,1.2vw,14px);}
+.guide-card-title{font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.15rem);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.guide-card p{color:var(--muted);font-size:clamp(.8rem,1.4vw,.92rem);font-weight:600;line-height:1.7;}
+.guide-card ul{color:var(--muted);font-size:clamp(.8rem,1.4vw,.92rem);font-weight:600;line-height:1.7;padding-left:20px;}
+.guide-card ul li{margin-bottom:6px;}
+.guide-card ul li strong{color:var(--text);}
+
+/* Mode grid */
+.mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,1.5vw,14px);}
+@media(min-width:500px){.mode-grid{grid-template-columns:repeat(4,1fr);}}
+.mode-tile{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(14px,2vw,22px) 10px;text-align:center;}
+.mode-tile .mt-icon{font-size:clamp(1.6rem,3.5vw,2.4rem);display:block;margin-bottom:8px;}
+.mode-tile .mt-name{font-family:'Fredoka One',cursive;font-size:clamp(.8rem,1.4vw,.95rem);margin-bottom:4px;}
+.mode-tile .mt-ex{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--accent);font-weight:800;font-family:'Fredoka One',cursive;}
+.mode-tile.m1{border-color:rgba(247,201,72,.2);}
+.mode-tile.m2{border-color:rgba(93,232,181,.2);}
+.mode-tile.m3{border-color:rgba(255,107,107,.2);}
+.mode-tile.m4{border-color:rgba(123,159,255,.2);}
+
+/* Achievements preview */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.ach-tile{background:var(--card2);border-radius:14px;padding:14px 10px;text-align:center;}
+.ach-tile .at-icon{font-size:1.8rem;display:block;margin-bottom:6px;}
+.ach-tile .at-name{font-family:'Fredoka One',cursive;font-size:.78rem;color:var(--text);margin-bottom:4px;}
+.ach-tile .at-desc{font-size:.65rem;color:var(--muted);font-weight:600;}
+
+/* Level table */
+.level-table{width:100%;border-collapse:collapse;}
+.level-table th{text-align:left;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08);}
+.level-table td{padding:10px 12px;font-size:.82rem;font-weight:700;border-bottom:1px solid rgba(255,255,255,.04);}
+.level-table tr:last-child td{border-bottom:none;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:800;}
+
+/* Tips */
+.tip-list{display:grid;gap:10px;}
+.tip{background:var(--card);border-left:3px solid var(--accent3);border-radius:0 14px 14px 0;padding:14px 18px;font-size:clamp(.8rem,1.4vw,.92rem);font-weight:700;color:var(--muted);line-height:1.6;}
+.tip strong{color:var(--text);}
+
+/* CTA */
+.cta-bar{background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(93,232,181,.06));border:1px solid rgba(247,201,72,.2);border-radius:24px;padding:clamp(24px,4vw,40px);text-align:center;margin-top:clamp(40px,6vw,64px);}
+.cta-bar h3{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,3vw,2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.cta-bar p{color:var(--muted);font-weight:700;margin-bottom:20px;font-size:clamp(.85rem,1.6vw,1rem);}
+.btn-play{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.25rem);padding:clamp(12px,1.8vw,16px) clamp(24px,3.5vw,36px);border-radius:50px;text-decoration:none;box-shadow:0 6px 22px rgba(247,201,72,.32);transition:all .2s;}
+.btn-play:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(247,201,72,.45);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s,transform .55s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<div id="floatBg"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-text">🐐 Matikka-Ahmatti</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">← Etusivu</a>
+    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">🚀 Pelaa nyt</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="page-badge">📖 Peliohje</div>
+    <h1 class="page-title">Näin pelaat!</h1>
+    <p class="page-sub">Kaikki mitä tarvitset tietää Matikka-Ahmatin pelaamiseen.<br>Sopii lapsille, vanhemmille ja opettajille.</p>
+  </div>
+
+  <!-- Quick start -->
+  <div class="quick-start reveal">
+    <div class="qs-card">
+      <div class="qs-num">1</div>
+      <span class="qs-icon">✍️</span>
+      <div class="qs-title">Kirjoita nimi</div>
+      <div class="qs-desc">Kirjoita nimesi tai nimimerkkisi</div>
+    </div>
+    <div class="qs-card">
+      <div class="qs-num">2</div>
+      <span class="qs-icon">🤴</span>
+      <div class="qs-title">Valitse hahmo</div>
+      <div class="qs-desc">Prinssi tai Prinsessa</div>
+    </div>
+    <div class="qs-card">
+      <div class="qs-num">3</div>
+      <span class="qs-icon">🔐</span>
+      <div class="qs-title">Luo PIN</div>
+      <div class="qs-desc">4-numeroinen koodi — muista se!</div>
+    </div>
+    <div class="qs-card">
+      <div class="qs-num">4</div>
+      <span class="qs-icon">🎮</span>
+      <div class="qs-title">Pelaa!</div>
+      <div class="qs-desc">Valitse moodi ja aloita</div>
+    </div>
+  </div>
+
+  <!-- Pelimoodit -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">🎯 Pelimoodit</h2>
+    <div class="mode-grid" style="margin-bottom:16px;">
+      <div class="mode-tile m1">
+        <span class="mt-icon">🔢</span>
+        <div class="mt-name">Hajotelmat</div>
+        <div class="mt-ex">7 = ? + 3</div>
+      </div>
+      <div class="mode-tile m2">
+        <span class="mt-icon">➕</span>
+        <div class="mt-name">Yhteenlasku</div>
+        <div class="mt-ex">4 + ? = 9</div>
+      </div>
+      <div class="mode-tile m3">
+        <span class="mt-icon">➖</span>
+        <div class="mt-name">Vähennys</div>
+        <div class="mt-ex">8 − ? = 5</div>
+      </div>
+      <div class="mode-tile m4">
+        <span class="mt-icon">✖️</span>
+        <div class="mt-name">Kertotaulu</div>
+        <div class="mt-ex">6 × 7 = ?</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <p>Jokaisessa moodissa on <strong style="color:var(--text)">puuttuva luku</strong> joka pitää löytää. Se voi olla tulos, ensimmäinen luku tai toinen luku — vaihtelee tehtävittäin jotta laskeminen pysyy monipuolisena!</p>
+    </div>
+  </div>
+
+  <!-- Numeronäppäimistö -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">🔢 Vastaaminen</h2>
+    <div class="guide-card">
+      <div class="guide-card-title">Numeronäppäimistö</div>
+      <p>Paina numeroita ruudulla (tai näppäimistöllä) muodostaaksesi vastauksesi. Sininen viiva näyttää mitä olet kirjoittanut.<br><br>
+      <strong style="color:var(--accent3)">✓ Tarkista</strong> — lähettää vastauksen<br>
+      <strong style="color:var(--accent2)">⌫</strong> — poistaa viimeisen numeron<br>
+      <strong style="color:var(--accent2)">✕</strong> — tyhjentää koko vastauksen</p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-card-title">⌨️ Näppäinoikotiet (tietokoneella)</div>
+      <ul>
+        <li><strong>0–9</strong> — kirjoita numero</li>
+        <li><strong>Enter</strong> — tarkista vastaus</li>
+        <li><strong>Backspace</strong> — poista viimeisin numero</li>
+        <li><strong>Escape</strong> — tyhjennä vastaus</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Vaikeustasot -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">📈 Vaikeustasot</h2>
+    <div class="guide-card" style="margin-bottom:14px;">
+      <p>Peli säätää vaikeustason automaattisesti suorituksesi perusteella. <strong style="color:var(--accent3)">≥85% oikein</strong> → taso nousee. <strong style="color:var(--accent2)">alle 50%</strong> → taso laskee.</p>
+    </div>
+    <div class="guide-card">
+      <table class="level-table">
+        <thead>
+          <tr><th>Tasot</th><th>Lukualue</th><th>Pistekerroin</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge" style="background:rgba(93,232,181,.15);color:var(--accent3)">1–5</span></td><td>Luvut 1–10</td><td>1.0×</td></tr>
+          <tr><td><span class="badge" style="background:rgba(123,159,255,.15);color:var(--accent4)">6–10</span></td><td>Luvut 1–20</td><td>1.75×</td></tr>
+          <tr><td><span class="badge" style="background:rgba(247,201,72,.15);color:var(--accent)">11–20</span></td><td>Luvut 1–50/100</td><td>2.5–4×</td></tr>
+          <tr><td><span class="badge" style="background:rgba(255,142,212,.15);color:var(--pink)">21–40</span></td><td>Luvut 1–200/500</td><td>4–7×</td></tr>
+          <tr><td><span class="badge" style="background:rgba(197,108,240,.15);color:#c56cf0">41–50</span></td><td>Luvut 1–1000</td><td>7–8.35×</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pisteet -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">⭐ Pisteet ja Hall of Fame</h2>
+    <div class="guide-card">
+      <div class="guide-card-title">Miten pisteet kertyvät?</div>
+      <ul>
+        <li>Jokaisesta oikeasta vastauksesta saa <strong>peruspisteet × tason kerroin</strong></li>
+        <li>3+ peräkkäistä oikeaa → <strong>putkibonus</strong> kasvaa</li>
+        <li>Korkeammalla tasolla pisteitä kertyy paljon enemmän</li>
+      </ul>
+    </div>
+    <div class="guide-card">
+      <div class="guide-card-title">🐐 Hall of Fame</div>
+      <p>Hall of Famessa näkyy <strong style="color:var(--accent)">kaikkien kierrosten pisteet yhteenlaskettuna</strong>. Mitä enemmän pelaat, sitä korkeammalle nousee! Yksi täydellinen kierros ei riitä GOAT-titteliin — se vaatii säännöllistä pelaamista.</p>
+    </div>
+  </div>
+
+  <!-- Saavutukset -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">🏅 Saavutukset</h2>
+    <div class="guide-card" style="margin-bottom:14px;">
+      <p>Pelissä on <strong style="color:var(--accent)">21 saavutusta</strong>. Ne avataan automaattisesti kun ehto täyttyy — peli ilmoittaa saavutuksesta ponnahdusviestillä!</p>
+    </div>
+    <div class="ach-grid">
+      <div class="ach-tile"><span class="at-icon">👋</span><div class="at-name">Tervetuloa!</div><div class="at-desc">Ensimmäinen kirjautuminen</div></div>
+      <div class="ach-tile"><span class="at-icon">🌟</span><div class="at-name">Täydellinen!</div><div class="at-desc">10/10 oikein</div></div>
+      <div class="ach-tile"><span class="at-icon">🔥</span><div class="at-name">Putkihaaste</div><div class="at-desc">5 peräkkäin oikein</div></div>
+      <div class="ach-tile"><span class="at-icon">⚡</span><div class="at-name">Salamaputki!</div><div class="at-desc">20 peräkkäin oikein</div></div>
+      <div class="ach-tile"><span class="at-icon">💨</span><div class="at-name">Salamanopea</div><div class="at-desc">Kierros alle 90s</div></div>
+      <div class="ach-tile"><span class="at-icon">🏆</span><div class="at-name">GRAND MASTER</div><div class="at-desc">Taso 50!</div></div>
+    </div>
+  </div>
+
+  <!-- Vinkit -->
+  <div class="guide-section reveal">
+    <h2 class="guide-section-title">💡 Vinkit pelaajille</h2>
+    <div class="tip-list">
+      <div class="tip"><strong>Älä kiirehdi</strong> — oikein on tärkeämpää kuin nopeasti. Väärät vastaukset tulevat uudelleen saman kierroksen lopussa.</div>
+      <div class="tip"><strong>Pelaa säännöllisesti</strong> — 10 minuuttia päivässä on parempi kuin tunti kerran viikossa. Lyhyet sessiot kertyvät nopeasti!</div>
+      <div class="tip"><strong>Taso laskee jos menee huonosti</strong> — se ei ole huono asia, vaan peli varmistaa että opitaan kunnolla ennen etenemistä.</div>
+      <div class="tip"><strong>PIN-koodi unohtui?</strong> — pyydä vanhempaa tai opettajaa syöttämään admin-koodi, niin voit luoda uuden.</div>
+      <div class="tip"><strong>Kertotaulut</strong> — valitse yläpalkista mikä taulu harjoittelussa (1× – 10×). Peli käyttää juuri valitsemaasi taulua.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar reveal">
+    <h3>Valmis pelaamaan? 🚀</h3>
+    <p>Ohjeet luettu — nyt vain pelaamaan!</p>
+    <a href="game.html" class="btn-play">🎮 Aloita peli</a>
+  </div>
+
+</div>
+
+<script>
+const S=['1','2','3','4','5','6','7','8','9','0','+','−','×','='];
+const C=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,'];
+(function(){
+  const bg=document.getElementById('floatBg');
+  for(let i=0;i<30;i++){
+    const el=document.createElement('div');el.className='fn';
+    const op=(Math.random()*.12+.07).toFixed(3);
+    const dur=Math.random()*18+12;
+    el.textContent=S[~~(Math.random()*S.length)];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*8}%;font-size:${Math.random()*22+10}px;color:${C[~~(Math.random()*C.length)]}${op});--op:${op};--r0:${(Math.random()*30-15).toFixed(1)}deg;--r1:${(Math.random()*50-25).toFixed(1)}deg;--dur:${dur}s;--delay:-${(Math.random()*dur).toFixed(1)}s;`;
+    bg.appendChild(el);
+  }
+})();
+
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

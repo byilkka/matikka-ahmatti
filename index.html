@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matikka-Ahmatti — Hauska matematiikan harjoittelupeli lapsille</title>
+<meta name="description" content="Matikka-Ahmatti on ilmainen matematiikan harjoittelupeli alakouluikäisille lapsille. Harjoittele kertotaulut, yhteenlasku, vähennyslasku ja hajotelmat hauskasti mörkön kanssa!">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/">
+<meta property="og:title" content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
+<meta property="og:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Adaptiivinen vaikeus, 50 tasoa, saavutukset ja Hall of Fame!">
+<meta property="og:image" content="https://www.matikka-ahmatti.fi/og-image.png">
+<meta property="og:locale" content="fi_FI">
+<meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0b1520; --card:#162030; --card2:#1a2840;
+  --accent:#f7c948; --accent2:#ff6b6b; --accent3:#5de8b5;
+  --accent4:#7b9fff; --pink:#ff8ed4; --purple:#c56cf0;
+  --text:#eef3ff; --muted:#6a82a0;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+/* ── Floating bg ── */
+#floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fn{position:absolute;font-family:'Fredoka One',cursive;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
+@keyframes fnFloat{0%{transform:translateY(0) rotate(var(--r0));opacity:0;}10%{opacity:var(--op);}90%{opacity:var(--op);}100%{transform:translateY(-110vh) rotate(var(--r1));opacity:0;}}
+
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,4vw,48px);
+  background:rgba(11,21,32,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;filter:drop-shadow(0 2px 8px rgba(93,232,181,.4));}
+.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.25rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:clamp(8px,1.5vw,20px);}
+.nav-link{color:var(--muted);font-weight:700;font-size:.85rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;
+  padding:9px 20px;border-radius:40px;text-decoration:none;
+  box-shadow:0 4px 14px rgba(247,201,72,.28);transition:all .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(247,201,72,.4);}
+
+/* ── Sections ── */
+section{position:relative;z-index:1;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:clamp(100px,15vw,140px) clamp(16px,4vw,48px) clamp(60px,8vw,80px);
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(93,232,181,.1);border:1px solid rgba(93,232,181,.25);
+  border-radius:40px;padding:6px 16px;
+  font-size:.78rem;font-weight:800;color:var(--accent3);
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:clamp(20px,3vw,32px);
+  animation:fadeUp .6s .1s both;
+}
+.hero-monster{
+  width:clamp(140px,22vw,220px);
+  height:clamp(140px,22vw,220px);
+  margin:0 auto clamp(24px,4vw,40px);
+  filter:drop-shadow(0 12px 40px rgba(93,232,181,.4));
+  animation:heroFloat 3.5s ease-in-out infinite;
+}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+.hero-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.8rem,8vw,6rem);
+  line-height:1;
+  margin-bottom:clamp(12px,2vw,20px);
+  animation:fadeUp .6s .2s both;
+}
+.hero-title .line1{
+  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 50%,var(--pink) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-title .line2{color:var(--text);}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.35rem);
+  color:var(--muted);font-weight:700;
+  max-width:540px;line-height:1.6;
+  margin:0 auto clamp(28px,4vw,44px);
+  animation:fadeUp .6s .3s both;
+}
+.hero-sub strong{color:var(--accent3);}
+.hero-btns{
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;
+  animation:fadeUp .6s .4s both;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2.2vw,1.4rem);
+  padding:clamp(14px,2vw,18px) clamp(28px,4vw,44px);
+  border-radius:60px;text-decoration:none;
+  box-shadow:0 8px 28px rgba(247,201,72,.38);
+  transition:all .22s;
+}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(247,201,72,.5);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;
+  color:var(--text);font-family:'Fredoka One',cursive;
+  font-size:clamp(1rem,2vw,1.25rem);
+  padding:clamp(13px,1.8vw,17px) clamp(24px,3.5vw,38px);
+  border-radius:60px;text-decoration:none;
+  border:2px solid rgba(255,255,255,.14);
+  transition:all .22s;
+}
+.btn-secondary:hover{border-color:var(--accent4);color:var(--accent4);transform:translateY(-2px);}
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,20px);justify-content:center;
+  margin-top:clamp(40px,6vw,64px);
+  animation:fadeUp .6s .5s both;
+}
+.stat-pill{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:40px;padding:10px 20px;
+  display:flex;align-items:center;gap:8px;
+  font-size:.82rem;font-weight:800;
+}
+.stat-pill .stat-n{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent);}
+
+/* ── FEATURES ── */
+.features{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
+.section-label{
+  text-align:center;font-size:.75rem;font-weight:800;
+  color:var(--accent4);text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:12px;
+}
+.section-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,5vw,3.2rem);
+  text-align:center;
+  background:linear-gradient(135deg,var(--text),var(--muted));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:clamp(40px,6vw,64px);
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:clamp(14px,2vw,24px);
+  max-width:1100px;margin:0 auto;
+}
+.feature-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(18px,2vw,28px);
+  padding:clamp(24px,3vw,36px);
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 0% 0%,var(--glow-color,.06) 0%,transparent 60%);
+  opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.feature-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(0,0,0,.3);}
+.feature-card:hover::before{opacity:1;}
+.feature-icon{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:16px;display:block;}
+.feature-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2vw,1.35rem);margin-bottom:10px;color:var(--text);}
+.feature-desc{font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.65;font-weight:600;}
+
+/* ── GAME MODES ── */
+.modes{
+  padding:clamp(60px,10vw,100px) clamp(16px,4vw,48px);
+  background:linear-gradient(180deg,transparent,rgba(22,32,48,.5),transparent);
+}
+.modes-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:clamp(10px,1.8vw,18px);
+  max-width:700px;margin:0 auto;
+}
+@media(min-width:600px){.modes-grid{grid-template-columns:repeat(4,1fr);}}
+.mode-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(14px,2vw,22px);
+  padding:clamp(20px,3vw,32px) 12px;
+  text-align:center;transition:all .22s;cursor:default;
+}
+.mode-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
+.mode-card .mode-emoji{font-size:clamp(2rem,4vw,3rem);display:block;margin-bottom:10px;}
+.mode-card .mode-name{font-family:'Fredoka One',cursive;font-size:clamp(.88rem,1.6vw,1.05rem);color:var(--text);}
+.mode-card .mode-desc{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--muted);font-weight:700;margin-top:4px;}
+.mode-card.m1{border-color:rgba(247,201,72,.2);} .mode-card.m1:hover{border-color:rgba(247,201,72,.4);}
+.mode-card.m2{border-color:rgba(93,232,181,.2);} .mode-card.m2:hover{border-color:rgba(93,232,181,.4);}
+.mode-card.m3{border-color:rgba(255,107,107,.2);} .mode-card.m3:hover{border-color:rgba(255,107,107,.4);}
+.mode-card.m4{border-color:rgba(123,159,255,.2);} .mode-card.m4:hover{border-color:rgba(123,159,255,.4);}
+
+/* ── HOW IT WORKS ── */
+.how{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));
+  gap:clamp(14px,2vw,24px);
+  max-width:900px;margin:0 auto;
+  position:relative;
+}
+.step-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(18px,2vw,26px);
+  padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,30px);
+  text-align:center;
+  position:relative;
+}
+.step-num{
+  width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px);
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2vw,1.4rem);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto clamp(14px,2vw,20px);
+  box-shadow:0 4px 16px rgba(247,201,72,.3);
+}
+.step-title{font-family:'Fredoka One',cursive;font-size:clamp(1rem,1.8vw,1.2rem);margin-bottom:8px;}
+.step-desc{font-size:clamp(.8rem,1.3vw,.9rem);color:var(--muted);font-weight:600;line-height:1.6;}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
+  text-align:center;
+}
+.cta-box{
+  background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(93,232,181,.08));
+  border:1px solid rgba(247,201,72,.2);
+  border-radius:clamp(24px,4vw,40px);
+  padding:clamp(40px,6vw,72px) clamp(24px,4vw,60px);
+  max-width:700px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+.cta-box::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(ellipse at 50% -20%,rgba(247,201,72,.12),transparent 60%);
+  pointer-events:none;
+}
+.cta-box .cta-emoji{font-size:clamp(3rem,7vw,5rem);display:block;margin-bottom:16px;}
+.cta-box .cta-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.8rem,4.5vw,3rem);
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:14px;
+}
+.cta-box .cta-sub{
+  color:var(--muted);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:700;
+  margin-bottom:clamp(24px,4vw,36px);line-height:1.6;
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:clamp(24px,4vw,40px) clamp(16px,4vw,48px);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:16px;
+  position:relative;z-index:1;
+}
+.footer-logo{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--muted);}
+.footer-links{display:flex;gap:clamp(12px,2vw,24px);flex-wrap:wrap;}
+.footer-link{color:var(--muted);font-size:.78rem;font-weight:700;text-decoration:none;transition:color .18s;}
+.footer-link:hover{color:var(--accent);}
+.footer-copy{color:var(--muted);font-size:.72rem;font-weight:600;width:100%;text-align:center;margin-top:8px;}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s,transform .6s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+.reveal-delay-4{transition-delay:.4s;}
+</style>
+</head>
+<body>
+
+<div id="floatBg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
+      <ellipse cx="100" cy="125" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/>
+      <ellipse cx="78" cy="76" rx="13" ry="15" fill="white"/><ellipse cx="122" cy="76" rx="13" ry="15" fill="white"/>
+      <circle cx="81" cy="77" r="7" fill="#0f1923"/><circle cx="125" cy="77" r="7" fill="#0f1923"/>
+      <path d="M68 104 Q100 130 132 104" fill="#0f1923"/>
+      <path d="M68 104 Q100 116 132 104" fill="#c0334d" opacity=".85"/>
+    </svg>
+    <span class="nav-logo-text">Matikka-Ahmatti</span>
+  </a>
+  <div class="nav-links">
+    <a href="ohjeet.html" class="nav-link">📖 Ohjeet</a>
+    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">🚀 Pelaa nyt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⭐ Täysin ilmainen · Ei mainoksia</div>
+
+  <div class="hero-monster">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
+        <filter id="hGlow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="100" cy="194" rx="42" ry="8" fill="rgba(0,0,0,.2)"/>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#hbG)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95" filter="url(#hGlow)"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95" filter="url(#hGlow)"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#hbG)"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white" filter="url(#hGlow)"/>
+      <ellipse cx="122" cy="76" rx="14" ry="16" fill="white" filter="url(#hGlow)"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <text x="81" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+      <text x="125" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+      <path d="M62 57 Q78 49 94 56" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M106 56 Q122 49 138 57" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <ellipse cx="100" cy="124" rx="15" ry="9" fill="#ff8ed4" opacity=".9"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">
+    <span class="line1">Matikka-Ahmatti</span><br>
+    <span class="line2">on hauska!</span>
+  </h1>
+  <p class="hero-sub">
+    Ilmainen matematiikan harjoittelupeli <strong>6–12-vuotiaille</strong>.<br>
+    Mörkö ahmii numeroita — sinä opit laskemaan. 🎮
+  </p>
+
+  <div class="hero-btns">
+    <a href="game.html" class="btn-primary">🚀 Aloita pelaaminen</a>
+    <a href="ohjeet.html" class="btn-secondary">📖 Miten pelataan?</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
+    <div class="stat-pill"><span class="stat-n">4</span> pelimoodia</div>
+    <div class="stat-pill"><span class="stat-n">21</span> saavutusta</div>
+    <div class="stat-pill"><span class="stat-n">🆓</span> ilmainen</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <p class="section-label reveal">Miksi Matikka-Ahmatti?</p>
+  <h2 class="section-title reveal">Oppiminen on hauskaa<br>kun mörkö on mukana</h2>
+
+  <div class="features-grid">
+    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
+      <span class="feature-icon">🧠</span>
+      <h3 class="feature-title">Adaptiivinen vaikeus</h3>
+      <p class="feature-desc">Peli oppii lapsen taitotason ja tarjoaa juuri sopivan haastavia tehtäviä. 50 tasoa luvuista 1–10 aina luvuille 1–1000 asti.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
+      <span class="feature-icon">🏆</span>
+      <h3 class="feature-title">Hall of Fame</h3>
+      <p class="feature-desc">Globaali tulostaulukko jossa kilpaillaan kumulatiivisilla pisteillä. Kukaan ei pysty hyppäämään kärkeen yhdellä kierroksella!</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,142,212,.08);">
+      <span class="feature-icon">🏅</span>
+      <h3 class="feature-title">21 saavutusta</h3>
+      <p class="feature-desc">Saavutukset motivoivat jatkamaan — aamulintu, salamaputki, GOAT ja paljon muuta. Kaikki palkitaan!</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(123,159,255,.08);">
+      <span class="feature-icon">🔐</span>
+      <h3 class="feature-title">Omat profiilit</h3>
+      <p class="feature-desc">Jokaisella pelaajalla on oma PIN-suojattu profiili. Sama laite, eri pelaajia — edistyminen tallentuu pilvipalveluun.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
+      <span class="feature-icon">🎭</span>
+      <h3 class="feature-title">Animoitu mörkö</h3>
+      <p class="feature-desc">Mörkö ahmii numeroita, tanssii voitosta ja ravistaa päätään väärästä vastauksesta. Lapset rakastaa sitä!</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(255,107,107,.08);">
+      <span class="feature-icon">📱</span>
+      <h3 class="feature-title">Toimii kaikkialla</h3>
+      <p class="feature-desc">Puhelin, tabletti tai tietokone — peli skaalautuu automaattisesti. Ei asennuksia, ei kirjautumista sähköpostilla.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GAME MODES -->
+<section class="modes">
+  <p class="section-label reveal">Pelimoodit</p>
+  <h2 class="section-title reveal">Neljä tapaa harjoitella</h2>
+  <div class="modes-grid">
+    <div class="mode-card m1 reveal reveal-delay-1">
+      <span class="mode-emoji">🔢</span>
+      <div class="mode-name">Hajotelmat</div>
+      <div class="mode-desc">Luvun osat</div>
+    </div>
+    <div class="mode-card m2 reveal reveal-delay-2">
+      <span class="mode-emoji">➕</span>
+      <div class="mode-name">Yhteenlasku</div>
+      <div class="mode-desc">Lukujen summa</div>
+    </div>
+    <div class="mode-card m3 reveal reveal-delay-3">
+      <span class="mode-emoji">➖</span>
+      <div class="mode-name">Vähennys</div>
+      <div class="mode-desc">Erotus</div>
+    </div>
+    <div class="mode-card m4 reveal reveal-delay-4">
+      <span class="mode-emoji">✖️</span>
+      <div class="mode-name">Kertotaulu</div>
+      <div class="mode-desc">1× – 10×</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <p class="section-label reveal">Näin pääset alkuun</p>
+  <h2 class="section-title reveal">Kolme askelta<br>ja mörkö syö numeroita</h2>
+  <div class="steps">
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-num">1</div>
+      <h3 class="step-title">Luo profiili</h3>
+      <p class="step-desc">Kirjoita nimesi, valitse prinssi tai prinsessa, ja luo oma PIN-koodi. Kestää 30 sekuntia.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-num">2</div>
+      <h3 class="step-title">Valitse moodi</h3>
+      <p class="step-desc">Hajotelmat, yhteenlasku, vähennys vai kertotaulu. Peli valitsee vaikeustason automaattisesti.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-num">3</div>
+      <h3 class="step-title">Pelaa ja opi!</h3>
+      <p class="step-desc">Vastaa 10 tehtävään. Mörkö reagoi vastauksiin, taso nousee kun menee hyvin ja pisteet kertyvät Hall of Fameen.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-4">
+      <div class="step-num">4</div>
+      <h3 class="step-title">Kerää saavutuksia</h3>
+      <p class="step-desc">21 erilaista saavutusta motivoivat jatkamaan. Tavoittele GRAND MASTER -tasoa!</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box reveal">
+    <span class="cta-emoji">🚀</span>
+    <h2 class="cta-title">Valmis kokeilemaan?</h2>
+    <p class="cta-sub">Täysin ilmainen. Ei rekisteröitymistä sähköpostilla.<br>Aloita pelaaminen heti!</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+      <a href="game.html" class="btn-primary">🎮 Aloita nyt — ilmaiseksi</a>
+      <a href="ohjeet.html" class="btn-secondary">📖 Lue ohjeet</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🐐 Matikka-Ahmatti</div>
+  <div class="footer-links">
+    <a href="game.html" class="footer-link">Pelaa</a>
+    <a href="ohjeet.html" class="footer-link">Ohjeet</a>
+    <a href="contact.html" class="footer-link">Yhteystiedot</a>
+  </div>
+  <div class="footer-copy">© 2025 Matikka-Ahmatti · Tehty 🇫🇮 Suomessa · Ilmainen matematiikan harjoittelupeli lapsille</div>
+</footer>
+
+<script>
+// Floating bg
+const S=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','12','15','8×3'];
+const C=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,'];
+(function(){
+  const bg=document.getElementById('floatBg');
+  for(let i=0;i<40;i++){
+    const el=document.createElement('div');el.className='fn';
+    const op=(Math.random()*.15+.08).toFixed(3);
+    const dur=Math.random()*20+14;
+    el.textContent=S[~~(Math.random()*S.length)];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*8}%;font-size:${Math.random()*26+12}px;color:${C[~~(Math.random()*C.length)]}${op});--op:${op};--r0:${(Math.random()*30-15).toFixed(1)}deg;--r1:${(Math.random()*50-25).toFixed(1)}deg;--dur:${dur}s;--delay:-${(Math.random()*dur).toFixed(1)}s;`;
+    bg.appendChild(el);
+  }
+})();
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
