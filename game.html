@@ -11,6 +11,8 @@
 <meta name="author" content="Matikka-Ahmatti">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.matikka-ahmatti.fi/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU" />
 
 <!-- ═══ OPEN GRAPH (Facebook, WhatsApp, Discord jne.) ═══ -->
@@ -1300,6 +1302,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div id="pinAttemptsLeft" style="text-align:center;font-size:.75rem;color:var(--accent2);font-weight:700;margin-top:8px;min-height:18px;"></div>
     </div>
+
+    <!-- Step 4: Luokkakoodi (vapaaehtoinen) -->
+    <div class="step" id="step4">
+      <div class="step-title">🏫 Onko sinulla luokkakoodi?</div>
+      <div class="step-sub">Opettajalta saatu koodi — voit myös ohittaa tämän</div>
+      <input class="name-input" type="text" id="classCodeInput"
+             placeholder="Esim. KOALA42" maxlength="12"
+             autocomplete="off" autocapitalize="characters"
+             style="text-transform:uppercase;letter-spacing:2px;font-family:'Fredoka One',cursive;font-size:1.2rem;text-align:center;"/>
+      <div id="classCodeError" style="color:var(--accent2);font-size:.78rem;font-weight:700;min-height:18px;text-align:center;margin-top:4px;"></div>
+      <button class="cta-btn" onclick="joinClass()" id="joinClassBtn">🏫 Liity luokkaan</button>
+      <button style="width:100%;margin-top:10px;padding:12px;border-radius:40px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .2s;" onclick="startGame()" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
+        Ohita →
+      </button>
+    </div>
   </div>
 
   <!-- Footer contact link -->
@@ -1949,7 +1966,7 @@ async function pinConfirm() {
         document.getElementById('pinAttemptsLeft').textContent = '';
       } else {
         pinAttempts = 0;
-        startGame();
+        goStep4(); // ← luokkakoodi-vaihe ennen pelin alkua
       }
     } else {
       pinAttempts++;
@@ -2042,7 +2059,6 @@ function selChar(t) {
 
 async function goStep3() {
   if (!pChar) return;
-  // Tämä kutsutaan vain uusille pelaajille (tutut ohjataan suoraan step3:een goStep2:ssa)
   pinBuffer = ''; pinAttempts = 0; pinMode = 'new'; pinFirstEntry = '';
   document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
   document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN jonka muistat';
@@ -2051,6 +2067,46 @@ async function goStep3() {
   pinUpdateDots();
   document.getElementById('step2').classList.remove('active');
   document.getElementById('step3').classList.add('active');
+}
+
+// Step 4: luokkakoodi — näytetään aina kirjautumisen jälkeen
+function goStep4() {
+  document.getElementById('classCodeInput').value = '';
+  document.getElementById('classCodeError').textContent = '';
+  document.getElementById('step3').classList.remove('active');
+  document.getElementById('step4').classList.add('active');
+}
+
+// Liity luokkaan ja käynnistä peli
+async function joinClass() {
+  const code = document.getElementById('classCodeInput').value.trim().toUpperCase();
+  if (!code) { startGame(); return; }
+
+  const btn = document.getElementById('joinClassBtn');
+  btn.disabled = true; btn.textContent = '⏳ Tarkistetaan...';
+
+  try {
+    // Tarkista onko luokka olemassa
+    const res = await fetch(
+      `${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(code)}&select=class_code&limit=1`,
+      {headers: SB_HEADERS}
+    );
+    const rows = res.ok ? await res.json() : [];
+    if (!rows.length) {
+      document.getElementById('classCodeError').textContent = 'Luokkakoodia ei löydy ❌';
+      btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
+      return;
+    }
+    // Lisää pelaaja luokkaan (duplikaatit ignorataan)
+    await fetch(`${SB_URL}/rest/v1/class_members`, {
+      method: 'POST',
+      headers: {...SB_HEADERS, 'Prefer': 'resolution=ignore-duplicates,return=minimal'},
+      body: JSON.stringify({class_code: code, player_name: pName, player_char: pChar})
+    });
+  } catch { /* ei kriittinen virhe */ }
+
+  btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
+  startGame();
 }
 async function startGame(){
   if(!pChar)return;
