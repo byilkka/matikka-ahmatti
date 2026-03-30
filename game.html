@@ -1377,7 +1377,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
     <div id="exerciseView">
 
-      <!-- ═══ MÖRKÖ ═══ -->
+      <!-- ═══ LATAUSINDIKAAT TORI (näkyy vain uudella laitteella) ═══ -->
+      <div id="loadingOverlay" style="display:none;text-align:center;padding:clamp(20px,4vh,40px) 0;">
+        <div style="font-size:clamp(2rem,6vw,3rem);margin-bottom:12px;animation:monsterIdle 1.2s ease-in-out infinite;">🐾</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,2vw,1.2rem);color:var(--accent3);margin-bottom:8px;">Ladataan edistymistä...</div>
+        <div style="font-size:clamp(.72rem,1.3vw,.85rem);color:var(--muted);font-weight:700;" id="loadingStatus">Haetaan pilvestä ☁️</div>
+      </div>
       <div class="monster-game-wrap" id="monsterWrap">
         <svg class="monster-game-svg" id="monsterSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -2052,14 +2057,59 @@ async function startGame(){
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   showScreen('gameScreen');
-  roundStartTime = Date.now(); // BUG-008 fix: nollaa ajastin pelin alkaessa
+  roundStartTime = Date.now();
+
+  // Lataa ensin localStoragesta (nopea, välitön)
   srData = srLocalLoad(pName, pChar, mode);
-  retryQueue=[]; roundHistory=[];
   updDiffLabel();
+
+  const localEmpty = srData.diffLevel === 1 && srData.roundsPlayed === 0;
+  if (localEmpty) {
+    // Uusi laite tai tyhjennetty selain — näytä latausindikaattori
+    // ja odota Supabasea max 5 sekuntia (kattaa hitaan mobiiliyhteyden)
+    const overlay = document.getElementById('loadingOverlay');
+    const status  = document.getElementById('loadingStatus');
+    if (overlay) overlay.style.display = 'block';
+
+    let dotTimer = null;
+    let elapsed = 0;
+    if (status) {
+      dotTimer = setInterval(() => {
+        elapsed += 1;
+        if      (elapsed < 2) status.textContent = 'Haetaan pilvestä ☁️';
+        else if (elapsed < 4) status.textContent = 'Hidas yhteys — odotellaan... 📶';
+        else                  status.textContent = 'Melkein valmis... ⏳';
+      }, 1000);
+    }
+
+    try {
+      const remote = await Promise.race([
+        srRemoteLoad(pName, pChar, mode),
+        new Promise(r => setTimeout(() => r(null), 5000)) // 5s timeout
+      ]);
+      if (remote) {
+        srData = remote;
+        srLocalSave(pName, pChar, mode, remote);
+        updDiffLabel();
+      }
+    } catch {}
+
+    if (dotTimer) clearInterval(dotTimer);
+    if (overlay) overlay.style.display = 'none';
+
+  } else {
+    // localStorage löytyi — päivitä Supabasesta taustalla hiljaa
+    srRemoteLoad(pName, pChar, mode).then(remote => {
+      if (remote && remote.diffLevel > srData.diffLevel) {
+        srData = remote;
+        srLocalSave(pName, pChar, mode, remote);
+        updDiffLabel();
+      }
+    }).catch(()=>{});
+  }
+
+  retryQueue=[]; roundHistory=[];
   launchConfetti(); buildTablesGrid(); newProblem();
-  srRemoteLoad(pName, pChar, mode).then(remote => {
-    if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
-  }).catch(()=>{});
   achInit().then(()=>achCheck('first_login'));
 }
 
@@ -2091,17 +2141,33 @@ let maxStreakThisRound = 0; // BUG-002 fix: seuraa kierroksen parasta putkea
 const SR_KEY = 'matikka_sr_v1'; // localStorage avain
 
 // ── localStorage apufunktiot ──────────────────────
+// Huom: avain on pelaaja-kohtainen (ei moodi-kohtainen)
+// Taso on yhteinen kaikille moodeille — vain weights ovat moodi-kohtaisia
 function srLocalLoad(name, char, md) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
-    return all[`${name}:${char}:${md}`] || { weights:{}, roundsPlayed:0, diffLevel:1 };
+    const playerKey = `${name}:${char}`;
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
+    // Palauta rakenne joka sisältää yhteisen tason + moodi-kohtaiset painot
+    return {
+      weights:      playerData.modeWeights?.[md] || {},
+      roundsPlayed: playerData.roundsPlayed || 0,
+      diffLevel:    playerData.diffLevel    || 1
+    };
   } catch { return { weights:{}, roundsPlayed:0, diffLevel:1 }; }
 }
 
 function srLocalSave(name, char, md, data) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
-    all[`${name}:${char}:${md}`] = data;
+    const playerKey = `${name}:${char}`;
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
+    // Päivitä yhteinen taso ja kierrosmäärä, mutta moodi-kohtaiset painot erikseen
+    playerData.diffLevel    = data.diffLevel;
+    playerData.roundsPlayed = data.roundsPlayed;
+    if (!playerData.modeWeights) playerData.modeWeights = {};
+    playerData.modeWeights[md] = data.weights;
+    all[playerKey] = playerData;
     localStorage.setItem(SR_KEY, JSON.stringify(all));
   } catch {}
 }
@@ -2109,16 +2175,23 @@ function srLocalSave(name, char, md, data) {
 // ── Supabase SR: lataa pelaajan edistyminen ───────
 async function srRemoteLoad(name, char, md) {
   try {
-    const url = `${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&mode=eq.${encodeURIComponent(md)}&select=*&limit=1`;
+    // Hae kaikki moodit tälle pelaajalle — otetaan korkein diffLevel
+    const url = `${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=*`;
     const res = await fetch(url, { headers: SB_HEADERS });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const rows = await res.json();
     if (!rows.length) return null;
-    const r = rows[0];
+
+    // Korkein taso kaikista moodeista = pelaajan oikea taso
+    const maxLevel    = Math.max(...rows.map(r => r.diff_level || 1));
+    const totalRounds = rows.reduce((s, r) => s + (r.rounds_played || 0), 0);
+    // Moodi-kohtaiset painot nykyiselle moodille
+    const modeRow = rows.find(r => r.mode === md);
+
     return {
-      weights:      r.weights      || {},
-      roundsPlayed: r.rounds_played || 0,
-      diffLevel:    r.diff_level    || 1
+      weights:      modeRow?.weights       || {},
+      roundsPlayed: totalRounds,
+      diffLevel:    maxLevel
     };
   } catch (err) {
     console.warn('SR remote load failed:', err.message);
@@ -2129,7 +2202,7 @@ async function srRemoteLoad(name, char, md) {
 // ── Supabase SR: tallenna / päivitä edistyminen ───
 async function srRemoteSave(name, char, md, data) {
   try {
-    // UPSERT — luo uusi rivi tai päivitä olemassa oleva (UNIQUE constraint)
+    // Tallenna moodi-kohtainen rivi mutta käytä yhteistä diffLevel:ä
     const res = await fetch(`${SB_URL}/rest/v1/player_progress`, {
       method: 'POST',
       headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
@@ -2144,6 +2217,16 @@ async function srRemoteSave(name, char, md, data) {
       })
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    // Päivitä myös muiden moodien diffLevel samaksi — taso on yhteinen
+    const otherModes = ['h','a','s','m'].filter(m => m !== md);
+    await Promise.all(otherModes.map(m =>
+      fetch(`${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&mode=eq.${m}`, {
+        method: 'PATCH',
+        headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ diff_level: data.diffLevel })
+      }).catch(()=>{}) // ei kriittinen jos rivi ei ole olemassa
+    ));
   } catch (err) {
     console.warn('SR remote save failed:', err.message);
   }
@@ -2324,7 +2407,28 @@ function buildTablesGrid(){
   const g=document.getElementById('tablesGrid');g.innerHTML='';
   for(let i=1;i<=10;i++){const el=document.createElement('div');el.className='ti'+(i===selTable?' active':'');el.textContent=i+'×';el.onclick=()=>{selTable=i;document.querySelectorAll('.ti').forEach((x,j)=>x.className='ti'+(j+1===i?' active':''));restartRound();};g.appendChild(el);}
 }
-function setMode(m){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+m).classList.add('active');document.getElementById('rangeSection').style.display=m==='m'?'none':'block';document.getElementById('tableSection').style.display=m==='m'?'block':'none';restartRound();}
+function setMode(m){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+m).classList.add('active');
+  document.getElementById('rangeSection').style.display=m==='m'?'none':'block';
+  document.getElementById('tableSection').style.display=m==='m'?'block':'none';
+  // Lataa moodi-kohtaiset painot mutta säilytä yhteinen taso
+  const currentLevel = srData.diffLevel;
+  const currentRounds = srData.roundsPlayed;
+  srData = srLocalLoad(pName, pChar, m);
+  srData.diffLevel = currentLevel;    // yhteinen taso säilyy
+  srData.roundsPlayed = currentRounds;
+  updDiffLabel();
+  // Lataa Supabasesta taustalla
+  srRemoteLoad(pName, pChar, m).then(remote => {
+    if (remote) {
+      srData.weights = remote.weights; // vain painot päivitetään
+      srLocalSave(pName, pChar, m, srData);
+    }
+  }).catch(()=>{});
+  restartRound();
+}
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
 function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
 
