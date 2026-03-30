@@ -3,7 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matikka-Ahmatti</title>
+
+<!-- ═══ SEO ═══ -->
+<title>Matikka-Ahmatti — Hauska matematiikan harjoittelupeli lapsille</title>
+<meta name="description" content="Matikka-Ahmatti on ilmainen matematiikan harjoittelupeli lapsille. Harjoittele hajotelmat, yhteenlasku, vähennyslasku ja kertotaulut hauskasti mörkön avulla. Sopii alakouluikäisille.">
+<meta name="keywords" content="matematiikka, lapsille, harjoittelu, kertotaulut, yhteenlasku, vähennyslasku, hajotelmat, peli, ilmainen, alakoulu, oppiminen">
+<meta name="author" content="Matikka-Ahmatti">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/">
+<meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU" />
+
+<!-- ═══ OPEN GRAPH (Facebook, WhatsApp, Discord jne.) ═══ -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://www.matikka-ahmatti.fi/">
+<meta property="og:title"       content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
+<meta property="og:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Kertotaulut, hajotelmat ja laskut pelattavana mörkö-hahmolla. Adaptiivinen vaikeus kasvaa lapsen taitotason mukaan.">
+<meta property="og:image"       content="https://www.matikka-ahmatti.fi/og-image.png">
+<meta property="og:locale"      content="fi_FI">
+<meta property="og:site_name"   content="Matikka-Ahmatti">
+
+<!-- ═══ TWITTER CARD ═══ -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
+<meta name="twitter:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Kertotaulut, hajotelmat ja laskut pelattavana.">
+<meta name="twitter:image"       content="https://www.matikka-ahmatti.fi/og-image.png">
+
+<!-- ═══ STRUCTURED DATA (JSON-LD) ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Matikka-Ahmatti",
+  "url": "https://www.matikka-ahmatti.fi/",
+  "description": "Ilmainen matematiikan harjoittelupeli alakouluikäisille lapsille. Sisältää kertotaulut, hajotelmat, yhteenlaskun ja vähennyslaskun adaptiivisella vaikeustasolla.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "All",
+  "inLanguage": "fi",
+  "isAccessibleForFree": true,
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "typicalAgeRange": "6-12"
+  },
+  "educationalAlignment": [
+    {
+      "@type": "AlignmentObject",
+      "alignmentType": "educationalSubject",
+      "targetName": "Matematiikka"
+    }
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  }
+}
+</script>
+
+<title>Matikka-Ahmatti — Hauska matematiikan harjoittelupeli lapsille</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════
@@ -22,102 +79,152 @@
   --text: #eef3ff;
   --muted: #6a82a0;
 
-  /* Responsive scale tokens — overridden per breakpoint */
-  --monster-size: 150px;
-  --login-title: 2rem;
-  --login-card-w: 420px;
-  --login-card-pad: 28px 26px;
-  --step-title: 1.3rem;
-  --char-avatar: 3.5rem;
-  --cta-font: 1.1rem;
-  --cta-pad: 14px;
+  /* ── MOBILE (default, max ~480px) ── */
+  --monster-size: 120px;
+  --login-title: 1.7rem;
+  --login-card-w: 100%;
+  --login-card-pad: 20px 18px;
+  --step-title: 1.1rem;
+  --char-avatar: 2.8rem;
+  --cta-font: 1rem;
+  --cta-pad: 12px;
 
-  --game-max: 760px;
-  --game-pad: 20px 16px 44px;
-  --header-gap: 8px;
-  --logo-mini-size: 38px;
-  --logo-text: 1.1rem;
-  --badge-pad: 6px 12px 6px 7px;
-  --badge-avatar: 1.2rem;
-  --badge-name: .78rem;
-  --top-btn-font: .8rem;
-  --top-btn-pad: 7px 12px;
+  --game-max: 100%;
+  --game-pad: 12px 12px 28px;
+  --header-gap: 6px;
+  --logo-mini-size: 30px;
+  --logo-text: .95rem;
+  --badge-pad: 5px 10px 5px 6px;
+  --badge-avatar: 1rem;
+  --badge-name: .7rem;
+  --top-btn-font: .7rem;
+  --top-btn-pad: 6px 10px;
 
-  --si-pad: 9px 14px;
-  --si-font: .78rem;
-  --si-gap: 6px;
+  --si-pad: 6px 10px;
+  --si-font: .68rem;
+  --si-gap: 4px;
 
-  --mode-pad: 5px;
-  --mode-btn-pad: 10px 5px;
-  --mode-icon: 1.1rem;
-  --mode-label: .68rem;
+  --mode-pad: 4px;
+  --mode-btn-pad: 7px 3px;
+  --mode-icon: .9rem;
+  --mode-label: .6rem;
 
-  --card-pad: 26px 22px;
-  --sec-label: .68rem;
-  --rp-pad: 7px 14px;
-  --rp-font: .8rem;
-  --ti-pad: 9px 4px;
-  --ti-font: .8rem;
+  --card-pad: 16px 14px;
+  --sec-label: .6rem;
+  --rp-pad: 5px 10px;
+  --rp-font: .7rem;
+  --ti-pad: 6px 2px;
+  --ti-font: .7rem;
 
-  --ph-font: .8rem;
-  --problem-gap: 12px;
-  --problem-font: clamp(2.4rem, 8vw, 4rem);
-  --blank-w: 60px;
+  --ph-font: .7rem;
+  --problem-gap: 8px;
+  --problem-font: clamp(2rem, 9vw, 3rem);
+  --blank-w: 48px;
   --blank-bdr: 3px;
 
-  --fb-font: .92rem;
-  --fb-h: 32px;
+  --fb-font: .8rem;
+  --fb-h: 24px;
 
-  --nb-pad: 14px;
-  --nb-font: 1.15rem;
-  --nb-gap: 7px;
-  --nb-radius: 11px;
-  --en-font: .88rem;
+  --nb-pad: 10px;
+  --nb-font: .95rem;
+  --nb-gap: 5px;
+  --nb-radius: 9px;
+  --en-font: .78rem;
 
-  --prog-font: .74rem;
-  --prog-h: 8px;
+  --prog-font: .62rem;
+  --prog-h: 6px;
 
-  --re-font: 3rem;
-  --rt-font: 1.6rem;
-  --rs-font: .9rem;
-  --try-font: 1rem;
-  --try-pad: 13px 26px;
+  --re-font: 2.4rem;
+  --rt-font: 1.3rem;
+  --rs-font: .78rem;
+  --try-font: .88rem;
+  --try-pad: 10px 20px;
 
-  --score-max: 760px;
-  --score-title-font: 1.6rem;
-  --back-font: .82rem;
-  --back-pad: 8px 14px;
-  --ftab-font: .73rem;
-  --ftab-pad: 7px 13px;
-  --sc-card-pad: 14px 16px;
-  --sc-rank-font: 1.1rem;
-  --sc-avatar-font: 1.7rem;
-  --sc-name-font: .95rem;
-  --sc-detail-font: .67rem;
-  --sc-tag-font: .63rem;
-  --sc-pts-font: 1.4rem;
-  --sc-correct-font: .72rem;
-  --sc-gap: 11px;
-  --sc-card-gap: 9px;
+  --score-max: 100%;
+  --score-title-font: 1.3rem;
+  --back-font: .72rem;
+  --back-pad: 7px 12px;
+  --ftab-font: .65rem;
+  --ftab-pad: 6px 10px;
+  --sc-card-pad: 10px 12px;
+  --sc-rank-font: .9rem;
+  --sc-avatar-font: 1.4rem;
+  --sc-name-font: .82rem;
+  --sc-detail-font: .58rem;
+  --sc-tag-font: .55rem;
+  --sc-pts-font: 1.2rem;
+  --sc-correct-font: .62rem;
+  --sc-gap: 8px;
+  --sc-card-gap: 7px;
 }
 
-/* ── MD: 768px+ ── */
+/* ── SM: 480px+ (large phone / small tablet) ── */
+@media (min-width: 480px) {
+  :root {
+    --monster-size: 140px;
+    --login-title: 2rem;
+    --login-card-w: 420px;
+    --login-card-pad: 24px 22px;
+    --step-title: 1.25rem;
+    --char-avatar: 3.2rem;
+    --cta-font: 1.05rem;
+    --cta-pad: 13px;
+
+    --game-pad: 14px 14px 32px;
+    --logo-mini-size: 34px;
+    --logo-text: 1.05rem;
+    --badge-avatar: 1.1rem;
+    --badge-name: .75rem;
+    --top-btn-font: .75rem;
+    --top-btn-pad: 6px 11px;
+
+    --si-pad: 7px 12px;
+    --si-font: .72rem;
+
+    --mode-btn-pad: 8px 4px;
+    --mode-icon: 1rem;
+    --mode-label: .64rem;
+
+    --card-pad: 18px 16px;
+    --rp-pad: 5px 12px;
+    --rp-font: .74rem;
+    --ti-font: .74rem;
+
+    --ph-font: .74rem;
+    --problem-font: clamp(2.2rem, 8vw, 3.4rem);
+    --blank-w: 52px;
+
+    --nb-pad: 11px;
+    --nb-font: 1.05rem;
+    --nb-gap: 5px;
+
+    --re-font: 2.7rem;
+    --rt-font: 1.45rem;
+    --try-font: .92rem;
+
+    --score-title-font: 1.45rem;
+    --ftab-font: .68rem;
+    --sc-pts-font: 1.3rem;
+  }
+}
+
+/* ── MD: 768px+ (tablet / small desktop) ── */
 @media (min-width: 768px) {
   :root {
-    --monster-size: 190px;
-    --login-title: 2.6rem;
-    --login-card-w: 480px;
-    --login-card-pad: 36px 34px;
-    --step-title: 1.6rem;
-    --char-avatar: 4.5rem;
-    --cta-font: 1.3rem;
-    --cta-pad: 16px;
+    --monster-size: 200px;
+    --login-title: 2.8rem;
+    --login-card-w: 500px;
+    --login-card-pad: 38px 36px;
+    --step-title: 1.7rem;
+    --char-avatar: 4.8rem;
+    --cta-font: 1.35rem;
+    --cta-pad: 17px;
 
-    --game-max: 860px;
+    --game-max: 820px;
     --game-pad: 22px 28px 44px;
     --header-gap: 10px;
-    --logo-mini-size: 46px;
-    --logo-text: 1.35rem;
+    --logo-mini-size: 48px;
+    --logo-text: 1.4rem;
     --badge-pad: 8px 16px 8px 10px;
     --badge-avatar: 1.5rem;
     --badge-name: .9rem;
@@ -133,21 +240,21 @@
     --mode-icon: 1.25rem;
     --mode-label: .78rem;
 
-    --card-pad: 30px 28px;
+    --card-pad: 28px 26px;
     --sec-label: .72rem;
     --rp-pad: 7px 16px;
     --rp-font: .85rem;
-    --ti-pad: 9px 4px;
-    --ti-font: .9rem;
+    --ti-pad: 8px 4px;
+    --ti-font: .88rem;
 
     --ph-font: .88rem;
     --problem-gap: 14px;
-    --problem-font: clamp(3rem, 7vw, 5rem);
+    --problem-font: clamp(3rem, 6.5vw, 5rem);
     --blank-w: 72px;
     --blank-bdr: 4px;
 
-    --fb-font: 1.05rem;
-    --fb-h: 34px;
+    --fb-font: 1rem;
+    --fb-h: 32px;
 
     --nb-pad: 16px;
     --nb-font: 1.35rem;
@@ -155,99 +262,99 @@
     --nb-radius: 12px;
     --en-font: 1rem;
 
-    --prog-font: .8rem;
+    --prog-font: .78rem;
     --prog-h: 9px;
 
-    --re-font: 3.5rem;
-    --rt-font: 1.9rem;
+    --re-font: 3.6rem;
+    --rt-font: 2rem;
     --rs-font: 1rem;
     --try-font: 1.1rem;
     --try-pad: 13px 28px;
 
-    --score-max: 860px;
-    --score-title-font: 2rem;
-    --back-font: .92rem;
+    --score-max: 820px;
+    --score-title-font: 2.1rem;
+    --back-font: .9rem;
     --back-pad: 10px 18px;
-    --ftab-font: .82rem;
+    --ftab-font: .8rem;
     --ftab-pad: 9px 18px;
-    --sc-card-pad: 18px 22px;
-    --sc-rank-font: 1.4rem;
-    --sc-avatar-font: 2.1rem;
-    --sc-name-font: 1.1rem;
-    --sc-detail-font: .76rem;
-    --sc-tag-font: .7rem;
-    --sc-pts-font: 1.7rem;
-    --sc-correct-font: .8rem;
-    --sc-gap: 14px;
-    --sc-card-gap: 11px;
+    --sc-card-pad: 16px 20px;
+    --sc-rank-font: 1.3rem;
+    --sc-avatar-font: 2rem;
+    --sc-name-font: 1.05rem;
+    --sc-detail-font: .72rem;
+    --sc-tag-font: .66rem;
+    --sc-pts-font: 1.6rem;
+    --sc-correct-font: .76rem;
+    --sc-gap: 13px;
+    --sc-card-gap: 10px;
   }
 }
 
-/* ── LG: 1100px+ ── */
+/* ── LG: 1100px+ (desktop) ── */
 @media (min-width: 1100px) {
   :root {
-    --monster-size: 240px;
-    --login-title: 3.2rem;
-    --login-card-w: 560px;
-    --login-card-pad: 44px 42px;
-    --step-title: 1.9rem;
-    --char-avatar: 5.5rem;
-    --cta-font: 1.5rem;
-    --cta-pad: 18px;
+    --monster-size: 260px;
+    --login-title: 3.4rem;
+    --login-card-w: 580px;
+    --login-card-pad: 48px 46px;
+    --step-title: 2rem;
+    --char-avatar: 5.8rem;
+    --cta-font: 1.55rem;
+    --cta-pad: 19px;
 
-    --game-max: 980px;
-    --game-pad: 28px 40px 52px;
+    --game-max: 1020px;
+    --game-pad: 30px 44px 56px;
     --header-gap: 12px;
-    --logo-mini-size: 56px;
-    --logo-text: 1.6rem;
-    --badge-pad: 10px 20px 10px 12px;
-    --badge-avatar: 1.8rem;
-    --badge-name: 1.05rem;
-    --top-btn-font: 1rem;
-    --top-btn-pad: 11px 20px;
+    --logo-mini-size: 58px;
+    --logo-text: 1.65rem;
+    --badge-pad: 10px 22px 10px 13px;
+    --badge-avatar: 1.85rem;
+    --badge-name: 1.08rem;
+    --top-btn-font: 1.02rem;
+    --top-btn-pad: 12px 22px;
 
-    --si-pad: 11px 20px;
-    --si-font: .95rem;
+    --si-pad: 12px 22px;
+    --si-font: .96rem;
     --si-gap: 7px;
 
     --mode-pad: 7px;
-    --mode-btn-pad: 13px 8px;
-    --mode-icon: 1.45rem;
-    --mode-label: .88rem;
+    --mode-btn-pad: 14px 9px;
+    --mode-icon: 1.5rem;
+    --mode-label: .9rem;
 
-    --card-pad: 38px 36px;
+    --card-pad: 40px 38px;
     --sec-label: .78rem;
-    --rp-pad: 9px 20px;
-    --rp-font: .95rem;
+    --rp-pad: 9px 22px;
+    --rp-font: .96rem;
     --ti-pad: 11px 5px;
     --ti-font: 1rem;
 
-    --ph-font: 1rem;
-    --problem-gap: 18px;
-    --problem-font: clamp(3.5rem, 6vw, 6rem);
-    --blank-w: 90px;
+    --ph-font: 1.02rem;
+    --problem-gap: 20px;
+    --problem-font: clamp(3.8rem, 5.5vw, 6.5rem);
+    --blank-w: 96px;
     --blank-bdr: 5px;
 
-    --fb-font: 1.2rem;
-    --fb-h: 40px;
+    --fb-font: 1.22rem;
+    --fb-h: 42px;
 
-    --nb-pad: 20px;
-    --nb-font: 1.6rem;
-    --nb-gap: 10px;
+    --nb-pad: 22px;
+    --nb-font: 1.65rem;
+    --nb-gap: 11px;
     --nb-radius: 14px;
-    --en-font: 1.15rem;
+    --en-font: 1.18rem;
 
-    --prog-font: .88rem;
+    --prog-font: .9rem;
     --prog-h: 11px;
 
-    --re-font: 4.2rem;
-    --rt-font: 2.3rem;
-    --rs-font: 1.1rem;
-    --try-font: 1.25rem;
-    --try-pad: 16px 36px;
+    --re-font: 4.5rem;
+    --rt-font: 2.4rem;
+    --rs-font: 1.12rem;
+    --try-font: 1.28rem;
+    --try-pad: 16px 38px;
 
-    --score-max: 980px;
-    --score-title-font: 2.4rem;
+    --score-max: 1020px;
+    --score-title-font: 2.5rem;
     --back-font: 1rem;
     --back-pad: 12px 22px;
     --ftab-font: .9rem;
@@ -256,77 +363,77 @@
     --sc-rank-font: 1.7rem;
     --sc-avatar-font: 2.6rem;
     --sc-name-font: 1.25rem;
-    --sc-detail-font: .84rem;
-    --sc-tag-font: .76rem;
+    --sc-detail-font: .82rem;
+    --sc-tag-font: .74rem;
     --sc-pts-font: 2rem;
-    --sc-correct-font: .9rem;
+    --sc-correct-font: .88rem;
     --sc-gap: 18px;
     --sc-card-gap: 13px;
   }
 }
 
-/* ── XL: 1440px+ ── */
+/* ── XL: 1440px+ (large desktop) ── */
 @media (min-width: 1440px) {
   :root {
-    --monster-size: 280px;
-    --login-title: 3.8rem;
-    --login-card-w: 620px;
-    --login-card-pad: 52px 50px;
-    --step-title: 2.2rem;
-    --char-avatar: 6.5rem;
-    --cta-font: 1.7rem;
-    --cta-pad: 21px;
+    --monster-size: 300px;
+    --login-title: 4rem;
+    --login-card-w: 640px;
+    --login-card-pad: 56px 54px;
+    --step-title: 2.3rem;
+    --char-avatar: 6.8rem;
+    --cta-font: 1.75rem;
+    --cta-pad: 22px;
 
-    --game-max: 1140px;
-    --game-pad: 32px 48px 60px;
-    --logo-mini-size: 64px;
-    --logo-text: 1.85rem;
-    --badge-pad: 12px 24px 12px 14px;
-    --badge-avatar: 2.1rem;
-    --badge-name: 1.2rem;
-    --top-btn-font: 1.1rem;
-    --top-btn-pad: 13px 24px;
+    --game-max: 1180px;
+    --game-pad: 36px 52px 64px;
+    --logo-mini-size: 68px;
+    --logo-text: 1.9rem;
+    --badge-pad: 13px 26px 13px 15px;
+    --badge-avatar: 2.2rem;
+    --badge-name: 1.24rem;
+    --top-btn-font: 1.12rem;
+    --top-btn-pad: 14px 26px;
 
-    --si-pad: 13px 24px;
-    --si-font: 1.05rem;
+    --si-pad: 14px 26px;
+    --si-font: 1.08rem;
 
-    --mode-pad: 8px;
-    --mode-btn-pad: 15px 10px;
-    --mode-icon: 1.6rem;
-    --mode-label: .98rem;
+    --mode-pad: 9px;
+    --mode-btn-pad: 16px 12px;
+    --mode-icon: 1.7rem;
+    --mode-label: 1rem;
 
-    --card-pad: 46px 44px;
-    --rp-pad: 11px 24px;
-    --rp-font: 1.05rem;
-    --ti-font: 1.1rem;
+    --card-pad: 50px 48px;
+    --rp-pad: 12px 26px;
+    --rp-font: 1.08rem;
+    --ti-font: 1.12rem;
 
-    --ph-font: 1.1rem;
-    --problem-font: clamp(4rem, 5.5vw, 7rem);
-    --blank-w: 108px;
+    --ph-font: 1.15rem;
+    --problem-font: clamp(4.5rem, 5vw, 7.5rem);
+    --blank-w: 116px;
 
-    --nb-pad: 24px;
-    --nb-font: 1.9rem;
-    --nb-gap: 12px;
-    --nb-radius: 16px;
-    --en-font: 1.3rem;
+    --nb-pad: 26px;
+    --nb-font: 2rem;
+    --nb-gap: 13px;
+    --nb-radius: 17px;
+    --en-font: 1.4rem;
 
-    --prog-font: .95rem;
+    --prog-font: .98rem;
     --prog-h: 13px;
 
-    --re-font: 5rem;
-    --rt-font: 2.7rem;
-    --try-font: 1.4rem;
-    --try-pad: 18px 44px;
+    --re-font: 5.2rem;
+    --rt-font: 2.8rem;
+    --try-font: 1.45rem;
+    --try-pad: 19px 46px;
 
-    --score-max: 1140px;
-    --score-title-font: 2.8rem;
-    --sc-card-pad: 26px 34px;
-    --sc-rank-font: 2rem;
-    --sc-avatar-font: 3rem;
-    --sc-name-font: 1.4rem;
-    --sc-pts-font: 2.4rem;
-    --sc-gap: 22px;
-    --sc-card-gap: 15px;
+    --score-max: 1180px;
+    --score-title-font: 2.9rem;
+    --sc-card-pad: 28px 36px;
+    --sc-rank-font: 2.1rem;
+    --sc-avatar-font: 3.1rem;
+    --sc-name-font: 1.42rem;
+    --sc-pts-font: 2.5rem;
+    --sc-gap: 24px;
+    --sc-card-gap: 16px;
   }
 }
 
@@ -348,8 +455,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* Screens */
 .screen{position:relative;z-index:1;display:none;min-height:100vh;}
-.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px 40px;}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 10px 32px;}
 #gameScreen.active,#scoreScreen.active{justify-content:flex-start;}
+@media(min-width:480px){.screen.active{padding:20px 14px 36px;}}
+@media(min-width:768px){.screen.active{padding:24px 20px 44px;}}
 
 /* ══════════════════════════════════════════════════
    LOGIN SCREEN
@@ -1613,7 +1722,7 @@ async function saveScore(entry) {
 
 // ══ SUPABASE: LOAD SCORES ════════════════════════
 async function loadScoresRemote(mode) {
-  let url = `${SB_URL}/rest/v1/scores?select=*&order=pts.desc,corr.desc&limit=100`;
+  let url = `${SB_URL}/rest/v1/scores?select=*&order=created_at.desc&limit=2000`;
   if (mode && mode !== 'all') url += `&mode=eq.${mode}`;
 
   try {
@@ -1642,7 +1751,7 @@ async function loadScoresRemote(mode) {
 // ══ PIN SYSTEM ═══════════════════════════════════
 
 // ⚠️  VAIHDA TÄMÄ OMAKSI ADMIN-KOODIKSI ennen julkaisua
-const ADMIN_PIN = '2809';
+const ADMIN_PIN = '0000';
 
 // Simple hash — XOR + rotate, riittävä lapsipelin PIN-suojaukseen
 function hashPin(pin, salt) {
@@ -2016,13 +2125,37 @@ function probKey(p) {
   return 'x';
 }
 
-// Neljä vaikeustasoa
-const DIFF_LEVELS = [
-  { label:'Taso 1', range:10,  color:'var(--accent3)' },
-  { label:'Taso 2', range:20,  color:'var(--accent4)' },
-  { label:'Taso 3', range:50,  color:'var(--accent)'  },
-  { label:'Taso 4', range:100, color:'var(--pink)'    },
-];
+// 50 tasoa — lukualue kasvaa + tehtävätyypit vaikeutuvat
+const DIFF_LEVELS = (()=>{
+  const levels = [];
+  for (let i = 1; i <= 50; i++) {
+    let range;
+    if      (i <= 5)  range = 10;
+    else if (i <= 10) range = 20;
+    else if (i <= 15) range = 50;
+    else if (i <= 20) range = 100;
+    else if (i <= 25) range = 150;
+    else if (i <= 30) range = 200;
+    else if (i <= 35) range = 300;
+    else if (i <= 40) range = 500;
+    else if (i <= 45) range = 750;
+    else              range = 1000;
+    // Sallitut tehtävätyypit
+    let types;
+    if      (i <= 3)  types = ['h','a'];
+    else if (i <= 7)  types = ['h','a','s'];
+    else              types = ['h','a','s','m'];
+    // Kertotaulujen max-kerroin
+    const maxTable = i <= 12 ? 5 : i <= 20 ? 7 : 10;
+    // Pisteytyskerroin 1.0 → 8.35
+    const mult = +(1 + (i-1) * 0.15).toFixed(2);
+    // Väri per 10 tasoa
+    const colors = ['var(--accent3)','var(--accent4)','var(--accent)','var(--pink)','var(--purple)'];
+    const color  = colors[Math.floor((i-1)/10)];
+    levels.push({ label:`Taso ${i}`, range, types, maxTable, mult, color });
+  }
+  return levels;
+})();
 
 // Adaptiivinen tila per kierros
 let srData       = { weights:{}, roundsPlayed:0, diffLevel:1 };
@@ -2048,15 +2181,17 @@ function pickNextProblem() {
   if (retryQueue.length > 0 && rDone >= Math.floor(rTotal * 0.5)) {
     return retryQueue.shift();
   }
-  const lvl = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
-  const effRange = Math.min(range, DIFF_LEVELS[lvl].range);
+  const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
+  const info     = DIFF_LEVELS[lvl];
+  const effRange = Math.min(range, info.range);
   const candidates = [];
   for (let i = 0; i < 6; i++) {
+    const useMode = info.types.includes(mode) ? mode : info.types[~~(Math.random()*info.types.length)];
     let p;
-    if      (mode === 'h') p = genH(effRange);
-    else if (mode === 'a') p = genA(effRange);
-    else if (mode === 's') p = genS(effRange);
-    else                   p = genM();
+    if      (useMode === 'h') p = genH(effRange);
+    else if (useMode === 'a') p = genA(effRange);
+    else if (useMode === 's') p = genS(effRange);
+    else                      p = genM(info.maxTable);
     const w = srData.weights[probKey(p)] || 1.0;
     candidates.push({ p, w });
   }
@@ -2081,7 +2216,7 @@ function srRecord(p, correct) {
     if (!alreadyQueued) retryQueue.push({ ...p });
   }
   roundHistory.push(correct);
-  srSave(srData); // tallentaa localStorageen + Supabaseen
+  srSave(srData);
 }
 
 // Kierroksen jälkeen: harkitse tasonvaihto
@@ -2091,15 +2226,32 @@ function srEvaluateRound(pct) {
     srData.diffLevel++;
     updDiffLabel();
     srSave(srData);
-    return { changed: true, up: true };
+    // Tasosaavutus joka 10. tasolla
+    if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
+    return { changed: true, up: true, newLevel: srData.diffLevel };
   } else if (pct < 50 && srData.diffLevel > 1) {
     srData.diffLevel--;
     updDiffLabel();
     srSave(srData);
-    return { changed: true, up: false };
+    return { changed: true, up: false, newLevel: srData.diffLevel };
   }
   srSave(srData);
-  return { changed: false };
+  return { changed: false, newLevel: srData.diffLevel };
+}
+
+// Tasosaavutukset joka 10. tasolla
+function checkLevelAchievement(level) {
+  const defs = {
+    10: { id:'level_10', icon:'🌟', name:'Tason 10 Mestari!', desc:'Saavutti tason 10' },
+    20: { id:'level_20', icon:'🔥', name:'Tason 20 Sankari!', desc:'Saavutti tason 20' },
+    30: { id:'level_30', icon:'⚡', name:'Tason 30 Legenda!', desc:'Saavutti tason 30' },
+    40: { id:'level_40', icon:'🚀', name:'Tason 40 Tähti!',   desc:'Saavutti tason 40' },
+    50: { id:'level_50', icon:'🏆', name:'GRAND MASTER! 🐐',  desc:'Saavutti maksimitason 50!' },
+  };
+  const def = defs[level];
+  if (!def) return;
+  if (!ACHIEVEMENTS.find(a => a.id === def.id)) ACHIEVEMENTS.push(def);
+  achCheck(def.id);
 }
 
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -2108,7 +2260,7 @@ function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function genH(r=range){const t=rand(2,r),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
 function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
 function genS(r=range){const a=rand(2,r),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
-function genM(){const m=rand(1,10),bl=Math.random()<.5?'r':'m';return{type:'m',t:selTable,m,r:selTable*m,bl,answer:bl==='r'?selTable*m:m};}
+function genM(maxT=10){const t=selTable||rand(1,maxT),m=rand(1,maxT),bl=Math.random()<.5?'r':'m';return{type:'m',t,m,r:t*m,bl,answer:bl==='r'?t*m:m};}
 
 function buildTablesGrid(){
   const g=document.getElementById('tablesGrid');g.innerHTML='';
@@ -2255,7 +2407,12 @@ function ck(){
   const fb=document.getElementById('fb'),bs=document.getElementById('bS');
   srRecord(prob, ok); // ← adaptiivinen kirjaus
   if(ok){
-    streak++;corr++;pts+=10+(streak>3?5*Math.min(streak-3,5):0);
+    streak++;corr++;
+    // Pisteytys: tason kerroin × perusarvo + putkibonus
+    const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
+    const baseScore  = Math.round(10 * lvlInfo.mult);
+    const streakBonus = streak >= 3 ? Math.round(streak * 2 * lvlInfo.mult) : 0;
+    pts += baseScore + streakBonus;
     fb.textContent=okMsg();fb.className='feedback ok';
     if(bs)bs.style.color='var(--accent3)';
     // Mörkö ahmii vastauksen
@@ -2297,10 +2454,10 @@ async function showResults(){
   const lvlChange = srEvaluateRound(p);
   let lvlMsg = '';
   if (lvlChange.changed && lvlChange.up) {
-    const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
+    const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
   } else if (lvlChange.changed && !lvlChange.up) {
-    const newLvl = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
+    const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label}</div>`;
   }
 
@@ -2351,26 +2508,41 @@ async function renderScores(f) {
     if (f && f !== 'all') raw = raw.filter(s => s.mode === f);
   }
 
-  // ── Group by player: keep best score per player ──
+  // ── Aggregoi kaikki kierrokset per pelaaja ──
+  // HOF-pisteet = kaikkien kierrosten pisteet yhteenlaskettuna
+  // Näin jokainen kierros kartuttaa tulosta ja pitkään pelannut erottuu
   const playerMap = new Map();
   raw.forEach(s => {
     const key = `${s.name}::${s.char}`;
     const ex  = playerMap.get(key);
-    if (!ex || s.pts > ex.pts) {
-      playerMap.set(key, { ...s, totalRounds: 1 });
+    if (!ex) {
+      playerMap.set(key, {
+        name:       s.name,
+        char:       s.char,
+        totalPts:   s.pts,           // kumulatiiviset pisteet
+        bestRound:  s.pts,           // paras yksittäinen kierros
+        totalCorr:  s.corr,
+        totalPlayed:s.total,
+        rounds:     1,
+        bestPct:    s.pct || 0,
+        ts:         s.ts,
+        mode:       s.mode,
+        modeLabel:  s.modeLabel,
+        level:      s.level,
+      });
     } else {
-      ex.totalRounds = (ex.totalRounds||1) + 1;
+      ex.totalPts   += s.pts;
+      ex.totalCorr  += s.corr;
+      ex.totalPlayed+= s.total;
+      ex.rounds     += 1;
+      if (s.pts > ex.bestRound) ex.bestRound = s.pts;
+      if ((s.pct||0) > ex.bestPct) ex.bestPct = s.pct||0;
     }
   });
-  // Count total rounds per player from all entries
-  raw.forEach(s => {
-    const key = `${s.name}::${s.char}`;
-    const p   = playerMap.get(key);
-    if (p && s.pts <= p.pts) p.totalRounds = (p.totalRounds||0) + 1;
-  });
 
+  // Järjestä kumulatiivisten pisteiden mukaan
   let players = Array.from(playerMap.values())
-    .sort((a,b) => b.pts - a.pts || b.corr - a.corr)
+    .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound)
     .slice(0, 200);
 
   if (!players.length) {
@@ -2385,13 +2557,13 @@ async function renderScores(f) {
     const medal  = r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`;
     const av     = s.char==='boy'?'🤴':'👸';
     const isMe   = s.name===pName && s.char===pChar;
-    const rounds = s.totalRounds||1;
+    const acc    = s.totalPlayed > 0 ? Math.round(s.totalCorr/s.totalPlayed*100) : 0;
 
-    const goatBadge  = isGoat ? `<div class="hof-goat-badge">🐐 GOAT</div>` : '';
-    const crown      = isGoat ? `<div class="hof-crown">👑</div>` : '';
-    const meBadge    = isMe   ? `<div class="hof-me-badge">Sinä ⭐</div>` : '';
-    const cardClass  = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
-    const ptsColor   = isGoat ? 'color:#ffd700;text-shadow:0 0 14px rgba(255,200,0,.4);' : '';
+    const goatBadge = isGoat ? `<div class="hof-goat-badge">🐐 GOAT</div>` : '';
+    const crown     = isGoat ? `<div class="hof-crown">👑</div>` : '';
+    const meBadge   = isMe   ? `<div class="hof-me-badge">Sinä ⭐</div>` : '';
+    const cardClass = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
+    const ptsColor  = isGoat ? 'color:#ffd700;text-shadow:0 0 14px rgba(255,200,0,.4);' : '';
 
     return `<div class="${cardClass}">
       ${crown}
@@ -2400,10 +2572,10 @@ async function renderScores(f) {
       <div class="hof-name">${s.name}</div>
       ${goatBadge}
       ${meBadge}
-      <div class="hof-pts" style="${ptsColor}">${s.pts}</div>
-      <div class="hof-pts-label">paras kierros</div>
-      <div class="hof-correct">${s.corr}/${s.total} oikein</div>
-      <div class="hof-rounds">${rounds} kierros${rounds!==1?'ta':''}</div>
+      <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
+      <div class="hof-pts-label">yhteispisteet</div>
+      <div class="hof-correct">paras ${s.bestRound}p · ${acc}% tarkkuus</div>
+      <div class="hof-rounds">${s.rounds} kierros${s.rounds!==1?'ta':''}</div>
     </div>`;
   }).join('');
 }
@@ -2542,8 +2714,10 @@ async function checkAllAchievements(roundPct, currentStreak, currentMode) {
   if (currentStreak >= 5)  achCheck('streak_5');
   if (currentStreak >= 10) achCheck('streak_10');
 
-  // Level 4
+  // Taso 4+ (vanha saavutus säilyy yhteensopivuuden vuoksi)
   if (srData.diffLevel >= 4) achCheck('level_4');
+  // Tasosaavutukset joka 10. tasolla (tarkistetaan myös tässä retroaktiivisesti)
+  [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
 
   // All multiplication tables played
   const tablesKey = `matikka_tables_${pName}:${pChar}`;
