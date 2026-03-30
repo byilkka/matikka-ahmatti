@@ -1944,7 +1944,7 @@ async function pinConfirm() {
       } else {
         await pinRemoteSet(pName, pChar, pin);
       }
-      startGame();
+      goStep4(); // ← luokkakoodi myös uusille pelaajille
     } else {
       pinMode = 'new';
       pinFirstEntry = '';
