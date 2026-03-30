@@ -12,115 +12,169 @@
 :root{--bg:#0b1520;--card:#162030;--card2:#1a2840;--accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;--accent4:#7b9fff;--pink:#ff8ed4;--text:#eef3ff;--muted:#6a82a0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* LOGIN */
+/* ── LOGIN ── */
 #loginScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
-.login-box{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:clamp(32px,5vw,52px) clamp(28px,4vw,48px);width:100%;max-width:420px;box-shadow:0 24px 60px rgba(0,0,0,.4);}
-.login-icon{font-size:3.5rem;margin-bottom:16px;display:block;}
-.login-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,4vw,2.2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
-.login-sub{color:var(--muted);font-size:.88rem;font-weight:700;margin-bottom:28px;}
-.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:20px;}
-.pin-dot{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.2);background:transparent;transition:all .15s;}
+.login-box{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:clamp(28px,5vw,48px) clamp(24px,4vw,44px);width:100%;max-width:420px;box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.login-icon{font-size:3rem;margin-bottom:12px;display:block;}
+.login-title{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,4vw,2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.login-sub{color:var(--muted);font-size:.85rem;font-weight:700;margin-bottom:22px;}
+.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:18px;}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2.5px solid rgba(255,255,255,.2);background:transparent;transition:all .15s;}
 .pin-dot.filled{background:var(--accent);border-color:var(--accent);transform:scale(1.15);}
 .pin-dot.error{background:var(--accent2);border-color:var(--accent2);}
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
-.pin-btn{padding:16px 8px;border-radius:14px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:1.5rem;cursor:pointer;transition:all .13s;touch-action:manipulation;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.pin-btn{padding:14px 8px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:1.4rem;cursor:pointer;transition:all .13s;touch-action:manipulation;}
 .pin-btn:hover{background:rgba(255,255,255,.1);}
 .pin-btn:active{transform:scale(.92);}
 .pin-ok{background:rgba(93,232,181,.12);color:var(--accent3);border-color:rgba(93,232,181,.2);}
 .pin-clear{color:var(--accent2);border-color:rgba(255,107,107,.2);}
-.pin-error{color:var(--accent2);font-size:.78rem;font-weight:700;min-height:20px;text-align:center;margin-top:6px;}
+.pin-error{color:var(--accent2);font-size:.75rem;font-weight:700;min-height:18px;text-align:center;margin-top:4px;}
+.lform-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:10px;transition:border-color .18s;}
+.lform-input:focus{border-color:var(--accent4);}
+.lform-input::placeholder{color:var(--muted);}
+.lcode-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;color:var(--text);font-family:'Fredoka One',cursive;font-size:1.3rem;text-align:center;letter-spacing:3px;text-transform:uppercase;outline:none;margin-bottom:10px;transition:border-color .18s;}
+.lcode-input:focus{border-color:var(--accent4);}
+.lbtn-main{width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .2s;margin-top:6px;}
+.lbtn-main:hover{transform:translateY(-1px);}
+.lbtn-ghost{background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:10px;display:block;width:100%;text-align:center;}
+.lbtn-ghost:hover{color:var(--text);}
+.lapply-link{display:inline-flex;align-items:center;gap:7px;background:rgba(123,159,255,.1);border:1.5px solid rgba(123,159,255,.25);border-radius:40px;padding:8px 16px;color:var(--accent4);font-size:.78rem;font-weight:800;cursor:pointer;transition:all .18s;border-style:solid;margin-top:14px;}
+.lapply-link:hover{background:rgba(123,159,255,.18);}
+.lsuccess{background:rgba(93,232,181,.08);border:1.5px solid rgba(93,232,181,.3);border-radius:14px;padding:16px;text-align:center;margin-top:14px;display:none;}
 
-/* DASHBOARD */
+/* ── DASHBOARD ── */
 #dashboard{display:none;}
-.dash-nav{display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,3vw,32px);background:rgba(11,21,32,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:10;flex-wrap:wrap;gap:10px;}
-.dash-logo{font-family:'Fredoka One',cursive;font-size:clamp(1rem,2.5vw,1.4rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.dash-nav-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.btn-sm{padding:7px 14px;border-radius:40px;font-size:.75rem;font-weight:800;cursor:pointer;transition:all .18s;border:1.5px solid rgba(255,255,255,.1);background:var(--card);color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+.dash-nav{display:flex;align-items:center;justify-content:space-between;padding:12px clamp(14px,3vw,28px);background:rgba(11,21,32,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:20;flex-wrap:wrap;gap:8px;}
+.dash-logo{font-family:'Fredoka One',cursive;font-size:clamp(.95rem,2.2vw,1.3rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-teacher{font-size:.72rem;color:var(--muted);font-weight:700;margin-left:8px;}
+.dash-right{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.btn-sm{padding:6px 13px;border-radius:40px;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .18s;border:1.5px solid rgba(255,255,255,.1);background:var(--card);color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
 .btn-sm:hover{color:var(--text);}
-.btn-logout{color:var(--accent2);border-color:rgba(255,107,107,.2);}
+.btn-danger{color:var(--accent2);border-color:rgba(255,107,107,.2);}
+.btn-danger:hover{background:rgba(255,107,107,.08);}
 
-/* TABS */
-.tabs{display:flex;gap:6px;padding:16px clamp(16px,3vw,32px) 0;overflow-x:auto;}
-.tab{padding:9px 18px;border-radius:12px 12px 0 0;font-size:.82rem;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:var(--card2);color:var(--muted);transition:all .18s;white-space:nowrap;}
-.tab.active{background:var(--card);color:var(--text);border-color:rgba(255,255,255,.12);}
-.tab:hover:not(.active){color:var(--text);}
-
-.tab-content{padding:clamp(16px,3vw,32px);background:var(--card);border-top:1px solid rgba(255,255,255,.08);margin:0 clamp(16px,3vw,32px);border-radius:0 16px 16px 16px;min-height:400px;}
-.view{display:none;}.view.active{display:block;}
-
-/* CLASS SELECTOR */
-.class-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px clamp(16px,3vw,32px);background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.05);}
-.class-chip{padding:6px 14px;border-radius:40px;font-size:.75rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);transition:all .18s;white-space:nowrap;}
+/* ── CLASS BAR ── */
+.class-bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:10px clamp(14px,3vw,28px);background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.05);}
+.class-bar-label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+.class-chip{padding:5px 13px;border-radius:40px;font-size:.72rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);transition:all .18s;white-space:nowrap;}
 .class-chip.active{background:rgba(247,201,72,.12);border-color:var(--accent);color:var(--accent);}
 .class-chip:hover:not(.active){color:var(--text);}
-.class-bar-label{font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
 
-/* SUMMARY */
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:clamp(8px,1.5vw,14px);margin-bottom:clamp(16px,2.5vw,24px);}
-.sum-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(12px,2vw,20px);display:flex;flex-direction:column;gap:4px;}
-.sum-icon{font-size:1.5rem;line-height:1;}
-.sum-value{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,3vw,2rem);color:var(--text);line-height:1;}
-.sum-label{font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+/* ── TABS ── */
+.tabs{display:flex;gap:5px;padding:14px clamp(14px,3vw,28px) 0;overflow-x:auto;}
+.tab{padding:8px 16px;border-radius:12px 12px 0 0;font-size:.8rem;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:var(--card2);color:var(--muted);transition:all .18s;white-space:nowrap;}
+.tab.active{background:var(--card);color:var(--text);border-color:rgba(255,255,255,.12);}
+.tab-content{padding:clamp(14px,2.5vw,28px);background:var(--card);border-top:1px solid rgba(255,255,255,.08);margin:0 clamp(14px,3vw,28px);border-radius:0 16px 16px 16px;min-height:360px;}
+.view{display:none;}.view.active{display:block;}
 
-/* CONTROLS */
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;}
-.search-input{flex:1;min-width:160px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 13px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.83rem;font-weight:700;outline:none;transition:border-color .18s;}
+/* ── SUMMARY CARDS ── */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:clamp(8px,1.2vw,12px);margin-bottom:clamp(14px,2vw,20px);}
+.sum-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:clamp(12px,1.8vw,18px);display:flex;flex-direction:column;gap:4px;}
+.sum-icon{font-size:1.4rem;line-height:1;}
+.sum-value{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,2.8vw,1.9rem);color:var(--text);line-height:1;}
+.sum-label{font-size:.62rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+
+/* ── CONTROLS ── */
+.controls{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:12px;}
+.search-input{flex:1;min-width:150px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:700;outline:none;transition:border-color .18s;}
 .search-input:focus{border-color:var(--accent4);}
 .search-input::placeholder{color:var(--muted);}
-.filter-btn{padding:7px 13px;border-radius:40px;font-size:.7rem;font-weight:800;cursor:pointer;transition:all .18s;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);white-space:nowrap;}
+.filter-btn{padding:7px 12px;border-radius:40px;font-size:.68rem;font-weight:800;cursor:pointer;transition:all .18s;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);white-space:nowrap;}
 .filter-btn.active{background:rgba(123,159,255,.12);border-color:var(--accent4);color:var(--accent4);}
-.refresh-btn{padding:7px 13px;border-radius:40px;font-size:.7rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(93,232,181,.2);background:rgba(93,232,181,.06);color:var(--accent3);transition:all .18s;}
+.refresh-btn{padding:7px 12px;border-radius:40px;font-size:.68rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(93,232,181,.2);background:rgba(93,232,181,.06);color:var(--accent3);transition:all .18s;white-space:nowrap;}
+.export-btn{padding:7px 12px;border-radius:40px;font-size:.68rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(123,159,255,.2);background:rgba(123,159,255,.06);color:var(--accent4);transition:all .18s;white-space:nowrap;}
 
-/* TABLE */
-.table-wrap{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;min-width:620px;}
-thead tr{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);}
-th{padding:10px 14px;font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;text-align:left;white-space:nowrap;cursor:pointer;user-select:none;transition:color .18s;}
-th:hover{color:var(--text);}
-th.sorted{color:var(--accent4);}
-tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:rgba(255,255,255,.03);}
-td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
-.td-name{display:flex;align-items:center;gap:8px;}
-.td-avatar{font-size:1.25rem;line-height:1;flex-shrink:0;}
+/* ── TABLE — responsive ── */
+.table-wrap{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;overflow-x:auto;}
+
+/* Desktop table */
+.desk-table{width:100%;border-collapse:collapse;min-width:580px;}
+.desk-table thead tr{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);}
+.desk-table th{padding:9px 13px;font-size:.67rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;text-align:left;white-space:nowrap;cursor:pointer;user-select:none;transition:color .18s;}
+.desk-table th:hover{color:var(--text);}
+.desk-table th.sorted{color:var(--accent4);}
+.desk-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
+.desk-table tbody tr:last-child{border-bottom:none;}
+.desk-table tbody tr:hover{background:rgba(255,255,255,.03);}
+.desk-table td{padding:9px 13px;font-size:.78rem;font-weight:700;vertical-align:middle;}
+
+/* Mobile cards (hidden on desktop) */
+.mob-cards{display:none;}
+@media(max-width:640px){
+  .desk-table{display:none;}
+  .mob-cards{display:block;}
+}
+.mob-card{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.05);padding:13px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;}
+.mob-card:last-child{border-bottom:none;}
+.mob-avatar{font-size:1.6rem;line-height:1;padding-top:2px;}
+.mob-name{font-family:'Fredoka One',cursive;font-size:.92rem;margin-bottom:4px;}
+.mob-stats{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.mob-stat{font-size:.68rem;font-weight:700;color:var(--muted);}
+.mob-right{text-align:right;}
+.mob-remove{background:transparent;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:2px 6px;border-radius:6px;transition:all .18s;margin-top:4px;display:block;margin-left:auto;}
+.mob-remove:hover{color:var(--accent2);background:rgba(255,107,107,.1);}
+
+/* Table cells */
+.td-name{display:flex;align-items:center;gap:7px;}
+.td-avatar{font-size:1.2rem;line-height:1;flex-shrink:0;}
 .td-nametext{font-family:'Fredoka One',cursive;font-size:.88rem;}
-.level-badge{display:inline-flex;padding:2px 9px;border-radius:20px;font-size:.68rem;font-weight:800;}
-.acc-bar-wrap{display:flex;align-items:center;gap:6px;}
-.acc-bar-bg{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;min-width:44px;}
+.level-badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:.67rem;font-weight:800;}
+.acc-bar-wrap{display:flex;align-items:center;gap:5px;}
+.acc-bar-bg{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;min-width:36px;}
 .acc-bar-fill{height:100%;border-radius:3px;}
-.acc-text{font-size:.72rem;font-weight:800;min-width:32px;text-align:right;}
+.acc-text{font-size:.7rem;font-weight:800;min-width:30px;text-align:right;}
+.trend{font-size:.72rem;font-weight:800;}
+.trend.up{color:var(--accent3);}
+.trend.down{color:var(--accent2);}
+.trend.flat{color:var(--muted);}
 .activity-dot{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;}
 .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.dot-green{background:var(--accent3);}.dot-yellow{background:var(--accent);}.dot-grey{background:var(--muted);}
+.dot-green{background:var(--accent3);}
+.dot-yellow{background:var(--accent);}
+.dot-grey{background:var(--muted);}
 .ach-chips{display:flex;flex-wrap:wrap;gap:2px;}
-.ach-chip{font-size:.9rem;line-height:1;}
+.ach-chip{font-size:.88rem;line-height:1;}
+.remove-btn{background:transparent;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:3px 7px;border-radius:6px;transition:all .18s;}
+.remove-btn:hover{color:var(--accent2);background:rgba(255,107,107,.1);}
 .table-msg{text-align:center;padding:36px 20px;color:var(--muted);font-weight:700;font-size:.85rem;}
 .table-msg .big{font-size:2rem;display:block;margin-bottom:10px;}
-.last-updated{text-align:right;font-size:.62rem;color:var(--muted);font-weight:600;margin-top:8px;}
+.last-updated{text-align:right;font-size:.62rem;color:var(--muted);font-weight:600;margin-top:7px;}
 
-/* CREATE CLASS */
-.create-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(20px,3.5vw,36px);max-width:520px;}
-.form-label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
-.form-input{width:100%;background:var(--bg);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;padding:11px 15px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;outline:none;transition:border-color .18s;margin-bottom:18px;}
+/* ── CLASS LIST ── */
+.class-list{display:grid;gap:9px;max-width:620px;}
+.class-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;transition:all .2s;flex-wrap:wrap;}
+.class-card:hover{border-color:rgba(255,255,255,.15);transform:translateX(2px);}
+.class-card.sel{border-color:rgba(247,201,72,.4);background:rgba(247,201,72,.04);}
+.cc-name{font-family:'Fredoka One',cursive;font-size:.98rem;margin-bottom:2px;}
+.cc-code{font-size:.68rem;font-weight:800;color:var(--accent3);letter-spacing:2px;}
+.cc-stats{font-size:.66rem;color:var(--muted);font-weight:700;margin-top:3px;}
+.cc-badge{background:rgba(93,232,181,.1);border:1px solid rgba(93,232,181,.2);color:var(--accent3);font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+
+/* QR / share section */
+.share-box{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px 18px;margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.share-code-big{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--accent3);letter-spacing:4px;}
+.share-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.share-btn{padding:7px 14px;border-radius:40px;font-size:.72rem;font-weight:800;cursor:pointer;border:1.5px solid rgba(93,232,181,.25);background:rgba(93,232,181,.07);color:var(--accent3);transition:all .18s;}
+.share-btn:hover{background:rgba(93,232,181,.15);}
+
+/* ── CREATE CLASS ── */
+.create-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(18px,3vw,32px);max-width:500px;}
+.form-label{display:block;font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.form-input{width:100%;background:var(--bg);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;transition:border-color .18s;margin-bottom:16px;}
 .form-input:focus{border-color:var(--accent4);}
 .form-input::placeholder{color:var(--muted);}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.95rem;padding:12px 26px;border-radius:40px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(247,201,72,.28);}
+.success-box{background:rgba(93,232,181,.08);border:1.5px solid rgba(93,232,181,.3);border-radius:14px;padding:20px;text-align:center;margin-top:16px;display:none;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.sc{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--accent3);letter-spacing:4px;margin:8px 0;}
+.sh{font-size:.72rem;color:var(--muted);font-weight:700;}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.92rem;padding:11px 24px;border-radius:40px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(247,201,72,.26);}
 .btn-primary:hover{transform:translateY(-2px);}
-.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.success-box{background:rgba(93,232,181,.08);border:1.5px solid rgba(93,232,181,.3);border-radius:16px;padding:22px;text-align:center;margin-top:18px;display:none;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
-.success-box .sc{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--accent3);letter-spacing:4px;margin:8px 0;}
-.success-box .sh{font-size:.75rem;color:var(--muted);font-weight:700;}
 
-/* CLASS LIST */
-.class-list{display:grid;gap:10px;max-width:640px;}
-.class-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;transition:all .2s;flex-wrap:wrap;}
-.class-card:hover{border-color:rgba(255,255,255,.15);transform:translateX(3px);}
-.class-card.sel{border-color:rgba(247,201,72,.4);background:rgba(247,201,72,.04);}
-.cc-name{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:2px;}
-.cc-code{font-size:.7rem;font-weight:800;color:var(--accent3);letter-spacing:2px;}
-.cc-stats{font-size:.68rem;color:var(--muted);font-weight:700;margin-top:3px;}
-.cc-badge{background:rgba(93,232,181,.1);border:1px solid rgba(93,232,181,.2);color:var(--accent3);font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+/* Confirm dialog */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.confirm-box{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.confirm-box h3{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:8px;}
+.confirm-box p{font-size:.82rem;color:var(--muted);font-weight:700;margin-bottom:20px;line-height:1.5;}
+.confirm-btns{display:flex;gap:10px;justify-content:center;}
 
 @keyframes spin{to{transform:rotate(360deg);}}
 .spinning{animation:spin .8s linear infinite;display:inline-block;}
@@ -129,127 +183,101 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ══ LOGIN ══ -->
 <div id="loginScreen">
   <div class="login-box">
     <span class="login-icon" id="loginIcon">👩‍🏫</span>
     <div class="login-title" id="loginTitle">Opettaja-näkymä</div>
     <div class="login-sub" id="loginSub">Kirjaudu sisään kutsukoodilla</div>
 
-    <!-- Vaihe A: Kutsukoodi -->
-    <div id="loginStepA">
-      <input type="text" id="loginCodeInput"
-        style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;color:var(--text);font-family:'Fredoka One',cursive;font-size:1.3rem;text-align:center;letter-spacing:3px;text-transform:uppercase;outline:none;margin-bottom:12px;transition:border-color .18s;"
-        placeholder="KUTSUKOODI" maxlength="20" autocomplete="off" autocapitalize="characters"
+    <!-- A: Kutsukoodi -->
+    <div id="lsA">
+      <input class="lcode-input" type="text" id="loginCodeInput" placeholder="KUTSUKOODI"
+        maxlength="20" autocomplete="off" autocapitalize="characters"
         oninput="this.value=this.value.toUpperCase()"
         onkeydown="if(event.key==='Enter')loginCheckCode()"/>
       <div class="pin-error" id="codeErr"></div>
-      <button class="pin-btn pin-ok" style="width:100%;margin-top:8px;font-size:1rem;padding:14px;" onclick="loginCheckCode()">Kirjaudu →</button>
-      <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);text-align:left;">
-        <div style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:10px;">Ei kutsukoodia vielä?</div>
-        <button onclick="showApplyForm()" style="display:inline-flex;align-items:center;gap:7px;background:rgba(123,159,255,.1);border:1.5px solid rgba(123,159,255,.25);border-radius:40px;padding:8px 16px;color:var(--accent4);font-size:.78rem;font-weight:800;cursor:pointer;transition:all .18s;">
-          📋 Hae opettajatunnuksia
-        </button>
+      <button class="lbtn-main" onclick="loginCheckCode()">Kirjaudu →</button>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);text-align:left;">
+        <div style="font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:8px;">Ei kutsukoodia vielä?</div>
+        <button class="lapply-link" onclick="showApplyForm()">📋 Hae opettajatunnuksia</button>
       </div>
     </div>
 
-    <!-- Vaihe B: PIN kirjautuminen -->
-    <div id="loginStepB" style="display:none;">
+    <!-- B: PIN -->
+    <div id="lsB" style="display:none;">
       <div class="pin-dots" id="pinDots">
         <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
         <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
       </div>
       <div class="pin-pad">
-        <button class="pin-btn" onclick="pp(1)">1</button>
-        <button class="pin-btn" onclick="pp(2)">2</button>
-        <button class="pin-btn" onclick="pp(3)">3</button>
-        <button class="pin-btn" onclick="pp(4)">4</button>
-        <button class="pin-btn" onclick="pp(5)">5</button>
-        <button class="pin-btn" onclick="pp(6)">6</button>
-        <button class="pin-btn" onclick="pp(7)">7</button>
-        <button class="pin-btn" onclick="pp(8)">8</button>
-        <button class="pin-btn" onclick="pp(9)">9</button>
-        <button class="pin-btn pin-clear" onclick="pc()">⌫</button>
-        <button class="pin-btn" onclick="pp(0)">0</button>
-        <button class="pin-btn pin-ok" onclick="pconfirm()">✓</button>
+        <button class="pin-btn" onclick="pp(1)">1</button><button class="pin-btn" onclick="pp(2)">2</button><button class="pin-btn" onclick="pp(3)">3</button>
+        <button class="pin-btn" onclick="pp(4)">4</button><button class="pin-btn" onclick="pp(5)">5</button><button class="pin-btn" onclick="pp(6)">6</button>
+        <button class="pin-btn" onclick="pp(7)">7</button><button class="pin-btn" onclick="pp(8)">8</button><button class="pin-btn" onclick="pp(9)">9</button>
+        <button class="pin-btn pin-clear" onclick="pc()">⌫</button><button class="pin-btn" onclick="pp(0)">0</button><button class="pin-btn pin-ok" onclick="pconfirm()">✓</button>
       </div>
       <div class="pin-error" id="pinErr"></div>
-      <button onclick="backToCode()" style="background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:8px;">← Takaisin</button>
+      <button class="lbtn-ghost" onclick="backToCode()">← Takaisin</button>
     </div>
 
-    <!-- Vaihe C: Uusi PIN (ensimmäinen kirjautuminen kutsukoodilla) -->
-    <div id="loginStepC" style="display:none;">
-      <div style="font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:14px;text-align:left;">Luo itsellesi PIN-koodi. Tarvitset sen aina kirjautuessasi.</div>
-      <div style="font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;" id="newPinLabel">Luo PIN (4 numeroa)</div>
+    <!-- C: Uusi PIN -->
+    <div id="lsC" style="display:none;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:12px;text-align:left;">Luo PIN-koodi — tarvitset sen aina kirjautuessasi.</div>
+      <div style="font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;" id="newPinLabel">Luo PIN (4 numeroa)</div>
       <div class="pin-dots" id="newPinDots">
         <div class="pin-dot" id="npd0"></div><div class="pin-dot" id="npd1"></div>
         <div class="pin-dot" id="npd2"></div><div class="pin-dot" id="npd3"></div>
       </div>
       <div class="pin-pad">
-        <button class="pin-btn" onclick="npp(1)">1</button>
-        <button class="pin-btn" onclick="npp(2)">2</button>
-        <button class="pin-btn" onclick="npp(3)">3</button>
-        <button class="pin-btn" onclick="npp(4)">4</button>
-        <button class="pin-btn" onclick="npp(5)">5</button>
-        <button class="pin-btn" onclick="npp(6)">6</button>
-        <button class="pin-btn" onclick="npp(7)">7</button>
-        <button class="pin-btn" onclick="npp(8)">8</button>
-        <button class="pin-btn" onclick="npp(9)">9</button>
-        <button class="pin-btn pin-clear" onclick="npc()">⌫</button>
-        <button class="pin-btn" onclick="npp(0)">0</button>
+        <button class="pin-btn" onclick="npp(1)">1</button><button class="pin-btn" onclick="npp(2)">2</button><button class="pin-btn" onclick="npp(3)">3</button>
+        <button class="pin-btn" onclick="npp(4)">4</button><button class="pin-btn" onclick="npp(5)">5</button><button class="pin-btn" onclick="npp(6)">6</button>
+        <button class="pin-btn" onclick="npp(7)">7</button><button class="pin-btn" onclick="npp(8)">8</button><button class="pin-btn" onclick="npp(9)">9</button>
+        <button class="pin-btn pin-clear" onclick="npc()">⌫</button><button class="pin-btn" onclick="npp(0)">0</button>
         <button class="pin-btn pin-ok" id="newPinOk" onclick="nconfirm()" disabled>✓</button>
       </div>
       <div class="pin-error" id="newPinErr"></div>
-      <button onclick="backToCode()" style="background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:8px;">← Takaisin</button>
+      <button class="lbtn-ghost" onclick="backToCode()">← Takaisin</button>
     </div>
 
-    <!-- Vaihe D: Anomuslomake -->
-    <div id="loginStepD" style="display:none;">
-      <div style="font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:16px;text-align:left;">Täytä lomake niin otamme yhteyttä ja lähetämme kutsukoodin.</div>
-      <input type="text" id="applyName"
-        style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:10px;"
-        placeholder="Nimi *" maxlength="60"/>
-      <input type="text" id="applySchool"
-        style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:10px;"
-        placeholder="Koulu *" maxlength="80"/>
-      <input type="email" id="applyEmail"
-        style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:14px;"
-        placeholder="Sähköposti *" maxlength="100"/>
+    <!-- D: Anomuslomake -->
+    <div id="lsD" style="display:none;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:14px;text-align:left;">Täytä tiedot — lähetämme kutsukoodin kun anomus on hyväksytty.</div>
+      <input class="lform-input" type="text" id="applyName" placeholder="Nimi *" maxlength="60"/>
+      <input class="lform-input" type="text" id="applySchool" placeholder="Koulu *" maxlength="80"/>
+      <input class="lform-input" type="email" id="applyEmail" placeholder="Sähköposti *" maxlength="100"/>
       <div class="pin-error" id="applyErr" style="margin-bottom:8px;"></div>
-      <button onclick="submitApply()" id="applyBtn"
-        style="width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--accent4),#5b7fff);color:white;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .2s;">
-        📨 Lähetä anomus
-      </button>
-      <!-- Onnistumisviesti -->
-      <div id="applySuccess" style="display:none;margin-top:16px;background:rgba(93,232,181,.08);border:1.5px solid rgba(93,232,181,.3);border-radius:14px;padding:16px;text-align:center;">
-        <div style="font-size:1.8rem;margin-bottom:6px;">✅</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--accent3);margin-bottom:4px;">Anomus lähetetty!</div>
-        <div style="font-size:.72rem;color:var(--muted);font-weight:700;">Saat kutsukoodin sähköpostiisi kun anomus on hyväksytty.</div>
+      <button class="lbtn-main" style="background:linear-gradient(135deg,var(--accent4),#5b7fff);color:white;" onclick="submitApply()" id="applyBtn">📨 Lähetä anomus</button>
+      <div class="lsuccess" id="applySuccess">
+        <div style="font-size:1.6rem;margin-bottom:6px;">✅</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--accent3);margin-bottom:4px;">Anomus lähetetty!</div>
+        <div style="font-size:.7rem;color:var(--muted);font-weight:700;">Saat kutsukoodin sähköpostiisi kun anomus on hyväksytty.</div>
       </div>
-      <button onclick="backToCode()" style="background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:12px;">← Takaisin</button>
+      <button class="lbtn-ghost" onclick="backToCode()">← Takaisin</button>
     </div>
 
-    <div style="margin-top:20px;"><a href="index.html" style="color:var(--muted);font-size:.72rem;font-weight:700;text-decoration:none;">← Takaisin etusivulle</a></div>
+    <div style="margin-top:18px;"><a href="index.html" style="color:var(--muted);font-size:.7rem;font-weight:700;text-decoration:none;">← Takaisin etusivulle</a></div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ══ DASHBOARD ══ -->
 <div id="dashboard">
+
   <div class="dash-nav">
-    <div class="dash-logo">👩‍🏫 Opettaja-näkymä</div>
-    <div class="dash-nav-right">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <div class="dash-logo">👩‍🏫 Opettaja-näkymä</div>
+      <div class="dash-teacher" id="dashTeacherName"></div>
+    </div>
+    <div class="dash-right">
       <a href="index.html" class="btn-sm">🏠 Etusivu</a>
-      <button class="btn-sm btn-logout" onclick="logout()">🚪 Ulos</button>
+      <button class="btn-sm btn-danger" onclick="logout()">🚪 Ulos</button>
     </div>
   </div>
 
-  <!-- Class selector -->
+  <!-- Class bar — FIX 1: näytetään vain omat luokat -->
   <div class="class-bar" id="classBar">
     <span class="class-bar-label">Luokka:</span>
-    <button class="class-chip active" onclick="selClass(null,this)">Kaikki</button>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <div class="tab active" onclick="showTab('students',this)">👥 Oppilaat</div>
     <div class="tab" onclick="showTab('classes',this)">🏫 Luokat</div>
@@ -258,14 +286,15 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
 
   <div class="tab-content">
 
-    <!-- STUDENTS TAB -->
+    <!-- STUDENTS -->
     <div class="view active" id="tab-students">
-      <div class="summary-grid" style="margin-top:4px;">
+      <div class="summary-grid" style="margin-top:2px;">
         <div class="sum-card"><div class="sum-icon">👥</div><div class="sum-value" id="sumP">—</div><div class="sum-label">Oppilaita</div></div>
         <div class="sum-card"><div class="sum-icon">🔥</div><div class="sum-value" id="sumA">—</div><div class="sum-label">Aktiivisia 7pv</div></div>
         <div class="sum-card"><div class="sum-icon">🎯</div><div class="sum-value" id="sumAcc">—</div><div class="sum-label">Keskim. tarkkuus</div></div>
         <div class="sum-card"><div class="sum-icon">📈</div><div class="sum-value" id="sumLvl">—</div><div class="sum-label">Keskim. taso</div></div>
         <div class="sum-card"><div class="sum-icon">🎮</div><div class="sum-value" id="sumR">—</div><div class="sum-label">Kierroksia</div></div>
+        <div class="sum-card"><div class="sum-icon">📅</div><div class="sum-value" id="sumWeek">—</div><div class="sum-label">Kierr. tällä vk</div></div>
       </div>
       <div class="controls">
         <input class="search-input" id="searchInput" type="text" placeholder="🔍 Hae nimellä..." oninput="renderTable()"/>
@@ -273,39 +302,41 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
         <button class="filter-btn" onclick="setFilter('active',this)">Aktiiviset</button>
         <button class="filter-btn" onclick="setFilter('inactive',this)">Ei aktiiviset</button>
         <button class="refresh-btn" onclick="loadData()" id="refreshBtn">⟳ Päivitä</button>
+        <button class="export-btn" onclick="exportCSV()">⬇ CSV</button>
       </div>
+      <!-- FIX 2: Desktop table + Mobile cards -->
       <div class="table-wrap">
-        <table>
+        <table class="desk-table">
           <thead><tr>
             <th onclick="sortBy('name')">Oppilas <span id="arr-name"></span></th>
             <th onclick="sortBy('level')">Taso <span id="arr-level">↓</span></th>
             <th onclick="sortBy('rounds')">Kierroksia <span id="arr-rounds"></span></th>
             <th onclick="sortBy('acc')">Tarkkuus <span id="arr-acc"></span></th>
+            <th onclick="sortBy('trend')">Trendi <span id="arr-trend"></span></th>
             <th onclick="sortBy('pts')">Pisteet <span id="arr-pts"></span></th>
             <th onclick="sortBy('last')">Aktiivisuus <span id="arr-last"></span></th>
             <th>Saavutukset</th>
+            <th></th>
           </tr></thead>
-          <tbody id="tableBody"><tr><td colspan="7" class="table-msg"><span class="big">⏳</span>Ladataan...</td></tr></tbody>
+          <tbody id="tableBody"><tr><td colspan="9" class="table-msg"><span class="big">⏳</span>Ladataan...</td></tr></tbody>
         </table>
+        <!-- Mobile cards -->
+        <div class="mob-cards" id="mobCards"></div>
       </div>
       <div class="last-updated" id="lastUpdated"></div>
     </div>
 
-    <!-- CLASSES TAB -->
+    <!-- CLASSES -->
     <div class="view" id="tab-classes">
-      <div style="margin-bottom:16px;font-size:.85rem;color:var(--muted);font-weight:700;">
-        Klikkaa luokkaa suodattaaksesi oppilaat sen mukaan
-      </div>
-      <div class="class-list" id="classList">
-        <div class="table-msg"><span class="big">⏳</span>Ladataan...</div>
-      </div>
+      <div style="margin-bottom:14px;font-size:.82rem;color:var(--muted);font-weight:700;">Klikkaa luokkaa suodattaaksesi oppilaat</div>
+      <div class="class-list" id="classList"><div class="table-msg"><span class="big">⏳</span>Ladataan...</div></div>
     </div>
 
-    <!-- CREATE TAB -->
+    <!-- CREATE -->
     <div class="view" id="tab-create">
-      <div style="margin-bottom:20px;">
-        <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:6px;">Luo uusi luokka</div>
-        <div style="font-size:.82rem;color:var(--muted);font-weight:700;">Uusi luokkakoodi — voit hallita useampaa luokkaa</div>
+      <div style="margin-bottom:18px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:5px;">Luo uusi luokka</div>
+        <div style="font-size:.8rem;color:var(--muted);font-weight:700;">Saat uuden luokkakoodin — voit hallita useampaa luokkaa</div>
       </div>
       <div class="create-card">
         <label class="form-label" for="teacherName">Opettajan nimi *</label>
@@ -313,66 +344,60 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
         <label class="form-label" for="className">Luokan nimi (vapaaehtoinen)</label>
         <input class="form-input" type="text" id="className" placeholder="Esim. 3A tai Matikan kerho" maxlength="40"/>
         <label class="form-label" id="createPinLabel">Luo PIN-koodi luokallesi</label>
-        <div class="pin-dots" style="justify-content:flex-start;gap:10px;margin-bottom:14px;">
+        <div class="pin-dots" style="justify-content:flex-start;gap:10px;margin-bottom:12px;">
           <div class="pin-dot" id="cpd0"></div><div class="pin-dot" id="cpd1"></div>
           <div class="pin-dot" id="cpd2"></div><div class="pin-dot" id="cpd3"></div>
         </div>
-        <div class="pin-pad" style="max-width:280px;margin-bottom:8px;">
-          <button class="pin-btn" onclick="cPinPress(1)">1</button>
-          <button class="pin-btn" onclick="cPinPress(2)">2</button>
-          <button class="pin-btn" onclick="cPinPress(3)">3</button>
-          <button class="pin-btn" onclick="cPinPress(4)">4</button>
-          <button class="pin-btn" onclick="cPinPress(5)">5</button>
-          <button class="pin-btn" onclick="cPinPress(6)">6</button>
-          <button class="pin-btn" onclick="cPinPress(7)">7</button>
-          <button class="pin-btn" onclick="cPinPress(8)">8</button>
-          <button class="pin-btn" onclick="cPinPress(9)">9</button>
-          <button class="pin-btn pin-clear" onclick="cPinClear()">⌫</button>
-          <button class="pin-btn" onclick="cPinPress(0)">0</button>
+        <div class="pin-pad" style="max-width:260px;margin-bottom:7px;">
+          <button class="pin-btn" onclick="cPinPress(1)">1</button><button class="pin-btn" onclick="cPinPress(2)">2</button><button class="pin-btn" onclick="cPinPress(3)">3</button>
+          <button class="pin-btn" onclick="cPinPress(4)">4</button><button class="pin-btn" onclick="cPinPress(5)">5</button><button class="pin-btn" onclick="cPinPress(6)">6</button>
+          <button class="pin-btn" onclick="cPinPress(7)">7</button><button class="pin-btn" onclick="cPinPress(8)">8</button><button class="pin-btn" onclick="cPinPress(9)">9</button>
+          <button class="pin-btn pin-clear" onclick="cPinClear()">⌫</button><button class="pin-btn" onclick="cPinPress(0)">0</button>
           <button class="pin-btn pin-ok" id="createPinOk" onclick="createPinConfirm()" disabled>✓</button>
         </div>
-        <div class="pin-error" id="createPinErr" style="text-align:left;margin-bottom:12px;"></div>
+        <div class="pin-error" id="createPinErr" style="text-align:left;margin-bottom:10px;"></div>
         <div class="success-box" id="successBox">
-          <div style="font-size:1.8rem;margin-bottom:8px;">🎉</div>
-          <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:6px;">Luokka luotu!</div>
-          <div class="sh">Luokkakoodi oppilaillesi:</div>
+          <div style="font-size:1.6rem;margin-bottom:6px;">🎉</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:5px;">Luokka luotu!</div>
+          <div class="sh">Anna tämä koodi oppilaillesi:</div>
           <div class="sc" id="createdCode">—</div>
-          <div class="sh">Oppilaat syöttävät tämän koodin kirjautuessaan peliin</div>
-          <button class="btn-primary" style="margin-top:14px;font-size:.82rem;padding:9px 20px;" onclick="copyCode()">📋 Kopioi koodi</button>
+          <div class="sh">Oppilaat syöttävät sen kirjautuessaan peliin</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+            <button class="btn-primary" style="font-size:.8rem;padding:8px 18px;" onclick="copyCreatedCode()">📋 Kopioi koodi</button>
+            <button class="btn-primary" style="font-size:.8rem;padding:8px 18px;background:linear-gradient(135deg,var(--accent4),#5b7fff);" onclick="shareCreatedCode()">📤 Jaa</button>
+          </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /tab-content -->
-</div><!-- /dashboard -->
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div class="confirm-overlay" id="confirmOverlay" style="display:none;">
+  <div class="confirm-box">
+    <h3 id="confirmTitle">Vahvista toiminto</h3>
+    <p id="confirmMsg"></p>
+    <div class="confirm-btns">
+      <button class="btn-sm" onclick="closeConfirm()">Peruuta</button>
+      <button class="btn-sm btn-danger" id="confirmOk" onclick="doConfirm()">Poista</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const SB_URL='https://whftebwchwvwlyfgytoo.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZnRlYndjaHd2d2x5Zmd5dG9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzMyMjQsImV4cCI6MjA5MDMwOTIyNH0.nZ9toEBWzGaagueyiQXYJgulMaRnC4PP_3cadqdTUAo';
 const SB_H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 
-// ── Hash ──
-function hashPin(pin,salt){
-  let h=0;const s=pin+salt+'matikka_ahmatti_salt_2024';
-  for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}
-  return Math.abs(h).toString(16);
-}
+function hashPin(pin,salt){let h=0;const s=pin+salt+'matikka_ahmatti_salt_2024';for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h).toString(16);}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Login state ──
-let loginCode='';
-let loginTeacherName='';
-let pinBuf='';
-let newPinBuf='';
-let newPinFirst='';
-let newPinMode='first';
+let loginCode='',loginTeacherName='',pinBuf='',newPinBuf='',newPinFirst='',newPinMode='first';
+let myClasses=[]; // FIX 1: vain kirjautuneen opettajan luokat
 
-function showLoginStep(step){
-  ['A','B','C','D'].forEach(s=>{
-    const el=document.getElementById('loginStep'+s);
-    if(el)el.style.display=s===step?'block':'none';
-  });
-}
-
+function showLS(s){['A','B','C','D'].forEach(x=>{const e=document.getElementById('ls'+x);if(e)e.style.display=x===s?'block':'none';});}
 function backToCode(){
   pinBuf='';newPinBuf='';newPinFirst='';newPinMode='first';
   document.getElementById('loginCodeInput').value='';
@@ -380,25 +405,22 @@ function backToCode(){
   document.getElementById('loginSub').textContent='Kirjaudu sisään kutsukoodilla';
   document.getElementById('loginIcon').textContent='👩‍🏫';
   ['codeErr','pinErr','newPinErr','applyErr'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='';});
-  showLoginStep('A');
+  showLS('A');
 }
-
 function showApplyForm(){
   document.getElementById('loginTitle').textContent='Hae opettajatunnuksia';
   document.getElementById('loginSub').textContent='Täytä tiedot ja lähetä anomus';
   document.getElementById('loginIcon').textContent='📋';
   document.getElementById('applySuccess').style.display='none';
-  showLoginStep('D');
+  showLS('D');
 }
 
-// Vaihe A: tarkista kutsukoodi tai luokkakoodi
 async function loginCheckCode(){
   const code=document.getElementById('loginCodeInput').value.trim().toUpperCase();
   if(!code){document.getElementById('codeErr').textContent='Kirjoita koodi';return;}
   const errEl=document.getElementById('codeErr');
   errEl.textContent='⏳ Tarkistetaan...';
   try{
-    // Tarkista ensin teacher_invites
     const invRes=await fetch(`${SB_URL}/rest/v1/teacher_invites?invite_code=eq.${encodeURIComponent(code)}&select=*&limit=1`,{headers:SB_H});
     const invRows=invRes.ok?await invRes.json():[];
     if(invRows.length){
@@ -415,30 +437,28 @@ async function loginCheckCode(){
           newPinBuf='';newPinFirst='';newPinMode='first';updNewDots();
           document.getElementById('newPinOk').disabled=true;
           document.getElementById('newPinLabel').textContent='Luo PIN (4 numeroa)';
-          showLoginStep('C');
+          showLS('C');
         } else {
           document.getElementById('loginTitle').textContent=`Hei, ${inv.teacher_name}!`;
           document.getElementById('loginSub').textContent='Syötä PIN-koodisi';
-          pinBuf='';updDots();showLoginStep('B');
+          pinBuf='';updDots();showLS('B');
         }
         return;
       }
     }
-    // Tarkista olemassaoleva luokkakoodi
     const clsRes=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(code)}&select=class_code,teacher_name,pin_hash&limit=1`,{headers:SB_H});
     const clsRows=clsRes.ok?await clsRes.json():[];
     if(clsRows.length){
       loginCode=code;loginTeacherName=clsRows[0].teacher_name;
       document.getElementById('loginTitle').textContent=`Hei, ${clsRows[0].teacher_name}!`;
       document.getElementById('loginSub').textContent='Syötä PIN-koodisi';
-      pinBuf='';updDots();errEl.textContent='';showLoginStep('B');
+      pinBuf='';updDots();errEl.textContent='';showLS('B');
       return;
     }
-    errEl.textContent='Koodia ei löydy — tarkista kirjoitus ❌';
+    errEl.textContent='Koodia ei löydy ❌';
   } catch{errEl.textContent='Verkkovirhe — yritä uudelleen';}
 }
 
-// Vaihe B: PIN-kirjautuminen
 function pp(n){if(pinBuf.length>=4)return;pinBuf+=n;updDots();if(pinBuf.length===4)setTimeout(pconfirm,150);}
 function pc(){pinBuf=pinBuf.slice(0,-1);updDots();}
 function updDots(){for(let i=0;i<4;i++){const d=document.getElementById('pd'+i);d.classList.toggle('filled',i<pinBuf.length);d.classList.remove('error');}}
@@ -449,11 +469,7 @@ async function pconfirm(){
     const res=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}&select=pin_hash&limit=1`,{headers:SB_H});
     const rows=res.ok?await res.json():[];
     if(rows.length&&rows[0].pin_hash===hash){
-      // Onnistui!
-      activeClass=loginCode;
-      document.getElementById('loginScreen').style.display='none';
-      document.getElementById('dashboard').style.display='block';
-      loadData();
+      enterDashboard();
     } else {
       document.getElementById('pinErr').textContent='Väärä PIN ❌';
       for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.add('error');
@@ -462,7 +478,6 @@ async function pconfirm(){
   } catch{document.getElementById('pinErr').textContent='Verkkovirhe — yritä uudelleen';}
 }
 
-// Vaihe C: uusi PIN kutsukoodilla
 function npp(n){if(newPinBuf.length>=4)return;newPinBuf+=n;updNewDots();document.getElementById('newPinOk').disabled=newPinBuf.length<4;if(newPinBuf.length===4)setTimeout(nconfirm,150);}
 function npc(){newPinBuf=newPinBuf.slice(0,-1);updNewDots();document.getElementById('newPinOk').disabled=true;}
 function updNewDots(){for(let i=0;i<4;i++){const d=document.getElementById('npd'+i);if(d)d.classList.toggle('filled',i<newPinBuf.length);}}
@@ -471,7 +486,7 @@ async function nconfirm(){
   if(newPinMode==='first'){
     newPinFirst=newPinBuf;newPinBuf='';newPinMode='confirm';updNewDots();
     document.getElementById('newPinOk').disabled=true;
-    document.getElementById('newPinLabel').textContent='Syötä PIN uudelleen vahvistaaksesi';
+    document.getElementById('newPinLabel').textContent='Syötä PIN uudelleen';
     document.getElementById('newPinErr').textContent='';
   } else {
     if(newPinBuf!==newPinFirst){
@@ -495,29 +510,23 @@ async function saveNewTeacherPin(){
     const chk=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}&select=class_code&limit=1`,{headers:SB_H});
     const exists=chk.ok&&(await chk.json()).length>0;
     if(exists){
-      await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}`,{
-        method:'PATCH',headers:{...SB_H,'Prefer':'return=minimal'},
-        body:JSON.stringify({pin_hash:hash})
-      });
+      await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}`,{method:'PATCH',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({pin_hash:hash})});
     } else {
-      await fetch(`${SB_URL}/rest/v1/classes`,{
-        method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
-        body:JSON.stringify({class_code:loginCode,teacher_name:loginTeacherName,pin_hash:hash})
-      });
+      await fetch(`${SB_URL}/rest/v1/classes`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({class_code:loginCode,teacher_name:loginTeacherName,pin_hash:hash})});
     }
-    // Merkitse kutsukoodi käytetyksi
-    fetch(`${SB_URL}/rest/v1/teacher_invites?invite_code=eq.${encodeURIComponent(loginCode)}`,{
-      method:'PATCH',headers:{...SB_H,'Prefer':'return=minimal'},
-      body:JSON.stringify({status:'used'})
-    }).catch(()=>{});
-    activeClass=loginCode;
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    loadData();
+    fetch(`${SB_URL}/rest/v1/teacher_invites?invite_code=eq.${encodeURIComponent(loginCode)}`,{method:'PATCH',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({status:'used'})}).catch(()=>{});
+    enterDashboard();
   } catch{errEl.textContent='Tallennus epäonnistui — yritä uudelleen';}
 }
 
-// Vaihe D: anomuslomake
+function enterDashboard(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('dashTeacherName').textContent=loginTeacherName?`· ${loginTeacherName}`:'';
+  loadData();
+}
+function logout(){location.reload();}
+
 async function submitApply(){
   const name=document.getElementById('applyName').value.trim();
   const school=document.getElementById('applySchool').value.trim();
@@ -525,56 +534,44 @@ async function submitApply(){
   const errEl=document.getElementById('applyErr');
   if(!name||!school||!email){errEl.textContent='Täytä kaikki kentät ❌';return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='Tarkista sähköpostiosoite ❌';return;}
-  document.getElementById('applyBtn').disabled=true;
-  errEl.textContent='⏳ Lähetetään...';
+  document.getElementById('applyBtn').disabled=true;errEl.textContent='⏳ Lähetetään...';
   try{
-    // Tallenna Supabaseen
-    const res=await fetch(`${SB_URL}/rest/v1/teacher_invites`,{
-      method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
-      body:JSON.stringify({teacher_name:name,school:school,email:email,status:'pending'})
-    });
+    const res=await fetch(`${SB_URL}/rest/v1/teacher_invites`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({teacher_name:name,school:school,email:email,status:'pending'})});
     if(!res.ok)throw new Error();
-
-    // Lähetä ilmoitus sinulle Formspreen kautta
-    fetch('https://formspree.io/f/xwvwovgk',{
-      method:'POST',
-      headers:{'Accept':'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        _subject: `Matikka-Ahmatti: Uusi opettaja-anomus — ${name}`,
-        nimi: name,
-        koulu: school,
-        sahkoposti: email,
-        viesti: `Uusi opettaja-anomus odottaa hyväksyntää Supabasessa.\n\nHyväksy anomus:\n1. Mene Supabase → teacher_invites\n2. Etsi: ${email}\n3. Aseta status = approved ja invite_code = [OMANIMI25]`
-      })
-    }).catch(()=>{}); // ei kriittinen jos Formspree epäonnistuu
-
+    const fd=new FormData();
+    fd.append('_subject',`Matikka-Ahmatti: Uusi opettaja-anomus — ${name}`);
+    fd.append('nimi',name);fd.append('koulu',school);fd.append('sahkoposti',email);
+    fd.append('viesti',`Uusi anomus odottaa hyväksyntää.\n\nHyväksy Supabasessa:\n1. Etsi: ${email}\n2. status = approved\n3. invite_code = [OMANIMI25]\n4. Lähetä koodi opettajalle`);
+    fetch('https://formspree.io/f/xwvwovgk',{method:'POST',body:fd,headers:{'Accept':'application/json'}}).catch(()=>{});
     errEl.textContent='';
     document.getElementById('applySuccess').style.display='block';
-    document.getElementById('applyName').value='';
-    document.getElementById('applySchool').value='';
-    document.getElementById('applyEmail').value='';
+    document.getElementById('applyName').value='';document.getElementById('applySchool').value='';document.getElementById('applyEmail').value='';
   } catch{errEl.textContent='Lähetys epäonnistui — yritä uudelleen';}
   document.getElementById('applyBtn').disabled=false;
 }
 
-function logout(){location.reload();}
-
-// ── Tabs ──
-function showTab(t,el){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('active');
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  el.classList.add('active');
-}
-
-// ── Data ──
+// ── Dashboard data ──
 let allPlayers=[],allClasses=[],activeClass=null,sortCol='level',sortAsc=false,activeFilter='all';
-function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// FIX 1: Hae vain kirjautuneen opettajan luokat
+async function loadMyClasses(){
+  // Hae kaikki luokat joiden koodi täsmää teacher_invites-tauluun tällä opettajalla
+  // Yksinkertaisin tapa: hae kaikki invite_codet joilla tämä opettajanimi
+  const res=await fetch(`${SB_URL}/rest/v1/teacher_invites?teacher_name=eq.${encodeURIComponent(loginTeacherName)}&select=invite_code,status`,{headers:SB_H});
+  const invites=res.ok?await res.json():[];
+  const codes=invites.filter(i=>i.invite_code).map(i=>i.invite_code);
+  // Lisää myös kirjautumiskoodi itse (luokka saattaa olla luotu suoraan)
+  if(!codes.includes(loginCode))codes.push(loginCode);
+  return codes;
+}
 
 async function loadData(){
   const btn=document.getElementById('refreshBtn');
   if(btn)btn.innerHTML='<span class="spinning">⟳</span>';
-  try {
+  try{
+    // FIX 1: lataa ensin omat luokkakoodit
+    const myCodes=await loadMyClasses();
+
     const [sR,pR,aR,cR,mR]=await Promise.all([
       fetch(`${SB_URL}/rest/v1/scores?select=*&order=created_at.desc&limit=5000`,{headers:SB_H}),
       fetch(`${SB_URL}/rest/v1/player_progress?select=*`,{headers:SB_H}),
@@ -585,71 +582,85 @@ async function loadData(){
     const scores=sR.ok?await sR.json():[];
     const prog=pR.ok?await pR.json():[];
     const achs=aR.ok?await aR.json():[];
-    allClasses=cR.ok?await cR.json():[];
+    const allCls=cR.ok?await cR.json():[];
     const members=mR.ok?await mR.json():[];
 
-    // membership map
-    const memMap=new Map();
-    members.forEach(m=>{
-      const k=`${m.player_name}::${m.player_char}`;
-      if(!memMap.has(k))memMap.set(k,[]);
-      memMap.get(k).push(m.class_code);
-    });
+    // FIX 1: suodata vain omat luokat
+    myClasses=allCls.filter(c=>myCodes.includes(c.class_code));
+    allClasses=myClasses;
 
-    // member count per class
+    // Membership map
+    const memMap=new Map();
+    members.forEach(m=>{const k=`${m.player_name}::${m.player_char}`;if(!memMap.has(k))memMap.set(k,[]);memMap.get(k).push(m.class_code);});
     const cCount=new Map();
     members.forEach(m=>cCount.set(m.class_code,(cCount.get(m.class_code)||0)+1));
     allClasses=allClasses.map(c=>({...c,cnt:cCount.get(c.class_code)||0}));
 
-    // aggregate players
+    // Aggregate players — FIX 4: lasketaan trendi (viikon muutos)
     const pMap=new Map();
+    const week=7*24*60*60*1000;
+    const now=Date.now();
     scores.forEach(s=>{
       const k=`${s.name}::${s.char}`;
       const ts=new Date(s.created_at).getTime();
       const ex=pMap.get(k);
-      if(!ex)pMap.set(k,{name:s.name,char:s.char,totalPts:s.pts,totalCorr:s.corr||0,totalPlayed:s.total||10,rounds:1,lastSeen:ts,diffLevel:1});
-      else{ex.totalPts+=s.pts;ex.totalCorr+=s.corr||0;ex.totalPlayed+=s.total||10;ex.rounds++;if(ts>ex.lastSeen)ex.lastSeen=ts;}
+      const isRecent=now-ts<week;
+      if(!ex)pMap.set(k,{name:s.name,char:s.char,totalPts:s.pts,totalCorr:s.corr||0,totalPlayed:s.total||10,rounds:1,lastSeen:ts,diffLevel:1,recentRounds:isRecent?1:0,recentCorr:isRecent?s.corr||0:0,recentPlayed:isRecent?s.total||10:0,oldCorr:!isRecent?s.corr||0:0,oldPlayed:!isRecent?s.total||10:0});
+      else{
+        ex.totalPts+=s.pts;ex.totalCorr+=s.corr||0;ex.totalPlayed+=s.total||10;ex.rounds++;
+        if(ts>ex.lastSeen)ex.lastSeen=ts;
+        if(isRecent){ex.recentRounds++;ex.recentCorr+=s.corr||0;ex.recentPlayed+=s.total||10;}
+        else{ex.oldCorr+=s.corr||0;ex.oldPlayed+=s.total||10;}
+      }
     });
-    prog.forEach(p=>{
-      const k=`${p.player_name}::${p.player_char}`;
-      const pl=pMap.get(k);
-      if(pl&&p.diff_level>pl.diffLevel)pl.diffLevel=p.diff_level;
-    });
+    prog.forEach(p=>{const k=`${p.player_name}::${p.player_char}`;const pl=pMap.get(k);if(pl&&p.diff_level>pl.diffLevel)pl.diffLevel=p.diff_level;});
     const achMap=new Map();
-    achs.forEach(a=>{
-      const k=`${a.player_name}::${a.player_char}`;
-      if(!achMap.has(k))achMap.set(k,[]);
-      achMap.get(k).push(a.achievement_id);
+    achs.forEach(a=>{const k=`${a.player_name}::${a.player_char}`;if(!achMap.has(k))achMap.set(k,[]);achMap.get(k).push(a.achievement_id);});
+
+    allPlayers=Array.from(pMap.values()).map(p=>{
+      const acc=p.totalPlayed>0?Math.round(p.totalCorr/p.totalPlayed*100):0;
+      // FIX 4: trendi = viimeinen viikko vs sitä ennen
+      const recentAcc=p.recentPlayed>0?Math.round(p.recentCorr/p.recentPlayed*100):null;
+      const oldAcc=p.oldPlayed>0?Math.round(p.oldCorr/p.oldPlayed*100):null;
+      let trend=0;
+      if(recentAcc!==null&&oldAcc!==null)trend=recentAcc-oldAcc;
+      return{...p,acc,recentAcc,trend,achs:achMap.get(`${p.name}::${p.char}`)||[],classes:memMap.get(`${p.name}::${p.char}`)||[]};
     });
 
-    allPlayers=Array.from(pMap.values()).map(p=>({
-      ...p,
-      acc:p.totalPlayed>0?Math.round(p.totalCorr/p.totalPlayed*100):0,
-      achs:achMap.get(`${p.name}::${p.char}`)||[],
-      classes:memMap.get(`${p.name}::${p.char}`)||[],
-    }));
+    // Auto-valitse oma luokka jos vain yksi
+    if(myClasses.length===1&&!activeClass){
+      activeClass=myClasses[0].class_code;
+    }
 
     buildClassBar();
     renderSummary();
     renderTable();
     renderClasses();
-    const now=new Date().toLocaleTimeString('fi-FI',{hour:'2-digit',minute:'2-digit'});
-    const lu=document.getElementById('lastUpdated');
-    if(lu)lu.textContent=`Päivitetty ${now}`;
+    const t=new Date().toLocaleTimeString('fi-FI',{hour:'2-digit',minute:'2-digit'});
+    const lu=document.getElementById('lastUpdated');if(lu)lu.textContent=`Päivitetty ${t}`;
   } catch(e){
     const b=document.getElementById('tableBody');
-    if(b)b.innerHTML=`<tr><td colspan="7" class="table-msg"><span class="big">❌</span>Lataus epäonnistui</td></tr>`;
+    if(b)b.innerHTML=`<tr><td colspan="9" class="table-msg"><span class="big">❌</span>Lataus epäonnistui</td></tr>`;
   }
   if(btn)btn.innerHTML='⟳ Päivitä';
 }
 
+// FIX 1: class bar näyttää vain omat luokat
 function buildClassBar(){
   const bar=document.getElementById('classBar');
-  bar.innerHTML=`<span class="class-bar-label">Luokka:</span><button class="class-chip ${!activeClass?'active':''}" onclick="selClass(null,this)">Kaikki</button>`;
-  allClasses.forEach(c=>{
+  bar.innerHTML=`<span class="class-bar-label">Luokka:</span>`;
+  if(myClasses.length>1){
+    const allBtn=document.createElement('button');
+    allBtn.className='class-chip'+(activeClass===null?' active':'');
+    allBtn.textContent='Kaikki';
+    allBtn.onclick=()=>selClass(null,allBtn);
+    bar.appendChild(allBtn);
+  }
+  myClasses.forEach(c=>{
     const btn=document.createElement('button');
     btn.className='class-chip'+(activeClass===c.class_code?' active':'');
-    btn.textContent=`${c.teacher_name} (${c.class_code})`;
+    btn.textContent=c.teacher_name+(c.class_code?` (${c.class_code})`:'');
+    btn.dataset.code=c.class_code;
     btn.onclick=()=>selClass(c.class_code,btn);
     bar.appendChild(btn);
   });
@@ -658,13 +669,16 @@ function buildClassBar(){
 function selClass(code,el){
   activeClass=code;
   document.querySelectorAll('.class-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   renderSummary();renderTable();
 }
 
 function getFP(){
-  if(activeClass)return allPlayers.filter(p=>p.classes.includes(activeClass));
-  return allPlayers;
+  // FIX 1: näytä vain oman luokan oppilaat
+  const myCodes=myClasses.map(c=>c.class_code);
+  let pl=allPlayers.filter(p=>p.classes.some(c=>myCodes.includes(c)));
+  if(activeClass)pl=pl.filter(p=>p.classes.includes(activeClass));
+  return pl;
 }
 
 function renderSummary(){
@@ -673,16 +687,19 @@ function renderSummary(){
   const avgA=pl.length?Math.round(pl.reduce((s,p)=>s+p.acc,0)/pl.length):0;
   const avgL=pl.length?(pl.reduce((s,p)=>s+p.diffLevel,0)/pl.length).toFixed(1):'—';
   const totR=pl.reduce((s,p)=>s+p.rounds,0);
+  // FIX 7: viikkokierrokset
+  const weekR=pl.reduce((s,p)=>s+p.recentRounds,0);
   document.getElementById('sumP').textContent=pl.length;
   document.getElementById('sumA').textContent=act;
   document.getElementById('sumAcc').textContent=avgA+'%';
   document.getElementById('sumLvl').textContent=avgL;
   document.getElementById('sumR').textContent=totR;
+  document.getElementById('sumWeek').textContent=weekR;
 }
 
 function accC(a){return a>=90?'var(--accent3)':a>=70?'var(--accent)':a>=50?'var(--accent2)':'var(--muted)';}
 function lvlC(l){
-  if(l<=5) return 'background:rgba(93,232,181,.15);color:var(--accent3)';
+  if(l<=5)return 'background:rgba(93,232,181,.15);color:var(--accent3)';
   if(l<=10)return 'background:rgba(123,159,255,.15);color:var(--accent4)';
   if(l<=20)return 'background:rgba(247,201,72,.15);color:var(--accent)';
   if(l<=35)return 'background:rgba(255,142,212,.15);color:var(--pink)';
@@ -690,22 +707,28 @@ function lvlC(l){
 }
 function actI(ts){
   const d=Date.now()-ts,day=86400000;
-  if(d<day)    return{cls:'dot-green',label:'Tänään'};
-  if(d<3*day)  return{cls:'dot-green',label:'1–3 pv'};
-  if(d<7*day)  return{cls:'dot-yellow',label:'Tällä vk'};
-  if(d<30*day) return{cls:'dot-yellow',label:'Tässä kk'};
-  return            {cls:'dot-grey',label:'Yli kk'};
+  if(d<day)return{cls:'dot-green',label:'Tänään'};
+  if(d<3*day)return{cls:'dot-green',label:'1–3 pv'};
+  if(d<7*day)return{cls:'dot-yellow',label:'Tällä vk'};
+  if(d<30*day)return{cls:'dot-yellow',label:'Tässä kk'};
+  return{cls:'dot-grey',label:'Yli kk'};
 }
+// FIX 4: trendi
+function trendHtml(t){
+  if(t===0||t===null||isNaN(t))return`<span class="trend flat">→ —</span>`;
+  if(t>0)return`<span class="trend up">↑ +${t}%</span>`;
+  return`<span class="trend down">↓ ${t}%</span>`;
+}
+
 const AI={first_login:'👋',perfect_round:'🌟',streak_5:'🔥',streak_10:'🔥🔥',all_tables:'✖️',level_4:'🚀',rounds_100:'🏆',hof_1:'🐐',rounds_10:'🎮',rounds_50:'🎯',perfect_3:'💎',all_modes:'🌈',streak_20:'⚡',speed_demon:'💨',comeback:'💪',early_bird:'🌅',level_10:'🌟',level_20:'🔥',level_30:'⚡',level_40:'🚀',level_50:'🏆'};
 
 function setFilter(f,el){activeFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTable();}
 function sortBy(col){
   if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=false;}
   document.querySelectorAll('[id^="arr-"]').forEach(a=>a.textContent='');
-  const arr=document.getElementById('arr-'+col);
-  if(arr)arr.textContent=sortAsc?'↑':'↓';
-  document.querySelectorAll('th').forEach(t=>t.classList.remove('sorted'));
-  document.querySelector(`th[onclick="sortBy('${col}')"]`)?.classList.add('sorted');
+  const arr=document.getElementById('arr-'+col);if(arr)arr.textContent=sortAsc?'↑':'↓';
+  document.querySelectorAll('.desk-table th').forEach(t=>t.classList.remove('sorted'));
+  document.querySelector(`.desk-table th[onclick="sortBy('${col}')"]`)?.classList.add('sorted');
   renderTable();
 }
 
@@ -721,138 +744,230 @@ function renderTable(){
   pl.sort((a,b)=>{
     let av,bv;
     switch(sortCol){
-      case 'name':  av=a.name.toLowerCase();bv=b.name.toLowerCase();break;
-      case 'level': av=a.diffLevel;bv=b.diffLevel;break;
+      case 'name':av=a.name.toLowerCase();bv=b.name.toLowerCase();break;
+      case 'level':av=a.diffLevel;bv=b.diffLevel;break;
       case 'rounds':av=a.rounds;bv=b.rounds;break;
-      case 'acc':   av=a.acc;bv=b.acc;break;
-      case 'pts':   av=a.totalPts;bv=b.totalPts;break;
-      case 'last':  av=a.lastSeen;bv=b.lastSeen;break;
-      default:      av=a.diffLevel;bv=b.diffLevel;
+      case 'acc':av=a.acc;bv=b.acc;break;
+      case 'trend':av=a.trend||0;bv=b.trend||0;break;
+      case 'pts':av=a.totalPts;bv=b.totalPts;break;
+      case 'last':av=a.lastSeen;bv=b.lastSeen;break;
+      default:av=a.diffLevel;bv=b.diffLevel;
     }
     return sortAsc?(av<bv?-1:av>bv?1:0):(av>bv?-1:av<bv?1:0);
   });
+
   const body=document.getElementById('tableBody');
-  if(!pl.length){body.innerHTML=`<tr><td colspan="7" class="table-msg"><span class="big">🔍</span>Ei tuloksia</td></tr>`;return;}
-  body.innerHTML=pl.map(p=>{
+  const mob=document.getElementById('mobCards');
+
+  if(!pl.length){
+    if(body)body.innerHTML=`<tr><td colspan="9" class="table-msg"><span class="big">🔍</span>Ei oppilaita</td></tr>`;
+    if(mob)mob.innerHTML=`<div class="table-msg"><span class="big">🔍</span>Ei oppilaita</div>`;
+    return;
+  }
+
+  // Desktop rows
+  if(body)body.innerHTML=pl.map(p=>{
     const av=p.char==='boy'?'🤴':'👸';
     const act=actI(p.lastSeen);
-    const chips=p.achs.slice(0,5).map(id=>`<span class="ach-chip" title="${id}">${AI[id]||'🏅'}</span>`).join('');
-    const more=p.achs.length>5?`<span style="font-size:.62rem;color:var(--muted);font-weight:700">+${p.achs.length-5}</span>`:'';
+    const chips=p.achs.slice(0,4).map(id=>`<span class="ach-chip" title="${id}">${AI[id]||'🏅'}</span>`).join('');
+    const more=p.achs.length>4?`<span style="font-size:.62rem;color:var(--muted);font-weight:700">+${p.achs.length-4}</span>`:'';
+    // FIX 6: merkitse jos useammassa luokassa
+    const multiClass=p.classes.filter(c=>myClasses.map(x=>x.class_code).includes(c)).length>1;
+    const nameExtra=multiClass?` <span style="font-size:.6rem;color:var(--accent);vertical-align:middle" title="Useammassa luokassasi">✦</span>`:'';
     return `<tr>
-      <td><div class="td-name"><span class="td-avatar">${av}</span><span class="td-nametext">${escH(p.name)}</span></div></td>
+      <td><div class="td-name"><span class="td-avatar">${av}</span><span class="td-nametext">${escH(p.name)}${nameExtra}</span></div></td>
       <td><span class="level-badge" style="${lvlC(p.diffLevel)}">Taso ${p.diffLevel}</span></td>
       <td style="color:var(--text)">${p.rounds}</td>
       <td><div class="acc-bar-wrap"><div class="acc-bar-bg"><div class="acc-bar-fill" style="width:${p.acc}%;background:${accC(p.acc)}"></div></div><span class="acc-text" style="color:${accC(p.acc)}">${p.acc}%</span></div></td>
+      <td>${trendHtml(p.trend)}</td>
       <td style="color:var(--accent);font-family:'Fredoka One',cursive">${p.totalPts.toLocaleString('fi-FI')}</td>
       <td><div class="activity-dot"><div class="dot ${act.cls}"></div>${act.label}</div></td>
       <td><div class="ach-chips">${chips}${more}</div></td>
+      <td><button class="remove-btn" onclick="confirmRemove('${escH(p.name)}','${p.char}')" title="Poista luokasta">✕</button></td>
     </tr>`;
+  }).join('');
+
+  // FIX 2: Mobile cards
+  if(mob)mob.innerHTML=pl.map(p=>{
+    const av=p.char==='boy'?'🤴':'👸';
+    const act=actI(p.lastSeen);
+    return `<div class="mob-card">
+      <div class="mob-avatar">${av}</div>
+      <div>
+        <div class="mob-name">${escH(p.name)}</div>
+        <span class="level-badge" style="${lvlC(p.diffLevel)};font-size:.65rem">Taso ${p.diffLevel}</span>
+        <div class="mob-stats">
+          <span class="mob-stat">${p.rounds} kierr.</span>
+          <span class="mob-stat">·</span>
+          <span class="mob-stat" style="color:${accC(p.acc)}">${p.acc}%</span>
+          <span class="mob-stat">·</span>
+          <span class="mob-stat">${trendHtml(p.trend)}</span>
+          <span class="mob-stat">·</span>
+          <span class="mob-stat"><div class="dot ${act.cls}" style="display:inline-block;margin-right:3px;"></div>${act.label}</span>
+        </div>
+      </div>
+      <div class="mob-right">
+        <div style="font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--accent)">${p.totalPts.toLocaleString('fi-FI')}</div>
+        <div style="font-size:.6rem;color:var(--muted);font-weight:700">pistettä</div>
+        <button class="mob-remove" onclick="confirmRemove('${escH(p.name)}','${p.char}')" title="Poista luokasta">✕ poista</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
 function renderClasses(){
   const el=document.getElementById('classList');
   if(!el)return;
-  if(!allClasses.length){el.innerHTML=`<div class="table-msg"><span class="big">🏫</span>Ei luokkia vielä — luo ensimmäinen!</div>`;return;}
+  if(!myClasses.length){el.innerHTML=`<div class="table-msg"><span class="big">🏫</span>Ei luokkia vielä</div>`;return;}
   const week=7*24*60*60*1000;
-  el.innerHTML=allClasses.map(c=>{
+  el.innerHTML=myClasses.map(c=>{
     const members=allPlayers.filter(p=>p.classes.includes(c.class_code));
     const active=members.filter(p=>Date.now()-p.lastSeen<week).length;
     const avgL=members.length?(members.reduce((s,p)=>s+p.diffLevel,0)/members.length).toFixed(1):'—';
-    return `<div class="class-card ${activeClass===c.class_code?'sel':''}" onclick="selClass('${c.class_code}',document.querySelector('.class-chip[data-code=\\'${c.class_code}\\']')||document.querySelector('.class-chip'))">
+    return `<div class="class-card ${activeClass===c.class_code?'sel':''}" onclick="selClass('${c.class_code}',document.querySelector('[data-code=\\'${c.class_code}\\']'))">
       <div>
         <div class="cc-name">${escH(c.teacher_name)}</div>
         <div class="cc-code">🔑 ${c.class_code}</div>
         <div class="cc-stats">${members.length} oppilasta · ${active} aktiivista · keskim. taso ${avgL}</div>
       </div>
       <div><div class="cc-badge">👥 ${members.length}</div></div>
+    </div>
+    <!-- FIX 3: QR / jako -->
+    <div class="share-box">
+      <div>
+        <div style="font-size:.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Luokkakoodi oppilaille</div>
+        <div class="share-code-big">${c.class_code}</div>
+      </div>
+      <div class="share-actions">
+        <button class="share-btn" onclick="copyClassCode('${c.class_code}')">📋 Kopioi</button>
+        <button class="share-btn" onclick="shareClassCode('${c.class_code}','${escH(c.teacher_name)}')">📤 Jaa</button>
+      </div>
     </div>`;
   }).join('');
 }
 
-// ── Create class (from dashboard tab) ──
-function genCode(){
-  const w=['KOALA','PANDA','LEIJU','KETTU','KARHU','HIRVI','ORAVA','JÄNIS','NORSU','TIIKERI'];
-  return w[~~(Math.random()*w.length)]+(Math.floor(Math.random()*90)+10);
+// FIX 3: Jako-toiminnot
+function copyClassCode(code){
+  navigator.clipboard.writeText(code).then(()=>{
+    const msg=`Luokkakoodi kopioitu: ${code}`;
+    showToast(msg);
+  });
+}
+function shareClassCode(code,name){
+  const text=`Hei! Liity matikkaluokkaani Matikka-Ahmatti-pelissä.\nLuokkakoodi: ${code}\nPeli: https://matikka-ahmatti.fi/game.html`;
+  if(navigator.share){
+    navigator.share({title:'Matikka-Ahmatti — Luokkakoodi',text}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>showToast('Teksti kopioitu leikepöydälle!'));
+  }
+}
+function copyCreatedCode(){
+  const c=document.getElementById('createdCode').textContent;
+  navigator.clipboard.writeText(c).then(()=>showToast('Koodi kopioitu: '+c));
+}
+function shareCreatedCode(){
+  const c=document.getElementById('createdCode').textContent;
+  shareClassCode(c,'');
 }
 
-// Create class state
-let createPinBuf='';
-let createPinFirst='';
-let createPinMode='first';
-
-function cPinPress(n){
-  if(createPinBuf.length>=4)return;
-  createPinBuf+=n;updCreateDots();
-  document.getElementById('createPinOk').disabled=createPinBuf.length<4;
-  if(createPinBuf.length===4)setTimeout(createPinConfirm,150);
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:40px;padding:10px 20px;font-size:.8rem;font-weight:700;color:var(--text);z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:opacity .3s;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._timer);t._timer=setTimeout(()=>t.style.opacity='0',2500);
 }
-function cPinClear(){createPinBuf=createPinBuf.slice(0,-1);updCreateDots();document.getElementById('createPinOk').disabled=true;}
-function updCreateDots(){for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.toggle('filled',i<createPinBuf.length);}}
+
+// FIX 5: Poista oppilas luokasta
+let confirmCb=null;
+function confirmRemove(name,char){
+  const code=activeClass||myClasses[0]?.class_code;
+  if(!code)return;
+  document.getElementById('confirmTitle').textContent='Poista oppilas luokasta';
+  document.getElementById('confirmMsg').textContent=`Poistetaanko ${name} luokasta ${code}? Pelaajan tiedot säilyvät, mutta hän ei enää näy tässä luokassa.`;
+  confirmCb=async()=>{
+    try{
+      await fetch(`${SB_URL}/rest/v1/class_members?class_code=eq.${encodeURIComponent(code)}&player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}`,{method:'DELETE',headers:SB_H});
+      closeConfirm();
+      loadData();
+    } catch{alert('Poisto epäonnistui — yritä uudelleen');}
+  };
+  document.getElementById('confirmOverlay').style.display='flex';
+}
+function closeConfirm(){document.getElementById('confirmOverlay').style.display='none';confirmCb=null;}
+function doConfirm(){if(confirmCb)confirmCb();}
+
+// FIX 8: CSV export
+function exportCSV(){
+  const pl=getFP();
+  if(!pl.length){alert('Ei oppilaita exportoitavaksi');return;}
+  const header='Nimi,Hahmo,Taso,Kierroksia,Tarkkuus%,Trendi%,Pisteet,Viimeksi pelannut,Saavutuksia';
+  const rows=pl.map(p=>{
+    const d=new Date(p.lastSeen).toLocaleDateString('fi-FI');
+    return[p.name,p.char==='boy'?'Prinssi':'Prinsessa',p.diffLevel,p.rounds,p.acc,p.trend||0,p.totalPts,d,p.achs.length].join(',');
+  });
+  const csv=[header,...rows].join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`matikka-ahmatti-oppilaat-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();URL.revokeObjectURL(url);
+}
+
+// ── Create class ──
+let createPinBuf='',createPinFirst='',createPinMode='first';
+function genCode(){const w=['KOALA','PANDA','LEIJU','KETTU','KARHU','HIRVI','ORAVA','NORSU','TIIKERI','ILVES'];return w[~~(Math.random()*w.length)]+(Math.floor(Math.random()*90)+10);}
+function cPinPress(n){if(createPinBuf.length>=4)return;createPinBuf+=n;updCDots();document.getElementById('createPinOk').disabled=createPinBuf.length<4;if(createPinBuf.length===4)setTimeout(createPinConfirm,150);}
+function cPinClear(){createPinBuf=createPinBuf.slice(0,-1);updCDots();document.getElementById('createPinOk').disabled=true;}
+function updCDots(){for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.toggle('filled',i<createPinBuf.length);}}
 function createPinConfirm(){
   if(createPinMode==='first'){
     createPinFirst=createPinBuf;createPinBuf='';createPinMode='confirm';
-    updCreateDots();document.getElementById('createPinOk').disabled=true;
+    updCDots();document.getElementById('createPinOk').disabled=true;
     document.getElementById('createPinLabel').textContent='Syötä PIN uudelleen vahvistaaksesi';
     document.getElementById('createPinErr').textContent='';
   } else {
     if(createPinBuf!==createPinFirst){
       document.getElementById('createPinErr').textContent='PIN:it eivät täsmää ❌';
-      setTimeout(()=>{createPinBuf='';createPinFirst='';createPinMode='first';updCreateDots();document.getElementById('createPinOk').disabled=true;document.getElementById('createPinLabel').textContent='Luo PIN-koodi luokallesi';document.getElementById('createPinErr').textContent='';},900);
-    } else {
-      doCreateClass();
-    }
+      setTimeout(()=>{createPinBuf='';createPinFirst='';createPinMode='first';updCDots();document.getElementById('createPinOk').disabled=true;document.getElementById('createPinLabel').textContent='Luo PIN-koodi luokallesi';document.getElementById('createPinErr').textContent='';},900);
+    } else {doCreateClass();}
   }
 }
-
 async function doCreateClass(){
   const t=document.getElementById('teacherName').value.trim();
   if(!t){document.getElementById('createPinErr').textContent='Kirjoita opettajan nimi ensin ❌';return;}
   const c=document.getElementById('className').value.trim();
   const name=c?`${t} — ${c}`:t;
   const errEl=document.getElementById('createPinErr');
-  errEl.textContent='⏳ Luodaan luokkaa...';
-
+  errEl.textContent='⏳ Luodaan...';
   const code=genCode();
   const hash=hashPin(createPinFirst,code);
   try{
-    const res=await fetch(`${SB_URL}/rest/v1/classes`,{
-      method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
-      body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})
-    });
-    if(!res.ok)throw new Error('HTTP '+res.status);
-
-    // Lähetä ilmoitus Formspreen kautta sinulle
-    fetch('https://formspree.io/f/xwvwovgk',{
-      method:'POST',
-      headers:{'Accept':'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        _subject: `Matikka-Ahmatti: Uusi luokka luotu — ${code}`,
-        opettaja: name,
-        luokkakoodi: code,
-        viesti: `Uusi opettajatunnus käytetty. Luokka "${name}" luotu koodilla ${code}.`
-      })
-    }).catch(()=>{}); // ei kriittinen
-
+    const res=await fetch(`${SB_URL}/rest/v1/classes`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})});
+    if(!res.ok)throw new Error();
+    // Lisää teacher_invites-tauluun jotta loadMyClasses löytää tämän luokan
+    await fetch(`${SB_URL}/rest/v1/teacher_invites`,{method:'POST',headers:{...SB_H,'Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify({teacher_name:loginTeacherName,email:'',school:'',invite_code:code,status:'used'})}).catch(()=>{});
+    const fd=new FormData();
+    fd.append('_subject',`Matikka-Ahmatti: Uusi luokka — ${code}`);
+    fd.append('opettaja',name);fd.append('koodi',code);
+    fetch('https://formspree.io/f/xwvwovgk',{method:'POST',body:fd,headers:{'Accept':'application/json'}}).catch(()=>{});
     errEl.textContent='';
     document.getElementById('createdCode').textContent=code;
     document.getElementById('successBox').style.display='block';
-    document.getElementById('teacherName').value='';
-    document.getElementById('className').value='';
-    createPinBuf='';createPinFirst='';createPinMode='first';
-    updCreateDots();
+    document.getElementById('teacherName').value='';document.getElementById('className').value='';
+    createPinBuf='';createPinFirst='';createPinMode='first';updCDots();
     document.getElementById('createPinLabel').textContent='Luo PIN-koodi luokallesi';
     document.getElementById('createPinOk').disabled=true;
-    allClasses.push({class_code:code,teacher_name:name,cnt:0});
+    myClasses.push({class_code:code,teacher_name:name,cnt:0});
     buildClassBar();renderClasses();
-  } catch(e){
-    errEl.textContent='Luonti epäonnistui — yritä uudelleen ❌';
-  }
+    showToast(`Luokka ${code} luotu! 🎉`);
+  } catch{errEl.textContent='Luonti epäonnistui — yritä uudelleen ❌';}
 }
 
-function copyCode(){
-  const c=document.getElementById('createdCode').textContent;
-  navigator.clipboard.writeText(c).then(()=>alert('Koodi kopioitu: '+c));
+function showTab(t,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
 }
 </script>
 </body>
