@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ota yhteyttä — Matikka-Ahmatti</title>
+<meta name="description" content="Ota yhteyttä Matikka-Ahmatti-pelin tekijöihin. Lähetä palautetta, ehdotuksia tai yhteistyökyselyjä.">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/contact.html">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:    #0b1520;
+  --card:  #162030;
+  --card2: #1a2840;
+  --accent:  #f7c948;
+  --accent2: #ff6b6b;
+  --accent3: #5de8b5;
+  --accent4: #7b9fff;
+  --pink:    #ff8ed4;
+  --text:  #eef3ff;
+  --muted: #6a82a0;
+}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Floating background numbers ── */
+#floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.fn{
+  position:absolute;font-family:'Fredoka One',cursive;
+  animation:mFloat var(--dur,14s) ease-in-out infinite var(--delay,0s);
+  opacity:0;
+}
+@keyframes mFloat{
+  0%  {transform:translateY(0) rotate(var(--r0,0deg));opacity:0;}
+  10% {opacity:var(--maxOp,.25);}
+  90% {opacity:var(--maxOp,.25);}
+  100%{transform:translateY(-100vh) rotate(var(--r1,10deg));opacity:0;}
+}
+
+/* ── Page layout ── */
+.page{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:clamp(24px,5vw,60px) clamp(16px,4vw,40px);
+}
+
+/* ── Back link ── */
+.back-link{
+  align-self:flex-start;
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--muted);font-weight:700;font-size:.88rem;
+  text-decoration:none;
+  padding:8px 16px;
+  border-radius:40px;
+  border:1px solid rgba(255,255,255,.07);
+  background:var(--card);
+  transition:all .2s;
+  margin-bottom:clamp(24px,4vw,48px);
+}
+.back-link:hover{color:var(--accent);border-color:rgba(247,201,72,.3);}
+
+/* ── Hero ── */
+.hero{
+  text-align:center;
+  margin-bottom:clamp(32px,5vw,56px);
+}
+
+.monster-wrap{
+  width:clamp(100px,18vw,160px);
+  height:clamp(100px,18vw,160px);
+  margin:0 auto clamp(16px,2.5vw,28px);
+  filter:drop-shadow(0 8px 24px rgba(93,232,181,.35));
+  animation:mFloat2 3.5s ease-in-out infinite;
+}
+@keyframes mFloat2{
+  0%,100%{transform:translateY(0) rotate(-1.5deg);}
+  50%    {transform:translateY(-12px) rotate(1.5deg);}
+}
+
+.hero-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,6vw,3.5rem);
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.1;
+  margin-bottom:12px;
+}
+.hero-sub{
+  color:var(--muted);
+  font-size:clamp(.9rem,2vw,1.1rem);
+  font-weight:700;
+  max-width:480px;
+  margin:0 auto;
+  line-height:1.5;
+}
+
+/* ── Contact card ── */
+.contact-card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(20px,3vw,32px);
+  padding:clamp(28px,5vw,52px) clamp(24px,4vw,48px);
+  width:100%;
+  max-width:560px;
+  box-shadow:0 24px 60px rgba(0,0,0,.4);
+  position:relative;
+  overflow:hidden;
+}
+.contact-card::before{
+  content:'';
+  position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.06),transparent 60%);
+  pointer-events:none;
+}
+
+/* ── Form ── */
+.form-group{
+  margin-bottom:clamp(16px,2.5vw,24px);
+}
+.form-label{
+  display:block;
+  font-size:.82rem;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin-bottom:8px;
+}
+.form-input,
+.form-select,
+.form-textarea{
+  width:100%;
+  background:var(--card2);
+  border:1.5px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:clamp(12px,1.8vw,16px) clamp(14px,2vw,20px);
+  color:var(--text);
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(.9rem,1.6vw,1rem);
+  font-weight:700;
+  transition:all .18s;
+  outline:none;
+  -webkit-appearance:none;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus{
+  border-color:var(--accent4);
+  box-shadow:0 0 0 3px rgba(123,159,255,.15);
+  background:rgba(26,40,64,.9);
+}
+.form-input::placeholder,
+.form-textarea::placeholder{
+  color:var(--muted);
+  font-weight:600;
+}
+.form-select{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a82a0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+  padding-right:44px;
+}
+.form-select option{background:var(--card2);color:var(--text);}
+.form-textarea{
+  resize:vertical;
+  min-height:clamp(100px,15vw,150px);
+  line-height:1.6;
+}
+
+/* ── Submit button ── */
+.submit-btn{
+  width:100%;
+  padding:clamp(14px,2.2vw,20px);
+  border:none;
+  border-radius:40px;
+  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
+  color:#1a1a1a;
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2.2vw,1.4rem);
+  cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 6px 22px rgba(247,201,72,.32);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:clamp(8px,1.5vw,16px);
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(247,201,72,.45);}
+.submit-btn:active{transform:translateY(0);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* ── Success / error states ── */
+.form-success{
+  display:none;
+  text-align:center;
+  padding:clamp(24px,4vw,40px) 16px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1);
+}
+.form-success .success-icon{
+  font-size:clamp(3rem,8vw,5rem);
+  display:block;
+  margin-bottom:16px;
+  animation:bounce .6s .2s both;
+}
+.form-success .success-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.4rem,3vw,2rem);
+  background:linear-gradient(135deg,var(--accent3),#36d7b7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+.form-success .success-sub{
+  color:var(--muted);font-weight:700;
+  font-size:clamp(.85rem,1.6vw,1rem);
+}
+.field-error{
+  color:var(--accent2);
+  font-size:.75rem;
+  font-weight:700;
+  margin-top:6px;
+  display:none;
+}
+.form-input.invalid,
+.form-textarea.invalid{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(255,107,107,.12);}
+
+/* ── Info pills ── */
+.info-pills{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+  margin-top:clamp(24px,3.5vw,36px);
+  max-width:560px;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:40px;
+  padding:8px 16px;
+  font-size:.78rem;font-weight:700;color:var(--muted);
+}
+.pill span{font-size:1rem;}
+
+@keyframes popIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+@keyframes bounce{0%,100%{transform:translateY(0);}40%{transform:translateY(-16px);}70%{transform:translateY(-8px);}}
+</style>
+</head>
+<body>
+
+<div id="floatBg"></div>
+
+<div class="page">
+
+  <a href="index.html" class="back-link">← Takaisin peliin</a>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="monster-wrap">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cgbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
+          <filter id="cgGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="100" cy="194" rx="40" ry="7" fill="rgba(0,0,0,.18)"/>
+        <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#cgbG)"/>
+        <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+        <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+        <circle cx="46" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#cgGlow)"/>
+        <circle cx="154" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#cgGlow)"/>
+        <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#cgbG)"/>
+        <ellipse cx="78"  cy="76" rx="14" ry="16" fill="white"/>
+        <ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
+        <circle cx="81"  cy="77" r="8" fill="#0f1923"/>
+        <circle cx="125" cy="77" r="8" fill="#0f1923"/>
+        <circle cx="84"  cy="73" r="3.5" fill="white" opacity=".9"/>
+        <circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+        <text x="81"  y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">♥</text>
+        <text x="125" y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">♥</text>
+        <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
+        <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
+        <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
+        <rect x="85"  y="104" width="11" height="10" rx="3" fill="white"/>
+        <rect x="100" y="104" width="11" height="10" rx="3" fill="white"/>
+        <rect x="115" y="104" width="10" height="10" rx="3" fill="white"/>
+        <ellipse cx="100" cy="122" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>
+        <path d="M48 122 Q26 108 32 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <ellipse cx="30" cy="90" rx="9" ry="8" fill="#1a9068"/>
+        <circle cx="22" cy="85" r="5" fill="#1a9068"/><circle cx="32" cy="81" r="5" fill="#1a9068"/><circle cx="40" cy="87" r="5" fill="#1a9068"/>
+        <path d="M152 122 Q174 108 168 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <ellipse cx="170" cy="90" rx="9" ry="8" fill="#1a9068"/>
+        <circle cx="178" cy="85" r="5" fill="#1a9068"/><circle cx="168" cy="81" r="5" fill="#1a9068"/><circle cx="160" cy="87" r="5" fill="#1a9068"/>
+        <ellipse cx="80"  cy="184" rx="19" ry="9" fill="#1a9068"/>
+        <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      </svg>
+    </div>
+    <h1 class="hero-title">Ota yhteyttä! 👋</h1>
+    <p class="hero-sub">Palaute, ideat, yhteistyöehdotukset tai bugi-ilmoitukset — kaikki viestit luetaan!</p>
+  </div>
+
+  <!-- Contact form card -->
+  <div class="contact-card">
+
+    <!-- Success state (hidden by default) -->
+    <div class="form-success" id="formSuccess">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Viesti lähetetty!</div>
+      <p class="success-sub">Kiitos yhteydenotosta!<br>Palaamme asiaan mahdollisimman pian. 🚀</p>
+    </div>
+
+    <!-- The form -->
+    <form id="contactForm" action="https://formspree.io/f/xwvwovgk" method="POST" novalidate>
+
+      <div class="form-group">
+        <label class="form-label" for="name">Nimesi</label>
+        <input class="form-input" type="text" id="name" name="name"
+               placeholder="Etunimi tai nimimerkki" autocomplete="name"/>
+        <div class="field-error" id="nameError">Kirjoita nimesi</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Sähköposti *</label>
+        <input class="form-input" type="email" id="email" name="email"
+               placeholder="sinä@esimerkki.fi" autocomplete="email" required/>
+        <div class="field-error" id="emailError">Anna kelvollinen sähköpostiosoite</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="subject">Aihe *</label>
+        <select class="form-select" id="subject" name="subject" required>
+          <option value="" disabled selected>Valitse aihe...</option>
+          <option value="Palaute pelistä">💬 Palaute pelistä</option>
+          <option value="Kehitysehdotus">💡 Kehitysehdotus</option>
+          <option value="Bugi-ilmoitus">🐛 Bugi-ilmoitus</option>
+          <option value="Yhteistyö">🤝 Yhteistyö</option>
+          <option value="Kouluyhteistyö">🏫 Kouluyhteistyö</option>
+          <option value="Muu">📩 Muu</option>
+        </select>
+        <div class="field-error" id="subjectError">Valitse aihe</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">Viesti *</label>
+        <textarea class="form-textarea" id="message" name="message"
+                  placeholder="Kirjoita viestisi tähän..." required></textarea>
+        <div class="field-error" id="messageError">Kirjoita viesti</div>
+      </div>
+
+      <button class="submit-btn" type="submit" id="submitBtn">
+        <span id="btnText">Lähetä viesti 🚀</span>
+      </button>
+
+    </form>
+  </div>
+
+  <!-- Info pills -->
+  <div class="info-pills">
+    <div class="pill"><span>⚡</span> Vastaamme nopeasti</div>
+    <div class="pill"><span>🔒</span> Tietosi pysyvät turvassa</div>
+    <div class="pill"><span>🆓</span> Peli on ilmainen</div>
+  </div>
+
+</div>
+
+<script>
+// ── Floating background ──
+const SYMS=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','5−1','9+6'];
+const COLS=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,','rgba(255,107,107,'];
+(function(){
+  const bg=document.getElementById('floatBg');
+  for(let i=0;i<35;i++){
+    const el=document.createElement('div');el.className='fn';
+    const op=(Math.random()*.18+.1).toFixed(3);
+    const dur=Math.random()*20+12;
+    el.textContent=SYMS[~~(Math.random()*SYMS.length)];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*10}%;font-size:${Math.random()*24+12}px;color:${COLS[~~(Math.random()*COLS.length)]}${op});--maxOp:${op};--r0:${(Math.random()*30-15).toFixed(1)}deg;--r1:${(Math.random()*50-25).toFixed(1)}deg;--dur:${dur}s;--delay:-${(Math.random()*dur).toFixed(1)}s;`;
+    bg.appendChild(el);
+  }
+})();
+
+// ── Form submission ──
+const form       = document.getElementById('contactForm');
+const submitBtn  = document.getElementById('submitBtn');
+const btnText    = document.getElementById('btnText');
+const formSuccess= document.getElementById('formSuccess');
+
+function showError(fieldId, errorId, show) {
+  const field = document.getElementById(fieldId);
+  const error = document.getElementById(errorId);
+  if (show) {
+    field.classList.add('invalid');
+    error.style.display = 'block';
+  } else {
+    field.classList.remove('invalid');
+    error.style.display = 'none';
+  }
+}
+
+function validate() {
+  let valid = true;
+  const email   = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value;
+  const message = document.getElementById('message').value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  showError('email',   'emailError',   !emailOk);
+  showError('subject', 'subjectError', !subject);
+  showError('message', 'messageError', message.length < 5);
+
+  if (!emailOk || !subject || message.length < 5) valid = false;
+  return valid;
+}
+
+// Live validation
+['email','subject','message'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const el = document.getElementById(id);
+    if (el.classList.contains('invalid')) validate();
+  });
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  submitBtn.disabled = true;
+  btnText.textContent = '⏳ Lähetetään...';
+
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+    } else {
+      throw new Error('Lähetys epäonnistui');
+    }
+  } catch {
+    btnText.textContent = '❌ Virhe — yritä uudelleen';
+    submitBtn.disabled = false;
+    setTimeout(() => { btnText.textContent = 'Lähetä viesti 🚀'; }, 3000);
+  }
+});
+</script>
+</body>
+</html>
