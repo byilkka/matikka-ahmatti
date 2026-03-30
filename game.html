@@ -2646,6 +2646,16 @@ async function showResults(){
 
 // ══ SCORES — HOF GRID ════════════════════════════
 
+// SEC-003 fix: escapoidaan käyttäjän syöttämä data ennen innerHTML:ää
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
 function switchMainTab(tab, el) {
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -2732,7 +2742,7 @@ async function renderScores(f) {
       ${crown}
       <div class="hof-rank ${rc}">${medal}</div>
       <div class="hof-avatar">${av}</div>
-      <div class="hof-name">${s.name}</div>
+      <div class="hof-name">${escHtml(s.name)}</div>
       ${goatBadge}
       ${meBadge}
       <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
