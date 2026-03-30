@@ -528,11 +528,26 @@ async function submitApply(){
   document.getElementById('applyBtn').disabled=true;
   errEl.textContent='⏳ Lähetetään...';
   try{
+    // Tallenna Supabaseen
     const res=await fetch(`${SB_URL}/rest/v1/teacher_invites`,{
       method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
       body:JSON.stringify({teacher_name:name,school:school,email:email,status:'pending'})
     });
     if(!res.ok)throw new Error();
+
+    // Lähetä ilmoitus sinulle Formspreen kautta
+    fetch('https://formspree.io/f/xwvwovgk',{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({
+        _subject: `Matikka-Ahmatti: Uusi opettaja-anomus — ${name}`,
+        nimi: name,
+        koulu: school,
+        sahkoposti: email,
+        viesti: `Uusi opettaja-anomus odottaa hyväksyntää Supabasessa.\n\nHyväksy anomus:\n1. Mene Supabase → teacher_invites\n2. Etsi: ${email}\n3. Aseta status = approved ja invite_code = [OMANIMI25]`
+      })
+    }).catch(()=>{}); // ei kriittinen jos Formspree epäonnistuu
+
     errEl.textContent='';
     document.getElementById('applySuccess').style.display='block';
     document.getElementById('applyName').value='';
@@ -792,11 +807,12 @@ function createPinConfirm(){
 
 async function doCreateClass(){
   const t=document.getElementById('teacherName').value.trim();
-  if(!t){alert('Kirjoita opettajan nimi');return;}
+  if(!t){document.getElementById('createPinErr').textContent='Kirjoita opettajan nimi ensin ❌';return;}
   const c=document.getElementById('className').value.trim();
   const name=c?`${t} — ${c}`:t;
-  const btn=document.getElementById('createBtn');
-  btn.disabled=true;btn.textContent='⏳ Luodaan...';
+  const errEl=document.getElementById('createPinErr');
+  errEl.textContent='⏳ Luodaan luokkaa...';
+
   const code=genCode();
   const hash=hashPin(createPinFirst,code);
   try{
@@ -804,17 +820,34 @@ async function doCreateClass(){
       method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
       body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})
     });
-    if(!res.ok)throw new Error();
+    if(!res.ok)throw new Error('HTTP '+res.status);
+
+    // Lähetä ilmoitus Formspreen kautta sinulle
+    fetch('https://formspree.io/f/xwvwovgk',{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({
+        _subject: `Matikka-Ahmatti: Uusi luokka luotu — ${code}`,
+        opettaja: name,
+        luokkakoodi: code,
+        viesti: `Uusi opettajatunnus käytetty. Luokka "${name}" luotu koodilla ${code}.`
+      })
+    }).catch(()=>{}); // ei kriittinen
+
+    errEl.textContent='';
     document.getElementById('createdCode').textContent=code;
     document.getElementById('successBox').style.display='block';
     document.getElementById('teacherName').value='';
     document.getElementById('className').value='';
     createPinBuf='';createPinFirst='';createPinMode='first';
     updCreateDots();
+    document.getElementById('createPinLabel').textContent='Luo PIN-koodi luokallesi';
+    document.getElementById('createPinOk').disabled=true;
     allClasses.push({class_code:code,teacher_name:name,cnt:0});
     buildClassBar();renderClasses();
-  } catch{alert('Luonti epäonnistui — yritä uudelleen');}
-  btn.disabled=false;btn.innerHTML='🏫 Luo luokka';
+  } catch(e){
+    errEl.textContent='Luonti epäonnistui — yritä uudelleen ❌';
+  }
 }
 
 function copyCode(){
