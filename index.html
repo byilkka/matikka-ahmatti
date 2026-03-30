@@ -60,7 +60,6 @@
 }
 </script>
 
-<title>Matikka-Ahmatti — Hauska matematiikan harjoittelupeli lapsille</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════
@@ -1113,8 +1112,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .goat-name-row{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(5px,0.8vw,10px);margin-bottom:4px;}
 
-@keyframes crownBounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-5deg);}50%{transform:translateX(-50%) translateY(-5px) rotate(5deg);}}
-
 /* ══════════════════════════════════════════════════
    SWITCH PLAYER MODAL
 ══════════════════════════════════════════════════ */
@@ -1541,20 +1538,25 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
     <div style="margin-bottom:clamp(14px,2vw,20px);">
       <input class="name-input" type="text" id="switchNameInput" placeholder="Kirjoita nimi..." maxlength="20" autocomplete="off" style="margin-bottom:12px;"/>
-      <div class="char-grid">
-        <div class="char-card boy" id="swBoyCard" onclick="swSelChar('boy')">
-          <div class="check-mark" id="swBoyCheck">✓</div>
-          <span class="char-avatar">🤴</span>
-          <div class="char-name">Prinssi</div>
-          <span class="char-badge">Poika</span>
-        </div>
-        <div class="char-card girl" id="swGirlCard" onclick="swSelChar('girl')">
-          <div class="check-mark" id="swGirlCheck">✓</div>
-          <span class="char-avatar">👸</span>
-          <div class="char-name">Prinsessa</div>
-          <span class="char-badge">Tyttö</span>
+      <!-- Näytetään vain uusille pelaajille -->
+      <div id="swCharSection">
+        <div class="char-grid">
+          <div class="char-card boy" id="swBoyCard" onclick="swSelChar('boy')">
+            <div class="check-mark" id="swBoyCheck">✓</div>
+            <span class="char-avatar">🤴</span>
+            <div class="char-name">Prinssi</div>
+            <span class="char-badge">Poika</span>
+          </div>
+          <div class="char-card girl" id="swGirlCard" onclick="swSelChar('girl')">
+            <div class="check-mark" id="swGirlCheck">✓</div>
+            <span class="char-avatar">👸</span>
+            <div class="char-name">Prinsessa</div>
+            <span class="char-badge">Tyttö</span>
+          </div>
         </div>
       </div>
+      <!-- Näytetään tutulla pelaajalla -->
+      <div id="swCharHint" style="display:none;text-align:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--accent3);padding:10px;background:rgba(93,232,181,.08);border-radius:12px;border:1px solid rgba(93,232,181,.2);"></div>
     </div>
 
     <button class="cta-btn" id="swConfirmBtn" onclick="confirmSwitch()" disabled>Vaihda pelaaja ✓</button>
@@ -1903,8 +1905,14 @@ async function pinConfirm() {
 
   } else if (pinMode === 'confirm_new') {
     if (pin === pinFirstEntry) {
-      // Tallenna PIN ja käynnistä peli
-      await pinRemoteSet(pName, pChar, pin);
+      // BUG-004 FIX: käytä PATCH (pinRemoteReset) jos pelaaja on olemassa,
+      // POST (pinRemoteSet) vain uusille pelaajille — estää duplikaattirivit
+      const alreadyExists = await pinExists(pName, pChar);
+      if (alreadyExists) {
+        await pinRemoteReset(pName, pChar, pin);
+      } else {
+        await pinRemoteSet(pName, pChar, pin);
+      }
       startGame();
     } else {
       pinMode = 'new';
@@ -1950,17 +1958,65 @@ async function pinConfirm() {
   }
 }
 
+// Hae pelaajan hahmo pelkällä nimellä (ilman char-tietoa)
+async function pinGetPlayerByName(name) {
+  // BUG-006 FIX: käytä tarkkaa avainvastaavuutta startsWith:n sijaan
+  // Estää "Emma" löytämästä "Emma2":n tietoja
+  try {
+    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
+    // Tarkista molemmat hahmot eksplisiittisesti
+    if (all[`${name}:boy`])  return 'boy';
+    if (all[`${name}:girl`]) return 'girl';
+  } catch {}
+  // Sitten Supabase — hae ilman char-suodatinta
+  try {
+    const url = `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&select=player_char&limit=1`;
+    const res = await fetch(url, {headers:SB_HEADERS});
+    if (!res.ok) throw new Error();
+    const rows = await res.json();
+    return rows.length ? rows[0].player_char : null;
+  } catch { return null; }
+}
+
 // ══ LOGIN FLOW ════════════════════════════════════
 let pName='', pChar='';
+let goStep2InProgress = false; // BUG-005 fix: estää rinnakkaiset kutsut
 const nameInp = document.getElementById('nameInput');
 const nextBtn  = document.getElementById('nextBtn');
 nameInp.addEventListener('input',()=>{ nextBtn.disabled=nameInp.value.trim().length<1; });
 nameInp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&nameInp.value.trim())goStep2(); });
 
-function goStep2() {
+async function goStep2() {
+  if (goStep2InProgress) return; // BUG-005 fix: ei rinnakkaisia kutsuja
+  goStep2InProgress = true;
+  nextBtn.disabled = true;
+  nextBtn.textContent = '⏳ Tarkistetaan...';
+
   pName = nameInp.value.trim();
-  document.getElementById('step1').classList.remove('active');
-  document.getElementById('step2').classList.add('active');
+  try {
+    const existingChar = await pinGetPlayerByName(pName);
+    if (existingChar) {
+      pChar = existingChar;
+      pinBuffer = ''; pinAttempts = 0; pinMode = 'login';
+      document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
+      document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
+      document.getElementById('pinError').textContent = '';
+      document.getElementById('pinAttemptsLeft').textContent = '';
+      pinUpdateDots();
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('step3').classList.add('active');
+    } else {
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('step2').classList.add('active');
+    }
+  } catch {
+    // Verkkovirhe — anna käyttäjän yrittää uudelleen
+    nextBtn.disabled = false;
+    nextBtn.textContent = 'Seuraava →';
+  } finally {
+    goStep2InProgress = false;
+    nextBtn.textContent = 'Seuraava →';
+  }
 }
 
 function selChar(t) {
@@ -1972,25 +2028,13 @@ function selChar(t) {
 
 async function goStep3() {
   if (!pChar) return;
-  // Tarkista onko pelaaja olemassa
-  const exists = await pinExists(pName, pChar);
-  pinBuffer = '';
-  pinAttempts = 0;
-
-  if (exists) {
-    pinMode = 'login';
-    document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
-    document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
-  } else {
-    pinMode = 'new';
-    pinFirstEntry = '';
-    document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
-    document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN jonka muistat';
-  }
+  // Tämä kutsutaan vain uusille pelaajille (tutut ohjataan suoraan step3:een goStep2:ssa)
+  pinBuffer = ''; pinAttempts = 0; pinMode = 'new'; pinFirstEntry = '';
+  document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
+  document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN jonka muistat';
   document.getElementById('pinError').textContent = '';
   document.getElementById('pinAttemptsLeft').textContent = '';
   pinUpdateDots();
-
   document.getElementById('step2').classList.remove('active');
   document.getElementById('step3').classList.add('active');
 }
@@ -1999,6 +2043,7 @@ async function startGame(){
   document.getElementById('pName').textContent=pName;
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   showScreen('gameScreen');
+  roundStartTime = Date.now(); // BUG-008 fix: nollaa ajastin pelin alkaessa
   srData = srLocalLoad(pName, pChar, mode);
   retryQueue=[]; roundHistory=[];
   updDiffLabel();
@@ -2006,7 +2051,6 @@ async function startGame(){
   srRemoteLoad(pName, pChar, mode).then(remote => {
     if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
   }).catch(()=>{});
-  // Init achievements — first_login check happens inside
   achInit().then(()=>achCheck('first_login'));
 }
 
@@ -2027,6 +2071,7 @@ let mode='h', range=10, selTable=2;
 let ans='', corr=0, streak=0, pts=0, rDone=0, rTotal=10;
 let prob=null, busy=false;
 let roundStartTime = Date.now();
+let maxStreakThisRound = 0; // BUG-002 fix: seuraa kierroksen parasta putkea
 
 // ══ ADAPTIVE ENGINE ══════════════════════════════
 // Spaced repetition: jokainen tehtävätyyppi saa "weight" (paino)
@@ -2183,10 +2228,15 @@ function pickNextProblem() {
   }
   const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
   const info     = DIFF_LEVELS[lvl];
-  const effRange = Math.min(range, info.range);
+  // BUG-010 FIX: käyttäjän valitsema range on alaraja, adaptiivinen taso on yläraja
+  // Jos käyttäjä on valinnut "Luvut 1-50" mutta taso sallii vain 1-20,
+  // käytetään käyttäjän valintaa — ei hiljaa typistytä
+  const effRange = Math.max(range, Math.min(range, info.range));
   const candidates = [];
   for (let i = 0; i < 6; i++) {
-    const useMode = info.types.includes(mode) ? mode : info.types[~~(Math.random()*info.types.length)];
+    // Käyttäjän valitsema moodi on aina etusijalla
+    // Automaattinen moodi valitaan tason sallituista tyypeistä
+    const useMode = mode;
     let p;
     if      (useMode === 'h') p = genH(effRange);
     else if (useMode === 'a') p = genA(effRange);
@@ -2239,19 +2289,11 @@ function srEvaluateRound(pct) {
   return { changed: false, newLevel: srData.diffLevel };
 }
 
-// Tasosaavutukset joka 10. tasolla
+// Avaa tasosaavutus — kaikki ovat jo ACHIEVEMENTS-taulukossa alusta alkaen
 function checkLevelAchievement(level) {
-  const defs = {
-    10: { id:'level_10', icon:'🌟', name:'Tason 10 Mestari!', desc:'Saavutti tason 10' },
-    20: { id:'level_20', icon:'🔥', name:'Tason 20 Sankari!', desc:'Saavutti tason 20' },
-    30: { id:'level_30', icon:'⚡', name:'Tason 30 Legenda!', desc:'Saavutti tason 30' },
-    40: { id:'level_40', icon:'🚀', name:'Tason 40 Tähti!',   desc:'Saavutti tason 40' },
-    50: { id:'level_50', icon:'🏆', name:'GRAND MASTER! 🐐',  desc:'Saavutti maksimitason 50!' },
-  };
-  const def = defs[level];
-  if (!def) return;
-  if (!ACHIEVEMENTS.find(a => a.id === def.id)) ACHIEVEMENTS.push(def);
-  achCheck(def.id);
+  const ids = { 10:'level_10', 20:'level_20', 30:'level_30', 40:'level_40', 50:'level_50' };
+  const id = ids[level];
+  if (id) achCheck(id);
 }
 
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -2260,7 +2302,14 @@ function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function genH(r=range){const t=rand(2,r),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
 function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
 function genS(r=range){const a=rand(2,r),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
-function genM(maxT=10){const t=selTable||rand(1,maxT),m=rand(1,maxT),bl=Math.random()<.5?'r':'m';return{type:'m',t,m,r:t*m,bl,answer:bl==='r'?t*m:m};}
+function genM(maxT=10){
+  // Kertotaulumoodissa käytetään käyttäjän valitsemaa taulua
+  // Muissa moodeissa (automaattinen) arvotaan 1-maxT
+  const t = (mode==='m') ? selTable : rand(1,maxT);
+  const m = rand(1,maxT);
+  const bl = Math.random()<.5?'r':'m';
+  return {type:'m', t, m, r:t*m, bl, answer:bl==='r'?t*m:m};
+}
 
 function buildTablesGrid(){
   const g=document.getElementById('tablesGrid');g.innerHTML='';
@@ -2268,7 +2317,7 @@ function buildTablesGrid(){
 }
 function setMode(m){mode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+m).classList.add('active');document.getElementById('rangeSection').style.display=m==='m'?'none':'block';document.getElementById('tableSection').style.display=m==='m'?'block':'none';restartRound();}
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
+function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
 
 function newProblem(){
   ans='';busy=false;
@@ -2408,6 +2457,7 @@ function ck(){
   srRecord(prob, ok); // ← adaptiivinen kirjaus
   if(ok){
     streak++;corr++;
+    if(streak > maxStreakThisRound) maxStreakThisRound = streak; // BUG-002 fix
     // Pisteytys: tason kerroin × perusarvo + putkibonus
     const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
     const baseScore  = Math.round(10 * lvlInfo.mult);
@@ -2469,7 +2519,7 @@ async function showResults(){
   if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
-  checkAllAchievements(p, streak, mode);
+  checkAllAchievements(p, mode);
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
   const saved = await saveScore(entry);
@@ -2589,7 +2639,7 @@ const ACHIEVEMENTS = [
   { id:'streak_5',       icon:'🔥', name:'Putkihaaste',          desc:'5 peräkkäin oikein' },
   { id:'streak_10',      icon:'🔥🔥',name:'Superputki!',          desc:'10 peräkkäin oikein' },
   { id:'all_tables',     icon:'✖️', name:'Kertotaulumestari',    desc:'Kaikki kertotaulut 1–10 pelattu' },
-  { id:'level_4',        icon:'🚀', name:'Taso 4!',              desc:'Saavutti vaikeimman tason' },
+  { id:'level_4',        icon:'🚀', name:'Taso 4!',              desc:'Saavutti tason 4' },
   { id:'rounds_100',     icon:'🏆', name:'Satanen!',             desc:'100 kierrosta yhteensä' },
   { id:'hof_1',          icon:'🐐', name:'GOAT',                 desc:'Hall of Famen #1 sija' },
   // — Uudet 8 —
@@ -2601,6 +2651,12 @@ const ACHIEVEMENTS = [
   { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa' },
   { id:'comeback',       icon:'💪', name:'Tekee paluun!',        desc:'Parani 3 peräkkäisellä kierroksella' },
   { id:'early_bird',     icon:'🌅', name:'Aamulintu',            desc:'Pelasi ennen kello 8' },
+  // — Tasosaavutukset (BUG-009 fix: mukana alusta lukittuina) —
+  { id:'level_10',       icon:'🌟', name:'Tason 10 Mestari!',   desc:'Saavutti tason 10' },
+  { id:'level_20',       icon:'🔥', name:'Tason 20 Sankari!',   desc:'Saavutti tason 20' },
+  { id:'level_30',       icon:'⚡', name:'Tason 30 Legenda!',   desc:'Saavutti tason 30' },
+  { id:'level_40',       icon:'🚀', name:'Tason 40 Tähti!',     desc:'Saavutti tason 40' },
+  { id:'level_50',       icon:'🏆', name:'GRAND MASTER! 🐐',    desc:'Saavutti maksimitason 50!' },
 ];
 
 const ACH_KEY = 'matikka_ach_v1';
@@ -2703,23 +2759,25 @@ async function renderAchievements() {
 }
 
 // ── Check achievements after each round / event ──
-async function checkAllAchievements(roundPct, currentStreak, currentMode) {
+async function checkAllAchievements(roundPct, currentMode) {
   // First login — checked at startGame
   achCheck('first_login');
 
-  // Perfect round
-  if (roundPct === 100) achCheck('perfect_round');
+  // Perfect round (BUG-003 fix: >= 100 ei === 100)
+  if (roundPct >= 100) achCheck('perfect_round');
 
-  // Streak achievements
-  if (currentStreak >= 5)  achCheck('streak_5');
-  if (currentStreak >= 10) achCheck('streak_10');
+  // BUG-002 FIX: streak-saavutukset tarkistetaan maxStreakThisRound:lla
+  // ei "streak":lla joka voi olla 0 kierroksen lopussa
+  if (maxStreakThisRound >= 5)  achCheck('streak_5');
+  if (maxStreakThisRound >= 10) achCheck('streak_10');
+  if (maxStreakThisRound >= 20) achCheck('streak_20');
 
-  // Taso 4+ (vanha saavutus säilyy yhteensopivuuden vuoksi)
+  // Taso 4+ (vanha saavutus yhteensopivuuden vuoksi)
   if (srData.diffLevel >= 4) achCheck('level_4');
-  // Tasosaavutukset joka 10. tasolla (tarkistetaan myös tässä retroaktiivisesti)
+  // Tasosaavutukset joka 10. tasolla
   [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
 
-  // All multiplication tables played
+  // Kaikki kertotaulut 1–10 pelattu
   const tablesKey = `matikka_tables_${pName}:${pChar}`;
   try {
     const played = new Set(JSON.parse(localStorage.getItem(tablesKey)||'[]'));
@@ -2728,21 +2786,14 @@ async function checkAllAchievements(roundPct, currentStreak, currentMode) {
     if (played.size >= 10) achCheck('all_tables');
   } catch {}
 
-  // 100 rounds
-  if (srData.roundsPlayed >= 100) achCheck('rounds_100');
-
-  // Salamanopea — kierros alle 90 sekunnissa ja vähintään 8/10 oikein
-  const roundSecs = (Date.now() - roundStartTime) / 1000;
-  if (roundSecs < 90 && roundPct >= 80) achCheck('speed_demon');
-
-  // ── Uudet saavutukset ──
-
-  // 10 ja 50 kierrosta
+  // Kierrosmäärät
   if (srData.roundsPlayed >= 10)  achCheck('rounds_10');
   if (srData.roundsPlayed >= 50)  achCheck('rounds_50');
+  if (srData.roundsPlayed >= 100) achCheck('rounds_100');
 
-  // Streak 20
-  if (currentStreak >= 20) achCheck('streak_20');
+  // Salamanopea
+  const roundSecs = (Date.now() - roundStartTime) / 1000;
+  if (roundSecs < 90 && roundPct >= 80) achCheck('speed_demon');
 
   // Kaikki 4 pelimoodia pelattu
   const modesKey = `matikka_modes_${pName}:${pChar}`;
@@ -2757,12 +2808,12 @@ async function checkAllAchievements(roundPct, currentStreak, currentMode) {
   const perfectKey = `matikka_perfect_${pName}:${pChar}`;
   try {
     let perfectCount = parseInt(localStorage.getItem(perfectKey)||'0');
-    if (roundPct === 100) perfectCount++;
+    if (roundPct >= 100) perfectCount++;
     localStorage.setItem(perfectKey, perfectCount);
     if (perfectCount >= 3) achCheck('perfect_3');
   } catch {}
 
-  // Aamulintu — pelasi ennen kello 8
+  // Aamulintu
   if (new Date().getHours() < 8) achCheck('early_bird');
 
   // Tekee paluun — parantunut 3 peräkkäisellä kierroksella
@@ -2779,29 +2830,37 @@ async function checkAllAchievements(roundPct, currentStreak, currentMode) {
     }
   } catch {}
 
-  // HOF #1 — check after scores saved
+  // BUG-001 FIX: HOF #1 tarkistaa kumulatiiviset pisteet, ei yksittäistä kierrosta
   setTimeout(async () => {
-    const scores = await loadScoresRemote('all');
-    if (scores && scores.length > 0) {
-      const sorted = scores.slice().sort((a,b)=>b.pts-a.pts);
-      if (sorted[0]?.name===pName && sorted[0]?.char===pChar) achCheck('hof_1');
-    }
-  }, 2000);
+    const raw = await loadScoresRemote('all');
+    if (!raw || !raw.length) return;
+    // Aggregoi kuten renderScores tekee
+    const playerMap = new Map();
+    raw.forEach(s => {
+      const key = `${s.name}::${s.char}`;
+      const ex  = playerMap.get(key);
+      if (!ex) playerMap.set(key, { name:s.name, char:s.char, totalPts:s.pts });
+      else ex.totalPts += s.pts;
+    });
+    const sorted = Array.from(playerMap.values()).sort((a,b) => b.totalPts - a.totalPts);
+    if (sorted[0]?.name === pName && sorted[0]?.char === pChar) achCheck('hof_1');
+  }, 2500);
 }
 
 // ══ SWITCH PLAYER MODAL ══════════════════════════
 let swChar='';
 
 function openSwitch(){
-  // Populate current player preview
   document.getElementById('currAv').textContent=pChar==='boy'?'🤴':'👸';
   document.getElementById('currName').textContent=pName;
-  // Reset form
   document.getElementById('switchNameInput').value='';
   swChar='';
   document.getElementById('swBoyCard').classList.remove('selected');
   document.getElementById('swGirlCard').classList.remove('selected');
   document.getElementById('swConfirmBtn').disabled=true;
+  // Näytä hahmonvalinta oletuksena — piilotetaan jos pelaaja on tuttu
+  document.getElementById('swCharSection').style.display='block';
+  document.getElementById('swCharHint').style.display='none';
   document.getElementById('switchModal').classList.add('open');
   setTimeout(()=>document.getElementById('switchNameInput').focus(),100);
 }
@@ -2821,13 +2880,43 @@ function swSelChar(t){
   checkSwReady();
 }
 
-document.getElementById('switchNameInput').addEventListener('input',checkSwReady);
+// Kun nimi muuttuu — tarkista onko pelaaja tuttu ja piilota hahmonvalinta
+let swNameTimer = null;
+document.getElementById('switchNameInput').addEventListener('input', ()=>{
+  clearTimeout(swNameTimer);
+  const name = document.getElementById('switchNameInput').value.trim();
+  swChar = '';
+  document.getElementById('swBoyCard').classList.remove('selected');
+  document.getElementById('swGirlCard').classList.remove('selected');
+  document.getElementById('swCharSection').style.display='block';
+  document.getElementById('swCharHint').style.display='none';
+  document.getElementById('swConfirmBtn').disabled=true;
+  if (!name) return;
+  // Debounce — tarkista 400ms kirjoittamisen jälkeen
+  swNameTimer = setTimeout(async ()=>{
+    const existingChar = await pinGetPlayerByName(name);
+    if (existingChar) {
+      swChar = existingChar;
+      document.getElementById('swCharSection').style.display='none';
+      document.getElementById('swCharHint').style.display='block';
+      document.getElementById('swCharHint').textContent =
+        `${existingChar==='boy'?'🤴':'👸'} ${name} — PIN-koodi tunnistaa sinut`;
+      document.getElementById('swConfirmBtn').disabled=false;
+    } else {
+      document.getElementById('swCharSection').style.display='block';
+      document.getElementById('swCharHint').style.display='none';
+      checkSwReady();
+    }
+  }, 400);
+});
+
 document.getElementById('switchNameInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter')checkSwReady()&&confirmSwitch();
+  if(e.key==='Enter' && !document.getElementById('swConfirmBtn').disabled) confirmSwitch();
 });
 
 function checkSwReady(){
-  const ok=document.getElementById('switchNameInput').value.trim().length>0&&swChar!=='';
+  const name = document.getElementById('switchNameInput').value.trim();
+  const ok = name.length > 0 && swChar !== '';
   document.getElementById('swConfirmBtn').disabled=!ok;
   return ok;
 }
@@ -2836,31 +2925,28 @@ async function confirmSwitch(){
   const newName=document.getElementById('switchNameInput').value.trim();
   if(!newName||!swChar)return;
 
-  // Tallenna väliaikaisesti ja tarkista PIN
   const tmpName = newName;
   const tmpChar = swChar;
 
   // Tarkista onko pelaaja olemassa
-  const exists = await pinExists(tmpName, tmpChar);
-  if (exists) {
-    // Pyydä PIN modaalin sisällä
-    closeSwitch();
-    // Aseta tilapäisesti — PIN-vahvistus hoitaa loput
-    pName = tmpName; pChar = tmpChar;
+  const existingChar = await pinGetPlayerByName(tmpName);
+  closeSwitch();
+
+  if (existingChar) {
+    // Tuttu pelaaja — pyydä PIN suoraan ilman hahmonvalintaa
+    pName = tmpName; pChar = existingChar;
     pinBuffer=''; pinAttempts=0; pinMode='login';
     document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
     document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
     document.getElementById('pinError').textContent = '';
     document.getElementById('pinAttemptsLeft').textContent = '';
     pinUpdateDots();
-    // Näytä PIN-step login-screenissä
     document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
     document.getElementById('step3').classList.add('active');
     showScreen('loginScreen');
   } else {
-    // Uusi pelaaja — aseta suoraan ja luo PIN
+    // Uusi pelaaja — luo PIN (hahmo on jo valittu modalissa)
     pName=tmpName; pChar=tmpChar;
-    closeSwitch();
     pinBuffer=''; pinFirstEntry=''; pinMode='new';
     document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
     document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN';
