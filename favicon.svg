@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="115" fill="#0b1520"/>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#5de8b5" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#0b1520" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="body" cx="50%" cy="38%" r="56%">
+      <stop offset="0%" stop-color="#7cffd4"/>
+      <stop offset="100%" stop-color="#1fa876"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="115" fill="url(#glow)"/>
+  <g transform="translate(256,285) scale(1.85)">
+    <ellipse cx="0" cy="92" rx="42" ry="7" fill="rgba(0,0,0,0.25)"/>
+    <ellipse cx="0" cy="32" rx="52" ry="56" fill="url(#body)"/>
+    <ellipse cx="-44" cy="-30" rx="10" ry="18" fill="#166b4e" transform="rotate(-18,-44,-30)"/>
+    <ellipse cx="44" cy="-30" rx="10" ry="18" fill="#166b4e" transform="rotate(18,44,-30)"/>
+    <circle cx="-51" cy="-48" r="3.5" fill="#f7c948" opacity=".95"/>
+    <circle cx="51" cy="-48" r="3.5" fill="#f7c948" opacity=".95"/>
+    <ellipse cx="0" cy="-14" rx="48" ry="44" fill="url(#body)"/>
+    <ellipse cx="-19" cy="-18" rx="13" ry="15" fill="white"/>
+    <ellipse cx="19" cy="-18" rx="13" ry="15" fill="white"/>
+    <circle cx="-17" cy="-17" r="7.5" fill="#0f1923"/>
+    <circle cx="21" cy="-17" r="7.5" fill="#0f1923"/>
+    <circle cx="-13" cy="-21" r="3" fill="white" opacity=".9"/>
+    <circle cx="25" cy="-21" r="3" fill="white" opacity=".9"/>
+    <text x="-17" y="-14" font-size="7" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+    <text x="21" y="-14" font-size="7" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+    <path d="M-32,-36 Q-18,-44 -4,-37" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M4,-37 Q18,-44 32,-36" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-36" cy="-8" rx="9" ry="5" fill="#ff6b8a" opacity=".18"/>
+    <ellipse cx="36" cy="-8" rx="9" ry="5" fill="#ff6b8a" opacity=".18"/>
+    <path d="M-32,6 Q0,38 32,6" fill="#0f1923"/>
+    <path d="M-32,6 Q0,20 32,6" fill="#c0334d" opacity=".85"/>
+    <rect x="-28" y="6" width="10" height="9" rx="2.5" fill="white"/>
+    <rect x="-15" y="6" width="10" height="9" rx="2.5" fill="white"/>
+    <rect x="-2"  y="6" width="10" height="9" rx="2.5" fill="white"/>
+    <rect x="11"  y="6" width="10" height="9" rx="2.5" fill="white"/>
+    <ellipse cx="0" cy="22" rx="12" ry="7" fill="#ff8ed4" opacity=".9"/>
+    <path d="M-46,24 Q-66,12 -60,-2" stroke="#166b4e" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-62" cy="-5" rx="8" ry="7" fill="#166b4e"/>
+    <circle cx="-70" cy="-10" r="5" fill="#166b4e"/>
+    <circle cx="-60" cy="-14" r="5" fill="#166b4e"/>
+    <circle cx="-52" cy="-8" r="5" fill="#166b4e"/>
+    <path d="M46,24 Q66,12 60,-2" stroke="#166b4e" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <ellipse cx="62" cy="-5" rx="8" ry="7" fill="#166b4e"/>
+    <circle cx="70" cy="-10" r="5" fill="#166b4e"/>
+    <circle cx="60" cy="-14" r="5" fill="#166b4e"/>
+    <circle cx="52" cy="-8" r="5" fill="#166b4e"/>
+    <ellipse cx="-18" cy="86" rx="18" ry="8" fill="#166b4e"/>
+    <ellipse cx="18" cy="86" rx="18" ry="8" fill="#166b4e"/>
+  </g>
+</svg>
