@@ -133,28 +133,77 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
 <div id="loginScreen">
   <div class="login-box">
     <span class="login-icon">👩‍🏫</span>
-    <div class="login-title">Opettaja-näkymä</div>
-    <div class="login-sub">Syötä admin-koodi päästäksesi sisään</div>
-    <div class="pin-dots" id="pinDots">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+    <div class="login-title" id="loginTitle">Opettaja-näkymä</div>
+    <div class="login-sub" id="loginSub">Kirjoita luokkakoodisi</div>
+
+    <!-- Vaihe A: luokkakoodi -->
+    <div id="loginStepA">
+      <input type="text" id="loginCodeInput"
+        style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;color:var(--text);font-family:'Fredoka One',cursive;font-size:1.4rem;text-align:center;letter-spacing:3px;text-transform:uppercase;outline:none;margin-bottom:12px;transition:border-color .18s;"
+        placeholder="KOALA42" maxlength="12" autocomplete="off" autocapitalize="characters"
+        oninput="this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter')loginCheckCode()"/>
+      <div class="pin-error" id="codeErr"></div>
+      <button class="pin-btn pin-ok" style="width:100%;margin-top:8px;font-size:1rem;padding:14px;" onclick="loginCheckCode()">Jatka →</button>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);">
+        <div style="font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:8px;">Ei vielä luokkaa?</div>
+        <a href="#" onclick="showCreateFirst()" style="color:var(--accent3);font-size:.78rem;font-weight:800;text-decoration:none;">➕ Luo uusi luokka</a>
+      </div>
     </div>
-    <div class="pin-pad">
-      <button class="pin-btn" onclick="pp(1)">1</button>
-      <button class="pin-btn" onclick="pp(2)">2</button>
-      <button class="pin-btn" onclick="pp(3)">3</button>
-      <button class="pin-btn" onclick="pp(4)">4</button>
-      <button class="pin-btn" onclick="pp(5)">5</button>
-      <button class="pin-btn" onclick="pp(6)">6</button>
-      <button class="pin-btn" onclick="pp(7)">7</button>
-      <button class="pin-btn" onclick="pp(8)">8</button>
-      <button class="pin-btn" onclick="pp(9)">9</button>
-      <button class="pin-btn pin-clear" onclick="pc()">⌫</button>
-      <button class="pin-btn" onclick="pp(0)">0</button>
-      <button class="pin-btn pin-ok" onclick="pconfirm()">✓</button>
+
+    <!-- Vaihe B: PIN -->
+    <div id="loginStepB" style="display:none;">
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-btn" onclick="pp(1)">1</button>
+        <button class="pin-btn" onclick="pp(2)">2</button>
+        <button class="pin-btn" onclick="pp(3)">3</button>
+        <button class="pin-btn" onclick="pp(4)">4</button>
+        <button class="pin-btn" onclick="pp(5)">5</button>
+        <button class="pin-btn" onclick="pp(6)">6</button>
+        <button class="pin-btn" onclick="pp(7)">7</button>
+        <button class="pin-btn" onclick="pp(8)">8</button>
+        <button class="pin-btn" onclick="pp(9)">9</button>
+        <button class="pin-btn pin-clear" onclick="pc()">⌫</button>
+        <button class="pin-btn" onclick="pp(0)">0</button>
+        <button class="pin-btn pin-ok" onclick="pconfirm()">✓</button>
+      </div>
+      <div class="pin-error" id="pinErr"></div>
+      <button onclick="backToCode()" style="background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:8px;">← Vaihda koodi</button>
     </div>
-    <div class="pin-error" id="pinErr"></div>
-    <div style="margin-top:20px;"><a href="index.html" style="color:var(--muted);font-size:.75rem;font-weight:700;text-decoration:none;">← Takaisin etusivulle</a></div>
+
+    <!-- Vaihe C: Luo uusi luokka (ensikertalaiselle) -->
+    <div id="loginStepC" style="display:none;">
+      <div style="font-size:.8rem;color:var(--muted);font-weight:700;margin-bottom:16px;text-align:left;">Luo oma luokka ja aseta PIN-koodi</div>
+      <input type="text" id="newTeacherName" style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;margin-bottom:10px;" placeholder="Opettajan nimi *" maxlength="40"/>
+      <input type="text" id="newClassName" style="width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;margin-bottom:16px;" placeholder="Luokan nimi (esim. 3A)" maxlength="40"/>
+      <div style="font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Luo PIN-koodi (4 numeroa)</div>
+      <div class="pin-dots" id="newPinDots">
+        <div class="pin-dot" id="npd0"></div><div class="pin-dot" id="npd1"></div>
+        <div class="pin-dot" id="npd2"></div><div class="pin-dot" id="npd3"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-btn" onclick="npp(1)">1</button>
+        <button class="pin-btn" onclick="npp(2)">2</button>
+        <button class="pin-btn" onclick="npp(3)">3</button>
+        <button class="pin-btn" onclick="npp(4)">4</button>
+        <button class="pin-btn" onclick="npp(5)">5</button>
+        <button class="pin-btn" onclick="npp(6)">6</button>
+        <button class="pin-btn" onclick="npp(7)">7</button>
+        <button class="pin-btn" onclick="npp(8)">8</button>
+        <button class="pin-btn" onclick="npp(9)">9</button>
+        <button class="pin-btn pin-clear" onclick="npc()">⌫</button>
+        <button class="pin-btn" onclick="npp(0)">0</button>
+        <button class="pin-btn pin-ok" id="newPinOk" onclick="nconfirm()" disabled>✓</button>
+      </div>
+      <div class="pin-error" id="newPinErr"></div>
+      <button onclick="backToCode()" style="background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:8px;">← Takaisin</button>
+    </div>
+
+    <div style="margin-top:20px;"><a href="index.html" style="color:var(--muted);font-size:.72rem;font-weight:700;text-decoration:none;">← Takaisin etusivulle</a></div>
   </div>
 </div>
 
@@ -230,20 +279,39 @@ td{padding:10px 14px;font-size:.8rem;font-weight:700;vertical-align:middle;}
     <div class="view" id="tab-create">
       <div style="margin-bottom:20px;">
         <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:6px;">Luo uusi luokka</div>
-        <div style="font-size:.82rem;color:var(--muted);font-weight:700;">Saat uniikin luokkakoodin jonka oppilaat syöttävät kirjautuessaan</div>
+        <div style="font-size:.82rem;color:var(--muted);font-weight:700;">Uusi luokkakoodi — voit hallita useampaa luokkaa</div>
       </div>
       <div class="create-card">
         <label class="form-label" for="teacherName">Opettajan nimi *</label>
         <input class="form-input" type="text" id="teacherName" placeholder="Esim. Virtanen" maxlength="40"/>
         <label class="form-label" for="className">Luokan nimi (vapaaehtoinen)</label>
         <input class="form-input" type="text" id="className" placeholder="Esim. 3A tai Matikan kerho" maxlength="40"/>
-        <button class="btn-primary" onclick="createClass()" id="createBtn">🏫 Luo luokka</button>
+        <label class="form-label" id="createPinLabel">Luo PIN-koodi luokallesi</label>
+        <div class="pin-dots" style="justify-content:flex-start;gap:10px;margin-bottom:14px;">
+          <div class="pin-dot" id="cpd0"></div><div class="pin-dot" id="cpd1"></div>
+          <div class="pin-dot" id="cpd2"></div><div class="pin-dot" id="cpd3"></div>
+        </div>
+        <div class="pin-pad" style="max-width:280px;margin-bottom:8px;">
+          <button class="pin-btn" onclick="cPinPress(1)">1</button>
+          <button class="pin-btn" onclick="cPinPress(2)">2</button>
+          <button class="pin-btn" onclick="cPinPress(3)">3</button>
+          <button class="pin-btn" onclick="cPinPress(4)">4</button>
+          <button class="pin-btn" onclick="cPinPress(5)">5</button>
+          <button class="pin-btn" onclick="cPinPress(6)">6</button>
+          <button class="pin-btn" onclick="cPinPress(7)">7</button>
+          <button class="pin-btn" onclick="cPinPress(8)">8</button>
+          <button class="pin-btn" onclick="cPinPress(9)">9</button>
+          <button class="pin-btn pin-clear" onclick="cPinClear()">⌫</button>
+          <button class="pin-btn" onclick="cPinPress(0)">0</button>
+          <button class="pin-btn pin-ok" id="createPinOk" onclick="createPinConfirm()" disabled>✓</button>
+        </div>
+        <div class="pin-error" id="createPinErr" style="text-align:left;margin-bottom:12px;"></div>
         <div class="success-box" id="successBox">
           <div style="font-size:1.8rem;margin-bottom:8px;">🎉</div>
           <div style="font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:6px;">Luokka luotu!</div>
-          <div class="sh">Anna tämä koodi oppilaillesi:</div>
+          <div class="sh">Luokkakoodi oppilaillesi:</div>
           <div class="sc" id="createdCode">—</div>
-          <div class="sh">Oppilaat syöttävät koodin peliin kirjautuessaan</div>
+          <div class="sh">Oppilaat syöttävät tämän koodin kirjautuessaan peliin</div>
           <button class="btn-primary" style="margin-top:14px;font-size:.82rem;padding:9px 20px;" onclick="copyCode()">📋 Kopioi koodi</button>
         </div>
       </div>
@@ -257,25 +325,175 @@ const SB_URL='https://whftebwchwvwlyfgytoo.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZnRlYndjaHd2d2x5Zmd5dG9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzMyMjQsImV4cCI6MjA5MDMwOTIyNH0.nZ9toEBWzGaagueyiQXYJgulMaRnC4PP_3cadqdTUAo';
 const SB_H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
 
-// ⚠️ VAIHDA SAMA ADMIN-KOODI KUIN game.html:ssä
-const ADMIN_PIN='0000';
+// ⚠️ Admin-koodia ei enää tarvita — opettajat kirjautuvat omalla luokkakoodilla + PIN:illä
 
-// ── PIN ──
+// ── Hash (sama logiikka kuin game.html) ──
+function hashPin(pin,salt){
+  let h=0;const s=pin+salt+'matikka_ahmatti_salt_2024';
+  for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}
+  return Math.abs(h).toString(16);
+}
+
+// ── Login state ──
+let loginCode=''; // luokkakoodi jonka opettaja syötti
 let pinBuf='';
+let newPinBuf='';
+let newPinFirst=''; // PIN vahvistusta varten
+let newPinMode='first'; // 'first' | 'confirm'
+
+function showLoginStep(step){
+  document.getElementById('loginStepA').style.display=step==='A'?'block':'none';
+  document.getElementById('loginStepB').style.display=step==='B'?'block':'none';
+  document.getElementById('loginStepC').style.display=step==='C'?'block':'none';
+}
+
+function backToCode(){
+  pinBuf='';newPinBuf='';newPinFirst='';newPinMode='first';
+  document.getElementById('loginCodeInput').value='';
+  document.getElementById('loginTitle').textContent='Opettaja-näkymä';
+  document.getElementById('loginSub').textContent='Kirjoita luokkakoodisi';
+  document.getElementById('codeErr').textContent='';
+  document.getElementById('pinErr').textContent='';
+  document.getElementById('newPinErr').textContent='';
+  showLoginStep('A');
+}
+
+function showCreateFirst(){
+  document.getElementById('loginTitle').textContent='Luo luokka';
+  document.getElementById('loginSub').textContent='Ensimmäinen kerta? Luo oma luokka';
+  newPinBuf='';newPinFirst='';newPinMode='first';
+  updNewDots();
+  showLoginStep('C');
+}
+
+// Vaihe A: tarkista luokkakoodi
+async function loginCheckCode(){
+  const code=document.getElementById('loginCodeInput').value.trim().toUpperCase();
+  if(!code){document.getElementById('codeErr').textContent='Kirjoita luokkakoodi';return;}
+  const errEl=document.getElementById('codeErr');
+  errEl.textContent='⏳ Tarkistetaan...';
+  try{
+    const res=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(code)}&select=class_code,teacher_name,pin_hash&limit=1`,{headers:SB_H});
+    const rows=res.ok?await res.json():[];
+    if(!rows.length){errEl.textContent='Luokkakoodia ei löydy ❌';return;}
+    loginCode=code;
+    errEl.textContent='';
+    if(!rows[0].pin_hash){
+      // Luokka on olemassa mutta PIN puuttuu — aseta PIN
+      document.getElementById('loginTitle').textContent=`Hei, ${rows[0].teacher_name}!`;
+      document.getElementById('loginSub').textContent='Aseta PIN-koodi luokallesi';
+      newPinBuf='';newPinFirst='';newPinMode='first';
+      updNewDots();
+      showLoginStep('C');
+    } else {
+      // Luokka + PIN löytyy — pyydä PIN
+      document.getElementById('loginTitle').textContent=`Hei, ${rows[0].teacher_name}!`;
+      document.getElementById('loginSub').textContent='Syötä PIN-koodisi';
+      pinBuf='';updDots();
+      showLoginStep('B');
+    }
+  } catch{errEl.textContent='Verkkovirhe — yritä uudelleen';}
+}
+
+// Vaihe B: PIN-kirjautuminen
 function pp(n){if(pinBuf.length>=4)return;pinBuf+=n;updDots();if(pinBuf.length===4)setTimeout(pconfirm,150);}
 function pc(){pinBuf=pinBuf.slice(0,-1);updDots();}
 function updDots(){for(let i=0;i<4;i++){const d=document.getElementById('pd'+i);d.classList.toggle('filled',i<pinBuf.length);d.classList.remove('error');}}
-function pconfirm(){
-  if(pinBuf===ADMIN_PIN){
+
+async function pconfirm(){
+  const hash=hashPin(pinBuf,loginCode);
+  try{
+    const res=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}&select=pin_hash&limit=1`,{headers:SB_H});
+    const rows=res.ok?await res.json():[];
+    if(rows.length&&rows[0].pin_hash===hash){
+      // Onnistui!
+      activeClass=loginCode;
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('dashboard').style.display='block';
+      loadData();
+    } else {
+      document.getElementById('pinErr').textContent='Väärä PIN ❌';
+      for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.add('error');
+      setTimeout(()=>{pinBuf='';updDots();document.getElementById('pinErr').textContent='';},900);
+    }
+  } catch{document.getElementById('pinErr').textContent='Verkkovirhe — yritä uudelleen';}
+}
+
+// Vaihe C: uuden PIN:in luonti (uudelle luokalle tai olemassaolevalle ilman PIN:iä)
+function npp(n){if(newPinBuf.length>=4)return;newPinBuf+=n;updNewDots();document.getElementById('newPinOk').disabled=newPinBuf.length<4;if(newPinBuf.length===4)setTimeout(nconfirm,150);}
+function npc(){newPinBuf=newPinBuf.slice(0,-1);updNewDots();document.getElementById('newPinOk').disabled=true;}
+function updNewDots(){for(let i=0;i<4;i++){const d=document.getElementById('npd'+i);d.classList.toggle('filled',i<newPinBuf.length);d.classList.remove('error');}}
+
+async function nconfirm(){
+  if(newPinMode==='first'){
+    // Tallennetaan ensimmäinen syöte, pyydetään vahvistus
+    newPinFirst=newPinBuf;
+    newPinBuf='';
+    newPinMode='confirm';
+    updNewDots();
+    document.getElementById('newPinOk').disabled=true;
+    document.getElementById('loginSub').textContent='Syötä PIN uudelleen vahvistaaksesi';
+    document.getElementById('newPinErr').textContent='';
+  } else {
+    // Vahvistus
+    if(newPinBuf!==newPinFirst){
+      document.getElementById('newPinErr').textContent='PIN:it eivät täsmää — yritä uudelleen ❌';
+      for(let i=0;i<4;i++)document.getElementById('npd'+i).classList.add('error');
+      setTimeout(()=>{newPinBuf='';newPinFirst='';newPinMode='first';updNewDots();document.getElementById('newPinOk').disabled=true;document.getElementById('loginSub').textContent='Luo PIN-koodi (4 numeroa)';document.getElementById('newPinErr').textContent='';},900);
+      return;
+    }
+    // PIN täsmää — tallenna
+    await saveNewPin();
+  }
+}
+
+async function saveNewPin(){
+  const teacherName=document.getElementById('newTeacherName')?.value.trim();
+  const className=document.getElementById('newClassName')?.value.trim();
+  const hash=hashPin(newPinFirst,loginCode||'new');
+  const errEl=document.getElementById('newPinErr');
+  errEl.textContent='⏳ Tallennetaan...';
+
+  try{
+    if(loginCode){
+      // Olemassaoleva luokka — päivitä vain PIN
+      const res=await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(loginCode)}`,{
+        method:'PATCH',headers:{...SB_H,'Prefer':'return=minimal'},
+        body:JSON.stringify({pin_hash:hash})
+      });
+      if(!res.ok)throw new Error();
+    } else {
+      // Uusi luokka — luo luokka + PIN
+      if(!teacherName){errEl.textContent='Kirjoita opettajan nimi';return;}
+      const name=className?`${teacherName} — ${className}`:teacherName;
+      const code=genCode();
+      const res=await fetch(`${SB_URL}/rest/v1/classes`,{
+        method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
+        body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})
+      });
+      if(!res.ok)throw new Error();
+      loginCode=code;
+      // Näytä koodi käyttäjälle
+      document.getElementById('loginTitle').textContent='🎉 Luokka luotu!';
+      document.getElementById('loginSub').textContent=`Luokkakoodisi on:`;
+      errEl.innerHTML=`<div style="font-family:'Fredoka One',cursive;font-size:2rem;color:var(--accent3);letter-spacing:4px;margin:10px 0">${code}</div><div style="font-size:.72rem;color:var(--muted)">Kirjoita tämä muistiin — tarvitset sen kirjautumiseen</div>`;
+      document.getElementById('newPinOk').disabled=true;
+      setTimeout(()=>{
+        activeClass=loginCode;
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('dashboard').style.display='block';
+        loadData();
+      },3000);
+      return;
+    }
+    // Kirjaudu sisään
+    activeClass=loginCode;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('dashboard').style.display='block';
     loadData();
-  } else {
-    document.getElementById('pinErr').textContent='Väärä koodi ❌';
-    for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.add('error');
-    setTimeout(()=>{pinBuf='';updDots();document.getElementById('pinErr').textContent='';},900);
-  }
+  } catch{errEl.textContent='Tallennus epäonnistui — yritä uudelleen';}
 }
+
 function logout(){location.reload();}
 
 // ── Tabs ──
@@ -489,12 +707,42 @@ function renderClasses(){
   }).join('');
 }
 
-// ── Create class ──
+// ── Create class (from dashboard tab) ──
 function genCode(){
   const w=['KOALA','PANDA','LEIJU','KETTU','KARHU','HIRVI','ORAVA','JÄNIS','NORSU','TIIKERI'];
   return w[~~(Math.random()*w.length)]+(Math.floor(Math.random()*90)+10);
 }
-async function createClass(){
+
+// Create class state
+let createPinBuf='';
+let createPinFirst='';
+let createPinMode='first';
+
+function cPinPress(n){
+  if(createPinBuf.length>=4)return;
+  createPinBuf+=n;updCreateDots();
+  document.getElementById('createPinOk').disabled=createPinBuf.length<4;
+  if(createPinBuf.length===4)setTimeout(createPinConfirm,150);
+}
+function cPinClear(){createPinBuf=createPinBuf.slice(0,-1);updCreateDots();document.getElementById('createPinOk').disabled=true;}
+function updCreateDots(){for(let i=0;i<4;i++){const d=document.getElementById('cpd'+i);if(d)d.classList.toggle('filled',i<createPinBuf.length);}}
+function createPinConfirm(){
+  if(createPinMode==='first'){
+    createPinFirst=createPinBuf;createPinBuf='';createPinMode='confirm';
+    updCreateDots();document.getElementById('createPinOk').disabled=true;
+    document.getElementById('createPinLabel').textContent='Syötä PIN uudelleen vahvistaaksesi';
+    document.getElementById('createPinErr').textContent='';
+  } else {
+    if(createPinBuf!==createPinFirst){
+      document.getElementById('createPinErr').textContent='PIN:it eivät täsmää ❌';
+      setTimeout(()=>{createPinBuf='';createPinFirst='';createPinMode='first';updCreateDots();document.getElementById('createPinOk').disabled=true;document.getElementById('createPinLabel').textContent='Luo PIN-koodi luokallesi';document.getElementById('createPinErr').textContent='';},900);
+    } else {
+      doCreateClass();
+    }
+  }
+}
+
+async function doCreateClass(){
   const t=document.getElementById('teacherName').value.trim();
   if(!t){alert('Kirjoita opettajan nimi');return;}
   const c=document.getElementById('className').value.trim();
@@ -502,18 +750,25 @@ async function createClass(){
   const btn=document.getElementById('createBtn');
   btn.disabled=true;btn.textContent='⏳ Luodaan...';
   const code=genCode();
+  const hash=hashPin(createPinFirst,code);
   try{
-    const res=await fetch(`${SB_URL}/rest/v1/classes`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({class_code:code,teacher_name:name})});
+    const res=await fetch(`${SB_URL}/rest/v1/classes`,{
+      method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},
+      body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})
+    });
     if(!res.ok)throw new Error();
     document.getElementById('createdCode').textContent=code;
     document.getElementById('successBox').style.display='block';
     document.getElementById('teacherName').value='';
     document.getElementById('className').value='';
+    createPinBuf='';createPinFirst='';createPinMode='first';
+    updCreateDots();
     allClasses.push({class_code:code,teacher_name:name,cnt:0});
     buildClassBar();renderClasses();
   } catch{alert('Luonti epäonnistui — yritä uudelleen');}
   btn.disabled=false;btn.innerHTML='🏫 Luo luokka';
 }
+
 function copyCode(){
   const c=document.getElementById('createdCode').textContent;
   navigator.clipboard.writeText(c).then(()=>alert('Koodi kopioitu: '+c));
