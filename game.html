@@ -2663,7 +2663,18 @@ function ck(){
   setTimeout(()=>{if(rDone>=rTotal)showResults();else newProblem();},ok?600:1300);
 }
 function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Loistava! 🔥','Hienoa! 💪','Aivan oikein! 🎯'][~~(Math.random()*6)];}
-function updStats(){document.getElementById('sStreak').textContent=streak;document.getElementById('sCorr').textContent=corr;document.getElementById('sPts').textContent=pts;}
+function updStats(){
+  document.getElementById('sStreak').textContent=streak;
+  document.getElementById('sCorr').textContent=corr;
+  // Näytä pisteet harmaana jos ei olla maksimitasolla eikä tiedetä vielä nouseeko taso
+  // Tämä estää "pisteet katosivat" -tunteen kierroksen lopussa
+  const ptsEl=document.getElementById('sPts');
+  if(ptsEl){
+    ptsEl.textContent=pts;
+    ptsEl.style.opacity= srData.diffLevel >= DIFF_LEVELS.length ? '1' : '0.5';
+    ptsEl.title = srData.diffLevel >= DIFF_LEVELS.length ? '' : 'Pisteet tallentuvat kun taso nousee';
+  }
+}
 function updProg(){const p=Math.round((rDone/rTotal)*100);document.getElementById('pF').style.width=p+'%';document.getElementById('pT').textContent=rDone+' / '+rTotal;document.getElementById('pP').textContent=p+'%';}
 
 async function showResults(){
@@ -2677,31 +2688,52 @@ async function showResults(){
 
   // Arvioi kierros ja mahdollinen tasonvaihto
   const lvlChange = srEvaluateRound(p);
+  const levelRosedThisRound = lvlChange.changed && lvlChange.up;
+  // BUGI 1 FIX: Taso 50 (maksimi) saa pisteet normaalisti
+  // — pelaaja on saavuttanut maksimin ja ansaitsee jatkaa keräämistä
+  const atMaxLevel = srData.diffLevel >= DIFF_LEVELS.length;
+  const ptsEarned  = levelRosedThisRound || atMaxLevel;
+
+  // PISTEYTYS: pisteet kertyvät jos taso nousi TAI ollaan jo maksimitasolla
+  const ptsToSave = ptsEarned ? pts : 0;
+
   let lvlMsg = '';
-  if (lvlChange.changed && lvlChange.up) {
+  if (levelRosedThisRound) {
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
   } else if (lvlChange.changed && !lvlChange.up) {
+    // BUGI 2 FIX: taso laski — ei näytetä "nouse tasoa" viestiä vaan kannustus
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
-    lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label}</div>`;
+    lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label} — saat pisteet kun taso nousee!</div>`;
+  } else if (atMaxLevel) {
+    lvlMsg = `<div class="result-tag" style="background:rgba(197,108,240,.15);color:var(--purple);border:1.5px solid var(--purple);">🏆 Maksimitaso ${DIFF_LEVELS.length} — pisteet tallentuvat!</div>`;
+  } else {
+    // Taso ei muuttunut eikä olla maksimilla — kannustetaan nousemaan
+    lvlMsg = `<div class="result-tag" style="background:rgba(255,107,107,.08);color:var(--muted);border:1.5px solid rgba(255,107,107,.2);">📈 Nouse tasoa saadaksesi pisteitä Hall of Fameen!</div>`;
   }
 
+  // BUGI 4 FIX: näytetään selkeästi jo kierroksen alussa mitä tapahtuu pisteille
+  // Ei anneta pisteiden "kadota" lopussa — kerrotaan suoraan tulos
   document.getElementById('rScore').innerHTML=`
-    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä</div>
+    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span style="color:${ptsEarned?'var(--accent)':'var(--muted)'}">${ptsEarned ? pts : 0}</span> pistettä${!ptsEarned&&pts>0 ? ` <span style="font-size:.7rem;color:var(--muted)">(${pts} ei tallennu)</span>` : ''}</div>
     ${lvlMsg}
-    <div class="result-save" id="saveStatus">💾 Tallennetaan...</div>
+    <div class="result-save" id="saveStatus">${ptsEarned ? '💾 Tallennetaan...' : '⏭️ Pisteet tallentuvat kun taso nousee'}</div>
   `;
   if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
-  checkAllAchievements(p, mode);
+  checkAllAchievements(p, mode, levelRosedThisRound, atMaxLevel);
+
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
-  const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
-  const saved = await saveScore(entry);
-  const statusEl = document.getElementById('saveStatus');
-  if(statusEl){
-    if(saved){statusEl.className='result-save result-save--ok';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
-    else{statusEl.className='result-save result-save--offline';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
+  const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts:ptsToSave,pct:p,ts:Date.now()};
+
+  if(ptsEarned){
+    const saved = await saveScore(entry);
+    const statusEl = document.getElementById('saveStatus');
+    if(statusEl){
+      if(saved){statusEl.className='result-save result-save--ok';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
+      else{statusEl.className='result-save result-save--offline';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
+    }
   }
   retryQueue=[];roundHistory=[];
 }
@@ -2823,17 +2855,17 @@ const ACHIEVEMENTS = [
   { id:'perfect_round',  icon:'🌟', name:'Täydellinen!',         desc:'10/10 oikein yhdellä kierroksella' },
   { id:'streak_5',       icon:'🔥', name:'Putkihaaste',          desc:'5 peräkkäin oikein' },
   { id:'streak_10',      icon:'🔥🔥',name:'Superputki!',          desc:'10 peräkkäin oikein' },
-  { id:'all_tables',     icon:'✖️', name:'Kertotaulumestari',    desc:'Kaikki kertotaulut 1–10 pelattu' },
+  { id:'all_tables',     icon:'✖️', name:'Kertotaulumestari',    desc:'Kaikki kertotaulut 1–10 pelattu (vaatii tason ≥8)' },
   { id:'level_4',        icon:'🚀', name:'Taso 4!',              desc:'Saavutti tason 4' },
-  { id:'rounds_100',     icon:'🏆', name:'Satanen!',             desc:'100 kierrosta yhteensä' },
+  { id:'rounds_100',     icon:'🏆', name:'Satanen!',             desc:'100 kierrosta joissa taso nousi' },
   { id:'hof_1',          icon:'🐐', name:'GOAT',                 desc:'Hall of Famen #1 sija' },
   // — Uudet 8 —
-  { id:'rounds_10',      icon:'🎮', name:'Harjoittelija',        desc:'10 kierrosta yhteensä' },
-  { id:'rounds_50',      icon:'🎯', name:'Ahkera ahmatti',       desc:'50 kierrosta yhteensä' },
+  { id:'rounds_10',      icon:'🎮', name:'Harjoittelija',        desc:'10 kierrosta joissa taso nousi' },
+  { id:'rounds_50',      icon:'🎯', name:'Ahkera ahmatti',       desc:'50 kierrosta joissa taso nousi' },
   { id:'perfect_3',      icon:'💎', name:'Kolme täydellistä',    desc:'3 täydellistä 10/10 kierrosta' },
   { id:'all_modes',      icon:'🌈', name:'Monipuolinen',         desc:'Pelattu kaikkia 4 pelimoodia' },
-  { id:'streak_20',      icon:'⚡', name:'Salamaputki!',         desc:'20 peräkkäin oikein' },
-  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa ja yli 80% oikein' },
+  { id:'streak_20',      icon:'⚡', name:'Salamaputki!',         desc:'20 peräkkäin oikein (vaatii tason nousua)' },
+  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa ja yli 80% oikein (vaatii tason nousua)' },
   { id:'comeback',       icon:'💪', name:'Tekee paluun!',        desc:'Parani 3 peräkkäisellä kierroksella' },
   { id:'early_bird',     icon:'🌅', name:'Aamulintu',            desc:'Pelasi ennen kello 8' },
   // — Tasosaavutukset (BUG-009 fix: mukana alusta lukittuina) —
@@ -2951,42 +2983,65 @@ async function renderAchievements() {
 }
 
 // ── Check achievements after each round / event ──
-async function checkAllAchievements(roundPct, currentMode) {
+async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, atMaxLevel) {
   // first_login tarkistetaan vain startGame():ssa — ei joka kierroksella
+  // ptsEarned = taso nousi TAI maksimitasolla
+  const ptsEarned = levelRosedThisRound || atMaxLevel;
 
-  // Perfect round (BUG-003 fix: >= 100 ei === 100)
+  // Perfect round — ei vaadi tason nousua (kannustaa tarkkuuteen)
   if (roundPct >= 100) achCheck('perfect_round');
 
-  // BUG-002 FIX: streak-saavutukset tarkistetaan maxStreakThisRound:lla
-  // ei "streak":lla joka voi olla 0 kierroksen lopussa
+  // Streak-saavutukset — perustasot eivät vaadi tason nousua
   if (maxStreakThisRound >= 5)  achCheck('streak_5');
   if (maxStreakThisRound >= 10) achCheck('streak_10');
-  if (maxStreakThisRound >= 20) achCheck('streak_20');
 
   // Taso 4+ (vanha saavutus yhteensopivuuden vuoksi)
   if (srData.diffLevel >= 4) achCheck('level_4');
-  // Tasosaavutukset joka 10. tasolla
+  // Tasosaavutukset joka 10. tasolla — nämä vaativat tason nousua luonnostaan
   [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
 
-  // Kaikki kertotaulut 1–10 pelattu
+  // ── Saavutukset jotka vaativat tason nousua ──────────────────────
+  // Estää farmingin: pelaaja ei voi toistaa samaa tasoa saadakseen näitä
+
+  // streak_20 vaatii pisteiden kertymistä JA tason ≥ 5
+  if (ptsEarned && srData.diffLevel >= 5 && maxStreakThisRound >= 20) {
+    achCheck('streak_20');
+  }
+
+  // speed_demon vaatii pisteiden kertymistä JA tason ≥ 3
+  const roundSecs = (Date.now() - roundStartTime) / 1000;
+  if (ptsEarned && srData.diffLevel >= 3 && roundSecs < 90 && roundPct >= 80) {
+    achCheck('speed_demon');
+  }
+
+  // Kaikki kertotaulut — vaatii tason ≥ 8 (kertotaulut avautuvat vasta silloin)
   const tablesKey = `matikka_tables_${pName}:${pChar}`;
   try {
     const played = new Set(JSON.parse(localStorage.getItem(tablesKey)||'[]'));
-    if (currentMode==='m') played.add(selTable);
+    if (currentMode==='m' && srData.diffLevel >= 8) played.add(selTable);
     localStorage.setItem(tablesKey, JSON.stringify([...played]));
     if (played.size >= 10) achCheck('all_tables');
   } catch {}
 
-  // Kierrosmäärät
-  if (srData.roundsPlayed >= 10)  achCheck('rounds_10');
-  if (srData.roundsPlayed >= 50)  achCheck('rounds_50');
-  if (srData.roundsPlayed >= 100) achCheck('rounds_100');
+  // BUGI 3 FIX: Kierrosmäärät — käytetään vanhaa roundsPlayed migraatiota
+  // Jos uusi progress_rounds-laskuri on 0 mutta roundsPlayed on iso,
+  // siirretään vanha arvo uuteen laskuriin ensimmäisellä kerralla
+  const progressRoundsKey = `matikka_progress_rounds_${pName}:${pChar}`;
+  try {
+    let progressRounds = parseInt(localStorage.getItem(progressRoundsKey)||'-1');
+    if (progressRounds === -1) {
+      // Ensimmäinen kerta — migroi vanha roundsPlayed arvoksi
+      // Oletetaan puolet vanhoista kierroksista oli "edistyviä"
+      progressRounds = Math.floor((srData.roundsPlayed || 0) / 2);
+    }
+    if (ptsEarned) progressRounds++;
+    localStorage.setItem(progressRoundsKey, progressRounds);
+    if (progressRounds >= 10)  achCheck('rounds_10');
+    if (progressRounds >= 50)  achCheck('rounds_50');
+    if (progressRounds >= 100) achCheck('rounds_100');
+  } catch {}
 
-  // Salamanopea
-  const roundSecs = (Date.now() - roundStartTime) / 1000;
-  if (roundSecs < 90 && roundPct >= 80) achCheck('speed_demon');
-
-  // Kaikki 4 pelimoodia pelattu
+  // Kaikki 4 pelimoodia pelattu — ei vaadi tason nousua
   const modesKey = `matikka_modes_${pName}:${pChar}`;
   try {
     const playedModes = new Set(JSON.parse(localStorage.getItem(modesKey)||'[]'));
@@ -2995,7 +3050,7 @@ async function checkAllAchievements(roundPct, currentMode) {
     if (playedModes.size >= 4) achCheck('all_modes');
   } catch {}
 
-  // Kolme täydellistä kierrosta
+  // Kolme täydellistä kierrosta — ei vaadi tason nousua (kannustaa tarkkuuteen)
   const perfectKey = `matikka_perfect_${pName}:${pChar}`;
   try {
     let perfectCount = parseInt(localStorage.getItem(perfectKey)||'0');
@@ -3004,10 +3059,10 @@ async function checkAllAchievements(roundPct, currentMode) {
     if (perfectCount >= 3) achCheck('perfect_3');
   } catch {}
 
-  // Aamulintu
+  // Aamulintu — ei vaadi tason nousua
   if (new Date().getHours() < 8) achCheck('early_bird');
 
-  // Tekee paluun — parantunut 3 peräkkäisellä kierroksella
+  // Tekee paluun — parantunut 3 peräkkäisellä kierroksella — ei vaadi tason nousua
   const pctKey = `matikka_pcthistory_${pName}:${pChar}`;
   try {
     const history = JSON.parse(localStorage.getItem(pctKey)||'[]');
@@ -3020,6 +3075,9 @@ async function checkAllAchievements(roundPct, currentMode) {
       achCheck('comeback');
     }
   } catch {}
+
+  // HOF #1 — tarkistetaan vain jos pisteet kertyvät (taso nousi tai maksimitaso)
+  if (!ptsEarned) return;
 
   // BUG-001 FIX: HOF #1 tarkistaa kumulatiiviset pisteet, ei yksittäistä kierrosta
   setTimeout(async () => {
