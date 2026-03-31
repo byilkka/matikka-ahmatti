@@ -10,14 +10,14 @@
 <meta name="keywords" content="matematiikka, lapsille, harjoittelu, kertotaulut, yhteenlasku, vähennyslasku, hajotelmat, peli, ilmainen, alakoulu, oppiminen">
 <meta name="author" content="Matikka-Ahmatti">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.matikka-ahmatti.fi/">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/game.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU" />
 
 <!-- ═══ OPEN GRAPH (Facebook, WhatsApp, Discord jne.) ═══ -->
 <meta property="og:type"        content="website">
-<meta property="og:url"         content="https://www.matikka-ahmatti.fi/">
+<meta property="og:url"         content="https://www.matikka-ahmatti.fi/game.html">
 <meta property="og:title"       content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
 <meta property="og:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Kertotaulut, hajotelmat ja laskut pelattavana mörkö-hahmolla. Adaptiivinen vaikeus kasvaa lapsen taitotason mukaan.">
 <meta property="og:image"       content="https://www.matikka-ahmatti.fi/og-image.png">
@@ -2166,7 +2166,16 @@ async function startGame(){
 
   retryQueue=[]; roundHistory=[];
   launchConfetti(); buildTablesGrid(); newProblem();
-  achInit().then(()=>achCheck('first_login'));
+
+  // Odota saavutukset ladatuksi ennen tarkistuksia
+  // Tämä korjaa tilanteen jossa taso-saavutukset puuttuvat uudella laitteella
+  await achInit();
+  achCheck('first_login');
+  // Tarkista tasosaavutukset heti pelin alkaessa — korjaa Troy-tapauksen
+  // jossa pelaaja on jo tasolla 50 mutta saavutus ei ole rekisteröitynyt
+  [10,20,30,40,50].forEach(l => {
+    if (srData.diffLevel >= l) checkLevelAchievement(l);
+  });
 }
 
 // ══ SCREEN NAV ═══════════════════════════════════
@@ -2274,31 +2283,28 @@ async function srRemoteSave(name, char, md, data) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    // Päivitä myös muiden moodien diffLevel samaksi — taso on yhteinen
+    // Synkronoi taso kaikkiin moodeihin upsertilla
+    // merge-duplicates päivittää vain diff_level jos rivi on olemassa,
+    // tai luo uuden rivin jos ei ole — rounds_played ei nollaudu
     const otherModes = ['h','a','s','m'].filter(m => m !== md);
-    await Promise.all(otherModes.map(m =>
-      fetch(`${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&mode=eq.${m}`, {
-        method: 'PATCH',
-        headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ diff_level: data.diffLevel })
-      }).catch(()=>{}) // ei kriittinen jos rivi ei ole olemassa
+    await Promise.all(otherModes.map(otherMode =>
+      fetch(`${SB_URL}/rest/v1/player_progress`, {
+        method: 'POST',
+        headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify({
+          player_name:   name,
+          player_char:   char,
+          mode:          otherMode,
+          weights:       {},
+          diff_level:    data.diffLevel,
+          rounds_played: 0,
+          updated_at:    new Date().toISOString()
+        })
+      }).catch(()=>{})
     ));
   } catch (err) {
     console.warn('SR remote save failed:', err.message);
   }
-}
-
-// ── Pääfunktio: lataa SR-data (Supabase → localStorage) ──
-async function srLoad() {
-  // Yritä Supabasesta ensin
-  const remote = await srRemoteLoad(pName, pChar, mode);
-  if (remote) {
-    // Synkronoi myös localStorageen
-    srLocalSave(pName, pChar, mode, remote);
-    return remote;
-  }
-  // Fallback: localStorage
-  return srLocalLoad(pName, pChar, mode);
 }
 
 // ── Pääfunktio: tallenna SR-data (molemmat) ──────
@@ -2827,7 +2833,7 @@ const ACHIEVEMENTS = [
   { id:'perfect_3',      icon:'💎', name:'Kolme täydellistä',    desc:'3 täydellistä 10/10 kierrosta' },
   { id:'all_modes',      icon:'🌈', name:'Monipuolinen',         desc:'Pelattu kaikkia 4 pelimoodia' },
   { id:'streak_20',      icon:'⚡', name:'Salamaputki!',         desc:'20 peräkkäin oikein' },
-  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa' },
+  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa ja yli 80% oikein' },
   { id:'comeback',       icon:'💪', name:'Tekee paluun!',        desc:'Parani 3 peräkkäisellä kierroksella' },
   { id:'early_bird',     icon:'🌅', name:'Aamulintu',            desc:'Pelasi ennen kello 8' },
   // — Tasosaavutukset (BUG-009 fix: mukana alusta lukittuina) —
@@ -2880,14 +2886,21 @@ async function achRemoteUnlock(id) {
 let unlockedAch = new Set();
 
 async function achInit() {
-  // Local first, remote in background
+  // Lataa ensin localStorage (nopea)
   unlockedAch = achLocalLoad();
-  achRemoteLoad().then(remote => {
+  // Odota Supabase ennen kuin saavutuksia tarkistetaan
+  // Tämä estää tilannetta jossa taso-saavutus yritetään avata
+  // ennen kuin tiedetään onko se jo avattu
+  try {
+    const remote = await Promise.race([
+      achRemoteLoad(),
+      new Promise(r => setTimeout(() => r(null), 3000))
+    ]);
     if (remote) {
       unlockedAch = new Set([...unlockedAch, ...remote]);
       achLocalSave(unlockedAch);
     }
-  }).catch(()=>{});
+  } catch {}
 }
 
 // Check and unlock achievement — show toast if new
@@ -2939,8 +2952,7 @@ async function renderAchievements() {
 
 // ── Check achievements after each round / event ──
 async function checkAllAchievements(roundPct, currentMode) {
-  // First login — checked at startGame
-  achCheck('first_login');
+  // first_login tarkistetaan vain startGame():ssa — ei joka kierroksella
 
   // Perfect round (BUG-003 fix: >= 100 ei === 100)
   if (roundPct >= 100) achCheck('perfect_round');

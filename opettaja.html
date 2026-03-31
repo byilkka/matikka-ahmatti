@@ -555,12 +555,14 @@ let allPlayers=[],allClasses=[],activeClass=null,sortCol='level',sortAsc=false,a
 
 // FIX 1: Hae vain kirjautuneen opettajan luokat
 async function loadMyClasses(){
-  // Hae kaikki luokat joiden koodi täsmää teacher_invites-tauluun tällä opettajalla
-  // Yksinkertaisin tapa: hae kaikki invite_codet joilla tämä opettajanimi
-  const res=await fetch(`${SB_URL}/rest/v1/teacher_invites?teacher_name=eq.${encodeURIComponent(loginTeacherName)}&select=invite_code,status`,{headers:SB_H});
+  // Käytä ilike-hakua (case-insensitive) opettajan nimen hakuun
+  // Estää tilanteen jossa "Teppo Virtanen" != "teppo virtanen"
+  const res=await fetch(
+    `${SB_URL}/rest/v1/teacher_invites?teacher_name=ilike.${encodeURIComponent(loginTeacherName)}&select=invite_code,status`,
+    {headers:SB_H}
+  );
   const invites=res.ok?await res.json():[];
   const codes=invites.filter(i=>i.invite_code).map(i=>i.invite_code);
-  // Lisää myös kirjautumiskoodi itse (luokka saattaa olla luotu suoraan)
   if(!codes.includes(loginCode))codes.push(loginCode);
   return codes;
 }
@@ -687,8 +689,11 @@ function renderSummary(){
   const avgA=pl.length?Math.round(pl.reduce((s,p)=>s+p.acc,0)/pl.length):0;
   const avgL=pl.length?(pl.reduce((s,p)=>s+p.diffLevel,0)/pl.length).toFixed(1):'—';
   const totR=pl.reduce((s,p)=>s+p.rounds,0);
-  // FIX 7: viikkokierrokset
-  const weekR=pl.reduce((s,p)=>s+p.recentRounds,0);
+  // BUG-114 FIX: deduploi pelaajat ennen viikkokierrosten laskentaa
+  // Jos sama pelaaja on kahdessa luokassa, lasketaan hänet vain kerran
+  const uniquePlayers=new Map();
+  pl.forEach(p=>{ const k=`${p.name}::${p.char}`; if(!uniquePlayers.has(k))uniquePlayers.set(k,p); });
+  const weekR=[...uniquePlayers.values()].reduce((s,p)=>s+p.recentRounds,0);
   document.getElementById('sumP').textContent=pl.length;
   document.getElementById('sumA').textContent=act;
   document.getElementById('sumAcc').textContent=avgA+'%';
@@ -945,7 +950,24 @@ async function doCreateClass(){
     const res=await fetch(`${SB_URL}/rest/v1/classes`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({class_code:code,teacher_name:name,pin_hash:hash})});
     if(!res.ok)throw new Error();
     // Lisää teacher_invites-tauluun jotta loadMyClasses löytää tämän luokan
-    await fetch(`${SB_URL}/rest/v1/teacher_invites`,{method:'POST',headers:{...SB_H,'Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify({teacher_name:loginTeacherName,email:'',school:'',invite_code:code,status:'used'})}).catch(()=>{});
+    // Hae ensin olemassaolevat tiedot (email, school) jos saatavilla
+    const existingInv = await fetch(
+      `${SB_URL}/rest/v1/teacher_invites?teacher_name=eq.${encodeURIComponent(loginTeacherName)}&select=email,school&limit=1`,
+      {headers:SB_H}
+    ).then(r=>r.ok?r.json():[]).catch(()=>[]);
+    const invEmail = existingInv[0]?.email || '';
+    const invSchool = existingInv[0]?.school || '';
+    await fetch(`${SB_URL}/rest/v1/teacher_invites`,{
+      method:'POST',
+      headers:{...SB_H,'Prefer':'resolution=ignore-duplicates,return=minimal'},
+      body:JSON.stringify({
+        teacher_name: loginTeacherName,
+        email:        invEmail,
+        school:       invSchool,
+        invite_code:  code,
+        status:       'used'
+      })
+    }).catch(()=>{});
     const fd=new FormData();
     fd.append('_subject',`Matikka-Ahmatti: Uusi luokka — ${code}`);
     fd.append('opettaja',name);fd.append('koodi',code);
