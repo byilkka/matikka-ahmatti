@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{--bg:#0b1520;--card:#162030;--card2:#1a2840;--accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;--accent4:#7b9fff;--pink:#ff8ed4;--text:#eef3ff;--muted:#6a82a0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
@@ -29,7 +29,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .pin-ok{background:rgba(93,232,181,.12);color:var(--accent3);border-color:rgba(93,232,181,.2);}
 .pin-clear{color:var(--accent2);border-color:rgba(255,107,107,.2);}
 .pin-error{color:var(--accent2);font-size:.75rem;font-weight:700;min-height:18px;text-align:center;margin-top:4px;}
-.lform-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:10px;transition:border-color .18s;}
+.lform-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;margin-bottom:10px;transition:border-color .18s;}
 .lform-input:focus{border-color:var(--accent4);}
 .lform-input::placeholder{color:var(--muted);}
 .lcode-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;color:var(--text);font-family:'Fredoka One',cursive;font-size:1.3rem;text-align:center;letter-spacing:3px;text-transform:uppercase;outline:none;margin-bottom:10px;transition:border-color .18s;}
@@ -160,7 +160,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* ── CREATE CLASS ── */
 .create-card{background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(18px,3vw,32px);max-width:500px;}
 .form-label{display:block;font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.form-input{width:100%;background:var(--bg);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;outline:none;transition:border-color .18s;margin-bottom:16px;}
+.form-input{width:100%;background:var(--bg);border:1.5px solid rgba(255,255,255,.08);border-radius:11px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;transition:border-color .18s;margin-bottom:16px;}
 .form-input:focus{border-color:var(--accent4);}
 .form-input::placeholder{color:var(--muted);}
 .success-box{background:rgba(93,232,181,.08);border:1.5px solid rgba(93,232,181,.3);border-radius:14px;padding:20px;text-align:center;margin-top:16px;display:none;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
@@ -242,9 +242,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <!-- D: Anomuslomake -->
     <div id="lsD" style="display:none;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:14px;text-align:left;">Täytä tiedot — lähetämme kutsukoodin kun anomus on hyväksytty.</div>
-      <input class="lform-input" type="text" id="applyName" placeholder="Nimi *" maxlength="60"/>
-      <input class="lform-input" type="text" id="applySchool" placeholder="Koulu *" maxlength="80"/>
-      <input class="lform-input" type="email" id="applyEmail" placeholder="Sähköposti *" maxlength="100"/>
+      <input class="lform-input" type="text" id="applyName" placeholder="Nimi *" maxlength="60" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+      <input class="lform-input" type="text" id="applySchool" placeholder="Koulu *" maxlength="80" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+      <input class="lform-input" type="email" id="applyEmail" placeholder="Sähköposti *" maxlength="100" autocorrect="off" autocapitalize="none" spellcheck="false"/>
       <div class="pin-error" id="applyErr" style="margin-bottom:8px;"></div>
       <button class="lbtn-main" style="background:linear-gradient(135deg,var(--accent4),#5b7fff);color:white;" onclick="submitApply()" id="applyBtn">📨 Lähetä anomus</button>
       <div class="lsuccess" id="applySuccess">

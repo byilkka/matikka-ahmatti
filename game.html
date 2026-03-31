@@ -126,7 +126,7 @@
   --fb-font: .8rem;
   --fb-h: 24px;
 
-  --nb-pad: 10px;
+  --nb-pad: 13px;
   --nb-font: .95rem;
   --nb-gap: 5px;
   --nb-radius: 9px;
@@ -438,10 +438,29 @@
   }
 }
 
-/* ══════════════════════════════════════════════════
-   BASE STYLES
+/* ── MOBI-013: Landscape mobiili (korkeus < 500px) ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --monster-size: 70px;
+    --problem-font: clamp(1.6rem, 5vw, 2.2rem);
+    --nb-pad: 7px;
+    --nb-font: .85rem;
+    --card-pad: 8px 10px;
+    --si-pad: 4px 8px;
+    --si-font: .6rem;
+    --mode-btn-pad: 4px 3px;
+    --mode-icon: .75rem;
+    --mode-label: .55rem;
+    --fb-h: 18px;
+    --fb-font: .72rem;
+    --prog-h: 4px;
+  }
+  .monster-game-wrap { margin-bottom: 2px; }
+  .problem-area { min-height: 50px; margin-bottom: 6px; }
+  .streak-bar { margin-bottom: 6px; }
+}
 ══════════════════════════════════════════════════ */
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
 /* Floating numbers bg */
@@ -526,7 +545,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .cta-btn{
   width:100%;padding:var(--cta-pad);border:none;border-radius:clamp(10px,1.5vw,16px);
   font-family:'Fredoka One',cursive;font-size:var(--cta-font);
-  cursor:pointer;transition:all .2s;
+  cursor:pointer;transition:all .2s;touch-action:manipulation;
   background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
   color:#1a1a1a;box-shadow:0 6px 22px rgba(247,201,72,.3);
 }
@@ -654,6 +673,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   border-radius:clamp(9px,1.2vw,15px);background:transparent;color:var(--muted);
   font-family:'Nunito',sans-serif;font-weight:700;font-size:var(--mode-label);
   cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.4vw,5px);
+  touch-action:manipulation;
 }
 .mode-btn .mi{font-size:var(--mode-icon);transition:font-size .3s;}
 .mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);}
@@ -682,7 +702,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .rp:hover{border-color:var(--accent);color:var(--accent);}
 .rp.active{background:rgba(247,201,72,.11);border-color:var(--accent);color:var(--accent);}
 
-.tables-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(4px,0.6vw,7px);margin-bottom:clamp(14px,2vh,22px);}
+.tables-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:clamp(4px,0.6vw,7px);margin-bottom:clamp(14px,2vh,22px);}
 .ti{
   background:var(--card2);border:1.5px solid rgba(255,255,255,.06);
   border-radius:clamp(7px,1vw,12px);padding:var(--ti-pad);
@@ -988,8 +1008,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   font-family:'Fredoka One',cursive;
   font-size:clamp(.88rem,1.5vw,1.1rem);
   color:var(--text);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  word-break:break-word;overflow-wrap:anywhere;
   max-width:100%;
+  text-align:center;
 }
 .hof-pts{
   font-family:'Fredoka One',cursive;
@@ -1071,7 +1092,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   z-index:998;transition:bottom .4s cubic-bezier(.34,1.56,.64,1);
   min-width:260px;max-width:90vw;
 }
-.ach-toast.show{bottom:clamp(16px,3vh,32px);}
+.ach-toast.show{bottom:calc(clamp(16px,3vh,32px) + env(safe-area-inset-bottom, 0px));}
 .ach-toast-icon{font-size:2.2rem;line-height:1;flex-shrink:0;}
 .ach-toast-text{flex:1;}
 .ach-toast-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
@@ -1128,6 +1149,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   border-radius:clamp(20px,2.5vw,32px);
   padding:clamp(28px,4vw,48px) clamp(24px,3.5vw,44px);
   width:100%;max-width:clamp(340px,55vw,520px);
+  max-height:90dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;
   box-shadow:0 32px 80px rgba(0,0,0,.7);
   animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
   position:relative;
@@ -1164,9 +1186,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .modal-divider span{color:var(--muted);font-size:clamp(.68rem,1.2vw,.82rem);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
 
 /* Confetti */
-.cc{position:fixed;top:0;left:0;right:0;height:100vh;pointer-events:none;z-index:999;overflow:hidden;}
+.cc{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
 .cp{position:absolute;border-radius:2px;animation:cFall linear forwards;}
-@keyframes cFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes cFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
 /* Keyframes */
 @keyframes bounceIn{from{opacity:0;transform:scale(.5) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -1251,7 +1273,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="step active" id="step1">
       <div class="step-title">Mikä sinun nimesi on? 👋</div>
       <div class="step-sub">Kirjoita nimesi alle</div>
-      <input class="name-input" type="text" id="nameInput" placeholder="Esim. Emma tai Mikko" maxlength="20" autocomplete="off"/>
+      <input class="name-input" type="text" id="nameInput" placeholder="Esim. Emma tai Mikko" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false"/>
       <button class="cta-btn" id="nextBtn" onclick="goStep2()" disabled>Seuraava →</button>
     </div>
     <div class="step" id="step2">
@@ -1568,7 +1590,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="modal-divider"><span>Uusi pelaaja</span></div>
 
     <div style="margin-bottom:clamp(14px,2vw,20px);">
-      <input class="name-input" type="text" id="switchNameInput" placeholder="Kirjoita nimi..." maxlength="20" autocomplete="off" style="margin-bottom:12px;"/>
+      <input class="name-input" type="text" id="switchNameInput" placeholder="Kirjoita nimi..." maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" style="margin-bottom:12px;"/>
       <!-- Näytetään vain uusille pelaajille -->
       <div id="swCharSection">
         <div class="char-grid">
@@ -1605,6 +1627,15 @@ function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
+}
+
+// MOBI-001 FIX: iOS vaatii AudioContext.resume() suoraan user gesture -eventissä
+// Aktivoidaan audio heti ensimmäisestä napinpainalluksesta
+function primeAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
 function toggleMute() {
@@ -1909,6 +1940,7 @@ function pinSetError(msg) {
 }
 
 function pinPress(n) {
+  primeAudio(); // MOBI-001: aktivoi audio heti user gesturessa
   if (pinBuffer.length >= 4) return;
   pinBuffer += n;
   pinUpdateDots();
@@ -2634,7 +2666,7 @@ function monsterEatNumber(numText) {
   wrap.appendChild(el);
   setTimeout(() => el.remove(), 600);
 }
-function np(n){if(busy||ans.length>=4)return;ans+=n;updB();}
+function np(n){if(busy||ans.length>=4)return;primeAudio();ans+=n;updB();}
 function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
 function npa(){if(busy)return;ans='';updB();}
 function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
@@ -3351,6 +3383,20 @@ function launchConfetti(){
 }
 
 // ══ KEYBOARD ══════════════════════════════════════
+
+// MOBI-008 FIX: Virtuaalinäppäimistö peittää Seuraava-napin
+// visualViewport API scrollaa fokusoidun elementin näkyviin kun näppäimistö avautuu
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const active = document.activeElement;
+    if (!active) return;
+    const isTextInput = ['nameInput','classCodeInput','switchNameInput'].includes(active.id);
+    if (isTextInput) {
+      setTimeout(() => active.scrollIntoView({block:'nearest',behavior:'smooth'}), 80);
+    }
+  });
+}
+
 document.addEventListener('keydown',e=>{
   // Close modal on Escape
   if(e.key==='Escape'&&document.getElementById('switchModal').classList.contains('open')){closeSwitch();return;}
