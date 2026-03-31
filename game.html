@@ -2106,6 +2106,8 @@ async function joinClass() {
   } catch { /* ei kriittinen virhe */ }
 
   btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
+  // Merkitse luokkaan liittyminen saavutusta varten
+  try { localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1'); } catch {}
   startGame();
 }
 async function startGame(){
@@ -2171,6 +2173,18 @@ async function startGame(){
   // Tämä korjaa tilanteen jossa taso-saavutukset puuttuvat uudella laitteella
   await achInit();
   achCheck('first_login');
+  // Tarkista luokkaan liittyminen — localStorage + Supabase fallback
+  try {
+    const hasClassLocal = localStorage.getItem(`matikka_class_${pName}:${pChar}`);
+    if (hasClassLocal) {
+      achCheck('joined_class');
+    } else {
+      fetch(`${SB_URL}/rest/v1/class_members?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=class_code&limit=1`, {headers:SB_HEADERS})
+        .then(r=>r.ok?r.json():[])
+        .then(rows=>{ if(rows.length){ localStorage.setItem(`matikka_class_${pName}:${pChar}`,'1'); achCheck('joined_class'); }})
+        .catch(()=>{});
+    }
+  } catch {}
   // Tarkista tasosaavutukset heti pelin alkaessa — korjaa Troy-tapauksen
   // jossa pelaaja on jo tasolla 50 mutta saavutus ei ole rekisteröitynyt
   [10,20,30,40,50].forEach(l => {
@@ -2874,6 +2888,24 @@ const ACHIEVEMENTS = [
   { id:'level_30',       icon:'⚡', name:'Tason 30 Legenda!',   desc:'Saavutti tason 30' },
   { id:'level_40',       icon:'🚀', name:'Tason 40 Tähti!',     desc:'Saavutti tason 40' },
   { id:'level_50',       icon:'🏆', name:'GRAND MASTER! 🐐',    desc:'Saavutti maksimitason 50!' },
+  // — Sitkeys —
+  { id:'streak_7days',   icon:'📅', name:'Viikon sankari',       desc:'Pelannut 7 päivää peräkkäin' },
+  { id:'streak_30days',  icon:'🗓️', name:'Kuukauden mestari',    desc:'Pelannut 30 päivää peräkkäin' },
+  { id:'comeback_week',  icon:'🔄', name:'Paluun tekijä',        desc:'Palasi peliin viikon tauon jälkeen' },
+  { id:'daily_3',        icon:'🎯', name:'Kolmen kierroksen päivä', desc:'3 kierrosta samana päivänä' },
+  { id:'daily_5',        icon:'🔋', name:'Täyspäiväinen ahmatti', desc:'5 kierrosta samana päivänä' },
+  { id:'all_weekdays',   icon:'📆', name:'Viikon kattaus',       desc:'Pelannut jokaisena viikonpäivänä' },
+  { id:'days_100',       icon:'💯', name:'Satapäiväinen',        desc:'Pelannut yhteensä 100 eri päivänä' },
+  { id:'all_seasons',    icon:'🌍', name:'Neljän vuodenajan ahmatti', desc:'Pelannut talvella, keväällä, kesällä ja syksyllä' },
+  // — Kellonaika —
+  { id:'night_owl',      icon:'🦉', name:'Yöpöllö',              desc:'Pelasi kello 22 jälkeen' },
+  { id:'weekend',        icon:'🏖️', name:'Viikonloppusankari',   desc:'Pelasi sekä lauantaina että sunnuntaina' },
+  // — Sosiaaliset —
+  { id:'joined_class',   icon:'🏫', name:'Luokkalainen',         desc:'Liittyi opettajan luokkaan' },
+  // — Moodikohtaiset —
+  { id:'tables_master',  icon:'✖️✖️', name:'Kertolaskun kuningas', desc:'10 täydellistä kertotaulukierrosta' },
+  // — Haasteet —
+  { id:'flawless_fast',  icon:'⚡💎', name:'Salamatäydellinen',   desc:'10/10 oikein alle 60 sekunnissa' },
 ];
 
 const ACH_KEY = 'matikka_ach_v1';
@@ -3009,8 +3041,7 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   }
 
   // speed_demon vaatii pisteiden kertymistä JA tason ≥ 3
-  const roundSecs = (Date.now() - roundStartTime) / 1000;
-  if (ptsEarned && srData.diffLevel >= 3 && roundSecs < 90 && roundPct >= 80) {
+  if (ptsEarned && srData.diffLevel >= 3 && roundSecsTotal < 90 && roundPct >= 80) {
     achCheck('speed_demon');
   }
 
@@ -3062,6 +3093,9 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   // Aamulintu — ei vaadi tason nousua
   if (new Date().getHours() < 8) achCheck('early_bird');
 
+  // Yöpöllö
+  if (new Date().getHours() >= 22) achCheck('night_owl');
+
   // Tekee paluun — parantunut 3 peräkkäisellä kierroksella — ei vaadi tason nousua
   const pctKey = `matikka_pcthistory_${pName}:${pChar}`;
   try {
@@ -3075,6 +3109,108 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
       achCheck('comeback');
     }
   } catch {}
+
+  // ── Sitkeys-saavutukset ──────────────────────────
+  // BUGI-C FIX: käytetään paikallista aikaa UTC:n sijaan
+  // toISOString() palauttaa UTC:n — suomalaisella klo 00-03 menee väärälle päivälle
+  const now2 = new Date();
+  const today = `${now2.getFullYear()}-${String(now2.getMonth()+1).padStart(2,'0')}-${String(now2.getDate()).padStart(2,'0')}`;
+  const daysKey = `matikka_days_${pName}:${pChar}`;
+  const streakDaysKey = `matikka_daystreak_${pName}:${pChar}`;
+
+  // BUGI-E FIX: yhdistetään roundSecs — lasketaan vain kerran
+  const roundSecsTotal = (Date.now() - roundStartTime) / 1000;
+
+  try {
+    const daysData = JSON.parse(localStorage.getItem(daysKey)||'{"days":[],"lastDay":""}');
+    const daySet = new Set(daysData.days || []);
+    const wasNew = !daySet.has(today);
+    daySet.add(today);
+    const daysArr = [...daySet].sort();
+    localStorage.setItem(daysKey, JSON.stringify({days:daysArr.slice(-400), lastDay:today}));
+
+    // 100 päivää yhteensä
+    if (daySet.size >= 100) achCheck('days_100');
+
+    // Kaikki vuodenajat
+    const months = new Set(daysArr.map(d => parseInt(d.slice(5,7))));
+    const hasSeason = s => s.some(m => months.has(m));
+    if (hasSeason([12,1,2]) && hasSeason([3,4,5]) && hasSeason([6,7,8]) && hasSeason([9,10,11])) {
+      achCheck('all_seasons');
+    }
+
+    // BUGI-D FIX: viikonpäivä paikallisesta ajasta, ei UTC:sta
+    // 'YYYY-MM-DD' + 'T12:00:00' pakottaa paikallisen tulkinnan
+    const weekdays = new Set(daysArr.map(d => new Date(d + 'T12:00:00').getDay()));
+    if (weekdays.size >= 7) achCheck('all_weekdays');
+
+    // Viikonloppusankari
+    if (weekdays.has(6) && weekdays.has(0)) achCheck('weekend');
+
+    // Päiväputki (peräkkäiset päivät)
+    if (wasNew) {
+      const streakData = JSON.parse(localStorage.getItem(streakDaysKey)||'{"streak":1,"last":""}');
+      // BUGI-C FIX: yesterday paikallisesta ajasta
+      const yest = new Date(now2); yest.setDate(yest.getDate()-1);
+      const yesterday = `${yest.getFullYear()}-${String(yest.getMonth()+1).padStart(2,'0')}-${String(yest.getDate()).padStart(2,'0')}`;
+      const newStreak = streakData.last === yesterday ? streakData.streak + 1 : 1;
+      localStorage.setItem(streakDaysKey, JSON.stringify({streak:newStreak, last:today}));
+      if (newStreak >= 7)  achCheck('streak_7days');
+      if (newStreak >= 30) achCheck('streak_30days');
+    }
+
+    // Paluun tekijä — palasi viikon tauon jälkeen
+    if (wasNew && daysData.lastDay) {
+      const daysDiff = Math.floor((new Date(today) - new Date(daysData.lastDay)) / 86400000);
+      if (daysDiff >= 7) achCheck('comeback_week');
+    }
+  } catch {}
+
+  // 3 tai 5 kierrosta samana päivänä — lasketaan vain edistyvät kierrokset
+  // BUGI-B FIX: ei lasketa kierroksia joissa taso ei noussut
+  if (ptsEarned) {
+    const dailyKey = `matikka_daily_${pName}:${pChar}:${today}`;
+    try {
+      const dailyCount = (parseInt(localStorage.getItem(dailyKey)||'0')) + 1;
+      localStorage.setItem(dailyKey, dailyCount);
+      if (dailyCount >= 3) achCheck('daily_3');
+      if (dailyCount >= 5) achCheck('daily_5');
+    } catch {}
+  }
+
+  // Liittyi luokkaan — tarkistetaan localStorage JA Supabase
+  // BUGI-A FIX: vanhat pelaajat joilla ei ole localStorage-merkintää
+  // tarkistetaan Supabasesta
+  try {
+    const hasClassLocal = localStorage.getItem(`matikka_class_${pName}:${pChar}`);
+    if (hasClassLocal) {
+      achCheck('joined_class');
+    } else {
+      // Tarkista Supabasesta taustalla
+      fetch(`${SB_URL}/rest/v1/class_members?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=class_code&limit=1`, {headers:SB_HEADERS})
+        .then(r=>r.ok?r.json():[])
+        .then(rows=>{
+          if(rows.length){
+            localStorage.setItem(`matikka_class_${pName}:${pChar}`,'1');
+            achCheck('joined_class');
+          }
+        }).catch(()=>{});
+    }
+  } catch {}
+
+  // Kertolaskun kuningas — 10 täydellistä kertotaulukierrosta
+  if (currentMode === 'm') {
+    const tablesPerfectKey = `matikka_tables_perfect_${pName}:${pChar}`;
+    try {
+      let tp = parseInt(localStorage.getItem(tablesPerfectKey)||'0');
+      if (roundPct >= 100) tp++;
+      localStorage.setItem(tablesPerfectKey, tp);
+      if (tp >= 10) achCheck('tables_master');
+    } catch {}
+  }
+
+  // Salamatäydellinen — 10/10 alle 60 sekunnissa (vaatii pisteiden kertymistä)
+  if (ptsEarned && roundPct >= 100 && roundSecsTotal < 60) achCheck('flawless_fast');
 
   // HOF #1 — tarkistetaan vain jos pisteet kertyvät (taso nousi tai maksimitaso)
   if (!ptsEarned) return;
