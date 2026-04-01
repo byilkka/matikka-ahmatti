@@ -2198,11 +2198,21 @@ async function startGame(){
 
   } else {
     // localStorage löytyi — päivitä Supabasesta taustalla hiljaa
+    // TASO-002 FIX: tallennetaan kierroksen alussa lukittu taso
+    // Taustasync ei saa muuttaa tasoa kesken kierroksen
     srRemoteLoad(pName, pChar, mode).then(remote => {
       if (remote && remote.diffLevel > srData.diffLevel) {
-        srData = remote;
-        srLocalSave(pName, pChar, mode, remote);
-        updDiffLabel();
+        // Päivitä vain jos kierros EI ole käynnissä (rDone === 0)
+        // tai kierros on juuri alkanut
+        if (rDone === 0) {
+          srData = remote;
+          srLocalSave(pName, pChar, mode, remote);
+          updDiffLabel();
+        }
+        // Muussa tapauksessa tallenna muistiin ja sovella ensi kierroksella
+        else {
+          srLocalSave(pName, pChar, mode, remote);
+        }
       }
     }).catch(()=>{});
   }
@@ -2437,10 +2447,12 @@ function pickNextProblem() {
   }
   const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
   const info     = DIFF_LEVELS[lvl];
-  // BUG-010 FIX: käyttäjän valitsema range on alaraja, adaptiivinen taso on yläraja
-  // Jos käyttäjä on valinnut "Luvut 1-50" mutta taso sallii vain 1-20,
-  // käytetään käyttäjän valintaa — ei hiljaa typistytä
-  const effRange = Math.max(range, Math.min(range, info.range));
+  // TASO-001 FIX: käytetään tason lukualuetta (info.range)
+  // range = käyttäjän valitsema alaraja rangeSection-napeista (vain vähennys/yhteenlasku/hajotelma)
+  // info.range = adaptiivisen tason mukainen lukualue
+  // Käytetään aina info.range:a — se kasvaa tason mukana
+  // range-nappi on deprecated mutta säilyy yhteensopivuuden vuoksi
+  const effRange = info.range;
   const candidates = [];
   for (let i = 0; i < 6; i++) {
     // Käyttäjän valitsema moodi on aina etusijalla
