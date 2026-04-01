@@ -476,11 +476,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* Screens */
 .screen{position:relative;z-index:1;display:none;min-height:100vh;}
-.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 10px 32px;}
-/* gameScreen ja scoreScreen hallitsevat oman paddinginsä */
-#gameScreen.active,#scoreScreen.active{justify-content:flex-start;padding:0;}
-@media(min-width:480px){.screen.active{padding:20px 14px 36px;}#gameScreen.active,#scoreScreen.active{padding:0;}}
-@media(min-width:768px){.screen.active{padding:24px 20px 44px;}#gameScreen.active,#scoreScreen.active{padding:0;}}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(12px,3vw,16px);box-sizing:border-box;}
+#gameScreen.active,#scoreScreen.active{justify-content:flex-start;}
 
 /* ══════════════════════════════════════════════════
    LOGIN SCREEN
@@ -912,17 +909,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
    SCORE SCREEN
 ══════════════════════════════════════════════════ */
 #scoreScreen{
-  width:100%;
   max-width:var(--score-max);
-  min-width:0;
   margin:0 auto;
-  padding:var(--game-pad);
-  /* Estää reunojen yli menemisen iOS:lla */
-  padding-left:max(var(--screen-side-pad, 12px), env(safe-area-inset-left));
-  padding-right:max(var(--screen-side-pad, 12px), env(safe-area-inset-right));
+  width:100%;
   box-sizing:border-box;
+  padding:var(--game-pad);
   transition:max-width .3s,padding .3s;
-  align-self:stretch;
 }
 .score-header{
   display:flex;align-items:flex-start;justify-content:space-between;
