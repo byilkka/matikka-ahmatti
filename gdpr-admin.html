@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GDPR Tietopyyntö — Matikka-Ahmatti Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0b1520;--card:#162030;--card2:#1a2840;
+  --accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;
+  --accent4:#7b9fff;--text:#eef3ff;--muted:#6a82a0;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:32px clamp(16px,4vw,48px);}
+
+h1{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,3vw,2.2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.subtitle{color:var(--muted);font-size:.85rem;font-weight:700;margin-bottom:32px;}
+
+.card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(18px,3vw,28px);margin-bottom:18px;}
+.card-title{font-family:'Fredoka One',cursive;font-size:1.05rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;transition:border-color .18s;margin-bottom:14px;}
+input:focus{border-color:var(--accent4);}
+input::placeholder{color:var(--muted);}
+select{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;margin-bottom:14px;cursor:pointer;}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:40px;border:none;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-danger{background:rgba(255,107,107,.12);color:var(--accent2);border:1.5px solid rgba(255,107,107,.25);}
+.btn-danger:hover{background:rgba(255,107,107,.22);}
+.btn-export{background:rgba(93,232,181,.1);color:var(--accent3);border:1.5px solid rgba(93,232,181,.25);}
+.btn-export:hover{background:rgba(93,232,181,.2);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+
+.status{padding:10px 16px;border-radius:10px;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;}
+.status.info{background:rgba(123,159,255,.1);color:var(--accent4);border:1px solid rgba(123,159,255,.2);display:block;}
+.status.ok{background:rgba(93,232,181,.1);color:var(--accent3);border:1px solid rgba(93,232,181,.2);display:block;}
+.status.err{background:rgba(255,107,107,.1);color:var(--accent2);border:1px solid rgba(255,107,107,.2);display:block;}
+
+.results{display:none;}
+.section-label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin:18px 0 8px;}
+.data-block{background:var(--card2);border-radius:12px;padding:14px 16px;font-size:.8rem;font-weight:600;color:var(--muted);line-height:1.7;word-break:break-all;}
+.data-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.data-row:last-child{border-bottom:none;}
+.data-key{font-weight:800;color:var(--accent4);min-width:150px;flex-shrink:0;font-size:.75rem;}
+.data-val{color:var(--text);font-size:.82rem;}
+.data-val.redacted{color:var(--muted);font-style:italic;}
+.count-badge{background:rgba(247,201,72,.12);color:var(--accent);font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:6px;}
+
+table.scores-table{width:100%;border-collapse:collapse;font-size:.75rem;}
+table.scores-table th{text-align:left;color:var(--muted);font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.07);}
+table.scores-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text);font-weight:600;}
+table.scores-table tr:last-child td{border-bottom:none;}
+
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);}
+
+.delete-confirm{display:none;background:rgba(255,107,107,.08);border:1.5px solid rgba(255,107,107,.3);border-radius:14px;padding:16px 20px;margin-top:14px;}
+.delete-confirm p{font-size:.85rem;font-weight:700;color:var(--accent2);margin-bottom:12px;line-height:1.5;}
+.delete-btns{display:flex;gap:8px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<!-- ═══ SALASANASUOJAUS ═══ -->
+<div id="authGate" style="position:fixed;inset:0;background:#0b1520;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#162030;border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:40px;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5);">
+    <div style="font-size:2.5rem;margin-bottom:12px;">🔒</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.5rem;background:linear-gradient(135deg,#f7c948,#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;">Admin-alue</div>
+    <div style="color:#6a82a0;font-size:.82rem;font-weight:700;margin-bottom:24px;">Matikka-Ahmatti GDPR-työkalu</div>
+    <input type="password" id="adminPwd" placeholder="Salasana"
+      style="width:100%;background:#1a2840;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 16px;color:#eef3ff;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;margin-bottom:10px;text-align:center;letter-spacing:3px;"
+      onkeydown="if(event.key==='Enter')checkAuth()"/>
+    <div id="authErr" style="color:#ff6b6b;font-size:.75rem;font-weight:700;min-height:18px;margin-bottom:10px;"></div>
+    <button onclick="checkAuth()"
+      style="width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">
+      Kirjaudu →
+    </button>
+  </div>
+</div>
+<script>
+
+const ADMIN_PWD_HASH = '34ef20da85b69ed649b4792f3e7d2db3f370e25f59c116851d457222b9f8fe20';
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkAuth() {
+  const pwd = document.getElementById('adminPwd').value;
+  if (!pwd) { document.getElementById('authErr').textContent = 'Kirjoita salasana'; return; }
+  const hash = await sha256(pwd);
+  if (hash === ADMIN_PWD_HASH) {
+    sessionStorage.setItem('gdpr_auth', '1');
+    document.getElementById('authGate').style.display = 'none';
+  } else {
+    document.getElementById('authErr').textContent = 'Väärä salasana ❌';
+    document.getElementById('adminPwd').value = '';
+    setTimeout(() => document.getElementById('authErr').textContent = '', 2000);
+  }
+}
+
+// Tarkista onko jo kirjautunut tässä sessiossa
+if (sessionStorage.getItem('gdpr_auth') === '1') {
+  document.getElementById('authGate').style.display = 'none';
+}
+</script>
+
+
+<h1>🔒 GDPR Tietopyyntötyökalu</h1>
+<p class="subtitle">Matikka-Ahmatti Admin · Käytä vain virallisiin GDPR-tietopyyntöihin</p>
+
+<!-- Haku -->
+<div class="card">
+  <div class="card-title">🔍 Etsi pelaaja</div>
+  <label>Pelaajan nimimerkki</label>
+  <input type="text" id="searchName" placeholder="Esim. Emma" autocomplete="off" autocorrect="off" spellcheck="false"/>
+  <label>Hahmo</label>
+  <select id="searchChar">
+    <option value="">— Valitse —</option>
+    <option value="boy">🤴 Prinssi (boy)</option>
+    <option value="girl">👸 Prinsessa (girl)</option>
+  </select>
+  <div class="status" id="searchStatus"></div>
+  <button class="btn btn-primary" id="searchBtn" onclick="fetchPlayerData()">🔍 Hae tiedot</button>
+</div>
+
+<!-- Tulokset -->
+<div class="results" id="results">
+
+  <!-- Profiili -->
+  <div class="card">
+    <div class="card-title">👤 Pelaajaprofiili</div>
+    <div id="profileData"></div>
+
+    <!-- Tuloshistoria -->
+    <div class="section-label">🎮 Pelitulokset <span class="count-badge" id="scoresCount">0</span></div>
+    <div id="scoresData"></div>
+
+    <!-- Edistyminen -->
+    <div class="section-label">📈 Edistyminen (taso & painot)</div>
+    <div id="progressData"></div>
+
+    <!-- Saavutukset -->
+    <div class="section-label">🏅 Saavutukset <span class="count-badge" id="achCount">0</span></div>
+    <div id="achData"></div>
+
+    <!-- Luokat -->
+    <div class="section-label">🏫 Luokat</div>
+    <div id="classData"></div>
+
+    <!-- Toiminnot -->
+    <div class="action-bar">
+      <button class="btn btn-export" onclick="exportJSON()">📥 Lataa JSON (GDPR)</button>
+      <button class="btn btn-export" onclick="exportPDF()">📄 Tulosta / PDF</button>
+      <button class="btn btn-danger" onclick="showDeleteConfirm()">🗑️ Poista kaikki tiedot</button>
+    </div>
+
+    <!-- Poiston vahvistus -->
+    <div class="delete-confirm" id="deleteConfirm">
+      <p>⚠️ Tämä poistaa KAIKKI pelaajan tiedot pysyvästi:<br>profiilin, tulokset, edistymisen, saavutukset ja luokkalinkit.<br><strong>Toimintoa ei voi peruuttaa.</strong></p>
+      <div class="delete-btns">
+        <button class="btn btn-danger" id="confirmDeleteBtn" onclick="deletePlayer()">🗑️ Kyllä, poista kaikki</button>
+        <button class="btn" style="background:var(--card2);color:var(--muted)" onclick="hideDeleteConfirm()">Peruuta</button>
+      </div>
+      <div class="status" id="deleteStatus"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SB_URL = 'https://whftebwchwvwlyfgytoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZnRlYndjaHd2d2x5Zmd5dG9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzMyMjQsImV4cCI6MjA5MDMwOTIyNH0.nZ9toEBWzGaagueyiQXYJgulMaRnC4PP_3cadqdTUAo';
+const SB_H = {
+  'Content-Type': 'application/json',
+  'apikey': SB_KEY,
+  'Authorization': `Bearer ${SB_KEY}`
+};
+
+let currentData = null;
+
+function sb(path) {
+  return fetch(`${SB_URL}/rest/v1/${path}`, { headers: SB_H })
+    .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`));
+}
+
+function setStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `status ${type}`;
+}
+
+async function fetchPlayerData() {
+  const name = document.getElementById('searchName').value.trim();
+  const char = document.getElementById('searchChar').value;
+
+  if (!name) { setStatus('searchStatus', 'Kirjoita pelaajan nimimerkki', 'err'); return; }
+  if (!char) { setStatus('searchStatus', 'Valitse hahmo', 'err'); return; }
+
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Haetaan...';
+  setStatus('searchStatus', 'Haetaan tietoja Supabasesta...', 'info');
+  document.getElementById('results').style.display = 'none';
+
+  try {
+    const nameEnc = encodeURIComponent(name);
+    const charEnc = encodeURIComponent(char);
+
+    const [profile, scores, progress, achievements, classes] = await Promise.all([
+      sb(`players?player_name=eq.${nameEnc}&player_char=eq.${charEnc}&select=player_name,player_char,created_at`),
+      sb(`scores?name=eq.${nameEnc}&char=eq.${charEnc}&select=*&order=created_at.desc`),
+      sb(`player_progress?player_name=eq.${nameEnc}&player_char=eq.${charEnc}&select=*`),
+      sb(`achievements?player_name=eq.${nameEnc}&player_char=eq.${charEnc}&select=achievement_id,unlocked_at`),
+      sb(`class_members?player_name=eq.${nameEnc}&player_char=eq.${charEnc}&select=class_code,joined_at`)
+    ]);
+
+    if (!profile.length) {
+      setStatus('searchStatus', `Pelaajaa "${name}" (${char}) ei löydy tietokannasta.`, 'err');
+      btn.disabled = false; btn.textContent = '🔍 Hae tiedot';
+      return;
+    }
+
+    currentData = { name, char, profile, scores, progress, achievements, classes, exportedAt: new Date().toISOString() };
+
+    renderResults(currentData);
+    setStatus('searchStatus', `✅ Löytyi: ${scores.length} tulosta, ${achievements.length} saavutusta`, 'ok');
+    document.getElementById('results').style.display = 'block';
+
+  } catch(err) {
+    setStatus('searchStatus', `Virhe: ${err}`, 'err');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔍 Hae tiedot';
+}
+
+function row(key, val, redact) {
+  return `<div class="data-row">
+    <div class="data-key">${key}</div>
+    <div class="data-val ${redact?'redacted':''}">${redact ? '[salattu hash]' : escH(String(val ?? '—'))}</div>
+  </div>`;
+}
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderResults(d) {
+  // Profiili
+  const p = d.profile[0];
+  document.getElementById('profileData').innerHTML = `
+    <div class="data-block">
+      ${row('Nimimerkki', p.player_name)}
+      ${row('Hahmo', p.player_char === 'boy' ? '🤴 Prinssi' : '👸 Prinsessa')}
+      ${row('Luotu', new Date(p.created_at).toLocaleString('fi-FI'))}
+      ${row('PIN-hash', '', true)}
+    </div>`;
+
+  // Tulokset
+  document.getElementById('scoresCount').textContent = d.scores.length;
+  if (d.scores.length) {
+    const totalPts = d.scores.reduce((s,r) => s + (r.pts||0), 0);
+    const avgPct   = Math.round(d.scores.reduce((s,r) => s + (r.pct||0), 0) / d.scores.length);
+    document.getElementById('scoresData').innerHTML = `
+      <div class="data-block" style="margin-bottom:8px">
+        ${row('Yhteispisteet', totalPts.toLocaleString('fi-FI') + ' p')}
+        ${row('Kierroksia', d.scores.length)}
+        ${row('Keskim. tarkkuus', avgPct + '%')}
+        ${row('Ensimmäinen kierros', new Date(d.scores[d.scores.length-1]?.created_at).toLocaleString('fi-FI'))}
+        ${row('Viimeisin kierros', new Date(d.scores[0]?.created_at).toLocaleString('fi-FI'))}
+      </div>
+      <div class="data-block" style="overflow-x:auto">
+        <table class="scores-table">
+          <thead><tr>
+            <th>Päivämäärä</th><th>Moodi</th><th>Taso</th>
+            <th>Oikein</th><th>Tarkkuus</th><th>Pisteet</th>
+          </tr></thead>
+          <tbody>${d.scores.slice(0,50).map(s => `<tr>
+            <td>${new Date(s.created_at).toLocaleDateString('fi-FI')}</td>
+            <td>${escH(s.modeLabel||s.mode||'—')}</td>
+            <td>${escH(s.level||'—')}</td>
+            <td>${s.corr??'—'}/${s.total??10}</td>
+            <td>${s.pct??'—'}%</td>
+            <td>${(s.pts||0).toLocaleString('fi-FI')} p</td>
+          </tr>`).join('')}
+          ${d.scores.length > 50 ? `<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:10px">... ja ${d.scores.length - 50} muuta (kaikki JSON-viennissä)</td></tr>` : ''}
+          </tbody>
+        </table>
+      </div>`;
+  } else {
+    document.getElementById('scoresData').innerHTML = '<div class="data-block">Ei tuloksia</div>';
+  }
+
+  // Edistyminen
+  if (d.progress.length) {
+    const maxLevel = Math.max(...d.progress.map(r => r.diff_level||1));
+    const totalRounds = d.progress.reduce((s,r) => s + (r.rounds_played||0), 0);
+    document.getElementById('progressData').innerHTML = `
+      <div class="data-block">
+        ${row('Korkein taso', maxLevel + ' / 50')}
+        ${row('Kierroksia yhteensä (SR)', totalRounds)}
+        ${d.progress.map(r => row(`Moodi: ${r.mode||'—'}`, `Taso ${r.diff_level||1}, ${r.rounds_played||0} kierrosta`)).join('')}
+      </div>`;
+  } else {
+    document.getElementById('progressData').innerHTML = '<div class="data-block">Ei edistymistietoja</div>';
+  }
+
+  // Saavutukset
+  document.getElementById('achCount').textContent = d.achievements.length;
+  if (d.achievements.length) {
+    document.getElementById('achData').innerHTML = `
+      <div class="data-block">
+        ${d.achievements.map(a => row(
+          escH(a.achievement_id),
+          a.unlocked_at ? new Date(a.unlocked_at).toLocaleString('fi-FI') : 'Avattu'
+        )).join('')}
+      </div>`;
+  } else {
+    document.getElementById('achData').innerHTML = '<div class="data-block">Ei saavutuksia</div>';
+  }
+
+  // Luokat
+  if (d.classes.length) {
+    document.getElementById('classData').innerHTML = `
+      <div class="data-block">
+        ${d.classes.map(c => row('Luokkakoodi', c.class_code + (c.joined_at ? ` (liittynyt ${new Date(c.joined_at).toLocaleDateString('fi-FI')})` : ''))).join('')}
+      </div>`;
+  } else {
+    document.getElementById('classData').innerHTML = '<div class="data-block">Ei luokkia</div>';
+  }
+}
+
+// ── JSON-vienti ──
+function exportJSON() {
+  if (!currentData) return;
+  const exportObj = {
+    gdpr_export: true,
+    exported_at: new Date().toISOString(),
+    request_note: 'Tiedot toimitettu GDPR artikla 15 mukaisen tietopyynnön perusteella',
+    player: {
+      nickname: currentData.name,
+      character: currentData.char,
+      created_at: currentData.profile[0]?.created_at,
+      pin_hash: '[salattu — ei luovuteta tietoturvasyistä]'
+    },
+    game_scores: currentData.scores.map(s => ({
+      date: s.created_at,
+      mode: s.modeLabel || s.mode,
+      level: s.level,
+      correct: s.corr,
+      total: s.total,
+      accuracy_pct: s.pct,
+      points: s.pts
+    })),
+    progress: currentData.progress.map(p => ({
+      mode: p.mode,
+      difficulty_level: p.diff_level,
+      rounds_played: p.rounds_played
+    })),
+    achievements: currentData.achievements.map(a => ({
+      achievement_id: a.achievement_id,
+      unlocked_at: a.unlocked_at
+    })),
+    classes: currentData.classes.map(c => ({
+      class_code: c.class_code,
+      joined_at: c.joined_at
+    }))
+  };
+
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `matikka-ahmatti-gdpr-${currentData.name}-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Tulostus / PDF ──
+function exportPDF() {
+  window.print();
+}
+
+// ── Poisto ──
+function showDeleteConfirm() {
+  document.getElementById('deleteConfirm').style.display = 'block';
+  document.getElementById('deleteStatus').className = 'status';
+}
+function hideDeleteConfirm() {
+  document.getElementById('deleteConfirm').style.display = 'none';
+}
+
+async function deletePlayer() {
+  if (!currentData) return;
+  const btn = document.getElementById('confirmDeleteBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Poistetaan...';
+  setStatus('deleteStatus', 'Poistetaan tietoja...', 'info');
+
+  const name = encodeURIComponent(currentData.name);
+  const char = encodeURIComponent(currentData.char);
+
+  const deletes = [
+    fetch(`${SB_URL}/rest/v1/achievements?player_name=eq.${name}&player_char=eq.${char}`,    { method:'DELETE', headers:SB_H }),
+    fetch(`${SB_URL}/rest/v1/player_progress?player_name=eq.${name}&player_char=eq.${char}`, { method:'DELETE', headers:SB_H }),
+    fetch(`${SB_URL}/rest/v1/class_members?player_name=eq.${name}&player_char=eq.${char}`,   { method:'DELETE', headers:SB_H }),
+    fetch(`${SB_URL}/rest/v1/scores?name=eq.${name}&char=eq.${char}`,                        { method:'DELETE', headers:SB_H }),
+  ];
+
+  try {
+    await Promise.all(deletes);
+    // Poista pelaaja viimeisenä
+    await fetch(`${SB_URL}/rest/v1/players?player_name=eq.${name}&player_char=eq.${char}`, { method:'DELETE', headers:SB_H });
+
+    setStatus('deleteStatus', `✅ Kaikki pelaajan "${currentData.name}" tiedot poistettu onnistuneesti.`, 'ok');
+    btn.textContent = '✅ Poistettu';
+
+    // Tyhjennä näkymä 3s kuluttua
+    setTimeout(() => {
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('searchName').value = '';
+      document.getElementById('searchChar').value = '';
+      setStatus('searchStatus', `Pelaajan "${currentData.name}" tiedot poistettu.`, 'ok');
+      currentData = null;
+    }, 3000);
+
+  } catch(err) {
+    setStatus('deleteStatus', `Virhe poistossa: ${err} — tarkista Supabase manuaalisesti`, 'err');
+    btn.disabled = false;
+    btn.textContent = '🗑️ Kyllä, poista kaikki';
+  }
+}
+
+// Enter-näppäin hakuun
+document.getElementById('searchName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fetchPlayerData();
+});
+</script>
+</body>
+</html>
