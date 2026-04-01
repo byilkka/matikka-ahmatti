@@ -535,20 +535,38 @@ async function submitApply(){
   const errEl=document.getElementById('applyErr');
   if(!name||!school||!email){errEl.textContent='Täytä kaikki kentät ❌';return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='Tarkista sähköpostiosoite ❌';return;}
-  document.getElementById('applyBtn').disabled=true;errEl.textContent='⏳ Lähetetään...';
+  const btn=document.getElementById('applyBtn');
+  btn.disabled=true;errEl.textContent='⏳ Lähetetään...';
   try{
-    const res=await fetch(`${SB_URL}/rest/v1/teacher_invites`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({teacher_name:name,school:school,email:email,status:'pending'})});
-    if(!res.ok)throw new Error();
-    const fd=new FormData();
-    fd.append('_subject',`Matikka-Ahmatti: Uusi opettaja-anomus — ${name}`);
-    fd.append('nimi',name);fd.append('koulu',school);fd.append('sahkoposti',email);
-    fd.append('viesti',`Uusi anomus odottaa hyväksyntää.\n\nHyväksy Supabasessa:\n1. Etsi: ${email}\n2. status = approved\n3. invite_code = [OMANIMI25]\n4. Lähetä koodi opettajalle`);
-    fetch('https://formspree.io/f/xwvwovgk',{method:'POST',body:fd,headers:{'Accept':'application/json'}}).catch(()=>{});
+    // 1. Tallenna anomus Supabaseen ja hae luotu ID
+    const res=await fetch(`${SB_URL}/rest/v1/teacher_invites`,{
+      method:'POST',
+      headers:{...SB_H,'Prefer':'return=representation'},
+      body:JSON.stringify({teacher_name:name,school:school,email:email,status:'pending'})
+    });
+    if(!res.ok)throw new Error('Supabase error');
+    const rows=await res.json();
+    const id=rows[0]?.id;
+    if(!id)throw new Error('ID puuttuu');
+
+    // 2. Lähetä ilmoitus ylläpitäjälle Netlify Functionin kautta
+    // Function lähettää sähköpostin jossa on suora hyväksymislinkki
+    fetch('/.netlify/functions/notify-admin',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({id,name,school,email})
+    }).catch(()=>{}); // ei kriittinen — Supabase-tallennus riitti
+
     errEl.textContent='';
     document.getElementById('applySuccess').style.display='block';
-    document.getElementById('applyName').value='';document.getElementById('applySchool').value='';document.getElementById('applyEmail').value='';
-  } catch{errEl.textContent='Lähetys epäonnistui — yritä uudelleen';}
-  document.getElementById('applyBtn').disabled=false;
+    document.getElementById('applyName').value='';
+    document.getElementById('applySchool').value='';
+    document.getElementById('applyEmail').value='';
+  }catch(e){
+    errEl.textContent='Lähetys epäonnistui — yritä uudelleen';
+    console.error('submitApply error:',e);
+  }
+  btn.disabled=false;
 }
 
 // ── Dashboard data ──
