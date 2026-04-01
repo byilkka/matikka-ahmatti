@@ -1529,6 +1529,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="results-btns">
         <button class="try-btn" onclick="restartRound()">Uusi kierros 🚀</button>
         <button class="score-btn" onclick="showScores()">🐐 Hall of Fame</button>
+        <button class="score-btn" id="diplomaBtn" style="display:none" onclick="openDiploma()">🎓 Diplomi</button>
       </div>
     </div>
   </div>
@@ -1573,7 +1574,61 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </div>
 
-<!-- ════════ ACHIEVEMENT TOAST ════════ -->
+<!-- ════════ DIPLOMITODISTUS MODAL ════════ -->
+<div id="diplomaModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fdf8ef;border-radius:12px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.6);">
+
+    <!-- Sulje-nappi -->
+    <button onclick="closeDiploma()" style="position:absolute;top:12px;right:14px;background:rgba(0,0,0,.12);border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;color:#5a4030;z-index:1;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
+
+    <!-- Diplomi itse — tulostettava alue -->
+    <div id="diplomaContent" style="padding:40px 44px;font-family:'Georgia',serif;color:#2c1a0e;">
+
+      <!-- Reunukset -->
+      <div style="border:3px solid #c9a84c;border-radius:4px;padding:28px 32px;position:relative;">
+        <div style="border:1px solid #c9a84c;border-radius:2px;padding:24px 28px;">
+
+          <!-- Otsikkorivi -->
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:2.2rem;line-height:1;margin-bottom:10px;">🐐</div>
+            <div style="font-size:11px;letter-spacing:5px;color:#8a6a1a;text-transform:uppercase;margin-bottom:12px;">Matikka-Ahmatti</div>
+            <div style="font-size:28px;font-weight:700;letter-spacing:2px;color:#2c1a0e;margin-bottom:6px;">Diplomitodistus</div>
+            <div style="height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 40px;"></div>
+          </div>
+
+          <!-- Teksti -->
+          <div style="text-align:center;margin-bottom:18px;">
+            <div style="font-size:13px;color:#5a4030;margin-bottom:16px;">Tällä todistuksella vahvistetaan, että</div>
+            <div id="diplomaName" style="font-size:34px;font-style:italic;font-weight:700;color:#1a3a6e;margin-bottom:4px;">—</div>
+            <div style="height:1px;background:rgba(26,58,110,.2);margin:0 60px 16px;"></div>
+            <div style="font-size:13px;color:#5a4030;margin-bottom:10px;">on saavuttanut</div>
+            <div style="font-size:20px;font-weight:700;color:#8a1a1a;letter-spacing:1px;margin-bottom:6px;">GRAND MASTER — Taso 50</div>
+            <div style="font-size:12px;color:#5a4030;">Matikka-Ahmatti -matematiikkaharjoittelussa</div>
+          </div>
+
+          <!-- Tilastot -->
+          <div id="diplomaStats" style="display:flex;justify-content:center;gap:32px;margin:18px 0;padding:14px 0;border-top:1px solid rgba(201,168,76,.3);border-bottom:1px solid rgba(201,168,76,.3);">
+            <!-- täytetään JS:llä -->
+          </div>
+
+          <!-- Päivämäärä ja sinetti -->
+          <div style="text-align:center;margin-top:14px;">
+            <div id="diplomaDate" style="font-size:11px;color:#8a6a1a;margin-bottom:10px;"></div>
+            <div style="font-size:28px;">🏆</div>
+            <div style="font-size:10px;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;margin-top:4px;">matikka-ahmatti.fi</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Toimintanapit -->
+    <div style="padding:16px 24px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;background:#fdf8ef;border-radius:0 0 12px 12px;">
+      <button onclick="printDiploma()" style="padding:11px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#c9a84c,#f7c948);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">🖨️ Tulosta / Tallenna PDF</button>
+      <button onclick="closeDiploma()" style="padding:11px 24px;border-radius:40px;border:1.5px solid rgba(0,0,0,.15);background:transparent;color:#5a4030;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">Sulje</button>
+    </div>
+  </div>
+</div>
 <div id="achToast" class="ach-toast">
   <div class="ach-toast-icon" id="achToastIcon">🏅</div>
   <div class="ach-toast-text">
@@ -1824,8 +1879,8 @@ async function loadScoresRemote(mode) {
 
 // ══ PIN SYSTEM ═══════════════════════════════════
 
-
-const ADMIN_PIN = '2809';
+// ⚠️  VAIHDA TÄMÄ OMAKSI ADMIN-KOODIKSI ennen julkaisua
+const ADMIN_PIN = '0000';
 
 // Simple hash — XOR + rotate, riittävä lapsipelin PIN-suojaukseen
 function hashPin(pin, salt) {
@@ -2220,6 +2275,7 @@ async function startGame(){
 
   retryQueue=[]; roundHistory=[];
   launchConfetti(); buildTablesGrid(); newProblem();
+  updateDiplomaBtn();
 
   // Odota saavutukset ladatuksi ennen tarkistuksia
   // Tämä korjaa tilanteen jossa taso-saavutukset puuttuvat uudella laitteella
@@ -2828,6 +2884,7 @@ async function showResults(){
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
   checkAllAchievements(p, mode, levelRosedThisRound, atMaxLevel);
+  updateDiplomaBtn();
 
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts:ptsToSave,pct:p,ts:Date.now()};
@@ -3458,6 +3515,83 @@ function launchConfetti(){
   for(let i=0;i<80;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${Math.random()*2+1.4}s;animation-delay:${Math.random()*.8}s;`;c.appendChild(p);setTimeout(()=>p.remove(),3600);}
 }
 
+// ══ DIPLOMITODISTUS ══════════════════════════════
+function openDiploma() {
+  const av = pChar === 'boy' ? '🤴' : '👸';
+  document.getElementById('diplomaName').textContent = av + ' ' + pName;
+
+  // Tilastot Supabasesta tai laskettuna
+  const totalPts = parseInt(document.getElementById('sPts')?.textContent || '0') || 0;
+  const date = new Date().toLocaleDateString('fi-FI', { day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('diplomaDate').textContent = date;
+
+  // Hae kokonaistilastot scores-taulusta
+  fetch(`${SB_URL}/rest/v1/scores?name=eq.${encodeURIComponent(pName)}&char=eq.${encodeURIComponent(pChar)}&select=pts,pct,corr,total`, { headers: SB_HEADERS })
+    .then(r => r.json())
+    .then(rows => {
+      const sumPts   = rows.reduce((s,r) => s + (r.pts||0), 0);
+      const rounds   = rows.length;
+      const avgPct   = rounds > 0 ? Math.round(rows.reduce((s,r) => s + (r.pct||0), 0) / rounds) : 0;
+      document.getElementById('diplomaStats').innerHTML = `
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#c9a84c;">${sumPts.toLocaleString('fi-FI')}</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Yhteispisteet</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#1a3a6e;">${rounds}</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Kierrosta</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#1a6e3a;">${avgPct}%</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Keskim. tarkkuus</div>
+        </div>
+      `;
+    }).catch(() => {
+      document.getElementById('diplomaStats').innerHTML = `
+        <div style="text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#c9a84c;">Taso 50</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Grand Master</div>
+        </div>`;
+    });
+
+  const modal = document.getElementById('diplomaModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDiploma() {
+  document.getElementById('diplomaModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function printDiploma() {
+  const content = document.getElementById('diplomaContent').innerHTML;
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>Diplomitodistus — ${pName} — Matikka-Ahmatti</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #fdf8ef; font-family: 'Georgia', serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+      .wrap { max-width: 600px; width: 100%; }
+      @media print {
+        body { background: #fdf8ef; padding: 0; }
+        .wrap { max-width: 100%; }
+        @page { size: A4; margin: 1.5cm; }
+      }
+    </style>
+  </head><body><div class="wrap">${content}</div></body></html>`);
+  win.document.close();
+  setTimeout(() => { win.focus(); win.print(); }, 500);
+}
+
+// Näytä diplomi-nappi jos tasolla 50
+function updateDiplomaBtn() {
+  const btn = document.getElementById('diplomaBtn');
+  if (btn) btn.style.display = srData.diffLevel >= DIFF_LEVELS.length ? 'inline-flex' : 'none';
+}
+
 // ══ KEYBOARD ══════════════════════════════════════
 
 // MOBI-008 FIX: Virtuaalinäppäimistö peittää Seuraava-napin
@@ -3476,6 +3610,7 @@ if (window.visualViewport) {
 document.addEventListener('keydown',e=>{
   // Close modal on Escape
   if(e.key==='Escape'&&document.getElementById('switchModal').classList.contains('open')){closeSwitch();return;}
+  if(e.key==='Escape'&&document.getElementById('diplomaModal').style.display==='flex'){closeDiploma();return;}
   if(!document.getElementById('gameScreen').classList.contains('active'))return;
   if(document.getElementById('switchModal').classList.contains('open'))return;
   if(e.key>='0'&&e.key<='9')np(parseInt(e.key));
