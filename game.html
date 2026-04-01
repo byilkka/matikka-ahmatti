@@ -92,6 +92,7 @@
 
   --game-max: 100%;
   --game-pad: 12px 12px 28px;
+  --screen-side-pad: 12px;
   --header-gap: 6px;
   --logo-mini-size: 30px;
   --logo-text: .95rem;
@@ -476,9 +477,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Screens */
 .screen{position:relative;z-index:1;display:none;min-height:100vh;}
 .screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 10px 32px;}
-#gameScreen.active,#scoreScreen.active{justify-content:flex-start;}
-@media(min-width:480px){.screen.active{padding:20px 14px 36px;}}
-@media(min-width:768px){.screen.active{padding:24px 20px 44px;}}
+/* gameScreen ja scoreScreen hallitsevat oman paddinginsä */
+#gameScreen.active,#scoreScreen.active{justify-content:flex-start;padding:0;}
+@media(min-width:480px){.screen.active{padding:20px 14px 36px;}#gameScreen.active,#scoreScreen.active{padding:0;}}
+@media(min-width:768px){.screen.active{padding:24px 20px 44px;}#gameScreen.active,#scoreScreen.active{padding:0;}}
 
 /* ══════════════════════════════════════════════════
    LOGIN SCREEN
@@ -910,8 +912,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
    SCORE SCREEN
 ══════════════════════════════════════════════════ */
 #scoreScreen{
-  max-width:var(--score-max);margin:0 auto;width:100%;
-  padding:var(--game-pad);transition:max-width .3s,padding .3s;
+  width:100%;
+  max-width:var(--score-max);
+  min-width:0;
+  margin:0 auto;
+  padding:var(--game-pad);
+  /* Estää reunojen yli menemisen iOS:lla */
+  padding-left:max(var(--screen-side-pad, 12px), env(safe-area-inset-left));
+  padding-right:max(var(--screen-side-pad, 12px), env(safe-area-inset-right));
+  box-sizing:border-box;
+  transition:max-width .3s,padding .3s;
+  align-self:stretch;
 }
 .score-header{
   display:flex;align-items:flex-start;justify-content:space-between;
@@ -972,6 +983,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   flex-direction:column;
   gap:clamp(6px,1vw,10px);
   padding-bottom:20px;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
 }
 
 /* Top-3 erikoiskortit */
@@ -979,8 +993,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   background:var(--card);border:1px solid rgba(255,255,255,.07);
   border-radius:clamp(12px,1.5vw,18px);
   padding:clamp(11px,1.6vw,16px) clamp(14px,2vw,20px);
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
   display:flex;align-items:center;gap:clamp(10px,1.5vw,16px);
   transition:all .18s;position:relative;overflow:hidden;
+  width:100%;box-sizing:border-box;min-width:0;
 }
 .hof-card::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;
@@ -1020,11 +1038,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .hof-correct{font-size:clamp(.65rem,1vw,.78rem);font-weight:700;color:var(--accent3);}
 .hof-rounds{font-size:clamp(.62rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
 
-.hof-right{text-align:right;flex-shrink:0;}
+.hof-right{text-align:right;flex-shrink:0;min-width:0;max-width:40%;}
 .hof-pts{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(1.1rem,2vw,1.5rem);
+  font-size:clamp(1rem,2vw,1.5rem);
   color:var(--accent);line-height:1;
+  white-space:nowrap;
 }
 .hof-pts-label{font-size:clamp(.55rem,.9vw,.68rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
 
