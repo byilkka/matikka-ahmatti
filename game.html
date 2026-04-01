@@ -2278,24 +2278,26 @@ function srLocalLoad(name, char, md) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0 };
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0 };
     return {
-      weights:       playerData.modeWeights?.[md] || {},
-      roundsPlayed:  playerData.roundsPlayed  || 0,
-      diffLevel:     playerData.diffLevel     || 1,
-      globalStreak:  playerData.globalStreak  || 0
+      weights:            playerData.modeWeights?.[md] || {},
+      roundsPlayed:       playerData.roundsPlayed       || 0,
+      diffLevel:          playerData.diffLevel           || 1,
+      globalStreak:       playerData.globalStreak        || 0,
+      levelDropCooldown:  playerData.levelDropCooldown   || 0
     };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0 }; }
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0 }; }
 }
 
 function srLocalSave(name, char, md, data) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0 };
-    playerData.diffLevel     = data.diffLevel;
-    playerData.roundsPlayed  = data.roundsPlayed;
-    playerData.globalStreak  = data.globalStreak || 0;
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0 };
+    playerData.diffLevel          = data.diffLevel;
+    playerData.roundsPlayed       = data.roundsPlayed;
+    playerData.globalStreak       = data.globalStreak       || 0;
+    playerData.levelDropCooldown  = data.levelDropCooldown  || 0;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -2423,7 +2425,7 @@ const DIFF_LEVELS = (()=>{
 })();
 
 // Adaptiivinen tila per kierros
-let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0 };
+let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0 };
 let retryQueue   = [];
 let roundHistory = [];
 
@@ -2494,15 +2496,24 @@ function srRecord(p, correct) {
 // Kierroksen jälkeen: harkitse tasonvaihto
 function srEvaluateRound(pct) {
   srData.roundsPlayed++;
+
+  // FARM-005 FIX: Tasonlasku-cooldown
+  // Jos taso laski äskettäin, pisteet eivät kerry seuraaviin 3 nousuun
+  // Estää: tahallinen väärin → taso laskee → oikein → taso nousee → pisteet
   if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
+    // Vähennä cooldown jos aktiivinen
+    if (srData.levelDropCooldown > 0) {
+      srData.levelDropCooldown--;
+    }
     srData.diffLevel++;
     updDiffLabel();
     srSave(srData);
-    // Tasosaavutus joka 10. tasolla
     if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
     return { changed: true, up: true, newLevel: srData.diffLevel };
   } else if (pct < 50 && srData.diffLevel > 1) {
     srData.diffLevel--;
+    // Aseta 3 kierroksen cooldown — pisteet eivät kerry ennen kuin cooldown = 0
+    srData.levelDropCooldown = 3;
     updDiffLabel();
     srSave(srData);
     return { changed: true, up: false, newLevel: srData.diffLevel };
@@ -2560,7 +2571,25 @@ function setMode(m){
   restartRound();
 }
 function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
+function restartRound(){
+  // FARM-001/002/003 FIX: Jos pelaaja on vastannut 5+ kysymystä ennen restarttia,
+  // tallennetaan osittainen kierros — estää strategisen restartin tason laskun välttämiseksi
+  if (rDone >= 5) {
+    const partialPct = Math.round((corr / rDone) * 100);
+    // Päivitä vain tason lasku jos menee todella huonosti — ei tason nousua osittaisesta
+    if (partialPct < 50 && srData.diffLevel > 1) {
+      srData.diffLevel--;
+      srData.levelDropCooldown = 3;
+      updDiffLabel();
+      srSave(srData);
+    }
+  }
+  rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;
+  retryQueue=[];roundHistory=[];roundStartTime=Date.now();
+  document.getElementById('resultsPanel').classList.remove('show');
+  document.getElementById('exerciseView').style.display='block';
+  monsterFace('normal');updProg();updStats();newProblem();
+}
 
 function newProblem(){
   ans='';busy=false;
@@ -2761,26 +2790,30 @@ async function showResults(){
   // Arvioi kierros ja mahdollinen tasonvaihto
   const lvlChange = srEvaluateRound(p);
   const levelRosedThisRound = lvlChange.changed && lvlChange.up;
-  // BUGI 1 FIX: Taso 50 (maksimi) saa pisteet normaalisti
-  // — pelaaja on saavuttanut maksimin ja ansaitsee jatkaa keräämistä
   const atMaxLevel = srData.diffLevel >= DIFF_LEVELS.length;
-  const ptsEarned  = levelRosedThisRound || atMaxLevel;
+  // FARM-005 FIX: cooldown aktiivinen jos taso laski äskettäin
+  // Estää tasonlasku → nosto -syklin pistefarmausta varten
+  const onCooldown = (srData.levelDropCooldown || 0) > 0;
+  const ptsEarned  = (levelRosedThisRound || atMaxLevel) && !onCooldown;
 
-  // PISTEYTYS: pisteet kertyvät jos taso nousi TAI ollaan jo maksimitasolla
   const ptsToSave = ptsEarned ? pts : 0;
 
   let lvlMsg = '';
-  if (levelRosedThisRound) {
+  if (levelRosedThisRound && onCooldown) {
+    const cd = srData.levelDropCooldown;
+    lvlMsg = `<div class="result-tag" style="background:rgba(255,107,107,.08);color:var(--muted);border:1.5px solid rgba(255,107,107,.2);">⏳ Taso nousi! Pisteet palautuvat ${cd} kierroksen päästä — harjoitellaan ensin!</div>`;
+  } else if (levelRosedThisRound) {
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
   } else if (lvlChange.changed && !lvlChange.up) {
-    // BUGI 2 FIX: taso laski — ei näytetä "nouse tasoa" viestiä vaan kannustus
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label} — saat pisteet kun taso nousee!</div>`;
+  } else if (atMaxLevel && onCooldown) {
+    const cd = srData.levelDropCooldown;
+    lvlMsg = `<div class="result-tag" style="background:rgba(255,107,107,.08);color:var(--muted);border:1.5px solid rgba(255,107,107,.2);">⏳ Pisteet palautuvat ${cd} kierroksen päästä</div>`;
   } else if (atMaxLevel) {
     lvlMsg = `<div class="result-tag" style="background:rgba(197,108,240,.15);color:var(--purple);border:1.5px solid var(--purple);">🏆 Maksimitaso ${DIFF_LEVELS.length} — pisteet tallentuvat!</div>`;
   } else {
-    // Taso ei muuttunut eikä olla maksimilla — kannustetaan nousemaan
     lvlMsg = `<div class="result-tag" style="background:rgba(255,107,107,.08);color:var(--muted);border:1.5px solid rgba(255,107,107,.2);">📈 Nouse tasoa saadaksesi pisteitä Hall of Fameen!</div>`;
   }
 
@@ -2883,6 +2916,20 @@ async function renderScores(f) {
   let players = Array.from(playerMap.values())
     .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound)
     .slice(0, 200);
+
+  // FARM-004 FIX: Yhdistä saman nimen eri hahmot (boy/girl)
+  // Estää HOF:n täyttämisen useilla nimimerkeillä
+  // Jos sama nimi esiintyy kahdella hahmolla, näytetään vain se jolla on enemmän pisteitä
+  const nameDedup = new Map();
+  for (const p of players) {
+    const nameLower = p.name.toLowerCase();
+    const existing = nameDedup.get(nameLower);
+    if (!existing || p.totalPts > existing.totalPts) {
+      nameDedup.set(nameLower, p);
+    }
+  }
+  players = Array.from(nameDedup.values())
+    .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound);
 
   if (!players.length) {
     list.innerHTML = `<div class="no-scores"><span class="big">🎮</span>Ei tuloksia vielä!<br>Pelaa kierros ja tule takaisin.</div>`;
