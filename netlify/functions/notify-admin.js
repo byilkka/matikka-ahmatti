@@ -3,7 +3,7 @@
 // Lähettää ylläpitäjälle sähköpostin jossa on suora hyväksymislinkki
 
 const FROM_EMAIL = 'noreply@matikka-ahmatti.fi';
-const ADMIN_EMAIL = 'ilkka.loutesalmi@gmail.com'; // ← vaihda omaksi
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
