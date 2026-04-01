@@ -1396,7 +1396,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 
   <div class="streak-bar">
-    <div class="si">🔥 <span class="v" id="sStreak">0</span> putki</div>
+    <div class="si" title="Globaali putki — kasvaa oikeista vastauksista, nollautuu väärästä, säilyy kirjautumisten välillä">🔥 <span class="v" id="sStreak">0</span> putki</div>
     <div class="si">✅ <span class="v g" id="sCorr">0</span> oikein</div>
     <div class="si">⭐ <span class="v b" id="sPts">0</span> pistettä</div>
     <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
@@ -2278,24 +2278,24 @@ function srLocalLoad(name, char, md) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
-    // Palauta rakenne joka sisältää yhteisen tason + moodi-kohtaiset painot
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0 };
     return {
-      weights:      playerData.modeWeights?.[md] || {},
-      roundsPlayed: playerData.roundsPlayed || 0,
-      diffLevel:    playerData.diffLevel    || 1
+      weights:       playerData.modeWeights?.[md] || {},
+      roundsPlayed:  playerData.roundsPlayed  || 0,
+      diffLevel:     playerData.diffLevel     || 1,
+      globalStreak:  playerData.globalStreak  || 0
     };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1 }; }
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0 }; }
 }
 
 function srLocalSave(name, char, md, data) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
-    // Päivitä yhteinen taso ja kierrosmäärä, mutta moodi-kohtaiset painot erikseen
-    playerData.diffLevel    = data.diffLevel;
-    playerData.roundsPlayed = data.roundsPlayed;
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0 };
+    playerData.diffLevel     = data.diffLevel;
+    playerData.roundsPlayed  = data.roundsPlayed;
+    playerData.globalStreak  = data.globalStreak || 0;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -2423,7 +2423,7 @@ const DIFF_LEVELS = (()=>{
 })();
 
 // Adaptiivinen tila per kierros
-let srData       = { weights:{}, roundsPlayed:0, diffLevel:1 };
+let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0 };
 let retryQueue   = [];
 let roundHistory = [];
 
@@ -2697,18 +2697,19 @@ function ck(){
   if(!ans||busy)return;
   const u=parseInt(ans),ok=u===prob.answer;busy=true;
   const fb=document.getElementById('fb'),bs=document.getElementById('bS');
-  srRecord(prob, ok); // ← adaptiivinen kirjaus
+  srRecord(prob, ok);
   if(ok){
     streak++;corr++;
-    if(streak > maxStreakThisRound) maxStreakThisRound = streak; // BUG-002 fix
-    // Pisteytys: tason kerroin × perusarvo + putkibonus
+    // Globaali putki — kasvaa oikeista vastauksista ja säilyy kirjautumisten välillä
+    srData.globalStreak = (srData.globalStreak || 0) + 1;
+    if(streak > maxStreakThisRound) maxStreakThisRound = streak;
+    srSave(srData); // tallenna heti jotta putki säilyy jos poistutaan
     const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
     const baseScore  = Math.round(10 * lvlInfo.mult);
     const streakBonus = streak >= 3 ? Math.round(streak * 2 * lvlInfo.mult) : 0;
     pts += baseScore + streakBonus;
     fb.textContent=okMsg();fb.className='feedback ok';
     if(bs)bs.style.color='var(--accent3)';
-    // Mörkö ahmii vastauksen
     monsterEatNumber(prob.answer);
     if(streak>=10&&streak%10===0){
       sfxSuperStreak(); monsterFace('happy'); monsterAnimate('jump',800);
@@ -2722,6 +2723,9 @@ function ck(){
     if(streak>0&&streak%5===0)launchConfetti();
   }else{
     streak=0;
+    // Väärä vastaus nollaa globaalin putken
+    srData.globalStreak = 0;
+    srSave(srData); // tallenna nollaus heti
     fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
     fb.className='feedback no';
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
@@ -2732,23 +2736,14 @@ function ck(){
 }
 function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Loistava! 🔥','Hienoa! 💪','Aivan oikein! 🎯'][~~(Math.random()*6)];}
 function updStats(){
-  const cur = streak;
-  const best = maxStreakThisRound;
+  const global = srData.globalStreak || 0;
   const streakEl = document.getElementById('sStreak');
-  if(streakEl){
-    // Näytä nykyinen putki — jos paras putki on isompi kuin nykyinen,
-    // näytä se parenteesissa ettei se tunnu "katoavan"
-    if(best > cur && best > 0){
-      streakEl.textContent = `${cur} (paras: ${best})`;
-    } else {
-      streakEl.textContent = cur;
-    }
-  }
-  document.getElementById('sCorr').textContent=corr;
-  const ptsEl=document.getElementById('sPts');
+  if(streakEl) streakEl.textContent = global;
+  document.getElementById('sCorr').textContent = corr;
+  const ptsEl = document.getElementById('sPts');
   if(ptsEl){
-    ptsEl.textContent=pts;
-    ptsEl.style.opacity= srData.diffLevel >= DIFF_LEVELS.length ? '1' : '0.5';
+    ptsEl.textContent = pts;
+    ptsEl.style.opacity = srData.diffLevel >= DIFF_LEVELS.length ? '1' : '0.5';
     ptsEl.title = srData.diffLevel >= DIFF_LEVELS.length ? '' : 'Pisteet tallentuvat kun taso nousee';
   }
 }
@@ -3090,9 +3085,9 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   // Perfect round — ei vaadi tason nousua (kannustaa tarkkuuteen)
   if (roundPct >= 100) achCheck('perfect_round');
 
-  // Streak-saavutukset — perustasot eivät vaadi tason nousua
-  if (maxStreakThisRound >= 5)  achCheck('streak_5');
-  if (maxStreakThisRound >= 10) achCheck('streak_10');
+  // Streak-saavutukset käyttävät globalStreak:ia — säilyy kirjautumisten välillä
+  if (srData.globalStreak >= 5)  achCheck('streak_5');
+  if (srData.globalStreak >= 10) achCheck('streak_10');
 
   // Taso 4+ (vanha saavutus yhteensopivuuden vuoksi)
   if (srData.diffLevel >= 4) achCheck('level_4');
@@ -3100,10 +3095,9 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
 
   // ── Saavutukset jotka vaativat tason nousua ──────────────────────
-  // Estää farmingin: pelaaja ei voi toistaa samaa tasoa saadakseen näitä
 
   // streak_20 vaatii pisteiden kertymistä JA tason ≥ 5
-  if (ptsEarned && srData.diffLevel >= 5 && maxStreakThisRound >= 20) {
+  if (ptsEarned && srData.diffLevel >= 5 && srData.globalStreak >= 20) {
     achCheck('streak_20');
   }
 
