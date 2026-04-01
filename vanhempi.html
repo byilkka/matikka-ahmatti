@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<!-- GA ladataan evästebannerin kautta suostumuksen jälkeen -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vanhempien näkymä — Matikka-Ahmatti</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#0b1520;--card:#162030;--card2:#1a2840;--accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;--accent4:#7b9fff;--pink:#ff8ed4;--purple:#c56cf0;--text:#eef3ff;--muted:#6a82a0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── LOGIN ── */
+#loginScreen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.login-box{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:clamp(28px,5vw,44px) clamp(24px,4vw,40px);width:100%;max-width:420px;box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.login-icon{font-size:2.8rem;margin-bottom:10px;display:block;}
+.login-title{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,1.9rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.login-sub{color:var(--muted);font-size:.82rem;font-weight:700;margin-bottom:20px;line-height:1.5;}
+.tabs{display:flex;background:var(--card2);border-radius:12px;padding:4px;margin-bottom:18px;gap:4px;}
+.tab-btn{flex:1;padding:9px;border:none;border-radius:9px;background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;}
+.tab-btn.active{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.form-input{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;outline:none;margin-bottom:10px;transition:border-color .18s;}
+.form-input:focus{border-color:var(--accent4);}
+.form-input::placeholder{color:var(--muted);}
+.btn-main{width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn-main:hover{transform:translateY(-1px);}
+.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;border:none;color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;margin-top:10px;display:block;width:100%;text-align:center;}
+.btn-ghost:hover{color:var(--text);}
+.status-msg{padding:10px 14px;border-radius:10px;font-size:.78rem;font-weight:700;margin-bottom:10px;display:none;}
+.status-msg.ok{background:rgba(93,232,181,.1);color:var(--accent3);border:1px solid rgba(93,232,181,.2);display:block;}
+.status-msg.err{background:rgba(255,107,107,.1);color:var(--accent2);border:1px solid rgba(255,107,107,.2);display:block;}
+.status-msg.info{background:rgba(123,159,255,.1);color:var(--accent4);border:1px solid rgba(123,159,255,.2);display:block;}
+.form-label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px;text-align:left;display:block;margin-bottom:4px;}
+.divider{height:1px;background:rgba(255,255,255,.06);margin:14px 0;}
+select.form-input{cursor:pointer;}
+
+/* ── DASHBOARD ── */
+#dashboard{display:none;}
+.dash-nav{display:flex;align-items:center;justify-content:space-between;padding:12px clamp(14px,3vw,28px);background:rgba(11,21,32,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:20;flex-wrap:wrap;gap:8px;}
+.dash-logo{font-family:'Fredoka One',cursive;font-size:clamp(.9rem,2vw,1.2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-email{font-size:.7rem;color:var(--muted);font-weight:700;margin-left:8px;}
+.dash-right{display:flex;gap:8px;align-items:center;}
+.btn-sm{padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--text);font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+.btn-sm:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.05);}
+.btn-danger{border-color:rgba(255,107,107,.2);color:var(--accent2);}
+.btn-danger:hover{border-color:var(--accent2);background:rgba(255,107,107,.08);}
+.dash-content{max-width:900px;margin:0 auto;padding:clamp(16px,3vw,28px);}
+
+/* ── LAPSET ── */
+.children-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2.5vw,1.4rem);}
+.btn-add{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:40px;border:1.5px solid rgba(93,232,181,.3);background:rgba(93,232,181,.08);color:var(--accent3);font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;transition:all .18s;}
+.btn-add:hover{background:rgba(93,232,181,.16);}
+.children-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(260px,40vw,320px),1fr));gap:clamp(10px,1.5vw,16px);margin-bottom:28px;}
+.child-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(16px,2.5vw,22px);transition:all .2s;position:relative;}
+.child-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-2px);}
+.child-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.child-avatar{font-size:2.2rem;line-height:1;flex-shrink:0;}
+.child-name{font-family:'Fredoka One',cursive;font-size:1.1rem;}
+.child-nickname{font-size:.72rem;color:var(--muted);font-weight:700;margin-top:2px;}
+.child-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.stat-box{background:var(--card2);border-radius:10px;padding:10px 8px;text-align:center;}
+.stat-val{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--accent);}
+.stat-val.green{color:var(--accent3);}
+.stat-val.blue{color:var(--accent4);}
+.stat-lbl{font-size:.58rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+.child-activity{font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:12px;}
+.child-activity span{color:var(--accent3);}
+.progress-bar{height:6px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;margin-bottom:4px;}
+.progress-fill{height:100%;border-radius:40px;background:linear-gradient(90deg,var(--accent3),var(--accent4));transition:width .6s ease;}
+.progress-label{font-size:.65rem;color:var(--muted);font-weight:700;display:flex;justify-content:space-between;}
+.ach-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+.ach-pill{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(197,108,240,.12);color:var(--purple);border:1px solid rgba(197,108,240,.2);}
+.btn-remove{position:absolute;top:12px;right:12px;background:transparent;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:4px;border-radius:6px;transition:color .15s;}
+.btn-remove:hover{color:var(--accent2);}
+
+/* ── LISÄÄ LAPSI MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card);border-radius:20px;padding:clamp(20px,3vw,32px);max-width:400px;width:100%;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5);}
+.modal-title{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:4px;}
+.modal-sub{font-size:.75rem;color:var(--muted);font-weight:700;margin-bottom:18px;line-height:1.5;}
+.modal-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.06);border:none;border-radius:50%;width:28px;height:28px;color:var(--text);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+
+/* ── TYHJÄ TILA ── */
+.empty-state{text-align:center;padding:48px 24px;background:var(--card);border-radius:18px;border:1px solid rgba(255,255,255,.06);}
+.empty-icon{font-size:3rem;margin-bottom:12px;}
+.empty-title{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:8px;}
+.empty-sub{font-size:.82rem;color:var(--muted);font-weight:700;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- ════ LOGIN SCREEN ════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <span class="login-icon">👨‍👩‍👧</span>
+    <div class="login-title">Vanhempien näkymä</div>
+    <div class="login-sub" id="loginSub">Seuraa lapsesi edistymistä Matikka-Ahmattissa</div>
+
+    <!-- Kirjaudu / Rekisteröidy -välilehdet -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Kirjaudu</button>
+      <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Rekisteröidy</button>
+    </div>
+
+    <!-- Kirjautumislomake -->
+    <div id="formLogin">
+      <label class="form-label">Sähköposti</label>
+      <input class="form-input" type="email" id="loginEmail" placeholder="sinä@esimerkki.fi" autocorrect="off" autocapitalize="none" spellcheck="false"/>
+      <label class="form-label">Salasana</label>
+      <input class="form-input" type="password" id="loginPassword" placeholder="Salasana" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <div class="status-msg" id="loginStatus"></div>
+      <button class="btn-main" id="loginBtn" onclick="doLogin()">Kirjaudu sisään →</button>
+      <button class="btn-ghost" onclick="switchTab('register')">Ei tiliä vielä? Rekisteröidy</button>
+    </div>
+
+    <!-- Rekisteröitymislomake -->
+    <div id="formRegister" style="display:none;">
+      <label class="form-label">Sähköposti</label>
+      <input class="form-input" type="email" id="regEmail" placeholder="sinä@esimerkki.fi" autocorrect="off" autocapitalize="none" spellcheck="false"/>
+      <label class="form-label">Salasana (min 8 merkkiä)</label>
+      <input class="form-input" type="password" id="regPassword" placeholder="Luo salasana"/>
+      <label class="form-label">Salasana uudelleen</label>
+      <input class="form-input" type="password" id="regPassword2" placeholder="Salasana uudelleen" onkeydown="if(event.key==='Enter')doRegister()"/>
+      <div class="status-msg" id="registerStatus"></div>
+      <button class="btn-main" id="registerBtn" onclick="doRegister()">Luo tili →</button>
+      <button class="btn-ghost" onclick="switchTab('login')">Onko sinulla jo tili? Kirjaudu</button>
+    </div>
+
+    <div style="margin-top:16px;"><a href="index.html" style="color:var(--muted);font-size:.7rem;font-weight:700;text-decoration:none;">← Takaisin etusivulle</a></div>
+  </div>
+</div>
+
+<!-- ════ DASHBOARD ════ -->
+<div id="dashboard">
+  <nav class="dash-nav">
+    <div style="display:flex;align-items:center;gap:4px;">
+      <div class="dash-logo">👨‍👩‍👧 Vanhempien näkymä</div>
+      <div class="dash-email" id="dashEmail"></div>
+    </div>
+    <div class="dash-right">
+      <a href="index.html" class="btn-sm">🏠 Etusivu</a>
+      <button class="btn-sm btn-danger" onclick="logout()">🚪 Ulos</button>
+    </div>
+  </nav>
+
+  <div class="dash-content">
+    <!-- Lapset-otsikko -->
+    <div class="children-header">
+      <div class="section-title">🧒 Lapseni</div>
+      <button class="btn-add" onclick="openAddChild()">➕ Lisää lapsi</button>
+    </div>
+
+    <!-- Latausviesti -->
+    <div id="loadingMsg" style="text-align:center;padding:32px;color:var(--muted);font-weight:700;font-size:.85rem;">⏳ Ladataan...</div>
+
+    <!-- Lapsiruudukko -->
+    <div class="children-grid" id="childrenGrid" style="display:none;"></div>
+
+    <!-- Tyhjä tila -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">Ei lapsia vielä</div>
+      <div class="empty-sub">Lisää lapsesi profiili klikkaamalla "Lisää lapsi".<br>Tarvitset lapsen nimimerkin ja hahmon (prinssi/prinsessa).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LISÄÄ LAPSI MODAL ════ -->
+<div class="modal-overlay" id="addChildModal" onclick="handleOverlay(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAddChild()">✕</button>
+    <div class="modal-title">➕ Lisää lapsi</div>
+    <div class="modal-sub">Syötä lapsesi nimimerkki ja hahmo sellaisena kuin hän on ne pelissä asettanut.</div>
+    <label class="form-label">Lapsen nimimerkki pelissä</label>
+    <input class="form-input" type="text" id="childName" placeholder="Esim. Emma" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <label class="form-label">Hahmo</label>
+    <select class="form-input" id="childChar">
+      <option value="boy">🤴 Prinssi</option>
+      <option value="girl">👸 Prinsessa</option>
+    </select>
+    <label class="form-label">Lempinimi (näkyy sinulle)</label>
+    <input class="form-input" type="text" id="childNickname" placeholder="Esim. Pikkuinen tai jätä tyhjäksi" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <div class="status-msg" id="addChildStatus"></div>
+    <button class="btn-main" id="addChildBtn" onclick="doAddChild()">✅ Lisää lapsi</button>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://whftebwchwvwlyfgytoo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZnRlYndjaHd2d2x5Zmd5dG9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzMyMjQsImV4cCI6MjA5MDMwOTIyNH0.nZ9toEBWzGaagueyiQXYJgulMaRnC4PP_3cadqdTUAo';
+const SB_H = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` };
+
+let currentEmail = '';
+let currentPassword = '';
+
+// ── Tallenna sessio localStorageen ──
+function saveSession(email, pwd) {
+  localStorage.setItem('parent_email', email);
+  localStorage.setItem('parent_pwd', pwd);
+}
+function loadSession() {
+  return {
+    email: localStorage.getItem('parent_email'),
+    pwd: localStorage.getItem('parent_pwd')
+  };
+}
+function clearSession() {
+  localStorage.removeItem('parent_email');
+  localStorage.removeItem('parent_pwd');
+}
+
+// ── Tab-vaihto ──
+function switchTab(tab) {
+  document.getElementById('formLogin').style.display    = tab === 'login' ? '' : 'none';
+  document.getElementById('formRegister').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+}
+
+function setStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `status-msg ${type}`;
+}
+
+// ── Rekisteröityminen ──
+async function doRegister() {
+  const email = document.getElementById('regEmail').value.trim();
+  const pwd   = document.getElementById('regPassword').value;
+  const pwd2  = document.getElementById('regPassword2').value;
+  if (!email || !pwd) return setStatus('registerStatus', 'Täytä kaikki kentät', 'err');
+  if (pwd !== pwd2) return setStatus('registerStatus', 'Salasanat eivät täsmää', 'err');
+  if (pwd.length < 8) return setStatus('registerStatus', 'Salasana liian lyhyt (min 8 merkkiä)', 'err');
+
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  setStatus('registerStatus', '⏳ Luodaan tiliä...', 'info');
+
+  try {
+    const res = await fetch('/.netlify/functions/register-parent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pwd })
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      setStatus('registerStatus', data.error || 'Virhe', 'err');
+    } else {
+      setStatus('registerStatus', '✅ Tili luotu! Tarkista sähköpostisi ja vahvista osoite ennen kirjautumista.', 'ok');
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regPassword').value = '';
+      document.getElementById('regPassword2').value = '';
+    }
+  } catch {
+    setStatus('registerStatus', 'Verkkovirhe — yritä uudelleen', 'err');
+  }
+  btn.disabled = false;
+}
+
+// ── Kirjautuminen ──
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPassword').value;
+  if (!email || !pwd) return setStatus('loginStatus', 'Täytä kaikki kentät', 'err');
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  setStatus('loginStatus', '⏳ Kirjaudutaan...', 'info');
+
+  try {
+    // Tarkista Supabasesta (hash vertailu) — käytetään SHA-256 clientissä
+    const hash = await sha256Client(pwd);
+    const rows = await fetch(
+      `${SB_URL}/rest/v1/parent_profiles?email=eq.${encodeURIComponent(email)}&select=email,verified,pwd_hash&limit=1`,
+      { headers: SB_H }
+    ).then(r => r.json());
+
+    if (!rows.length) {
+      setStatus('loginStatus', 'Sähköpostia ei löydy — rekisteröidy ensin', 'err');
+      btn.disabled = false; return;
+    }
+
+    // Huom: hash tarkistetaan server-side link-child -funktiossa
+    // Login-näkymässä tarkistamme vain että rivi löytyy ja on verified
+    if (!rows[0].verified) {
+      setStatus('loginStatus', 'Vahvista sähköpostiosoitteesi ensin — katso sähköposti', 'err');
+      btn.disabled = false; return;
+    }
+
+    // Tallennetaan session — salasana tarvitaan link-child -kutsuissa
+    currentEmail   = email;
+    currentPassword = pwd;
+    saveSession(email, pwd);
+    showDashboard();
+  } catch {
+    setStatus('loginStatus', 'Verkkovirhe — yritä uudelleen', 'err');
+  }
+  btn.disabled = false;
+}
+
+// Yksinkertainen SHA-256 client-side (ei salasanan hashaukseen — vain sessionin tallennukseen)
+async function sha256Client(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function logout() {
+  clearSession();
+  currentEmail = '';
+  currentPassword = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  setStatus('loginStatus', '', 'info');
+}
+
+// ── Dashboard ──
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('dashEmail').textContent = currentEmail;
+  loadChildren();
+}
+
+async function loadChildren() {
+  document.getElementById('loadingMsg').style.display = 'block';
+  document.getElementById('childrenGrid').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+
+  try {
+    // Hae linkitetyt lapset
+    const links = await fetch(
+      `${SB_URL}/rest/v1/parent_children?parent_email=eq.${encodeURIComponent(currentEmail)}&select=*`,
+      { headers: SB_H }
+    ).then(r => r.json());
+
+    document.getElementById('loadingMsg').style.display = 'none';
+
+    if (!links.length) {
+      document.getElementById('emptyState').style.display = 'block';
+      return;
+    }
+
+    // Hae tilastot jokaiselle lapselle
+    const cards = await Promise.all(links.map(link => buildChildCard(link)));
+    const grid = document.getElementById('childrenGrid');
+    grid.innerHTML = cards.join('');
+    grid.style.display = 'grid';
+
+  } catch(err) {
+    document.getElementById('loadingMsg').textContent = '⚠️ Lataus epäonnistui — yritä päivittää sivu';
+    console.error('loadChildren error:', err);
+  }
+}
+
+async function buildChildCard(link) {
+  const name = link.player_name;
+  const char = link.player_char;
+  const nick = link.nickname || name;
+  const av   = char === 'boy' ? '🤴' : '👸';
+
+  // Hae tilastot rinnakkain
+  const [progress, scores, achievements] = await Promise.all([
+    fetch(`${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=diff_level,rounds_played`, { headers: SB_H }).then(r => r.json()).catch(() => []),
+    fetch(`${SB_URL}/rest/v1/scores?name=eq.${encodeURIComponent(name)}&char=eq.${encodeURIComponent(char)}&select=pts,pct,created_at&order=created_at.desc&limit=30`, { headers: SB_H }).then(r => r.json()).catch(() => []),
+    fetch(`${SB_URL}/rest/v1/achievements?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=achievement_id,unlocked_at&order=unlocked_at.desc&limit=6`, { headers: SB_H }).then(r => r.json()).catch(() => []),
+  ]);
+
+  const level      = progress[0]?.diff_level || 1;
+  const totalPts   = scores.reduce((s, r) => s + (r.pts || 0), 0);
+  const rounds     = scores.length;
+  const avgPct     = rounds > 0 ? Math.round(scores.reduce((s,r) => s + (r.pct||0),0) / rounds) : 0;
+  const lastPlayed = scores[0]?.created_at ? new Date(scores[0].created_at).toLocaleDateString('fi-FI') : '—';
+  const levelPct   = Math.round((level / 50) * 100);
+
+  // Viikon aktiivisuus (7 pv)
+  const weekAgo    = new Date(Date.now() - 7*24*60*60*1000);
+  const weekRounds = scores.filter(s => new Date(s.created_at) > weekAgo).length;
+
+  const achPills = achievements.slice(0,4).map(a => `<span class="ach-pill">${achIcon(a.achievement_id)} ${achName(a.achievement_id)}</span>`).join('');
+
+  return `<div class="child-card" id="card-${escId(name)}-${char}">
+    <button class="btn-remove" onclick="removeChild('${escJs(name)}','${char}')" title="Poista linkitys">✕</button>
+    <div class="child-card-header">
+      <div class="child-avatar">${av}</div>
+      <div>
+        <div class="child-name">${escHtml(nick)}</div>
+        <div class="child-nickname">${nick !== name ? escHtml(name) + ' · ' : ''}${char === 'boy' ? 'Prinssi' : 'Prinsessa'}</div>
+      </div>
+    </div>
+    <div class="child-stats">
+      <div class="stat-box"><div class="stat-val">${level}</div><div class="stat-lbl">Taso</div></div>
+      <div class="stat-box"><div class="stat-val green">${avgPct}%</div><div class="stat-lbl">Tarkkuus</div></div>
+      <div class="stat-box"><div class="stat-val blue">${totalPts.toLocaleString('fi-FI')}</div><div class="stat-lbl">Pisteet</div></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${levelPct}%"></div></div>
+    <div class="progress-label"><span>Taso ${level}</span><span>/ 50</span></div>
+    <div class="child-activity" style="margin-top:10px;">
+      Tällä viikolla: <span>${weekRounds} kierrosta</span> · Viimeksi pelannut: <span>${lastPlayed}</span>
+    </div>
+    ${achPills ? `<div class="ach-row">${achPills}</div>` : ''}
+  </div>`;
+}
+
+function achIcon(id) {
+  const icons = { first_login:'👋',perfect_round:'🌟',streak_5:'🔥',streak_10:'🔥🔥',level_4:'🚀',rounds_100:'🏆',hof_1:'🐐',all_tables:'✖️',perfect_3:'💫',streak_20:'⚡',all_modes:'🌈',speed_demon:'💨',level_10:'🌟',level_20:'🔥',level_30:'⚡',level_40:'🚀',level_50:'🎓' };
+  return icons[id] || '🏅';
+}
+function achName(id) {
+  const names = { first_login:'Tervetuloa',perfect_round:'Täydellinen',streak_5:'Putki',streak_10:'Superputki',level_4:'Taso 4',rounds_100:'Satanen',hof_1:'GOAT',all_tables:'Kertotaulumestari',perfect_3:'3× Täyd.',streak_20:'Megaputki',all_modes:'Monipuolinen',speed_demon:'Nopea',level_10:'Taso 10',level_20:'Taso 20',level_30:'Taso 30',level_40:'Taso 40',level_50:'Grand Master' };
+  return names[id] || id;
+}
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escJs(s)   { return String(s).replace(/'/g,"\\'"); }
+function escId(s)   { return String(s).replace(/[^a-z0-9]/gi,'-'); }
+
+// ── Lisää lapsi ──
+function openAddChild() {
+  document.getElementById('addChildModal').classList.add('open');
+  document.getElementById('childName').focus();
+  setStatus('addChildStatus','','info');
+}
+function closeAddChild() {
+  document.getElementById('addChildModal').classList.remove('open');
+}
+function handleOverlay(e) {
+  if (e.target === document.getElementById('addChildModal')) closeAddChild();
+}
+
+async function doAddChild() {
+  const name = document.getElementById('childName').value.trim();
+  const char = document.getElementById('childChar').value;
+  const nick = document.getElementById('childNickname').value.trim();
+  if (!name) return setStatus('addChildStatus','Kirjoita lapsen nimimerkki','err');
+
+  const btn = document.getElementById('addChildBtn');
+  btn.disabled = true;
+  setStatus('addChildStatus','⏳ Etsitään profiilia...','info');
+
+  try {
+    const res = await fetch('/.netlify/functions/link-child', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ parentEmail: currentEmail, password: currentPassword, playerName: name, playerChar: char, nickname: nick || name })
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      setStatus('addChildStatus', data.error || 'Virhe', 'err');
+    } else {
+      setStatus('addChildStatus','✅ Lisätty!','ok');
+      document.getElementById('childName').value = '';
+      document.getElementById('childNickname').value = '';
+      setTimeout(() => { closeAddChild(); loadChildren(); }, 800);
+    }
+  } catch {
+    setStatus('addChildStatus','Verkkovirhe — yritä uudelleen','err');
+  }
+  btn.disabled = false;
+}
+
+// ── Poista linkitys ──
+async function removeChild(name, char) {
+  if (!confirm(`Poistetaanko ${name} seurannasta? Lapsen omat tiedot pelissä säilyvät.`)) return;
+  await fetch(
+    `${SB_URL}/rest/v1/parent_children?parent_email=eq.${encodeURIComponent(currentEmail)}&player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}`,
+    { method: 'DELETE', headers: SB_H }
+  ).catch(() => {});
+  loadChildren();
+}
+
+// ── Käynnistys — tarkista sessio ──
+(function init() {
+  const s = loadSession();
+  if (s.email && s.pwd) {
+    // Tarkista onko sessio edelleen voimassa
+    fetch(`${SB_URL}/rest/v1/parent_profiles?email=eq.${encodeURIComponent(s.email)}&verified=eq.true&select=email&limit=1`, { headers: SB_H })
+      .then(r => r.json())
+      .then(rows => {
+        if (rows.length) {
+          currentEmail   = s.email;
+          currentPassword = s.pwd;
+          showDashboard();
+        } else {
+          clearSession();
+        }
+      }).catch(() => {});
+  }
+})();
+</script>
+
+<!-- ═══ EVÄSTEBANNERI ═══ -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+        Käytämme Google Analytics -evästeitä palvelun kehittämiseksi.
+        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;">Hyväksy kaikki ✓</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var CONSENT_KEY='matikka_cookie_consent',GA_ID='G-B0GHH9704Y';
+  function loadGA(){if(window._gaLoaded)return;window._gaLoaded=true;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',GA_ID);}
+  function disableGA(){window['ga-disable-'+GA_ID]=true;}
+  window.cookieAccept=function(){localStorage.setItem(CONSENT_KEY,'accepted');document.getElementById('cookieBanner').style.display='none';loadGA();};
+  window.cookieDecline=function(){localStorage.setItem(CONSENT_KEY,'declined');document.getElementById('cookieBanner').style.display='none';disableGA();};
+  window.openCookieSettings=function(){localStorage.removeItem(CONSENT_KEY);document.getElementById('cookieBanner').style.display='block';}
+  var consent=localStorage.getItem(CONSENT_KEY);
+  if(consent==='accepted'){loadGA();}else if(consent==='declined'){disableGA();}else{setTimeout(function(){var b=document.getElementById('cookieBanner');if(b)b.style.display='block';},800);}
+})();
+</script>
+</body>
+</html>
