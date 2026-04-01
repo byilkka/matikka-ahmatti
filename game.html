@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
+<!-- GA ladataan evästebannerin kautta suostumuksen jälkeen -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -3441,6 +3442,87 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='Enter')ck();
   else if(e.key==='Escape')npa();
 });
+</script>
+
+<!-- ═══ EVÄSTEBANNERI ═══ -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+        Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
+        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var CONSENT_KEY = 'matikka_cookie_consent';
+  var GA_ID = 'G-B0GHH9704Y';
+
+  function loadGA(){
+    if(window._gaLoaded) return;
+    window._gaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  function disableGA(){
+    window['ga-disable-' + GA_ID] = true;
+    // Poista GA-evästeet
+    document.cookie = '_ga=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = '_ga_' + GA_ID.replace('G-','') + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  window.cookieAccept = function(){
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    document.getElementById('cookieBanner').style.display = 'none';
+    loadGA();
+  };
+
+  window.cookieDecline = function(){
+    localStorage.setItem(CONSENT_KEY, 'declined');
+    document.getElementById('cookieBanner').style.display = 'none';
+    disableGA();
+  };
+
+  // Tarkista aiempi valinta
+  var consent = localStorage.getItem(CONSENT_KEY);
+  if(consent === 'accepted'){
+    loadGA();
+  } else if(consent === 'declined'){
+    disableGA();
+  } else {
+    // Näytä banneri lyhyen viiveen jälkeen
+    setTimeout(function(){
+      var b = document.getElementById('cookieBanner');
+      if(b) b.style.display = 'block';
+    }, 800);
+  }
+})();
+</script>
+
+
+<script>
+// Evästeasetukset-nappi — avaa bannerin uudelleen
+function openCookieSettings(){
+  localStorage.removeItem('matikka_cookie_consent');
+  var b = document.getElementById('cookieBanner');
+  if(b) b.style.display = 'block';
+  window.scrollTo(0,document.body.scrollHeight);
+}
 </script>
 </body>
 </html>

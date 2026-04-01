@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<!-- GA ladataan evästebannerin kautta suostumuksen jälkeen -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tietosuojaseloste — Matikka-Ahmatti</title>
+<meta name="description" content="Matikka-Ahmatti tietosuojaseloste. Miten käsittelemme henkilötietoja ja evästeitä.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.matikka-ahmatti.fi/tietosuoja.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0b1520;--card:#162030;--card2:#1a2840;
+  --accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;
+  --accent4:#7b9fff;--text:#eef3ff;--muted:#6a82a0;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,4vw,48px);background:rgba(11,21,32,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:clamp(6px,1.2vw,16px);}
+.nav-link{color:var(--muted);font-weight:700;font-size:.83rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
+.nav-cta{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.85rem;padding:8px 18px;border-radius:40px;text-decoration:none;transition:all .2s;}
+.nav-cta:hover{transform:translateY(-1px);}
+
+.page{max-width:780px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,40px) clamp(60px,8vw,100px);}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(123,159,255,.1);border:1px solid rgba(123,159,255,.25);border-radius:40px;padding:6px 16px;font-size:.75rem;font-weight:800;color:var(--accent4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
+.page-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;line-height:1.1;}
+.page-meta{color:var(--muted);font-size:.8rem;font-weight:700;margin-bottom:clamp(32px,5vw,52px);}
+
+.section{margin-bottom:clamp(28px,4vw,44px);}
+.section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2.2vw,1.45rem);color:var(--accent3);display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(16px,2.5vw,24px) clamp(18px,3vw,28px);margin-bottom:12px;font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.75;font-weight:600;}
+.card p{margin-bottom:10px;}
+.card p:last-child{margin-bottom:0;}
+.card ul{padding-left:18px;margin-top:6px;}
+.card ul li{margin-bottom:6px;}
+.card strong{color:var(--text);}
+.card a{color:var(--accent4);text-decoration:none;font-weight:700;}
+.card a:hover{text-decoration:underline;}
+
+.highlight{background:rgba(93,232,181,.06);border:1px solid rgba(93,232,181,.2);border-radius:14px;padding:16px 20px;margin-bottom:16px;font-size:clamp(.82rem,1.4vw,.92rem);font-weight:700;color:var(--accent3);line-height:1.6;}
+.highlight strong{color:var(--text);}
+
+.contact-box{background:var(--card2);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.contact-box-icon{font-size:2rem;}
+.contact-box-info{flex:1;}
+.contact-box-title{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:4px;}
+.contact-box-sub{font-size:.8rem;color:var(--muted);font-weight:700;}
+.contact-box-link{display:inline-flex;margin-top:8px;padding:8px 18px;background:rgba(123,159,255,.1);border:1.5px solid rgba(123,159,255,.25);border-radius:40px;color:var(--accent4);font-size:.78rem;font-weight:800;text-decoration:none;transition:all .18s;}
+.contact-box-link:hover{background:rgba(123,159,255,.2);}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-text">🐐 Matikka-Ahmatti</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">← Etusivu</a>
+    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">🚀 Pelaa nyt</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-badge">🔒 Tietosuoja</div>
+  <h1 class="page-title">Tietosuojaseloste</h1>
+  <p class="page-meta">Päivitetty: huhtikuu 2026 · Voimassa toistaiseksi</p>
+
+  <div class="highlight">
+    <strong>Lyhyesti:</strong> Matikka-Ahmatti on ilmainen oppimispeli. Emme kerää lasten nimiä, sähköpostiosoitteita tai muita tunnistettavia henkilötietoja. Pelaajaprofiili luodaan nimimerkillä. Google Analytics kerää anonymisoitua tilastotietoa sivuston käytöstä.
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <h2 class="section-title">📋 1. Rekisterinpitäjä</h2>
+    <div class="card">
+      <p><strong>Matikka-Ahmatti</strong><br>
+      Verkkopalvelu: <a href="https://matikka-ahmatti.fi">matikka-ahmatti.fi</a><br>
+      Yhteystiedot: <a href="contact.html">Yhteydenottolomake</a></p>
+      <p>Tietosuoja-asioissa voit ottaa yhteyttä sivun alalaidan lomakkeella.</p>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <h2 class="section-title">🎮 2. Mitä tietoja keräämme</h2>
+    <div class="card">
+      <p><strong>Pelaajaprofiili (pelin toimintaa varten):</strong></p>
+      <ul>
+        <li><strong>Nimimerkki</strong> — pelaajan itse valitsema nimi (ei tarvitse olla oikea nimi)</li>
+        <li><strong>Hahmonvalinta</strong> — prinssi tai prinsessa</li>
+        <li><strong>PIN-koodi</strong> — tallennetaan hajautettuna (ei selväkielisenä)</li>
+        <li><strong>Pelitulokset</strong> — pisteet, tarkkuus, kierrosmäärät, taso</li>
+        <li><strong>Saavutukset</strong> — avatut saavutukset</li>
+      </ul>
+      <p style="margin-top:10px;">Emme kerää: sähköpostiosoitteita, puhelinnumeroita, oikeita nimiä, sijaintitietoja tai muita henkilötietoja pelaajilta.</p>
+    </div>
+    <div class="card">
+      <p><strong>Opettajat (opettajapaneelia varten):</strong></p>
+      <ul>
+        <li>Nimi ja koulu (anomuslomakkeella)</li>
+        <li>Sähköpostiosoite (kutsukoodin lähettämistä varten)</li>
+        <li>Luokkakoodit ja PIN-koodi (hajautettuna)</li>
+      </ul>
+      <p style="margin-top:10px;">Opettajatietoja käytetään vain palvelun tuottamiseen eikä luovuteta kolmansille osapuolille.</p>
+    </div>
+    <div class="card">
+      <p><strong>Kävijätilastot (Google Analytics 4):</strong></p>
+      <ul>
+        <li>Sivulataukset ja istuntojen kesto</li>
+        <li>Laitetyyppi (puhelin, tabletti, tietokone)</li>
+        <li>Maa/alue (kaupunkitasolla)</li>
+        <li>Viittaava sivusto</li>
+      </ul>
+      <p style="margin-top:10px;">Google Analytics anonymisoi IP-osoitteet automaattisesti. Tietoja ei yhdistetä pelaajan henkilöllisyyteen.</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <h2 class="section-title">⚖️ 3. Käsittelyn perusteet</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Sopimus / palvelun tuottaminen</strong> — pelaajaprofiili ja tulokset tarvitaan pelin toimintaan (GDPR art. 6(1)(b))</li>
+        <li><strong>Oikeutettu etu</strong> — kävijätilastot palvelun kehittämistä varten (GDPR art. 6(1)(f))</li>
+        <li><strong>Suostumus</strong> — evästeet, joita varten pyydämme erikseen suostumuksen (GDPR art. 6(1)(a))</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <h2 class="section-title">🍪 4. Evästeet</h2>
+    <div class="card">
+      <p>Käytämme kahta tyyppiä evästeitä:</p>
+      <p><strong>Välttämättömät (ei suostumusta tarvita):</strong></p>
+      <ul>
+        <li><code>matikka_sr_v1</code> — pelitaso ja spaced repetition -painot (localStorage)</li>
+        <li><code>matikka_ach_v1</code> — avatut saavutukset (localStorage)</li>
+        <li><code>matikka_cookie_consent</code> — evästeasetus (localStorage)</li>
+      </ul>
+      <p style="margin-top:10px;"><strong>Analytiikka (suostumus vaaditaan):</strong></p>
+      <ul>
+        <li>Google Analytics 4 (<code>_ga</code>, <code>_ga_*</code>) — anonymisoitu kävijäseuranta</li>
+      </ul>
+      <p style="margin-top:10px;">Voit peruuttaa analytiikkasuostumuksen koska tahansa klikkaamalla "Evästeasetukset"-linkkiä sivun alareunassa.</p>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <h2 class="section-title">👶 5. Lasten tiedot</h2>
+    <div class="card">
+      <p>Palvelu on suunnattu alakouluikäisille lapsille (6–12 v). Noudatamme erityistä varovaisuutta lasten tietojen käsittelyssä:</p>
+      <ul>
+        <li>Emme vaadi rekisteröitymistä tai sähköpostiosoitetta pelaajilta</li>
+        <li>Pelaajaprofiili luodaan nimimerkillä — oikeaa nimeä ei tarvita</li>
+        <li>Emme kerää lasten sijaintia, kuvia tai muita arkaluonteisia tietoja</li>
+        <li>Tulokset näkyvät Hall of Famessa vain nimimerkillä</li>
+      </ul>
+      <p style="margin-top:10px;">Jos epäilet että lapsesi tietoja on käsitelty virheellisesti, ota yhteyttä alla olevan lomakkeen kautta.</p>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section">
+    <h2 class="section-title">🏢 6. Kolmannet osapuolet</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Supabase</strong> (supabase.com) — tietokanta pelituloksille ja profiileille. Palvelimet EU-alueella.</li>
+        <li><strong>Netlify</strong> (netlify.com) — verkkosivuston hosting. Palvelimet EU-alueella.</li>
+        <li><strong>Google Analytics</strong> (google.com) — anonymisoitu kävijäseuranta. Tietoja käsitellään Googlen tietosuojaselosteen mukaisesti.</li>
+        <li><strong>Formspree</strong> (formspree.io) — yhteydenottolomakkeiden välitys. Käytetään vain opettajien anomuksiin.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="section">
+    <h2 class="section-title">⏱️ 7. Tietojen säilytys</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Pelaajaprofiili ja tulokset</strong> — säilytetään toistaiseksi palvelun käyttämiseksi. Voidaan poistaa pyynnöstä.</li>
+        <li><strong>Opettajatiedot</strong> — säilytetään palvelun käytön ajan.</li>
+        <li><strong>Google Analytics</strong> — tiedot säilytetään 14 kuukautta Googlen oletusasetuksilla.</li>
+        <li><strong>localStorage-tiedot</strong> — säilytetään selaimen muistissa kunnes käyttäjä tyhjentää sen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="section">
+    <h2 class="section-title">✅ 8. Oikeutesi</h2>
+    <div class="card">
+      <p>GDPR:n mukaan sinulla on oikeus:</p>
+      <ul>
+        <li><strong>Saada tietoa</strong> — mitä tietoja sinusta on tallennettu</li>
+        <li><strong>Oikaista</strong> — virheelliset tiedot</li>
+        <li><strong>Poistaa</strong> — "oikeus tulla unohdetuksi"</li>
+        <li><strong>Siirtää</strong> — tiedot koneluettavassa muodossa</li>
+        <li><strong>Vastustaa</strong> — tietojen käsittelyä oikeutetun edun perusteella</li>
+        <li><strong>Peruuttaa suostumus</strong> — milloin tahansa (ei vaikuta takautuvasti)</li>
+      </ul>
+      <p style="margin-top:10px;">Pyyntöihin vastataan 30 päivän kuluessa. Voit myös tehdä valituksen <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuojavaltuutetulle</a>.</p>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="section">
+    <h2 class="section-title">📝 9. Muutokset tähän selosteeseen</h2>
+    <div class="card">
+      <p>Voimme päivittää tätä selostetta palvelun kehittyessä. Merkittävistä muutoksista ilmoitetaan sivuston etusivulla. Päivämäärä sivun yläosassa kertoo viimeisimmän päivityksen.</p>
+    </div>
+  </div>
+
+  <!-- Yhteystiedot -->
+  <div class="contact-box">
+    <div class="contact-box-icon">📬</div>
+    <div class="contact-box-info">
+      <div class="contact-box-title">Tietosuoja-kysymykset</div>
+      <div class="contact-box-sub">Tietojen poisto, oikaisu tai muut pyynnöt</div>
+      <a href="contact.html" class="contact-box-link">✉️ Ota yhteyttä</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EVÄSTEBANNERI ═══ -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+        Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
+        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var CONSENT_KEY = 'matikka_cookie_consent';
+  var GA_ID = 'G-B0GHH9704Y';
+
+  function loadGA(){
+    if(window._gaLoaded) return;
+    window._gaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  function disableGA(){
+    window['ga-disable-' + GA_ID] = true;
+    // Poista GA-evästeet
+    document.cookie = '_ga=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = '_ga_' + GA_ID.replace('G-','') + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  window.cookieAccept = function(){
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    document.getElementById('cookieBanner').style.display = 'none';
+    loadGA();
+  };
+
+  window.cookieDecline = function(){
+    localStorage.setItem(CONSENT_KEY, 'declined');
+    document.getElementById('cookieBanner').style.display = 'none';
+    disableGA();
+  };
+
+  // Tarkista aiempi valinta
+  var consent = localStorage.getItem(CONSENT_KEY);
+  if(consent === 'accepted'){
+    loadGA();
+  } else if(consent === 'declined'){
+    disableGA();
+  } else {
+    // Näytä banneri lyhyen viiveen jälkeen
+    setTimeout(function(){
+      var b = document.getElementById('cookieBanner');
+      if(b) b.style.display = 'block';
+    }, 800);
+  }
+})();
+</script>
+
+
+<script>
+// Evästeasetukset-nappi — avaa bannerin uudelleen
+function openCookieSettings(){
+  localStorage.removeItem('matikka_cookie_consent');
+  var b = document.getElementById('cookieBanner');
+  if(b) b.style.display = 'block';
+  window.scrollTo(0,document.body.scrollHeight);
+}
+</script>
+</body>
+</html>
