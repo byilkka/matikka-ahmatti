@@ -127,11 +127,11 @@
   --fb-font: .8rem;
   --fb-h: 24px;
 
-  --nb-pad: 13px;
-  --nb-font: .95rem;
-  --nb-gap: 5px;
-  --nb-radius: 9px;
-  --en-font: .78rem;
+  --nb-pad: 16px;
+  --nb-font: 1.15rem;
+  --nb-gap: 6px;
+  --nb-radius: 10px;
+  --en-font: .88rem;
 
   --prog-font: .62rem;
   --prog-h: 6px;
@@ -196,9 +196,9 @@
     --problem-font: clamp(2.2rem, 8vw, 3.4rem);
     --blank-w: 52px;
 
-    --nb-pad: 11px;
-    --nb-font: 1.05rem;
-    --nb-gap: 5px;
+    --nb-pad: 14px;
+    --nb-font: 1.15rem;
+    --nb-gap: 6px;
 
     --re-font: 2.7rem;
     --rt-font: 1.45rem;
@@ -444,8 +444,8 @@
   :root {
     --monster-size: 70px;
     --problem-font: clamp(1.6rem, 5vw, 2.2rem);
-    --nb-pad: 7px;
-    --nb-font: .85rem;
+    --nb-pad: 9px;
+    --nb-font: .9rem;
     --card-pad: 8px 10px;
     --si-pad: 4px 8px;
     --si-font: .6rem;
@@ -2719,10 +2719,19 @@ function ck(){
 }
 function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Loistava! 🔥','Hienoa! 💪','Aivan oikein! 🎯'][~~(Math.random()*6)];}
 function updStats(){
-  document.getElementById('sStreak').textContent=streak;
+  const cur = streak;
+  const best = maxStreakThisRound;
+  const streakEl = document.getElementById('sStreak');
+  if(streakEl){
+    // Näytä nykyinen putki — jos paras putki on isompi kuin nykyinen,
+    // näytä se parenteesissa ettei se tunnu "katoavan"
+    if(best > cur && best > 0){
+      streakEl.textContent = `${cur} (paras: ${best})`;
+    } else {
+      streakEl.textContent = cur;
+    }
+  }
   document.getElementById('sCorr').textContent=corr;
-  // Näytä pisteet harmaana jos ei olla maksimitasolla eikä tiedetä vielä nouseeko taso
-  // Tämä estää "pisteet katosivat" -tunteen kierroksen lopussa
   const ptsEl=document.getElementById('sPts');
   if(ptsEl){
     ptsEl.textContent=pts;
