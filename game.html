@@ -512,10 +512,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .step-sub{color:var(--muted);font-size:clamp(.75rem,1.5vw,.9rem);font-weight:600;margin-bottom:20px;}
 
 .name-input{
-  width:100%;background:var(--card2);border:2px solid rgba(255,255,255,.1);
+  width:100%;box-sizing:border-box;background:var(--card2);border:2px solid rgba(255,255,255,.1);
   border-radius:clamp(10px,1.5vw,16px);padding:clamp(11px,1.5vw,16px) clamp(14px,2vw,22px);
-  font-family:'Nunito',sans-serif;font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:var(--text);
-  outline:none;transition:all .2s;margin-bottom:14px;
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);
+  outline:none;transition:all .2s;margin-bottom:14px;display:block;
 }
 .name-input::placeholder{color:var(--muted);font-weight:600;}
 .name-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(247,201,72,.13);}
@@ -966,79 +966,87 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .mtab:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
 
-/* ══ HOF GRID — kortit rinnakkain ══ */
+/* ══ HOF — Leaderboard lista (mobiiliystävällinen) ══ */
 .hof-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(clamp(160px,22vw,240px),1fr));
-  gap:clamp(8px,1.2vw,14px);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(6px,1vw,10px);
   padding-bottom:20px;
 }
 
+/* Top-3 erikoiskortit */
 .hof-card{
   background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(14px,1.8vw,20px);
-  padding:clamp(14px,2vw,20px) clamp(12px,1.6vw,18px);
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(5px,.8vh,8px);
-  transition:all .2s;position:relative;overflow:hidden;
-  text-align:center;
+  border-radius:clamp(12px,1.5vw,18px);
+  padding:clamp(11px,1.6vw,16px) clamp(14px,2vw,20px);
+  display:flex;align-items:center;gap:clamp(10px,1.5vw,16px);
+  transition:all .18s;position:relative;overflow:hidden;
 }
 .hof-card::before{
-  content:'';position:absolute;left:0;top:0;right:0;height:3px;border-radius:2px 2px 0 0;
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;
 }
-.hof-card.rank-1::before{background:linear-gradient(90deg,#ffd700,#ff9f43);}
-.hof-card.rank-2::before{background:linear-gradient(90deg,#c0c0c0,#a0a0a0);}
-.hof-card.rank-3::before{background:linear-gradient(90deg,#cd7f32,#a0522d);}
-.hof-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.hof-card.rank-1::before{background:linear-gradient(180deg,#ffd700,#ff9f43);}
+.hof-card.rank-2::before{background:linear-gradient(180deg,#c0c0c0,#a0a0a0);}
+.hof-card.rank-3::before{background:linear-gradient(180deg,#cd7f32,#a0522d);}
+.hof-card:hover{border-color:rgba(255,255,255,.14);transform:translateX(2px);}
 .hof-card.goat-card{
-  background:linear-gradient(160deg,rgba(255,215,0,.12) 0%,rgba(22,32,48,1) 100%);
-  border:1.5px solid rgba(255,215,0,.4);
-  box-shadow:0 4px 24px rgba(255,180,0,.15);
+  background:linear-gradient(135deg,rgba(255,215,0,.1) 0%,rgba(22,32,48,1) 60%);
+  border:1.5px solid rgba(255,215,0,.35);
+  box-shadow:0 4px 20px rgba(255,180,0,.12);
 }
-.hof-card.me-card{border-color:rgba(247,201,72,.4);box-shadow:0 0 0 2px rgba(247,201,72,.15);}
+.hof-card.me-card{border-color:rgba(247,201,72,.4);background:rgba(247,201,72,.04);}
 
 .hof-rank{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(.9rem,1.6vw,1.2rem);
-  color:var(--muted);
+  font-size:clamp(1rem,1.8vw,1.3rem);
+  color:var(--muted);min-width:clamp(28px,3.5vw,40px);text-align:center;flex-shrink:0;
 }
 .hof-rank.r1{color:#ffd700;} .hof-rank.r2{color:#c0c0c0;} .hof-rank.r3{color:#cd7f32;}
-.hof-avatar{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
+
+.hof-avatar{font-size:clamp(1.5rem,3vw,2rem);line-height:1;flex-shrink:0;}
+
+.hof-info{flex:1;min-width:0;}
 .hof-name{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(.88rem,1.5vw,1.1rem);
+  font-size:clamp(.9rem,1.6vw,1.1rem);
   color:var(--text);
-  word-break:break-word;overflow-wrap:anywhere;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   max-width:100%;
-  text-align:center;
 }
+.hof-meta{
+  display:flex;align-items:center;gap:clamp(6px,1vw,10px);
+  margin-top:2px;flex-wrap:wrap;
+}
+.hof-correct{font-size:clamp(.65rem,1vw,.78rem);font-weight:700;color:var(--accent3);}
+.hof-rounds{font-size:clamp(.62rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
+
+.hof-right{text-align:right;flex-shrink:0;}
 .hof-pts{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(1.3rem,2.5vw,1.8rem);
+  font-size:clamp(1.1rem,2vw,1.5rem);
   color:var(--accent);line-height:1;
 }
-.hof-pts-label{font-size:clamp(.58rem,1vw,.72rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-.hof-correct{font-size:clamp(.68rem,1.1vw,.82rem);font-weight:700;color:var(--accent3);}
-.hof-rounds{font-size:clamp(.6rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
-.hof-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:2px;}
+.hof-pts-label{font-size:clamp(.55rem,.9vw,.68rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+
+.hof-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;margin-top:3px;}
 .hof-me-badge{
   font-size:clamp(.55rem,.9vw,.68rem);font-weight:700;
   background:rgba(247,201,72,.15);color:var(--accent);
   padding:1px 7px;border-radius:20px;
 }
 .hof-goat-badge{
-  display:inline-flex;align-items:center;gap:4px;
+  display:inline-flex;align-items:center;gap:3px;
   background:linear-gradient(135deg,#ffd700,#ff9f43);
   color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(.7rem,1.2vw,.88rem);
-  padding:3px 10px;border-radius:40px;
-  box-shadow:0 2px 10px rgba(255,180,0,.35);
+  font-size:clamp(.62rem,1vw,.78rem);
+  padding:2px 8px;border-radius:40px;
+  box-shadow:0 2px 8px rgba(255,180,0,.3);
 }
 .hof-crown{
-  position:absolute;top:-2px;left:50%;transform:translateX(-50%);
-  font-size:clamp(1rem,2vw,1.5rem);
-  filter:drop-shadow(0 2px 6px rgba(255,215,0,.5));
+  font-size:clamp(.9rem,1.5vw,1.2rem);
+  filter:drop-shadow(0 2px 4px rgba(255,215,0,.5));
   animation:crownBounce 2s ease-in-out infinite;
+  flex-shrink:0;
 }
 
 /* ══ ACHIEVEMENTS ══ */
@@ -2871,24 +2879,28 @@ async function renderScores(f) {
     const av     = s.char==='boy'?'🤴':'👸';
     const isMe   = s.name===pName && s.char===pChar;
     const acc    = s.totalPlayed > 0 ? Math.round(s.totalCorr/s.totalPlayed*100) : 0;
-
-    const goatBadge = isGoat ? `<div class="hof-goat-badge">🐐 GOAT</div>` : '';
-    const crown     = isGoat ? `<div class="hof-crown">👑</div>` : '';
-    const meBadge   = isMe   ? `<div class="hof-me-badge">Sinä ⭐</div>` : '';
+    const ptsColor = isGoat ? 'color:#ffd700;text-shadow:0 0 12px rgba(255,200,0,.4);' : '';
     const cardClass = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
-    const ptsColor  = isGoat ? 'color:#ffd700;text-shadow:0 0 14px rgba(255,200,0,.4);' : '';
 
     return `<div class="${cardClass}">
-      ${crown}
       <div class="hof-rank ${rc}">${medal}</div>
       <div class="hof-avatar">${av}</div>
-      <div class="hof-name">${escHtml(s.name)}</div>
-      ${goatBadge}
-      ${meBadge}
-      <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
-      <div class="hof-pts-label">yhteispisteet</div>
-      <div class="hof-correct">paras ${s.bestRound}p · ${acc}% tarkkuus</div>
-      <div class="hof-rounds">${s.rounds} kierros${s.rounds!==1?'ta':''}</div>
+      <div class="hof-info">
+        <div class="hof-name">${escHtml(s.name)}</div>
+        <div class="hof-meta">
+          <span class="hof-correct">${acc}% tarkkuus</span>
+          <span class="hof-rounds">· ${s.rounds} kierr.</span>
+        </div>
+      </div>
+      <div class="hof-right">
+        <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
+        <div class="hof-pts-label">pistettä</div>
+        <div class="hof-tags">
+          ${isGoat ? `<span class="hof-goat-badge">🐐 GOAT</span>` : ''}
+          ${isMe   ? `<span class="hof-me-badge">Sinä ⭐</span>` : ''}
+          ${isGoat ? `<span class="hof-crown">👑</span>` : ''}
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
