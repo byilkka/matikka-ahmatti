@@ -663,6 +663,25 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .si .v.g{color:var(--accent3);}
 .si .v.b{color:var(--accent4);}
 
+/* ── XP-palkki ── */
+.xp-bar-wrap{
+  margin-bottom:clamp(12px,2vh,20px);
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:8px 14px;
+}
+.xp-bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.xp-bar-label{font-size:clamp(.62rem,1vw,.72rem);font-weight:800;color:var(--muted);}
+.xp-bar-count{font-size:clamp(.62rem,1vw,.72rem);font-weight:800;color:var(--accent4);}
+.xp-dots{display:flex;gap:4px;}
+.xp-dot{
+  flex:1;height:6px;border-radius:40px;
+  background:rgba(255,255,255,.08);
+  transition:background .3s,transform .2s;
+}
+.xp-dot.filled{background:linear-gradient(90deg,var(--accent4),var(--accent3));}
+.xp-dot.pulse{animation:xpPulse .4s ease-out;}
+@keyframes xpPulse{0%{transform:scaleY(1);}50%{transform:scaleY(1.8);}100%{transform:scaleY(1);}}
+
 /* Mode selector */
 .mode-selector{
   display:flex;gap:clamp(4px,0.8vw,8px);
@@ -1092,6 +1111,86 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ach-date{font-size:clamp(.58rem,.9vw,.68rem);color:var(--accent3);font-weight:700;margin-top:2px;}
 .ach-lock-icon{font-size:1.2rem;color:var(--muted);margin-top:2px;}
 
+/* ══ TASOKARTTA ══ */
+.map-player-info{
+  display:flex;align-items:center;gap:14px;
+  background:var(--card);border-radius:16px;padding:14px 18px;
+  margin-bottom:14px;border:1px solid rgba(255,255,255,.07);
+}
+.map-hname{font-size:clamp(1.1rem,2.5vw,1.3rem);font-weight:900;color:var(--text);}
+.map-hsub{font-size:clamp(.72rem,1.5vw,.82rem);color:var(--muted);font-weight:700;margin-top:2px;}
+.map-hprog{margin-top:8px;height:7px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;width:clamp(120px,30vw,180px);}
+.map-hprog-fill{height:100%;border-radius:40px;background:var(--accent);}
+
+.map-zone{margin-bottom:12px;}
+.map-zone-label{
+  font-size:clamp(.82rem,1.8vw,.95rem);font-weight:900;
+  padding:10px 14px;border-radius:12px 12px 0 0;
+  display:flex;align-items:center;gap:8px;
+}
+.map-zone-label .mznum{font-size:.72rem;opacity:.65;margin-left:auto;font-weight:700;}
+.map-zone-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:clamp(5px,1.2vw,9px);
+  background:var(--card);
+  border-radius:0 0 12px 12px;
+  padding:clamp(8px,1.5vw,12px);
+  border:1px solid rgba(255,255,255,.06);border-top:none;
+}
+@media(max-width:420px){.map-zone-grid{grid-template-columns:repeat(3,1fr);}}
+
+.map-lvl{
+  border-radius:clamp(8px,1.5vw,12px);
+  padding:clamp(10px,2vw,14px) 4px clamp(8px,1.5vw,12px);
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:transform .15s;
+  border:2px solid transparent;position:relative;
+}
+.map-lvl:hover{transform:scale(1.07);}
+.map-lvl .mlv-icon{font-size:clamp(18px,4vw,24px);line-height:1;}
+.map-lvl .mlv-num{font-size:clamp(13px,3vw,17px);font-weight:900;line-height:1;}
+.map-lvl .mlv-check{position:absolute;top:3px;right:5px;font-size:10px;font-weight:900;}
+
+/* Tilat */
+.map-lvl.mlv-done{background:rgba(93,232,181,.15);border-color:rgba(93,232,181,.25);}
+.map-lvl.mlv-done .mlv-num{color:#5de8b5;}
+.map-lvl.mlv-done .mlv-check{color:#5de8b5;}
+.map-lvl.mlv-curr{background:var(--accent);border-color:var(--accent);}
+.map-lvl.mlv-curr .mlv-num{color:#1a1a1a;}
+.map-lvl.mlv-curr{animation:mlvPulse 2s ease-in-out infinite;}
+@keyframes mlvPulse{0%,100%{box-shadow:0 0 0 0 rgba(247,201,72,.4);}50%{box-shadow:0 0 0 8px rgba(247,201,72,.0);}}
+.map-lvl.mlv-lock{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05);opacity:.4;}
+.map-lvl.mlv-lock .mlv-num{color:rgba(255,255,255,.2);}
+
+/* Vyöhykevärit */
+.mz1 .map-zone-label{background:rgba(93,232,181,.12);color:#5de8b5;}
+.mz2 .map-zone-label{background:rgba(123,159,255,.12);color:#7b9fff;}
+.mz3 .map-zone-label{background:rgba(247,201,72,.12);color:#f7c948;}
+.mz4 .map-zone-label{background:rgba(255,142,212,.12);color:#ff8ed4;}
+.mz5 .map-zone-label{background:rgba(197,108,240,.12);color:#c56cf0;}
+.mz2 .map-lvl.mlv-done{background:rgba(123,159,255,.15);border-color:rgba(123,159,255,.25);}
+.mz2 .map-lvl.mlv-done .mlv-num{color:#7b9fff;}
+.mz2 .map-lvl.mlv-done .mlv-check{color:#7b9fff;}
+.mz3 .map-lvl.mlv-done{background:rgba(247,201,72,.15);border-color:rgba(247,201,72,.25);}
+.mz3 .map-lvl.mlv-done .mlv-num{color:#f7c948;}
+.mz3 .map-lvl.mlv-done .mlv-check{color:#f7c948;}
+.mz4 .map-lvl.mlv-done{background:rgba(255,142,212,.15);border-color:rgba(255,142,212,.25);}
+.mz4 .map-lvl.mlv-done .mlv-num{color:#ff8ed4;}
+.mz4 .map-lvl.mlv-done .mlv-check{color:#ff8ed4;}
+.mz5 .map-lvl.mlv-done{background:rgba(197,108,240,.15);border-color:rgba(197,108,240,.25);}
+.mz5 .map-lvl.mlv-done .mlv-num{color:#c56cf0;}
+.mz5 .map-lvl.mlv-done .mlv-check{color:#c56cf0;}
+
+/* Tooltip */
+.lmap-tooltip{
+  position:fixed;background:var(--card);border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;padding:10px 14px;font-size:.78rem;font-weight:700;
+  pointer-events:none;z-index:200;max-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.5);
+  display:none;line-height:1.6;
+}
+.lmap-tooltip.visible{display:block;}
+
 /* ══ ACHIEVEMENT TOAST ══ */
 .ach-toast{
   position:fixed;bottom:-120px;left:50%;transform:translateX(-50%);
@@ -1402,6 +1501,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
   </div>
 
+  <!-- XP-palkki -->
+  <div class="xp-bar-wrap" id="xpBarWrap" title="Pelaa 5 kierrosta noustaksesi tasolle — XP kertyy jokaisesta kierroksesta">
+    <div class="xp-bar-header">
+      <span class="xp-bar-label">⚡ Edistyminen tasolle</span>
+      <span class="xp-bar-count"><span id="xpCurrent">0</span> / 5 XP</span>
+    </div>
+    <div class="xp-dots" id="xpDots">
+      <div class="xp-dot" id="xpd0"></div>
+      <div class="xp-dot" id="xpd1"></div>
+      <div class="xp-dot" id="xpd2"></div>
+      <div class="xp-dot" id="xpd3"></div>
+      <div class="xp-dot" id="xpd4"></div>
+    </div>
+  </div>
+
   <div class="mode-selector">
     <button class="mode-btn active" onclick="setMode('h')" id="btn-h"><span class="mi">🔢</span>Hajotelmat</button>
     <button class="mode-btn" onclick="setMode('a')" id="btn-a"><span class="mi">➕</span>Yhteenlasku</button>
@@ -1411,7 +1525,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
   <div class="main-card">
     <div id="rangeSection">
-      <div class="sec-label">Lukualue</div>
+      <div class="sec-label">Lukualue <span id="rangeLevelMax" style="color:var(--muted);font-size:.65rem;font-weight:700;"></span></div>
       <div class="range-pills">
         <button class="rp" onclick="setRange(5,this)">1–5</button>
         <button class="rp active" onclick="setRange(10,this)">1–10</button>
@@ -1549,6 +1663,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="main-tabs">
     <button class="mtab active" id="mtab-hof"  onclick="switchMainTab('hof',this)">🐐 Hall of Fame</button>
     <button class="mtab"        id="mtab-ach"  onclick="switchMainTab('ach',this)">🏅 Saavutukset</button>
+    <button class="mtab"        id="mtab-map"  onclick="switchMainTab('map',this)">🗺️ Tasokartta</button>
   </div>
 
   <!-- Hall of Fame panel -->
@@ -1571,6 +1686,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <span id="achCount" style="font-size:.8rem;color:var(--muted);font-weight:700;margin-left:8px;"></span>
     </div>
     <div class="ach-grid" id="achList"></div>
+  </div>
+
+  <!-- Tasokartta-paneeli -->
+  <div id="mapPanel" style="display:none">
+    <div class="map-player-info">
+      <span id="mapPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+      <div>
+        <div class="map-hname" id="mapPlayerName">—</div>
+        <div class="map-hsub" id="mapLevelInfo"></div>
+        <div class="map-hprog"><div class="map-hprog-fill" id="mapProgFill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="levelMap"></div>
   </div>
 </div>
 
@@ -2069,14 +2197,13 @@ async function pinConfirm() {
       pinAttempts++;
       const left = MAX_ATTEMPTS - pinAttempts;
       if (pinAttempts >= MAX_ATTEMPTS) {
-        // Reset — anna mahdollisuus luoda uusi PIN
         pinAttempts = 0;
         pinMode = 'new';
         pinFirstEntry = '';
-        document.getElementById('pinTitle').textContent = '🔐 Luo uusi PIN';
-        document.getElementById('pinSub').textContent   = '5 väärää yritystä — luo uusi PIN tai käytä admin-koodia';
+        document.getElementById('pinTitle').textContent = '🔐 PIN unohtunut?';
+        document.getElementById('pinSub').textContent   = 'Luo uusi PIN tai pyydä vanhempaa/opettajaa nollaamaan se';
         document.getElementById('pinAttemptsLeft').textContent = '';
-        pinSetError('Liian monta yritystä — luo uusi PIN');
+        pinSetError('5 väärää yritystä — oletko oikea pelaaja?');
       } else {
         document.getElementById('pinAttemptsLeft').textContent =
           `${left} yritys${left!==1?'tä':''} jäljellä`;
@@ -2115,7 +2242,7 @@ nameInp.addEventListener('input',()=>{ nextBtn.disabled=nameInp.value.trim().len
 nameInp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&nameInp.value.trim())goStep2(); });
 
 async function goStep2() {
-  if (goStep2InProgress) return; // BUG-005 fix: ei rinnakkaisia kutsuja
+  if (goStep2InProgress) return;
   goStep2InProgress = true;
   nextBtn.disabled = true;
   nextBtn.textContent = '⏳ Tarkistetaan...';
@@ -2124,27 +2251,89 @@ async function goStep2() {
   try {
     const existingChar = await pinGetPlayerByName(pName);
     if (existingChar) {
+      // MAT-38 FIX: näytä varoitus — nimellä on jo pelaaja
+      // Kysy onko tämä sama pelaaja vai uusi
       pChar = existingChar;
-      pinBuffer = ''; pinAttempts = 0; pinMode = 'login';
-      document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
-      document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
-      document.getElementById('pinError').textContent = '';
-      document.getElementById('pinAttemptsLeft').textContent = '';
-      pinUpdateDots();
-      document.getElementById('step1').classList.remove('active');
-      document.getElementById('step3').classList.add('active');
+      showExistingPlayerWarning(pName, existingChar);
     } else {
       document.getElementById('step1').classList.remove('active');
       document.getElementById('step2').classList.add('active');
     }
   } catch {
-    // Verkkovirhe — anna käyttäjän yrittää uudelleen
     nextBtn.disabled = false;
     nextBtn.textContent = 'Seuraava →';
   } finally {
     goStep2InProgress = false;
     nextBtn.textContent = 'Seuraava →';
   }
+}
+
+// MAT-38: Näytä varoitus kun nimi on jo käytössä
+function showExistingPlayerWarning(name, char) {
+  const av = char === 'boy' ? '🤴' : '👸';
+  const charLabel = char === 'boy' ? 'Prinssi' : 'Prinsessa';
+
+  // Muuta step1 näyttämään varoitus
+  const step1 = document.getElementById('step1');
+  step1.innerHTML = `
+    <div class="step-title" style="font-size:clamp(1.1rem,2.5vw,1.4rem);">👋 Tervetuloa takaisin?</div>
+    <div class="step-sub">Nimellä <strong style="color:var(--text)">${escHtml(name)}</strong> löytyy jo pelaaja:</div>
+    <div style="background:var(--card2);border-radius:14px;padding:16px;margin:14px 0;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:2rem;">${av}</span>
+      <div>
+        <div style="font-family:'Fredoka One',cursive;font-size:1rem;">${escHtml(name)}</div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:700;">${charLabel}</div>
+      </div>
+    </div>
+    <button class="cta-btn" onclick="continueAsExisting()" style="margin-bottom:10px;">🔐 Kirjaudu tänä pelaajana</button>
+    <button class="cta-btn" onclick="createNewProfile()" style="background:var(--card2);color:var(--text);border:1.5px solid rgba(255,255,255,.12);">✨ Luo uusi profiili</button>
+    <button class="btn-back" onclick="backToName()" style="margin-top:8px;display:block;text-align:center;color:var(--muted);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer;width:100%;">← Vaihda nimeä</button>
+  `;
+}
+
+// Jatka olemassa olevan pelaajan kirjautumisena
+function continueAsExisting() {
+  pinBuffer = ''; pinAttempts = 0; pinMode = 'login';
+  document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
+  document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
+  document.getElementById('pinError').textContent = '';
+  document.getElementById('pinAttemptsLeft').textContent = '';
+  pinUpdateDots();
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+}
+
+// Luo uusi profiili samalla nimellä — mene hahmovalintaan
+function createNewProfile() {
+  // Palauta step1 normaaliksi
+  restoreStep1();
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+}
+
+// Palaa nimen syöttöön
+function backToName() {
+  restoreStep1();
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameInput').focus();
+  nextBtn.disabled = true;
+}
+
+// Palauta step1 alkuperäiseen tilaan
+function restoreStep1() {
+  const step1 = document.getElementById('step1');
+  step1.innerHTML = `
+    <div class="step-title">Mikä sinun nimesi on? 👋</div>
+    <div class="step-sub">Kirjoita nimesi alle</div>
+    <input class="name-input" type="text" id="nameInput" placeholder="Esim. Emma tai Mikko" maxlength="20"
+      autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false"/>
+    <button class="cta-btn" id="nextBtn" onclick="goStep2()" disabled>Seuraava →</button>
+  `;
+  // Rebind event listeners
+  const inp = document.getElementById('nameInput');
+  const btn = document.getElementById('nextBtn');
+  inp.addEventListener('input', () => { btn.disabled = inp.value.trim().length < 1; });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && inp.value.trim()) goStep2(); });
 }
 
 function selChar(t) {
@@ -2307,6 +2496,7 @@ async function showScores(){
   document.querySelectorAll('.mtab').forEach((t,i)=>t.classList.toggle('active',i===0));
   document.getElementById('hofPanel').style.display='block';
   document.getElementById('achPanel').style.display='none';
+  document.getElementById('mapPanel').style.display='none';
   showScreen('scoreScreen');
   await renderScores('all');
 }
@@ -2334,26 +2524,28 @@ function srLocalLoad(name, char, md) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0 };
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0, xp:0 };
     return {
       weights:            playerData.modeWeights?.[md] || {},
       roundsPlayed:       playerData.roundsPlayed       || 0,
       diffLevel:          playerData.diffLevel           || 1,
       globalStreak:       playerData.globalStreak        || 0,
-      levelDropCooldown:  playerData.levelDropCooldown   || 0
+      levelDropCooldown:  playerData.levelDropCooldown   || 0,
+      xp:                 playerData.xp                  || 0
     };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0 }; }
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0 }; }
 }
 
 function srLocalSave(name, char, md, data) {
   try {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0 };
+    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0, xp:0 };
     playerData.diffLevel          = data.diffLevel;
     playerData.roundsPlayed       = data.roundsPlayed;
     playerData.globalStreak       = data.globalStreak       || 0;
     playerData.levelDropCooldown  = data.levelDropCooldown  || 0;
+    playerData.xp                 = data.xp                 || 0;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -2481,7 +2673,7 @@ const DIFF_LEVELS = (()=>{
 })();
 
 // Adaptiivinen tila per kierros
-let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0 };
+let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0 };
 let retryQueue   = [];
 let roundHistory = [];
 
@@ -2497,6 +2689,34 @@ function updDiffLabel() {
   const info = DIFF_LEVELS[lvl];
   const el   = document.getElementById('diffLabel');
   if (el) { el.textContent = info.label; el.style.color = info.color; }
+  updateRangeButtons();
+  updXpBar();
+}
+
+// Päivitä XP-palkki
+function updXpBar() {
+  const xp = srData.xp || 0;
+  const atMax = srData.diffLevel >= DIFF_LEVELS.length;
+
+  // Piilota palkki jos maksimitasolla
+  const wrap = document.getElementById('xpBarWrap');
+  if (wrap) wrap.style.display = atMax ? 'none' : '';
+
+  const countEl = document.getElementById('xpCurrent');
+  if (countEl) countEl.textContent = xp;
+
+  for (let i = 0; i < 5; i++) {
+    const dot = document.getElementById('xpd' + i);
+    if (!dot) continue;
+    const wasFilled = dot.classList.contains('filled');
+    const nowFilled = i < xp;
+    dot.classList.toggle('filled', nowFilled);
+    // Pulssianimaatio kun XP kasvaa
+    if (nowFilled && !wasFilled) {
+      dot.classList.add('pulse');
+      setTimeout(() => dot.classList.remove('pulse'), 400);
+    }
+  }
 }
 
 // Valitaan seuraava tehtävä — painotettu satunnaisuus + retry-jono
@@ -2506,12 +2726,11 @@ function pickNextProblem() {
   }
   const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
   const info     = DIFF_LEVELS[lvl];
-  // TASO-001 FIX: käytetään tason lukualuetta (info.range)
-  // range = käyttäjän valitsema alaraja rangeSection-napeista (vain vähennys/yhteenlasku/hajotelma)
-  // info.range = adaptiivisen tason mukainen lukualue
-  // Käytetään aina info.range:a — se kasvaa tason mukana
-  // range-nappi on deprecated mutta säilyy yhteensopivuuden vuoksi
-  const effRange = info.range;
+  // Käyttäjä voi valita lukualueen — se toimii miniminä
+  // Tason lukualue (info.range) on maksimi jota ei voi ylittää
+  // Esim: käyttäjä valitsee 1-10, taso sallii 1-100 → käytetään 1-10
+  // Esim: käyttäjä valitsee 1-100, taso sallii 1-20 → käytetään 1-20
+  const effRange = Math.min(range, info.range);
   const candidates = [];
   for (let i = 0; i < 6; i++) {
     // Käyttäjän valitsema moodi on aina etusijalla
@@ -2553,27 +2772,30 @@ function srRecord(p, correct) {
 function srEvaluateRound(pct) {
   srData.roundsPlayed++;
 
-  // FARM-005 FIX: Tasonlasku-cooldown
-  // Jos taso laski äskettäin, pisteet eivät kerry seuraaviin 3 nousuun
-  // Estää: tahallinen väärin → taso laskee → oikein → taso nousee → pisteet
+  // XP: jokainen kierros antaa 1 XP (max 5)
+  // Tason nousu nollaa XP:n (aloitetaan taas alusta)
+  // Tason lasku nollaa myös XP:n
+  srData.xp = Math.min(5, (srData.xp || 0) + 1);
+
   if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
-    // Vähennä cooldown jos aktiivinen
     if (srData.levelDropCooldown > 0) {
       srData.levelDropCooldown--;
     }
     srData.diffLevel++;
+    srData.xp = 0; // nollaa XP tason noustessa
     updDiffLabel();
     srSave(srData);
     if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
     return { changed: true, up: true, newLevel: srData.diffLevel };
   } else if (pct < 50 && srData.diffLevel > 1) {
     srData.diffLevel--;
-    // Aseta 3 kierroksen cooldown — pisteet eivät kerry ennen kuin cooldown = 0
+    srData.xp = 0; // nollaa XP tason laskiessa
     srData.levelDropCooldown = 3;
     updDiffLabel();
     srSave(srData);
     return { changed: true, up: false, newLevel: srData.diffLevel };
   }
+  updXpBar();
   srSave(srData);
   return { changed: false, newLevel: srData.diffLevel };
 }
@@ -2626,7 +2848,42 @@ function setMode(m){
   }).catch(()=>{});
   restartRound();
 }
-function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
+function setRange(r,el){
+  range=r;
+  document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  restartRound();
+}
+
+// Päivitä range-nappien tila tason mukaan
+function updateRangeButtons() {
+  const lvl  = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
+  const maxR = DIFF_LEVELS[lvl].range;
+  const rangeBtns = { 5: '1–5', 10: '1–10', 20: '1–20', 100: '1–100' };
+  document.querySelectorAll('.rp').forEach(btn => {
+    const btnRange = parseInt(btn.textContent.split('–')[1]) || 5;
+    if (btnRange > maxR) {
+      btn.style.opacity = '0.35';
+      btn.style.pointerEvents = 'none';
+      btn.title = `Avautuu tasolla ${Object.entries([[5,1],[10,1],[20,6],[100,16]]).find(([r])=>r==btnRange)?.[1] || '?'}+`;
+    } else {
+      btn.style.opacity = '';
+      btn.style.pointerEvents = '';
+      btn.title = '';
+    }
+  });
+  // Näytä tason max
+  const el = document.getElementById('rangeLevelMax');
+  if (el) el.textContent = `(taso sallii max 1–${maxR})`;
+  // Jos valittu range ylittää tason max, vaihda automaattisesti
+  if (range > maxR) {
+    range = maxR;
+    document.querySelectorAll('.rp').forEach(btn => {
+      const btnRange = parseInt(btn.textContent.split('–')[1]) || 5;
+      btn.classList.toggle('active', btnRange === maxR);
+    });
+  }
+}
 function restartRound(){
   // FARM-001/002/003 FIX: Jos pelaaja on vastannut 5+ kysymystä ennen restarttia,
   // tallennetaan osittainen kierros — estää strategisen restartin tason laskun välttämiseksi
@@ -2915,10 +3172,104 @@ function escHtml(str) {
 function switchMainTab(tab, el) {
   document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  const isHof = tab==='hof';
-  document.getElementById('hofPanel').style.display = isHof ? 'block' : 'none';
-  document.getElementById('achPanel').style.display = isHof ? 'none'  : 'block';
-  if (!isHof) renderAchievements();
+  document.getElementById('hofPanel').style.display = tab==='hof' ? 'block' : 'none';
+  document.getElementById('achPanel').style.display = tab==='ach' ? 'block' : 'none';
+  document.getElementById('mapPanel').style.display = tab==='map' ? 'block' : 'none';
+  if (tab==='ach') renderAchievements();
+  if (tab==='map') renderLevelMap();
+}
+
+function renderLevelMap() {
+  const container = document.getElementById('levelMap');
+  if (!container) return;
+
+  const cur = srData.diffLevel;
+  const av  = pChar === 'boy' ? '🤴' : '👸';
+  const pct = Math.round((cur / 50) * 100);
+
+  document.getElementById('mapPlayerAv').textContent  = av;
+  document.getElementById('mapPlayerName').textContent = pName;
+  document.getElementById('mapLevelInfo').textContent  = `Taso ${cur} / 50 · ${pct}% suoritettu`;
+  document.getElementById('mapProgFill').style.width   = pct + '%';
+
+  const zones = [
+    { cls:'mz1', min:1,  max:10, label:'Aloittelija',  icon:'🌱' },
+    { cls:'mz2', min:11, max:20, label:'Harjoittelija', icon:'⚡' },
+    { cls:'mz3', min:21, max:30, label:'Mestari',       icon:'🔥' },
+    { cls:'mz4', min:31, max:40, label:'Legenda',       icon:'💎' },
+    { cls:'mz5', min:41, max:50, label:'Grand Master',  icon:'👑' },
+  ];
+
+  function modeLabel(lvl) {
+    if (lvl <= 10) return 'Hajotelmat · luvut 1–10';
+    if (lvl <= 20) return 'Kaikki moodit · luvut 1–20';
+    if (lvl <= 30) return 'Kaikki moodit · luvut 1–50';
+    if (lvl <= 40) return 'Kertotaulut · luvut 1–100';
+    return 'Kaikki moodit · luvut 1–1000';
+  }
+
+  let html = '';
+  zones.forEach(z => {
+    html += `<div class="map-zone ${z.cls}">
+      <div class="map-zone-label">
+        <span style="font-size:clamp(16px,4vw,20px)">${z.icon}</span>
+        <span>${z.label}</span>
+        <span class="mznum">Tasot ${z.min}–${z.max}</span>
+      </div>
+      <div class="map-zone-grid">`;
+
+    for (let lvl = z.min; lvl <= z.max; lvl++) {
+      const isDone = lvl < cur;
+      const isCurr = lvl === cur;
+      const cls    = isDone ? 'mlv-done' : isCurr ? 'mlv-curr' : 'mlv-lock';
+      const icon   = isDone ? '✅' : isCurr ? av : z.icon;
+      const check  = isDone ? `<span class="mlv-check">✓</span>` : '';
+      const title  = `Taso ${lvl} · ${modeLabel(lvl)}`;
+
+      html += `<div class="map-lvl ${cls}"
+        onmouseenter="showMapTooltip(event,${lvl})"
+        onmouseleave="hideMapTooltip()"
+        onclick="showMapTooltip(event,${lvl},true)">
+        ${check}
+        <span class="mlv-icon">${icon}</span>
+        <span class="mlv-num">${lvl}</span>
+      </div>`;
+    }
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+let mapTooltipEl = null;
+function showMapTooltip(e, lvl, pin=false) {
+  if (!mapTooltipEl) {
+    mapTooltipEl = document.createElement('div');
+    mapTooltipEl.className = 'lmap-tooltip';
+    document.body.appendChild(mapTooltipEl);
+  }
+  const info  = DIFF_LEVELS[Math.min(lvl - 1, DIFF_LEVELS.length - 1)];
+  const types = info.types.map(t => ({h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennys',m:'Kertotaulu'}[t])).join(' · ');
+  const state = lvl < srData.diffLevel ? '✅ Suoritettu' : lvl === srData.diffLevel ? '🎯 Nykyinen' : '🔒 Lukittu';
+  mapTooltipEl.innerHTML = `
+    <div style="font-weight:900;font-size:.88rem;color:var(--text);margin-bottom:4px;">Taso ${lvl}</div>
+    <div style="color:var(--accent3);margin-bottom:3px;">${state}</div>
+    <div style="color:var(--muted);">Luvut 1–${info.range}</div>
+    <div style="color:var(--muted);">${types}</div>
+    ${info.maxTable ? `<div style="color:var(--muted);">Kertotaulu max ${info.maxTable}×</div>` : ''}
+  `;
+  const rect = e.currentTarget ? e.currentTarget.getBoundingClientRect() : e.target.getBoundingClientRect();
+  let left = rect.left + rect.width / 2 - 90;
+  let top  = rect.top - 130 + window.scrollY;
+  left = Math.max(8, Math.min(left, window.innerWidth - 195));
+  if (top < 60) top = rect.bottom + window.scrollY + 8;
+  mapTooltipEl.style.left = left + 'px';
+  mapTooltipEl.style.top  = top + 'px';
+  mapTooltipEl.classList.add('visible');
+  if (pin) setTimeout(hideMapTooltip, 2500);
+}
+function hideMapTooltip() {
+  if (mapTooltipEl) mapTooltipEl.classList.remove('visible');
 }
 
 function filterScores(f,el){
