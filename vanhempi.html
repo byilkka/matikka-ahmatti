@@ -184,6 +184,9 @@ select.form-input{cursor:pointer;}
       <option value="boy">🤴 Prinssi</option>
       <option value="girl">👸 Prinsessa</option>
     </select>
+    <label class="form-label">Lapsen PIN-koodi pelissä</label>
+    <input class="form-input" type="password" id="childPin" placeholder="4-numeroinen PIN" maxlength="4" inputmode="numeric"/>
+    <div style="font-size:.68rem;color:var(--muted);font-weight:700;margin-top:-6px;margin-bottom:10px;">Lapsen oma PIN jonka hän loi kirjautuessaan peliin — varmistaa että olet oikea vanhempi</div>
     <label class="form-label">Lempinimi (näkyy sinulle)</label>
     <input class="form-input" type="text" id="childNickname" placeholder="Esim. Pikkuinen tai jätä tyhjäksi" autocorrect="off" autocapitalize="words" spellcheck="false"/>
     <div class="status-msg" id="addChildStatus"></div>
@@ -373,7 +376,8 @@ async function buildChildCard(link) {
     fetch(`${SB_URL}/rest/v1/achievements?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=achievement_id,unlocked_at&order=unlocked_at.desc&limit=6`, { headers: SB_H }).then(r => r.json()).catch(() => []),
   ]);
 
-  const level      = progress[0]?.diff_level || 1;
+  const level      = progress.length ? Math.max(...progress.map(p => p.diff_level || 1)) : 1;
+  const totalRoundsDB = progress.reduce((s, p) => s + (p.rounds_played || 0), 0);
   const totalPts   = scores.reduce((s, r) => s + (r.pts || 0), 0);
   const rounds     = scores.length;
   const avgPct     = rounds > 0 ? Math.round(scores.reduce((s,r) => s + (r.pct||0),0) / rounds) : 0;
@@ -437,18 +441,20 @@ function handleOverlay(e) {
 async function doAddChild() {
   const name = document.getElementById('childName').value.trim();
   const char = document.getElementById('childChar').value;
+  const pin  = document.getElementById('childPin').value.trim();
   const nick = document.getElementById('childNickname').value.trim();
   if (!name) return setStatus('addChildStatus','Kirjoita lapsen nimimerkki','err');
+  if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) return setStatus('addChildStatus','Syötä lapsen 4-numeroinen PIN','err');
 
   const btn = document.getElementById('addChildBtn');
   btn.disabled = true;
-  setStatus('addChildStatus','⏳ Etsitään profiilia...','info');
+  setStatus('addChildStatus','⏳ Tarkistetaan...','info');
 
   try {
     const res = await fetch('/.netlify/functions/link-child', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ parentEmail: currentEmail, password: currentPassword, playerName: name, playerChar: char, nickname: nick || name })
+      body: JSON.stringify({ parentEmail: currentEmail, password: currentPassword, playerName: name, playerChar: char, pin, nickname: nick || name })
     });
     const data = await res.json();
     if (!data.ok) {
@@ -456,6 +462,7 @@ async function doAddChild() {
     } else {
       setStatus('addChildStatus','✅ Lisätty!','ok');
       document.getElementById('childName').value = '';
+      document.getElementById('childPin').value = '';
       document.getElementById('childNickname').value = '';
       setTimeout(() => { closeAddChild(); loadChildren(); }, 800);
     }
