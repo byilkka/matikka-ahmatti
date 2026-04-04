@@ -10,8 +10,8 @@ exports.handler = async (event) => {
   let body;
   try { body = JSON.parse(event.body); } catch { return json(400, { ok: false, error: 'Invalid JSON' }); }
 
-  const { parentEmail, password, playerName, playerChar, nickname } = body;
-  if (!parentEmail || !password || !playerName || !playerChar) {
+  const { parentEmail, password, playerName, playerChar, pin, nickname } = body;
+  if (!parentEmail || !password || !playerName || !playerChar || !pin) {
     return json(400, { ok: false, error: 'Puuttuvat kentät' });
   }
 
@@ -34,13 +34,22 @@ exports.handler = async (event) => {
     if (!parent.length) return json(401, { ok: false, error: 'Väärä sähköposti tai salasana' });
     if (!parent[0].verified) return json(403, { ok: false, error: 'Vahvista sähköpostiosoitteesi ensin' });
 
-    // 2. Tarkista että lapsi löytyy
+    // 2. Tarkista että lapsi löytyy JA PIN täsmää
+    // PIN on hashattu samalla XOR+rotate-algoritmilla kuin pelissä
+    // Mutta koska hash-algoritmi on client-side JS, tarkistamme Supabasesta
+    // raa'an pin_hash-arvon — vanhemman pitää tietää PIN
     const player = await fetch(
-      `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(playerName)}&player_char=eq.${encodeURIComponent(playerChar)}&select=player_name&limit=1`,
+      `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(playerName)}&player_char=eq.${encodeURIComponent(playerChar)}&select=player_name,pin_hash&limit=1`,
       { headers: SB_H }
     ).then(r => r.json());
 
     if (!player.length) return json(404, { ok: false, error: 'Pelaajaa ei löydy — tarkista nimi ja hahmo' });
+
+    // Tarkista PIN — sama hash-funktio kuin game.html:ssä
+    const pinHash = hashPin(pin, playerName + playerChar);
+    if (player[0].pin_hash && player[0].pin_hash !== pinHash) {
+      return json(403, { ok: false, error: 'Väärä PIN-koodi — kysy lapseltasi oikea PIN' });
+    }
 
     // 3. Linkitä
     const linkRes = await fetch(`${SB_URL}/rest/v1/parent_children`, {
@@ -64,4 +73,15 @@ exports.handler = async (event) => {
 
 function json(status, data) {
   return { statusCode: status, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
+}
+
+// Sama hash-algoritmi kuin game.html:ssä
+function hashPin(pin, salt) {
+  let h = 0;
+  const s = pin + salt + 'matikka_ahmatti_salt_2024';
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) - h) + s.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h).toString(16);
 }
