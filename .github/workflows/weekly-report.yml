@@ -1,0 +1,23 @@
+name: Viikkoraportti vanhemmille
+
+on:
+  schedule:
+    # Joka maanantai klo 8:00 Suomen aikaa (UTC+3 = UTC 05:00)
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+    # Mahdollistaa manuaalisen ajamisen GitHub Actions UI:sta
+
+jobs:
+  send-weekly-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lähetä viikkoraportti
+        run: |
+          response=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+            "https://matikka-ahmatti.fi/.netlify/functions/send-weekly-report?token=${{ secrets.APPROVE_SECRET }}")
+          cat /tmp/response.json
+          if [ "$response" != "200" ]; then
+            echo "❌ Virhe: HTTP $response"
+            exit 1
+          fi
+          echo "✅ Viikkoraportti lähetetty"
