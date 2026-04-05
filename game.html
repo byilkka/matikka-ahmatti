@@ -3477,10 +3477,14 @@ function ck(){
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
     sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
     explainWrong(prob);
-    // Väärä vastaus — ei automaattisesti eteenpäin, odotetaan että käyttäjä
-    // näppäilee seuraavan vastauksen (hideExplain kutsutaan np():ssä)
     updStats();rDone++;updProg();
-    setTimeout(()=>{ busy=false; ans=''; updB(); },600);
+    // BUG FIX: Tarkista onko kierros päättynyt myös väärän vastauksen jälkeen
+    if (rDone >= rTotal) {
+      setTimeout(()=>{ busy=false; showResults(); }, 1800);
+    } else {
+      // Jatka kun käyttäjä näppäilee seuraavan vastauksen
+      setTimeout(()=>{ busy=false; ans=''; updB(); }, 600);
+    }
     return;
   }
   updStats();rDone++;updProg();
@@ -3566,6 +3570,7 @@ function updStats(){
 function updProg(){const p=Math.round((rDone/rTotal)*100);document.getElementById('pF').style.width=p+'%';document.getElementById('pT').textContent=rDone+' / '+rTotal;document.getElementById('pP').textContent=p+'%';}
 
 async function showResults(){
+  hideExplain();
   document.getElementById('exerciseView').style.display='none';
   document.getElementById('resultsPanel').classList.add('show');
   const p=Math.round((corr/rTotal)*100);
