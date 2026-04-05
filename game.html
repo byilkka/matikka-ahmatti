@@ -771,6 +771,51 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   animation:monsterIdle 3s ease-in-out infinite;
 }
 
+/* ── Puhekupla ── */
+.speech-bubble{
+  position:absolute;
+  right:0;
+  top:-8px;
+  background:var(--card);
+  border:2px solid rgba(255,107,107,.5);
+  border-radius:16px;
+  padding:clamp(10px,2vw,14px) clamp(12px,2.5vw,18px);
+  max-width:clamp(160px,52vw,240px);
+  min-width:140px;
+  font-size:clamp(.88rem,2vw,1rem);
+  font-weight:800;
+  color:var(--text);
+  line-height:1.55;
+  display:none;
+  animation:bubbleIn .25s cubic-bezier(.34,1.56,.64,1);
+  z-index:10;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.speech-bubble.visible{display:block;}
+/* Häntä joka osoittaa mörkön suuntaan */
+.speech-bubble::before{
+  content:'';
+  position:absolute;
+  bottom:20px;
+  left:-11px;
+  border:7px solid transparent;
+  border-right-color:rgba(255,107,107,.5);
+}
+.speech-bubble::after{
+  content:'';
+  position:absolute;
+  bottom:21px;
+  left:-8px;
+  border:6px solid transparent;
+  border-right-color:var(--card);
+}
+.bubble-main{color:var(--text);display:block;margin-bottom:4px;font-size:clamp(.92rem,2.2vw,1.05rem);}
+.bubble-hint{color:var(--muted);font-size:clamp(.78rem,1.7vw,.88rem);display:block;font-weight:700;}
+@keyframes bubbleIn{
+  from{opacity:0;transform:scale(.8) translateX(8px);}
+  to{opacity:1;transform:scale(1) translateX(0);}
+}
+
 /* Floating number that flies into mouth on correct answer */
 .eat-number{
   position:absolute;
@@ -856,6 +901,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .feedback.ok{color:var(--accent3);}
 .feedback.no{color:var(--accent2);}
+
 
 /* Numpad */
 .numpad{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--nb-gap);margin-top:clamp(4px,0.6vh,8px);}
@@ -1199,6 +1245,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   --mk-body:#1a9068; --mk-body2:#1fa876; --mk-light:#7cffd4;
   --mk-light2:#b0ffe8; --mk-light3:#5de8b5; --mk-dark:#0d5e3f;
 }
+/* ── Varusteanimaatio ── */
+@keyframes accPop{
+  0%  {opacity:0;transform:scale(.5);}
+  60% {opacity:1;transform:scale(1.15);}
+  100%{opacity:1;transform:scale(1);}
+}
+.acc-unlock{animation:accPop .7s cubic-bezier(.34,1.56,.64,1) forwards!important;}
+
 .skin-modal-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;
   display:flex;align-items:flex-end;justify-content:center;
@@ -1588,6 +1642,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
         <div style="font-size:clamp(.72rem,1.3vw,.85rem);color:var(--muted);font-weight:700;" id="loadingStatus">Haetaan pilvestä ☁️</div>
       </div>
       <div class="monster-game-wrap" id="monsterWrap">
+        <div class="speech-bubble" id="speechBubble">
+          <span class="bubble-main" id="bubbleMain"></span>
+          <span class="bubble-hint" id="bubbleHint"></span>
+        </div>
         <svg class="monster-game-svg" id="monsterSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" onclick="openSkinModal()" title="Vaihda ulkonäköä">
           <defs>
             <radialGradient id="mgbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="var(--mk-light)"/><stop offset="100%" stop-color="var(--mk-body2)"/></radialGradient>
@@ -1635,6 +1693,120 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
           <circle cx="178" cy="85" r="5" fill="var(--mk-body)"/><circle cx="168" cy="81" r="5" fill="var(--mk-body)"/><circle cx="160" cy="87" r="5" fill="var(--mk-body)"/>
           <ellipse cx="80"  cy="184" rx="19" ry="9" fill="var(--mk-body)"/>
           <ellipse cx="120" cy="184" rx="19" ry="9" fill="var(--mk-body)"/>
+
+          <!-- ══ VARUSTEET — näkyvyys tason mukaan ══ -->
+
+          <!-- Taso 10: Hopeakruunu -->
+          <g id="acc-crown" style="opacity:0;transition:opacity 1.2s ease;">
+            <!-- Kruunun pohja -->
+            <rect x="70" y="28" width="60" height="10" rx="3" fill="#b8c4ce"/>
+            <!-- Kolme piikkiä -->
+            <polygon points="76,28 82,10 88,28" fill="#b8c4ce"/>
+            <polygon points="94,28 100,8  106,28" fill="#d4dde3"/>
+            <polygon points="112,28 118,10 124,28" fill="#b8c4ce"/>
+            <!-- Helmet kruunussa -->
+            <circle cx="82" cy="12" r="3.5" fill="#5de8b5" opacity=".9"/>
+            <circle cx="100" cy="10" r="4"   fill="#f7c948" opacity=".95"/>
+            <circle cx="118" cy="12" r="3.5" fill="#ff8ed4" opacity=".9"/>
+            <!-- Kruunun kiriste -->
+            <rect x="70" y="34" width="60" height="4" rx="2" fill="#9aaab5"/>
+          </g>
+
+          <!-- Taso 20: Kultakruunu (korvaa hopean) -->
+          <g id="acc-gold-crown" style="opacity:0;transition:opacity 1.2s ease;">
+            <rect x="66" y="27" width="68" height="12" rx="4" fill="#d4a017"/>
+            <polygon points="72,27 79,6  86,27" fill="#d4a017"/>
+            <polygon points="91,27 100,3 109,27" fill="#f7c948"/>
+            <polygon points="114,27 121,6 128,27" fill="#d4a017"/>
+            <!-- Jalokivet -->
+            <circle cx="79"  cy="8"  r="4"   fill="#ff4757"/>
+            <circle cx="100" cy="5"  r="5"   fill="#5de8b5"/>
+            <circle cx="121" cy="8"  r="4"   fill="#a29bfe"/>
+            <rect x="66" y="35" width="68" height="5" rx="2.5" fill="#b8860b"/>
+            <!-- Pienet timanttikuviot -->
+            <circle cx="82"  cy="37.5" r="2" fill="#f7c948" opacity=".8"/>
+            <circle cx="100" cy="37.5" r="2" fill="#f7c948" opacity=".8"/>
+            <circle cx="118" cy="37.5" r="2" fill="#f7c948" opacity=".8"/>
+          </g>
+
+          <!-- Taso 20: Viitta -->
+          <g id="acc-cape" style="opacity:0;transition:opacity 1.2s ease;">
+            <!-- Viitan vasemmanpuoleinen osa -->
+            <path d="M52 100 Q30 130 28 175 Q50 170 70 160 Q65 135 68 110 Z"
+                  fill="#6c5ce7" opacity=".9"/>
+            <!-- Viitan oikeanpuoleinen osa -->
+            <path d="M148 100 Q170 130 172 175 Q150 170 130 160 Q135 135 132 110 Z"
+                  fill="#6c5ce7" opacity=".9"/>
+            <!-- Viitan reunat (kultainen lista) -->
+            <path d="M52 100 Q30 130 28 175" stroke="#f7c948" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M148 100 Q170 130 172 175" stroke="#f7c948" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Solki -->
+            <circle cx="100" cy="108" r="7" fill="#f7c948"/>
+            <circle cx="100" cy="108" r="4" fill="#d4a017"/>
+            <circle cx="100" cy="108" r="2" fill="#f7c948"/>
+          </g>
+
+          <!-- Taso 30: Hallitsijan sauva (vasempaan käteen) -->
+          <g id="acc-scepter" style="opacity:0;transition:opacity 1.2s ease;">
+            <!-- Sauvan varsi -->
+            <line x1="10" y1="170" x2="35" y2="95"
+                  stroke="#d4a017" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Sauvan yläosa — tähti -->
+            <circle cx="11" cy="174" r="9" fill="#d4a017"/>
+            <circle cx="11" cy="174" r="6" fill="#f7c948"/>
+            <!-- Tähtimuoto -->
+            <text x="11" y="178" text-anchor="middle" font-size="10" fill="#fff" font-family="Arial">★</text>
+            <!-- Jalokivet sauvassa -->
+            <circle cx="24" cy="135" r="3.5" fill="#a29bfe"/>
+            <circle cx="19" cy="155" r="3"   fill="#ff4757"/>
+          </g>
+
+          <!-- Taso 40: Aarrearkku vierelle (oikealle) -->
+          <g id="acc-treasure" style="opacity:0;transition:opacity 1.2s ease;">
+            <!-- Arkun pohja -->
+            <rect x="155" y="152" width="38" height="26" rx="4" fill="#8b5e3c"/>
+            <!-- Arkun kansi -->
+            <rect x="153" y="145" width="42" height="14" rx="4" fill="#a0714a"/>
+            <!-- Kannen kaari -->
+            <ellipse cx="174" cy="145" rx="21" ry="7" fill="#b8834f"/>
+            <!-- Lukko -->
+            <rect x="168" y="152" width="12" height="10" rx="2" fill="#d4a017"/>
+            <rect x="171" y="149" width="6"  height="7"  rx="3" fill="none" stroke="#d4a017" stroke-width="2"/>
+            <!-- Helmet pursuu ulos -->
+            <circle cx="160" cy="148" r="3"   fill="#f7c948"/>
+            <circle cx="170" cy="144" r="2.5" fill="#ff4757"/>
+            <circle cx="180" cy="143" r="3"   fill="#5de8b5"/>
+            <circle cx="189" cy="147" r="2.5" fill="#a29bfe"/>
+            <circle cx="165" cy="143" r="2"   fill="#ff8ed4"/>
+            <!-- Kultakolikot lattialla -->
+            <ellipse cx="162" cy="178" rx="6" ry="3" fill="#f7c948" opacity=".8"/>
+            <ellipse cx="174" cy="180" rx="5" ry="2.5" fill="#f7c948" opacity=".7"/>
+            <ellipse cx="185" cy="177" rx="5" ry="2.5" fill="#f7c948" opacity=".8"/>
+          </g>
+
+          <!-- Taso 50: Grand Master -säteily + tähtivaikutus -->
+          <g id="acc-grandmaster" style="opacity:0;transition:opacity 1.5s ease;">
+            <!-- Säteilypiikit taustalle -->
+            <g opacity=".35">
+              <line x1="100" y1="20"  x2="100" y2="0"   stroke="#f7c948" stroke-width="3"/>
+              <line x1="150" y1="35"  x2="165" y2="20"  stroke="#f7c948" stroke-width="2.5"/>
+              <line x1="168" y1="85"  x2="190" y2="78"  stroke="#f7c948" stroke-width="2.5"/>
+              <line x1="50"  y1="35"  x2="35"  y2="20"  stroke="#f7c948" stroke-width="2.5"/>
+              <line x1="32"  y1="85"  x2="10"  y2="78"  stroke="#f7c948" stroke-width="2.5"/>
+              <line x1="130" y1="22"  x2="140" y2="5"   stroke="#f7c948" stroke-width="2"/>
+              <line x1="70"  y1="22"  x2="60"  y2="5"   stroke="#f7c948" stroke-width="2"/>
+            </g>
+            <!-- GM-teksti kruunun päälle -->
+            <text x="100" y="4" text-anchor="middle" font-family="'Fredoka One',cursive"
+                  font-size="8" fill="#f7c948" opacity=".9" letter-spacing="1">GRAND MASTER</text>
+            <!-- Tähdet ympärillä -->
+            <text x="20"  y="60"  font-size="10" fill="#f7c948" opacity=".8" font-family="Arial">✦</text>
+            <text x="170" y="55"  font-size="10" fill="#f7c948" opacity=".8" font-family="Arial">✦</text>
+            <text x="12"  y="130" font-size="8"  fill="#f7c948" opacity=".6" font-family="Arial">✦</text>
+            <text x="178" y="130" font-size="8"  fill="#f7c948" opacity=".6" font-family="Arial">✦</text>
+            <text x="100" y="200" text-anchor="middle" font-size="7" fill="#f7c948"
+                  opacity=".5" font-family="Arial">✦ ✦ ✦</text>
+          </g>
         </svg>
       </div>
 
@@ -2879,6 +3051,36 @@ function updDiffLabel() {
   if (el) { el.textContent = info.label; el.style.color = info.color; }
   updateRangeButtons();
   updXpBar();
+  updAccessories();
+}
+
+// Päivitä mörkön varusteet tason mukaan
+function updAccessories() {
+  const lvl = srData.diffLevel;
+
+  // Varusteiden kynnystasot
+  const acc = [
+    { id:'acc-crown',       from:10, to:19  }, // hopea → korvataan kullalla t.20
+    { id:'acc-gold-crown',  from:20, to:null },
+    { id:'acc-cape',        from:20, to:null },
+    { id:'acc-scepter',     from:30, to:null },
+    { id:'acc-treasure',    from:40, to:null },
+    { id:'acc-grandmaster', from:50, to:null },
+  ];
+
+  acc.forEach(({ id, from, to }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const wasHidden = el.style.opacity === '0' || el.style.opacity === '';
+    const show = lvl >= from && (to === null || lvl <= to);
+    if (show && wasHidden) {
+      el.style.opacity = '1';
+      el.classList.add('acc-unlock');
+      setTimeout(() => el.classList.remove('acc-unlock'), 700);
+    } else if (!show) {
+      el.style.opacity = '0';
+    }
+  });
 }
 
 // Päivitä XP-palkki
@@ -3096,6 +3298,7 @@ function newProblem(){
   ans='';busy=false;
   document.getElementById('fb').textContent='';
   document.getElementById('fb').className='feedback';
+  hideExplain();
   prob = pickNextProblem();
   render(prob);
 }
@@ -3218,7 +3421,7 @@ function monsterEatNumber(numText) {
   wrap.appendChild(el);
   setTimeout(() => el.remove(), 600);
 }
-function np(n){if(busy||ans.length>=4)return;primeAudio();ans+=n;updB();}
+function np(n){if(busy||ans.length>=4)return;primeAudio();hideExplain();ans+=n;updB();}
 function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
 function npa(){if(busy)return;ans='';updB();}
 function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
@@ -3253,18 +3456,87 @@ function ck(){
     if(streak>0&&streak%5===0)launchConfetti();
   }else{
     streak=0;
-    // Väärä vastaus nollaa globaalin putken
     srData.globalStreak = 0;
-    srSave(srData); // tallenna nollaus heti
+    srSave(srData);
     fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
     fb.className='feedback no';
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
     sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
+    explainWrong(prob);
+    // Väärä vastaus — ei automaattisesti eteenpäin, odotetaan että käyttäjä
+    // näppäilee seuraavan vastauksen (hideExplain kutsutaan np():ssä)
+    updStats();rDone++;updProg();
+    setTimeout(()=>{ busy=false; ans=''; updB(); },600);
+    return;
   }
   updStats();rDone++;updProg();
   setTimeout(()=>{if(rDone>=rTotal)showResults();else newProblem();},ok?600:1300);
 }
 function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Loistava! 🔥','Hienoa! 💪','Aivan oikein! 🎯'][~~(Math.random()*6)];}
+
+// Selitys väärästä vastauksesta — puhekuplana mörkön vieressä
+function explainWrong(p) {
+  const bubble = document.getElementById('speechBubble');
+  const main   = document.getElementById('bubbleMain');
+  const hint   = document.getElementById('bubbleHint');
+  if (!bubble) return;
+
+  let msg = '', hintTxt = '';
+
+  if (p.type === 'h') {
+    if (p.bp === 'a') {
+      msg     = `${p.t} = ${p.answer} + ${p.b}`;
+      hintTxt = `koska ${p.t} − ${p.b} = ${p.answer}`;
+    } else if (p.bp === 'b') {
+      msg     = `${p.t} = ${p.a} + ${p.answer}`;
+      hintTxt = `koska ${p.t} − ${p.a} = ${p.answer}`;
+    } else {
+      msg     = `${p.a} + ${p.b} = ${p.answer}`;
+      hintTxt = `lasketaan yhteen`;
+    }
+  } else if (p.type === 'a') {
+    if (p.bl === 'r') {
+      msg     = `${p.a} + ${p.b} = ${p.answer}`;
+      hintTxt = `lasketaan yhteen`;
+    } else if (p.bl === 'a') {
+      msg     = `${p.answer} + ${p.b} = ${p.r}`;
+      hintTxt = `koska ${p.r} − ${p.b} = ${p.answer}`;
+    } else {
+      msg     = `${p.a} + ${p.answer} = ${p.r}`;
+      hintTxt = `koska ${p.r} − ${p.a} = ${p.answer}`;
+    }
+  } else if (p.type === 's') {
+    if (p.bl === 'r') {
+      msg     = `${p.a} − ${p.b} = ${p.answer}`;
+      hintTxt = `vähennetään`;
+    } else if (p.bl === 'a') {
+      msg     = `${p.answer} − ${p.b} = ${p.r}`;
+      hintTxt = `koska ${p.r} + ${p.b} = ${p.answer}`;
+    } else {
+      msg     = `${p.a} − ${p.answer} = ${p.r}`;
+      hintTxt = `koska ${p.a} − ${p.r} = ${p.answer}`;
+    }
+  } else if (p.type === 'm') {
+    if (p.bl === 'r') {
+      msg     = `${p.t} × ${p.m} = ${p.answer}`;
+      hintTxt = p.m <= 5 || p.t <= 5
+        ? `lasketaan ${p.t} kertaa ${p.m}`
+        : `${p.r} ÷ ${p.t} = ${p.answer}`;
+    } else {
+      msg     = `${p.t} × ${p.answer} = ${p.r}`;
+      hintTxt = `koska ${p.r} ÷ ${p.t} = ${p.answer}`;
+    }
+  }
+
+  main.textContent  = `💡 ${msg}`;
+  hint.textContent  = hintTxt;
+  bubble.classList.add('visible');
+}
+
+function hideExplain() {
+  const bubble = document.getElementById('speechBubble');
+  if (bubble) bubble.classList.remove('visible');
+}
 function updStats(){
   const global = srData.globalStreak || 0;
   const streakEl = document.getElementById('sStreak');
