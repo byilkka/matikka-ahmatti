@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1520"/>
+      <stop offset="100%" stop-color="#162030"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="25%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#5de8b5" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#5de8b5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="30%" r="35%">
+      <stop offset="0%" stop-color="#f7c948" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f7c948" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Tausta -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Kultainen yläreuna -->
+  <rect x="0" y="0" width="1200" height="6" fill="#f7c948"/>
+
+  <!-- Mörkö-hahmo vasemmalla (yksinkertainen SVG) -->
+  <g transform="translate(180, 315) scale(1.8)">
+    <!-- Varjo -->
+    <ellipse cx="0" cy="105" rx="52" ry="10" fill="rgba(0,0,0,0.3)"/>
+    <!-- Vartalo -->
+    <ellipse cx="0" cy="55" rx="58" ry="62" fill="#1fa876"/>
+    <ellipse cx="0" cy="65" rx="34" ry="32" fill="#7cffd4" opacity="0.4"/>
+    <!-- Sarvet -->
+    <ellipse cx="-46" cy="-18" rx="12" ry="22" fill="#1a9068" transform="rotate(-18,-46,-18)"/>
+    <ellipse cx="46" cy="-18" rx="12" ry="22" fill="#1a9068" transform="rotate(18,46,-18)"/>
+    <circle cx="-52" cy="-36" r="5" fill="#f7c948" opacity="0.9"/>
+    <circle cx="52" cy="-36" r="5" fill="#f7c948" opacity="0.9"/>
+    <!-- Pää -->
+    <ellipse cx="0" cy="-2" rx="52" ry="48" fill="#1fa876"/>
+    <!-- Silmät -->
+    <ellipse cx="-18" cy="-10" rx="14" ry="16" fill="white"/>
+    <ellipse cx="18" cy="-10" rx="14" ry="16" fill="white"/>
+    <circle cx="-15" cy="-8" r="9" fill="#0f1923"/>
+    <circle cx="21" cy="-8" r="9" fill="#0f1923"/>
+    <circle cx="-11" cy="-12" r="4" fill="white"/>
+    <circle cx="25" cy="-12" r="4" fill="white"/>
+    <!-- Suu -->
+    <path d="M-34 18 Q0 50 34 18" fill="#0f1923"/>
+    <path d="M-34 18 Q0 34 34 18" fill="#c0334d" opacity="0.85"/>
+    <rect x="-30" y="18" width="12" height="11" rx="3" fill="white"/>
+    <rect x="-15" y="18" width="12" height="11" rx="3" fill="white"/>
+    <rect x="3"   y="18" width="12" height="11" rx="3" fill="white"/>
+    <rect x="18"  y="18" width="11" height="11" rx="3" fill="white"/>
+    <!-- Poskipunat -->
+    <ellipse cx="-38" cy="8" rx="12" ry="7" fill="#ff6b8a" opacity="0.2"/>
+    <ellipse cx="38"  cy="8" rx="12" ry="7" fill="#ff6b8a" opacity="0.2"/>
+    <!-- Kädet -->
+    <path d="M-52 32 Q-72 20 -66 6" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-68" cy="3" rx="9" ry="8" fill="#1a9068"/>
+    <path d="M52 32 Q72 20 66 6" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <ellipse cx="68" cy="3" rx="9" ry="8" fill="#1a9068"/>
+    <!-- Jalat -->
+    <ellipse cx="-22" cy="98" rx="20" ry="10" fill="#1a9068"/>
+    <ellipse cx="22"  cy="98" rx="20" ry="10" fill="#1a9068"/>
+  </g>
+
+  <!-- Jakoviiva -->
+  <line x1="480" y1="60" x2="480" y2="570" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+
+  <!-- Oikea puoli — teksti -->
+  <g transform="translate(540, 0)">
+    <!-- Logo / brändi -->
+    <text x="0" y="130" font-family="'Fredoka One', Arial Black, sans-serif"
+          font-size="22" font-weight="900" fill="#6a82a0" letter-spacing="3">
+      MATIKKA-AHMATTI.FI
+    </text>
+
+    <!-- Pääotsikko -->
+    <text x="0" y="210" font-family="'Fredoka One', Arial Black, sans-serif"
+          font-size="72" font-weight="900" fill="#f7c948" letter-spacing="-1">
+      Matikka-
+    </text>
+    <text x="0" y="288" font-family="'Fredoka One', Arial Black, sans-serif"
+          font-size="72" font-weight="900" fill="#eef3ff" letter-spacing="-1">
+      Ahmatti
+    </text>
+
+    <!-- Alaotsikko -->
+    <text x="0" y="345" font-family="Arial, sans-serif"
+          font-size="28" font-weight="700" fill="#6a82a0">
+      Ilmainen matematiikan harjoittelupeli
+    </text>
+    <text x="0" y="380" font-family="Arial, sans-serif"
+          font-size="28" font-weight="700" fill="#6a82a0">
+      alakouluikäisille lapsille
+    </text>
+
+    <!-- Tagit / ominaisuudet -->
+    <g transform="translate(0, 420)">
+      <!-- Tag 1 -->
+      <rect x="0" y="0" width="130" height="38" rx="19" fill="rgba(93,232,181,0.12)"/>
+      <text x="65" y="25" text-anchor="middle" font-family="Arial, sans-serif"
+            font-size="16" font-weight="800" fill="#5de8b5">✓ Ilmainen</text>
+
+      <!-- Tag 2 -->
+      <rect x="146" y="0" width="130" height="38" rx="19" fill="rgba(247,201,72,0.12)"/>
+      <text x="211" y="25" text-anchor="middle" font-family="Arial, sans-serif"
+            font-size="16" font-weight="800" fill="#f7c948">50 tasoa</text>
+
+      <!-- Tag 3 -->
+      <rect x="292" y="0" width="155" height="38" rx="19" fill="rgba(123,159,255,0.12)"/>
+      <text x="369" y="25" text-anchor="middle" font-family="Arial, sans-serif"
+            font-size="16" font-weight="800" fill="#7b9fff">Adaptiivinen</text>
+    </g>
+
+    <!-- Moodit -->
+    <text x="0" y="525" font-family="Arial, sans-serif"
+          font-size="20" font-weight="700" fill="rgba(106,130,160,0.8)">
+      Kertotaulut · Hajotelmat · Yhteenlasku · Vähennyslasku
+    </text>
+  </g>
+
+  <!-- Kulmakoristeet -->
+  <circle cx="1180" cy="20" r="3" fill="#f7c948" opacity="0.5"/>
+  <circle cx="1170" cy="35" r="2" fill="#5de8b5" opacity="0.4"/>
+  <circle cx="20" cy="610" r="3" fill="#5de8b5" opacity="0.3"/>
+</svg>

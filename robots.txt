@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /gdpr-admin.html
+
+Sitemap: https://matikka-ahmatti.fi/sitemap.xml
