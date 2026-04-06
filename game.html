@@ -1185,65 +1185,88 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .map-hprog{margin-top:8px;height:7px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;width:clamp(120px,30vw,180px);}
 .map-hprog-fill{height:100%;border-radius:40px;background:var(--accent);}
 
-.map-zone{margin-bottom:12px;}
+.map-zone{margin-bottom:20px;}
 .map-zone-label{
-  font-size:clamp(.82rem,1.8vw,.95rem);font-weight:900;
-  padding:10px 14px;border-radius:12px 12px 0 0;
-  display:flex;align-items:center;gap:8px;
+  font-size:clamp(.85rem,1.9vw,1rem);font-weight:900;
+  padding:12px 16px;border-radius:14px 14px 0 0;
+  display:flex;align-items:center;gap:10px;
 }
 .map-zone-label .mznum{font-size:.72rem;opacity:.65;margin-left:auto;font-weight:700;}
 .map-zone-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:clamp(5px,1.2vw,9px);
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(7px,1.2vw,14px);
   background:var(--card);
-  border-radius:0 0 12px 12px;
-  padding:clamp(8px,1.5vw,12px);
-  border:1px solid rgba(255,255,255,.06);border-top:none;
+  border-radius:0 0 14px 14px;
+  padding:clamp(10px,1.8vw,16px);
+  border:1px solid rgba(255,255,255,.07);border-top:none;
 }
-@media(max-width:420px){.map-zone-grid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:480px){.map-zone-grid{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:700px){.map-zone-grid{grid-template-columns:repeat(5,1fr);}}
 
+/* Tasokortti — sama tyyli kuin .ach-card */
 .map-lvl{
-  border-radius:clamp(8px,1.5vw,12px);
-  padding:clamp(10px,2vw,14px) 4px clamp(8px,1.5vw,12px);
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  cursor:pointer;transition:transform .15s;
-  border:2px solid transparent;position:relative;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(14px,1.8vw,20px);
+  padding:clamp(16px,2.2vw,24px) clamp(12px,1.5vw,18px);
+  text-align:center;display:flex;flex-direction:column;
+  align-items:center;gap:8px;
+  cursor:pointer;transition:all .2s;position:relative;
 }
-.map-lvl:hover{transform:scale(1.07);}
-.map-lvl .mlv-icon{font-size:clamp(18px,4vw,24px);line-height:1;}
-.map-lvl .mlv-num{font-size:clamp(13px,3vw,17px);font-weight:900;line-height:1;}
-.map-lvl .mlv-check{position:absolute;top:3px;right:5px;font-size:10px;font-weight:900;}
+.map-lvl:hover{transform:scale(1.04);box-shadow:0 4px 18px rgba(0,0,0,.3);}
+.map-lvl .mlv-icon{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
+.map-lvl .mlv-name{font-family:'Fredoka One',cursive;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
+.map-lvl .mlv-num{font-size:clamp(.62rem,1vw,.76rem);color:var(--muted);font-weight:700;}
+.map-lvl .mlv-check{position:absolute;top:6px;right:8px;font-size:12px;font-weight:900;}
+.map-lvl .mlv-unlock{font-size:clamp(.58rem,.9vw,.68rem);color:var(--muted);font-weight:600;}
 
-/* Tilat */
-.map-lvl.mlv-done{background:rgba(93,232,181,.15);border-color:rgba(93,232,181,.25);}
+/* Tilat — sama logiikka kuin ach-card */
+.map-lvl.mlv-done{
+  border-color:rgba(93,232,181,.25);
+  box-shadow:0 0 0 1px rgba(93,232,181,.08);
+}
+.map-lvl.mlv-done::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(93,232,181,.07),transparent 70%);
+}
 .map-lvl.mlv-done .mlv-num{color:#5de8b5;}
 .map-lvl.mlv-done .mlv-check{color:#5de8b5;}
-.map-lvl.mlv-curr{background:var(--accent);border-color:var(--accent);}
-.map-lvl.mlv-curr .mlv-num{color:#1a1a1a;}
-.map-lvl.mlv-curr{animation:mlvPulse 2s ease-in-out infinite;}
-@keyframes mlvPulse{0%,100%{box-shadow:0 0 0 0 rgba(247,201,72,.4);}50%{box-shadow:0 0 0 8px rgba(247,201,72,.0);}}
-.map-lvl.mlv-lock{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05);opacity:.4;}
-.map-lvl.mlv-lock .mlv-num{color:rgba(255,255,255,.2);}
 
-/* Vyöhykevärit */
+.map-lvl.mlv-curr{
+  border-color:rgba(247,201,72,.4);
+  box-shadow:0 0 0 1px rgba(247,201,72,.15);
+  animation:mlvPulse 2s ease-in-out infinite;
+}
+.map-lvl.mlv-curr::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.1),transparent 70%);
+}
+.map-lvl.mlv-curr .mlv-num{color:var(--accent);}
+.map-lvl.mlv-curr .mlv-name{color:var(--accent);}
+@keyframes mlvPulse{0%,100%{box-shadow:0 0 0 1px rgba(247,201,72,.15),0 0 0 0 rgba(247,201,72,.4);}50%{box-shadow:0 0 0 1px rgba(247,201,72,.15),0 0 0 10px rgba(247,201,72,.0);}}
+
+.map-lvl.mlv-lock{opacity:.38;filter:grayscale(1);}
+
+/* Vyöhykekohtaiset done-värit */
 .mz1 .map-zone-label{background:rgba(93,232,181,.12);color:#5de8b5;}
 .mz2 .map-zone-label{background:rgba(123,159,255,.12);color:#7b9fff;}
 .mz3 .map-zone-label{background:rgba(247,201,72,.12);color:#f7c948;}
 .mz4 .map-zone-label{background:rgba(255,142,212,.12);color:#ff8ed4;}
 .mz5 .map-zone-label{background:rgba(197,108,240,.12);color:#c56cf0;}
-.mz2 .map-lvl.mlv-done{background:rgba(123,159,255,.15);border-color:rgba(123,159,255,.25);}
-.mz2 .map-lvl.mlv-done .mlv-num{color:#7b9fff;}
-.mz2 .map-lvl.mlv-done .mlv-check{color:#7b9fff;}
-.mz3 .map-lvl.mlv-done{background:rgba(247,201,72,.15);border-color:rgba(247,201,72,.25);}
-.mz3 .map-lvl.mlv-done .mlv-num{color:#f7c948;}
-.mz3 .map-lvl.mlv-done .mlv-check{color:#f7c948;}
-.mz4 .map-lvl.mlv-done{background:rgba(255,142,212,.15);border-color:rgba(255,142,212,.25);}
-.mz4 .map-lvl.mlv-done .mlv-num{color:#ff8ed4;}
-.mz4 .map-lvl.mlv-done .mlv-check{color:#ff8ed4;}
-.mz5 .map-lvl.mlv-done{background:rgba(197,108,240,.15);border-color:rgba(197,108,240,.25);}
-.mz5 .map-lvl.mlv-done .mlv-num{color:#c56cf0;}
-.mz5 .map-lvl.mlv-done .mlv-check{color:#c56cf0;}
+
+.mz2 .map-lvl.mlv-done{border-color:rgba(123,159,255,.25);box-shadow:0 0 0 1px rgba(123,159,255,.08);}
+.mz2 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(123,159,255,.07),transparent 70%);}
+.mz2 .map-lvl.mlv-done .mlv-num,.mz2 .map-lvl.mlv-done .mlv-check{color:#7b9fff;}
+.mz3 .map-lvl.mlv-done{border-color:rgba(247,201,72,.25);box-shadow:0 0 0 1px rgba(247,201,72,.08);}
+.mz3 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.07),transparent 70%);}
+.mz3 .map-lvl.mlv-done .mlv-num,.mz3 .map-lvl.mlv-done .mlv-check{color:#f7c948;}
+.mz4 .map-lvl.mlv-done{border-color:rgba(255,142,212,.25);box-shadow:0 0 0 1px rgba(255,142,212,.08);}
+.mz4 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(255,142,212,.07),transparent 70%);}
+.mz4 .map-lvl.mlv-done .mlv-num,.mz4 .map-lvl.mlv-done .mlv-check{color:#ff8ed4;}
+.mz5 .map-lvl.mlv-done{border-color:rgba(197,108,240,.25);box-shadow:0 0 0 1px rgba(197,108,240,.08);}
+.mz5 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(197,108,240,.07),transparent 70%);}
+.mz5 .map-lvl.mlv-done .mlv-num,.mz5 .map-lvl.mlv-done .mlv-check{color:#c56cf0;}
 
 /* Tooltip */
 .lmap-tooltip{
@@ -3803,34 +3826,60 @@ function renderLevelMap() {
 
   const cur = srData.diffLevel;
   const av  = pChar === 'boy' ? '🤴' : '👸';
-  const pct = Math.round((cur / 50) * 100);
+  const pct = Math.round((Math.min(cur, 50) / 50) * 100);
 
   document.getElementById('mapPlayerAv').textContent  = av;
   document.getElementById('mapPlayerName').textContent = pName;
   document.getElementById('mapLevelInfo').textContent  = `Taso ${cur} / 50 · ${pct}% suoritettu`;
   document.getElementById('mapProgFill').style.width   = pct + '%';
 
-  const zones = [
-    { cls:'mz1', min:1,  max:10, label:'Aloittelija',  icon:'🌱' },
-    { cls:'mz2', min:11, max:20, label:'Harjoittelija', icon:'⚡' },
-    { cls:'mz3', min:21, max:30, label:'Mestari',       icon:'🔥' },
-    { cls:'mz4', min:31, max:40, label:'Legenda',       icon:'💎' },
-    { cls:'mz5', min:41, max:50, label:'Grand Master',  icon:'👑' },
+  // Jokaiselle tasolle uniikki kuvake + lyhyt nimi
+  const LEVEL_DATA = [
+    // Aloittelija (1-10)
+    { icon:'🌱', name:'Siemen'    }, { icon:'🐣', name:'Kuoriutuja'  }, { icon:'🐥', name:'Tipu'      },
+    { icon:'🌿', name:'Verso'     }, { icon:'🍀', name:'Apila'       }, { icon:'🐛', name:'Toukka'    },
+    { icon:'🦋', name:'Perhonen'  }, { icon:'🌸', name:'Kukka'       }, { icon:'🌳', name:'Puu'       },
+    { icon:'⭐', name:'Tähti'     },
+    // Harjoittelija (11-20)
+    { icon:'⚡', name:'Salama'    }, { icon:'🎯', name:'Maali'       }, { icon:'🏹', name:'Jousi'     },
+    { icon:'🔑', name:'Avain'     }, { icon:'🧩', name:'Palapeli'    }, { icon:'🎲', name:'Noppa'     },
+    { icon:'🏅', name:'Mitali'    }, { icon:'🎖️', name:'Ansio'       }, { icon:'🏆', name:'Pokaal'    },
+    { icon:'💫', name:'Tähti!'    },
+    // Mestari (21-30)
+    { icon:'🔥', name:'Liekki'    }, { icon:'⚔️', name:'Miekka'      }, { icon:'🛡️', name:'Kilpi'     },
+    { icon:'🧙', name:'Velho'     }, { icon:'🔮', name:'Kristalli'   }, { icon:'🌙', name:'Kuu'       },
+    { icon:'☄️', name:'Komeetta'  }, { icon:'🌊', name:'Aalto'       }, { icon:'🦅', name:'Kotka'     },
+    { icon:'💥', name:'Boom!'     },
+    // Legenda (31-40)
+    { icon:'💎', name:'Timantti'  }, { icon:'👑', name:'Kruunu'      }, { icon:'🦁', name:'Leijona'   },
+    { icon:'🐉', name:'Lohikärme'}, { icon:'🌟', name:'Supertähti'  }, { icon:'🏔️', name:'Vuori'     },
+    { icon:'🌋', name:'Tulivuori' }, { icon:'⚡💎', name:'Voima'    }, { icon:'🔱', name:'Tridenti'  },
+    { icon:'🌌', name:'Galaksi'   },
+    // Grand Master (41-50)
+    { icon:'👑✨', name:'Kuningas' }, { icon:'🦄', name:'Yksisarvinen'}, { icon:'🌠', name:'Tähdenlento'},
+    { icon:'🎆', name:'Ilotulitus'}, { icon:'🧿', name:'Taikakivi'   }, { icon:'🔯', name:'Tähtisuoja'},
+    { icon:'⚜️', name:'Vaakuna'   }, { icon:'🎇', name:'Loisto'      }, { icon:'🌈', name:'Sateenkaari'},
+    { icon:'🐐', name:'GOAT!'     },
   ];
 
-  function modeLabel(lvl) {
-    if (lvl <= 10) return 'Hajotelmat · luvut 1–10';
-    if (lvl <= 20) return 'Kaikki moodit · luvut 1–20';
-    if (lvl <= 30) return 'Kaikki moodit · luvut 1–50';
-    if (lvl <= 40) return 'Kertotaulut · luvut 1–100';
-    return 'Kaikki moodit · luvut 1–1000';
+  const zones = [
+    { cls:'mz1', min:1,  max:10, label:'Aloittelija',  icon:'🌱', color:'#5de8b5' },
+    { cls:'mz2', min:11, max:20, label:'Harjoittelija', icon:'⚡', color:'#7b9fff' },
+    { cls:'mz3', min:21, max:30, label:'Mestari',       icon:'🔥', color:'#f7c948' },
+    { cls:'mz4', min:31, max:40, label:'Legenda',       icon:'💎', color:'#ff8ed4' },
+    { cls:'mz5', min:41, max:50, label:'Grand Master',  icon:'👑', color:'#c56cf0' },
+  ];
+
+  function rangeLabel(lvl) {
+    const info = DIFF_LEVELS[Math.min(lvl - 1, DIFF_LEVELS.length - 1)];
+    return `1–${info.range}`;
   }
 
   let html = '';
   zones.forEach(z => {
     html += `<div class="map-zone ${z.cls}">
       <div class="map-zone-label">
-        <span style="font-size:clamp(16px,4vw,20px)">${z.icon}</span>
+        <span style="font-size:clamp(16px,4vw,22px)">${z.icon}</span>
         <span>${z.label}</span>
         <span class="mznum">Tasot ${z.min}–${z.max}</span>
       </div>
@@ -3840,17 +3889,23 @@ function renderLevelMap() {
       const isDone = lvl < cur;
       const isCurr = lvl === cur;
       const cls    = isDone ? 'mlv-done' : isCurr ? 'mlv-curr' : 'mlv-lock';
-      const icon   = isDone ? '✅' : isCurr ? av : z.icon;
+      const ld     = LEVEL_DATA[lvl - 1];
+      const icon   = isCurr ? av : ld.icon;
       const check  = isDone ? `<span class="mlv-check">✓</span>` : '';
-      const title  = `Taso ${lvl} · ${modeLabel(lvl)}`;
+      const unlockTxt = isCurr
+        ? `<span class="mlv-unlock" style="color:var(--accent);">📍 Olet täällä</span>`
+        : isDone ? `<span class="mlv-unlock">✅ Suoritettu</span>` : `<span class="mlv-unlock">luvut ${rangeLabel(lvl)}</span>`;
 
       html += `<div class="map-lvl ${cls}"
         onmouseenter="showMapTooltip(event,${lvl})"
         onmouseleave="hideMapTooltip()"
-        onclick="showMapTooltip(event,${lvl},true)">
+        onclick="showMapTooltip(event,${lvl},true)"
+        title="Taso ${lvl} — ${ld.name}">
         ${check}
         <span class="mlv-icon">${icon}</span>
-        <span class="mlv-num">${lvl}</span>
+        <span class="mlv-name">${ld.name}</span>
+        <span class="mlv-num">Taso ${lvl}</span>
+        ${unlockTxt}
       </div>`;
     }
     html += `</div></div>`;
