@@ -1,0 +1,27 @@
+name: Admin viikkoyhteenveto
+
+on:
+  schedule:
+    # Joka maanantai klo 7:00 Suomen aikaa (UTC+3 = UTC 04:00)
+    # Ennen vanhempien viikkoraporttia (08:00), jotta admin näkee tilanteen ensin
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+    # Manuaalinen ajo GitHub Actions UI:sta
+
+jobs:
+  admin-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lähetä admin-yhteenveto
+        run: |
+          response=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"type":"weekly_digest"}' \
+            "https://matikka-ahmatti.fi/.netlify/functions/admin-monitor?token=${{ secrets.APPROVE_SECRET }}")
+          cat /tmp/response.json
+          if [ "$response" != "200" ]; then
+            echo "❌ Virhe: HTTP $response"
+            exit 1
+          fi
+          echo "✅ Admin viikkoyhteenveto lähetetty"
