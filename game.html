@@ -3304,7 +3304,43 @@ function srEvaluateRound(pct) {
 function checkLevelAchievement(level) {
   const ids = { 10:'level_10', 20:'level_20', 30:'level_30', 40:'level_40', 50:'level_50' };
   const id = ids[level];
-  if (id) achCheck(id);
+  if (id) {
+    achCheck(id);
+    // Grand Master -ilmoitus adminille
+    if (level === 50) notifyAdminGrandMaster();
+  }
+}
+
+// Ilmoita adminille kun pelaaja saavuttaa tason 50
+function notifyAdminGrandMaster() {
+  if (!pName || !pChar) return;
+  // Varmista ettei lähetetä useaan kertaan
+  const key = `matikka_gm_notified_${pName}:${pChar}`;
+  if (localStorage.getItem(key)) return;
+  localStorage.setItem(key, '1');
+  fetch('/.netlify/functions/admin-monitor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json',
+                'x-webhook-secret': '' }, // token queryssa
+    body: JSON.stringify({ type: 'grand_master', name: pName, char: pChar })
+  }).catch(() => {}); // hiljaa — ei kriittinen
+}
+
+// Tarkista epäilyttävä tulos ennen tallennusta
+function checkSuspiciousScore(pts, pct) {
+  // Yli 5000 pistettä yhdessä kierroksessa on erittäin epätavallista
+  // (taso 50 × 10 × 2.0 kerroin + streak = max ~2500 normaalisti)
+  if (pts > 5000) {
+    fetch('/.netlify/functions/admin-monitor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'suspicious_score',
+        name: pName, pts, pct,
+        mode: mode
+      })
+    }).catch(() => {});
+  }
 }
 
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -3728,6 +3764,7 @@ async function showResults(){
   const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts:ptsToSave,pct:p,ts:Date.now()};
 
   if(ptsEarned){
+    checkSuspiciousScore(pts, p); // Monitorointi: epätavallisen isot pisteet
     const saved = await saveScore(entry);
     const statusEl = document.getElementById('saveStatus');
     if(statusEl){
