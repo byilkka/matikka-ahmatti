@@ -769,6 +769,26 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .pe{color:var(--muted);}
 .pr{color:var(--accent4);}
+/* Prosenttitehtävän teksti-layout */
+.pct-problem{
+  display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.2vh,10px);
+  font-family:'Fredoka One',cursive;
+}
+.pct-question{
+  font-size:clamp(.95rem,2.2vw,1.2rem);color:var(--text);font-weight:700;
+  text-align:center;line-height:1.5;
+}
+.pct-pct{
+  font-size:clamp(2rem,5vw,3rem);font-weight:900;
+  color:#ff6b35;text-shadow:0 0 20px rgba(255,107,53,.3);
+  line-height:1;
+}
+.pct-of{
+  font-size:clamp(.8rem,1.8vw,1rem);color:var(--muted);font-weight:700;
+}
+.pct-num{
+  font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;color:var(--text);
+}
 
 /* ═══ MÖRKÖ ANIMAATIOKONTTI ═══ */
 .monster-game-wrap{
@@ -1654,6 +1674,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <button class="mode-btn" onclick="setMode('a')" id="btn-a"><span class="mi">➕</span>Yhteenlasku</button>
     <button class="mode-btn" onclick="setMode('s')" id="btn-s"><span class="mi">➖</span>Vähennys</button>
     <button class="mode-btn" onclick="setMode('m')" id="btn-m"><span class="mi">✖️</span>Kertotaulu</button>
+    <button class="mode-btn" onclick="setMode('p')" id="btn-p" style="display:none"><span class="mi">💯</span>Prosentit</button>
   </div>
 
   <div class="main-card">
@@ -1912,6 +1933,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
       <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
       <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
+      <button class="ftab" onclick="filterScores('p',this)">💯 Prosentit</button>
     </div>
     <div class="hof-grid" id="scoreList"></div>
   </div>
@@ -2868,12 +2890,13 @@ function srLocalLoad(name, char, md) {
     const playerKey = `${name}:${char}`;
     const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0, xp:0 };
     return {
-      weights:            playerData.modeWeights?.[md] || {},
-      roundsPlayed:       playerData.roundsPlayed       || 0,
-      diffLevel:          playerData.diffLevel           || 1,
-      globalStreak:       playerData.globalStreak        || 0,
-      levelDropCooldown:  playerData.levelDropCooldown   || 0,
-      xp:                 playerData.xp                  || 0
+      weights:                    playerData.modeWeights?.[md] || {},
+      roundsPlayed:               playerData.roundsPlayed       || 0,
+      diffLevel:                  playerData.diffLevel           || 1,
+      globalStreak:               playerData.globalStreak        || 0,
+      levelDropCooldown:          playerData.levelDropCooldown   || 0,
+      xp:                         playerData.xp                  || 0,
+      consecutiveGoodRounds:      playerData.consecutiveGoodRounds || 0,
     };
   } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0 }; }
 }
@@ -2888,6 +2911,7 @@ function srLocalSave(name, char, md, data) {
     playerData.globalStreak       = data.globalStreak       || 0;
     playerData.levelDropCooldown  = data.levelDropCooldown  || 0;
     playerData.xp                 = data.xp                 || 0;
+    playerData.consecutiveGoodRounds = data.consecutiveGoodRounds || 0;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -2979,6 +3003,7 @@ function probKey(p) {
   if (p.type === 'a') return `a:${p.a}+${p.b}`;
   if (p.type === 's') return `s:${p.a}-${p.b}`;
   if (p.type === 'm') return `m:${p.t}x${p.m}`;
+  if (p.type === 'p') return `p:${p.subtype}:${p.pct||''}:${p.base||p.from||''}`;
   return 'x';
 }
 
@@ -3015,7 +3040,7 @@ const DIFF_LEVELS = (()=>{
 })();
 
 // Adaptiivinen tila per kierros
-let srData       = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0 };
+let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0 };
 let retryQueue   = [];
 let roundHistory = [];
 
@@ -3181,6 +3206,9 @@ function updDiffLabel() {
   updateRangeButtons();
   updXpBar();
   updAccessories();
+  // Prosenttimoodi avautuu tasolla 8+
+  const pBtn = document.getElementById('btn-p');
+  if (pBtn) pBtn.style.display = srData.diffLevel >= 8 ? '' : 'none';
 }
 
 // Päivitä mörkön varusteet tason mukaan
@@ -3259,6 +3287,7 @@ function pickNextProblem() {
     if      (useMode === 'h') p = genH(effRange);
     else if (useMode === 'a') p = genA(effRange);
     else if (useMode === 's') p = genS(effRange);
+    else if (useMode === 'p') p = genP(srData.diffLevel);
     else                      p = genM(info.maxTable);
     const w = srData.weights[probKey(p)] || 1.0;
     candidates.push({ p, w });
@@ -3288,15 +3317,42 @@ function srRecord(p, correct) {
 }
 
 // Kierroksen jälkeen: harkitse tasonvaihto
-function srEvaluateRound(pct) {
+// playedRange = käyttäjän valitsema lukualue tällä kierroksella
+// Taso nousee VAIN jos pelaaja pelasi tason sallimalla täydellä lukualueella
+function srEvaluateRound(pct, playedRange) {
   srData.roundsPlayed++;
 
   // XP: jokainen kierros antaa 1 XP (max 5)
-  // Tason nousu nollaa XP:n (aloitetaan taas alusta)
-  // Tason lasku nollaa myös XP:n
   srData.xp = Math.min(5, (srData.xp || 0) + 1);
 
+  const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1)];
+  const levelMax   = lvlInfo.range;
+  const levelMaxTable = lvlInfo.maxTable; // kertotaulujen max tällä tasolla (5, 7 tai 10)
+
+  // MAT-54 FIX: Taso ei nouse jos pelaaja pelasi liian helpolla alueella
+  // Hajotelmat/yhteenlasku/vähennys: playedRange pitää olla >= tason max lukualue
+  // Kertotaulu: pelatun taulun (selTable) pitää olla >= tason maxTable
+  let usedFullRange;
+  if (mode === 'm') {
+    usedFullRange = selTable >= levelMaxTable;
+  } else if (mode === 'p') {
+    usedFullRange = true; // prosenttimoodi ei käytä lukualuetta — taso itsessään vaikuttaa
+  } else {
+    usedFullRange = playedRange >= levelMax;
+  }
+
+  // Vihjausviesti mikä taso tarvitaan
+  const blockHint = mode === 'm'
+    ? { blockedByRange: true, levelMax, levelMaxTable, hint: `Pelaa ${levelMaxTable}× kertotaulu noustaksesi tasolle!` }
+    : { blockedByRange: true, levelMax, hint: `Nouse lukualueelle 1–${levelMax} noustaksesi tasolle!` };
+
   if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
+    if (!usedFullRange) {
+      // Hyvä kierros mutta liian helppo alue/taulu — ei nousua, näytetään vihjaus
+      updXpBar();
+      srSave(srData);
+      return { changed: false, newLevel: srData.diffLevel, ...blockHint };
+    }
     if (srData.levelDropCooldown > 0) {
       // BUG-1 FIX: Cooldown aktiivinen — vähennetään laskuria mutta EI nosteta tasoa
       srData.levelDropCooldown--;
@@ -3304,19 +3360,31 @@ function srEvaluateRound(pct) {
       srSave(srData);
       return { changed: false, newLevel: srData.diffLevel };
     }
+    // MAT-54 FIX: Vaadi 2 peräkkäistä hyvää kierrosta ennen tason nousua
+    srData.consecutiveGoodRounds = (srData.consecutiveGoodRounds || 0) + 1;
+    if (srData.consecutiveGoodRounds < 2) {
+      updXpBar();
+      srSave(srData);
+      return { changed: false, newLevel: srData.diffLevel, almostUp: true };
+    }
+    srData.consecutiveGoodRounds = 0;
     srData.diffLevel++;
-    srData.xp = 0; // nollaa XP tason noustessa
+    srData.xp = 0;
     updDiffLabel();
     srSave(srData);
     if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
     return { changed: true, up: true, newLevel: srData.diffLevel };
   } else if (pct < 50 && srData.diffLevel > 1) {
+    srData.consecutiveGoodRounds = 0; // nollaa putki
     srData.diffLevel--;
-    srData.xp = 0; // nollaa XP tason laskiessa
+    srData.xp = 0;
     srData.levelDropCooldown = 3;
     updDiffLabel();
     srSave(srData);
     return { changed: true, up: false, newLevel: srData.diffLevel };
+  } else {
+    // Keskinkertainen kierros nollaa peräkkäisten hyvien kierrosten putken
+    if (pct < 85) srData.consecutiveGoodRounds = 0;
   }
   updXpBar();
   srSave(srData);
@@ -3375,7 +3443,113 @@ function genH(r=range){const t=rand(2,r),a=t<2?1:rand(1,t-1),b=t-a,bp=['a','b','
 function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
 // BUG-14 FIX: rand(1,a) → rand(1,Math.max(1,a-1)): estää a=b → r=0 triviaaliset tehtävät
 function genS(r=range){const a=rand(2,r),b=rand(1,Math.max(1,a-1)),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
-function genM(maxT=10){
+// ══ PROSENTTILASKUGENERAATTORI (MAT-31/32) ═══════════
+
+// Tehtävätyypit:
+//  'pct_of'  — Paljonko on X% luvusta Y? → answer = Y*X/100
+//  'pct_what'— Luku A on X% luvusta B. Laske B. → answer = A*100/X
+//  'pct_how' — Luku muuttui A:sta B:hen. Montako %? → answer = (B-A)/A*100
+
+function genP(level) {
+  // Pyöreät prosentit alemmilla tasoilla, monimutkaisemmat ylemmillä
+  const easyPcts   = [10, 25, 50, 75, 100];
+  const medPcts    = [5, 20, 30, 40, 60, 80];
+  const hardPcts   = [15, 35, 45, 70, 90];
+
+  let pct, base, result;
+
+  if (level <= 5) {
+    // Helppo: vain pct_of pyöreillä prosenteilla ja pyöreillä luvuilla
+    pct  = easyPcts[rand(0, easyPcts.length - 1)];
+    // Valitaan base niin että tulos on kokonaisluku
+    const multiplier = rand(1, 6) * (pct === 10 ? 10 : pct === 25 ? 4 : pct === 50 ? 2 : 1);
+    base   = multiplier * (100 / pct);
+    result = Math.round(base * pct / 100);
+    if (result === 0 || base === 0) return genP(level); // retry jos nolla
+    return { type:'p', subtype:'pct_of', pct, base, answer:result,
+      question:`Paljonko on ${pct}% luvusta ${base}?` };
+
+  } else if (level <= 15) {
+    // Keskivaikea: lisätään medPcts
+    const allPcts = [...easyPcts, ...medPcts];
+    pct  = allPcts[rand(0, allPcts.length - 1)];
+    // Löydä base joka antaa kokonaisluvun
+    for (let attempt = 0; attempt < 20; attempt++) {
+      base   = rand(2, 12) * 10;
+      result = base * pct / 100;
+      if (Number.isInteger(result) && result > 0) break;
+      result = null;
+    }
+    if (!result) return genP(level);
+    // Vuorottele tehtävätyyppejä
+    const type = rand(0, 1) === 0 ? 'pct_of' : 'pct_what';
+    if (type === 'pct_of') {
+      return { type:'p', subtype:'pct_of', pct, base, answer:result,
+        question:`Paljonko on ${pct}% luvusta ${base}?` };
+    } else {
+      // pct_what: A on X% luvusta B → laske B
+      return { type:'p', subtype:'pct_what', pct, known:result, answer:base,
+        question:`${result} on ${pct}% jostakin luvusta. Mistä luvusta?` };
+    }
+
+  } else if (level <= 30) {
+    // Vaikea: kaikki prosentit + muutosprosentti
+    const allPcts = [...easyPcts, ...medPcts, ...hardPcts];
+    const subtype = rand(0, 2) === 2 ? 'pct_how' : (rand(0, 1) === 0 ? 'pct_of' : 'pct_what');
+    if (subtype === 'pct_how') {
+      // Montako prosenttia A muuttui B:ksi?
+      const changeArr = [10, 20, 25, 50, 100];
+      const changePct = changeArr[rand(0, changeArr.length - 1)];
+      base   = rand(2, 10) * 10;
+      result = Math.round(base * (1 + changePct / 100));
+      return { type:'p', subtype:'pct_how', from:base, to:result, answer:changePct,
+        question:`Hinta muuttui ${base}€:stä ${result}€:iin. Montako prosenttia nousi?` };
+    }
+    pct = allPcts[rand(0, allPcts.length - 1)];
+    for (let attempt = 0; attempt < 20; attempt++) {
+      base   = rand(1, 20) * 10;
+      result = base * pct / 100;
+      if (Number.isInteger(result) && result > 0) break;
+      result = null;
+    }
+    if (!result) return genP(level);
+    if (subtype === 'pct_of') {
+      return { type:'p', subtype:'pct_of', pct, base, answer:result,
+        question:`Paljonko on ${pct}% luvusta ${base}?` };
+    } else {
+      return { type:'p', subtype:'pct_what', pct, known:result, answer:base,
+        question:`${result} on ${pct}% jostakin luvusta. Mistä?` };
+    }
+
+  } else {
+    // Taso 31-50: käänteislasku + muutosprosentti + sekatyyppi
+    const subtype = ['pct_of','pct_what','pct_how'][rand(0,2)];
+    if (subtype === 'pct_how') {
+      const base   = rand(2, 15) * 10;
+      const change = [5, 10, 15, 20, 25, 30, 40, 50][rand(0, 7)];
+      const result = Math.round(base * (1 + change / 100));
+      return { type:'p', subtype:'pct_how', from:base, to:result, answer:change,
+        question:`Hinta muuttui ${base}€:stä ${result}€:iin. Montako %?` };
+    }
+    const allPcts = [...easyPcts, ...medPcts, ...hardPcts];
+    const pct = allPcts[rand(0, allPcts.length - 1)];
+    let base2 = null, result2 = null;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      base2   = rand(1, 30) * 10;
+      result2 = base2 * pct / 100;
+      if (Number.isInteger(result2) && result2 > 0) break;
+      result2 = null;
+    }
+    if (!result2) return genP(level);
+    if (subtype === 'pct_of') {
+      return { type:'p', subtype:'pct_of', pct, base:base2, answer:result2,
+        question:`Paljonko on ${pct}% luvusta ${base2}?` };
+    } else {
+      return { type:'p', subtype:'pct_what', pct, known:result2, answer:base2,
+        question:`${result2} on ${pct}% jostakin luvusta. Mistä?` };
+    }
+  }
+}
   // Kertotaulumoodissa käytetään käyttäjän valitsemaa taulua
   // Muissa moodeissa (automaattinen) arvotaan 1-maxT
   const t = (mode==='m') ? selTable : rand(1,maxT);
@@ -3392,19 +3566,19 @@ function setMode(m){
   mode=m;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('btn-'+m).classList.add('active');
-  document.getElementById('rangeSection').style.display=m==='m'?'none':'block';
-  document.getElementById('tableSection').style.display=m==='m'?'block':'none';
+  // Prosenttimoodi: piilota sekä lukualue että kertotaulu-valitsin
+  document.getElementById('rangeSection').style.display = (m==='m'||m==='p') ? 'none' : 'block';
+  document.getElementById('tableSection').style.display  = m==='m' ? 'block' : 'none';
   // Lataa moodi-kohtaiset painot mutta säilytä yhteinen taso
   const currentLevel = srData.diffLevel;
   const currentRounds = srData.roundsPlayed;
   srData = srLocalLoad(pName, pChar, m);
-  srData.diffLevel = currentLevel;    // yhteinen taso säilyy
+  srData.diffLevel = currentLevel;
   srData.roundsPlayed = currentRounds;
   updDiffLabel();
-  // Lataa Supabasesta taustalla
   srRemoteLoad(pName, pChar, m).then(remote => {
     if (remote) {
-      srData.weights = remote.weights; // vain painot päivitetään
+      srData.weights = remote.weights;
       srLocalSave(pName, pChar, m, srData);
     }
   }).catch(()=>{});
@@ -3481,6 +3655,20 @@ function render(p){
   if(p.type==='h'){hint.textContent='Mikä luku puuttuu?';if(p.bp==='total')h=bk+`<span class="po">=</span><span>${p.a}</span><span class="po">+</span><span>${p.b}</span>`;else if(p.bp==='a')h=`<span>${p.t}</span><span class="po">=</span>`+bk+`<span class="po">+</span><span>${p.b}</span>`;else h=`<span>${p.t}</span><span class="po">=</span><span>${p.a}</span><span class="po">+</span>`+bk;}
   else if(p.type==='a'){hint.textContent='Laske yhteenlasku';h=(p.bl==='a'?bk:`<span>${p.a}</span>`)+`<span class="po">+</span>`+(p.bl==='b'?bk:`<span>${p.b}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
   else if(p.type==='s'){hint.textContent='Laske vähennyslasku';h=(p.bl==='a'?bk:`<span>${p.a}</span>`)+`<span class="po">−</span>`+(p.bl==='b'?bk:`<span>${p.b}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
+  else if(p.type==='p'){
+    // Prosenttitehtävä — iso visuaalinen layout
+    const hintMap = { pct_of:'Laske prosentti', pct_what:'Käänteislasku', pct_how:'Muutosprosentti' };
+    hint.textContent = hintMap[p.subtype] || 'Laske prosentti';
+    h = `<div class="pct-problem">`+
+      `<div class="pct-question">${p.question}</div>`+
+      `<div style="display:flex;align-items:center;gap:12px;justify-content:center;">`+
+        `<div style="text-align:center;">`+
+          `<div style="font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:2px;">VASTAUS</div>`+
+          bk+
+        `</div>`+
+      `</div>`+
+    `</div>`;
+  }
   else{hint.textContent=`${p.t}:n kertotaulu`;h=`<span>${p.t}</span><span class="po">×</span>`+(p.bl==='m'?bk:`<span>${p.m}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
   el.innerHTML=h;
 }
@@ -3704,6 +3892,17 @@ function explainWrong(p) {
       msg     = `${p.t} × ${p.answer} = ${p.r}`;
       hintTxt = `koska ${p.r} ÷ ${p.t} = ${p.answer}`;
     }
+  } else if (p.type === 'p') {
+    if (p.subtype === 'pct_of') {
+      msg     = `${p.pct}% luvusta ${p.base} = ${p.answer}`;
+      hintTxt = `lasketaan ${p.base} × ${p.pct} ÷ 100`;
+    } else if (p.subtype === 'pct_what') {
+      msg     = `${p.known} on ${p.pct}% luvusta ${p.answer}`;
+      hintTxt = `lasketaan ${p.known} × 100 ÷ ${p.pct}`;
+    } else if (p.subtype === 'pct_how') {
+      msg     = `${p.from}€ → ${p.to}€ = +${p.answer}%`;
+      hintTxt = `(${p.to} − ${p.from}) ÷ ${p.from} × 100`;
+    }
   }
 
   main.textContent  = `💡 ${msg}`;
@@ -3741,11 +3940,10 @@ async function showResults(){
   document.getElementById('rTitle').textContent=t;
 
   // Arvioi kierros ja mahdollinen tasonvaihto
-  const lvlChange = srEvaluateRound(p);
+  // Välitetään käytetty lukualue — taso ei nouse jos pelattiin liian helpolla alueella
+  const lvlChange = srEvaluateRound(p, range);
   const levelRosedThisRound = lvlChange.changed && lvlChange.up;
   const atMaxLevel = srData.diffLevel >= DIFF_LEVELS.length;
-  // FARM-005 FIX: cooldown aktiivinen jos taso laski äskettäin
-  // Estää tasonlasku → nosto -syklin pistefarmausta varten
   const onCooldown = (srData.levelDropCooldown || 0) > 0;
   const ptsEarned  = (levelRosedThisRound || atMaxLevel) && !onCooldown;
 
@@ -3758,6 +3956,12 @@ async function showResults(){
   } else if (levelRosedThisRound) {
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
+  } else if (lvlChange.blockedByRange) {
+    // MAT-54: Hyvä suoritus mutta liian helppo lukualue tai kertotaulu
+    lvlMsg = `<div class="result-tag" style="background:rgba(247,201,72,.1);color:var(--accent);border:1.5px solid rgba(247,201,72,.3);">💡 Hienoa! ${lvlChange.hint}</div>`;
+  } else if (lvlChange.almostUp) {
+    // MAT-54: Yksi hyvä kierros — tarvitaan toinen
+    lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.1);color:var(--accent3);border:1.5px solid rgba(93,232,181,.3);">🔥 Melkein! Yksi hyvä kierros lisää niin taso nousee!</div>`;
   } else if (lvlChange.changed && !lvlChange.up) {
     const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
     lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label} — saat pisteet kun taso nousee!</div>`;
@@ -3783,8 +3987,8 @@ async function showResults(){
   checkAllAchievements(p, mode, levelRosedThisRound, atMaxLevel);
   updateDiplomaBtn();
 
-  const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
-  const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts:ptsToSave,pct:p,ts:Date.now()};
+  const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu',p:'Prosentit'};
+  const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':mode==='p'?'Taso '+srData.diffLevel:'Luvut 1–'+range,corr,total:rTotal,pts:ptsToSave,pct:p,ts:Date.now()};
 
   if(ptsEarned){
     checkSuspiciousScore(pts, p); // Monitorointi: epätavallisen isot pisteet
@@ -4094,6 +4298,11 @@ const ACHIEVEMENTS = [
   { id:'joined_class',   icon:'🏫', name:'Luokkalainen',         desc:'Liittyi opettajan luokkaan' },
   // — Moodikohtaiset —
   { id:'tables_master',  icon:'✖️✖️', name:'Kertolaskun kuningas', desc:'10 täydellistä kertotaulukierrosta' },
+  // — Prosenttilaskut (MAT-35) —
+  { id:'pct_first',      icon:'🥧', name:'Prosenttitietäjä',    desc:'Ensimmäinen prosenttikierros pelattu' },
+  { id:'pct_perfect',    icon:'💯', name:'Sata prosenttia!',    desc:'10/10 oikein prosenttikierroksella' },
+  { id:'pct_50rounds',   icon:'📊', name:'Analyytikko',         desc:'50 prosenttikierrosta pelattu' },
+  { id:'pct_inverse',    icon:'🔄', name:'Käänteisguru',        desc:'5 käänteislaskua oikein peräkkäin' },
   // — Haasteet —
   { id:'flawless_fast',  icon:'⚡💎', name:'Salamatäydellinen',   desc:'10/10 oikein alle 60 sekunnissa' },
 ];
@@ -4400,6 +4609,35 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
       localStorage.setItem(tablesPerfectKey, tp);
       if (tp >= 10) achCheck('tables_master');
     } catch {}
+  }
+
+  // ── Prosenttilaskusaavutukset (MAT-35) ──────────────
+  if (currentMode === 'p') {
+    // Prosenttitietäjä — ensimmäinen prosenttikierros
+    achCheck('pct_first');
+    // Sata prosenttia — täydellinen kierros
+    if (roundPct >= 100) achCheck('pct_perfect');
+    // Analyytikko — 50 prosenttikierrosta
+    const pctRoundsKey = `matikka_pct_rounds_${pName}:${pChar}`;
+    try {
+      let pr = parseInt(localStorage.getItem(pctRoundsKey)||'0') + 1;
+      localStorage.setItem(pctRoundsKey, pr);
+      if (pr >= 50) achCheck('pct_50rounds');
+    } catch {}
+    // Käänteisguru — 5 peräkkäistä käänteislaskua oikein
+    const inverseStreakKey = `matikka_pct_inverse_${pName}:${pChar}`;
+    try {
+      // Tarkistaa onko tämä kierros ollut puhdas käänteislaskukierros
+      // (roundHistory kertoo oliko kaikki oikein, mode kertoo oliko pct)
+      const allCorrect = roundPct >= 100;
+      let is = parseInt(localStorage.getItem(inverseStreakKey)||'0');
+      is = allCorrect ? is + 1 : 0;
+      localStorage.setItem(inverseStreakKey, is);
+      if (is >= 5) achCheck('pct_inverse');
+    } catch {}
+  } else {
+    // Nollaa käänteisputki jos vaihdetaan moodia
+    try { localStorage.setItem(`matikka_pct_inverse_${pName}:${pChar}`, '0'); } catch {}
   }
 
   // Salamatäydellinen — 10/10 alle 60 sekunnissa (vaatii pisteiden kertymistä)

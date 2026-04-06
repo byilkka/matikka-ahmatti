@@ -182,9 +182,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
         <div class="mt-name">Kertotaulu</div>
         <div class="mt-ex">6 × 7 = ?</div>
       </div>
+      <div class="mode-tile" style="border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.05);">
+        <span class="mt-icon">💯</span>
+        <div class="mt-name">Prosentit</div>
+        <div class="mt-ex" style="color:rgba(255,107,53,.8);">Avautuu tasolla 8</div>
+      </div>
     </div>
     <div class="guide-card">
       <p>Jokaisessa moodissa on <strong style="color:var(--text)">puuttuva luku</strong> joka pitää löytää. Se voi olla tulos, ensimmäinen luku tai toinen luku — vaihtelee tehtävittäin jotta laskeminen pysyy monipuolisena!</p>
+    </div>
+    <div class="guide-card" style="border-left:3px solid rgba(255,107,53,.5);margin-top:12px;">
+      <div class="guide-card-title" style="color:rgba(255,107,53,.9);">💯 Prosenttilaskut — lisämoodi</div>
+      <p>Prosenttimoodi avautuu kun olet saavuttanut tason 8 jossakin perusmoodeista. Tehtävät vaikeutuvat tason mukaan:</p>
+      <ul style="margin:8px 0 0 16px;font-size:.85rem;color:var(--text);line-height:1.7;">
+        <li><strong>Tasot 1–5:</strong> Pyöreät prosentit — "Paljonko on 50% luvusta 80?"</li>
+        <li><strong>Tasot 6–15:</strong> Yleisimmät prosentit — 20%, 30%, 40%...</li>
+        <li><strong>Tasot 16–30:</strong> Käänteislasku — "X on 25% jostakin luvusta. Mistä?"</li>
+        <li><strong>Tasot 31–50:</strong> Muutosprosentti — "Hinta nousi 80€ → 96€. Montako %?"</li>
+      </ul>
     </div>
   </div>
 
@@ -319,6 +334,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
       <div class="ach-grid">
         <div class="ach-tile"><span class="at-icon">✖️</span><div class="at-name">Kertotaulumestari</div><div class="at-desc">Kaikki taulut 1–10 pelattu</div></div>
         <div class="ach-tile"><span class="at-icon">🌈</span><div class="at-name">Monipuolinen</div><div class="at-desc">Kaikki 4 moodia pelattu</div></div>
+        <div class="ach-tile"><span class="at-icon">🥧</span><div class="at-name">Prosenttitietäjä</div><div class="at-desc">Ensimmäinen prosenttikierros</div></div>
+        <div class="ach-tile"><span class="at-icon">💯</span><div class="at-name">Sata prosenttia!</div><div class="at-desc">10/10 prosenttikierroksella</div></div>
+        <div class="ach-tile"><span class="at-icon">🔄</span><div class="at-name">Käänteisguru</div><div class="at-desc">5 täydellistä prosenttikierrosta</div></div>
         <div class="ach-tile"><span class="at-icon">💨</span><div class="at-name">Salamanopea</div><div class="at-desc">Alle 90s + yli 80% oikein</div></div>
         <div class="ach-tile"><span class="at-icon">⚡💎</span><div class="at-name">Salamatäydellinen</div><div class="at-desc">10/10 alle 60 sekunnissa</div></div>
         <div class="ach-tile"><span class="at-icon">🌅</span><div class="at-name">Aamulintu</div><div class="at-desc">Pelasi ennen kello 8</div></div>
@@ -390,6 +408,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
       <div class="tip"><strong>Pelaa päivittäin</strong> — 10 minuuttia päivässä on parempi kuin tunti kerran viikossa. Päiväputkisaavutukset palkitsevat säännöllisyydestä!</div>
       <div class="tip"><strong>Taso laskee jos menee huonosti</strong> — se ei ole huono asia. Peli varmistaa että opitaan kunnolla ennen etenemistä.</div>
       <div class="tip"><strong>Kertotaulut</strong> — valitse yläpalkista mikä taulu harjoittelussa (1× – 10×). Kertotaulut avautuvat tasolla 8.</div>
+      <div class="tip" style="border-left-color:rgba(255,107,53,.6);"><strong>💯 Prosentit</strong> — avautuu tasolla 8. Harjoittele ensin peruslaskut, sitten laajenna prosenttilaskuihin. Käänteislasku ja muutosprosentti ovat edistyneitä tasoja!</div>
       <div class="tip"><strong>PIN-koodi unohtui?</strong> — pyydä vanhempaa tai opettajaa syöttämään admin-koodi, niin voit luoda uuden.</div>
       <div class="tip"><strong>Kokeile kaikkia moodeja</strong> — jokaisessa moodissa on oma saavutus, ja Monipuolinen-saavutus vaatii kaikkien neljän pelaamista!</div>
       <div class="tip"><strong>Klikkaa mörkön päältä</strong> — voit vaihtaa mörkön ulkonäköä! Skinit avautuvat kun edistyt: taso 10 avaa Jäämörön, taso 30 Kultamörön, 20 putken jälkeen Tulimörön ja 100 kierroksen jälkeen Robottimörön.</div>
