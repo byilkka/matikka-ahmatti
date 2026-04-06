@@ -1595,6 +1595,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="header-right">
       <button class="score-nav-btn" onclick="showScores()">🐐 Hall of Fame</button>
       <button class="mute-btn" id="muteBtn" onclick="toggleMute()" title="Äänet päälle/pois">🔊</button>
+      <button class="mute-btn" onclick="openSettings()" title="Pelaajan asetukset" style="font-size:clamp(.9rem,1.6vw,1.1rem);">⚙️</button>
       <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa">
         <span class="player-avatar-mini" id="pAvatar">🤴</span>
         <span class="player-name-mini" id="pName">Pelaaja</span>
@@ -1917,6 +1918,52 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <!-- ════════ SKINI-MODAL ════════ -->
+<!-- ════════ ASETUKSET MODAL ════════ -->
+<div id="settingsModal" style="display:none;position:fixed;inset:0;z-index:8500;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px;" onclick="handleSettingsOverlay(event)">
+  <div style="background:var(--card);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--text);">⚙️ Asetukset</div>
+      <button onclick="closeSettings()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px 8px;border-radius:8px;transition:color .2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+    </div>
+
+    <!-- Pelaajan tiedot -->
+    <div style="background:var(--card2);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <span id="settingsAvatar" style="font-size:1.8rem;">🤴</span>
+      <div>
+        <div id="settingsName" style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--text);">Pelaaja</div>
+        <div id="settingsLevel" style="font-size:.75rem;color:var(--muted);font-weight:700;">Taso 1</div>
+      </div>
+    </div>
+
+    <!-- Luokkakoodi-asetus -->
+    <div style="margin-bottom:16px;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🏫 Luokka</div>
+      <div id="settingsClassInfo" style="font-size:.88rem;color:var(--text);font-weight:700;margin-bottom:8px;"></div>
+      <div style="display:flex;gap:8px;">
+        <input id="settingsClassInput" type="text" placeholder="Uusi luokkakoodi" maxlength="12"
+          autocomplete="off" autocapitalize="characters"
+          style="flex:1;background:var(--bg);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;outline:none;transition:border-color .2s;"
+          onfocus="this.style.borderColor='var(--accent3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"/>
+        <button onclick="saveSettingsClass()" style="padding:10px 16px;border-radius:10px;border:none;background:var(--accent3);color:#0b1520;font-family:'Fredoka One',cursive;font-size:.9rem;font-weight:700;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Tallenna</button>
+      </div>
+      <div id="settingsClassError" style="color:var(--accent2);font-size:.75rem;font-weight:700;min-height:16px;margin-top:4px;"></div>
+      <button onclick="leaveClass()" id="settingsLeaveBtn" style="display:none;margin-top:8px;width:100%;padding:9px;border-radius:10px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;">Poistu luokasta</button>
+    </div>
+
+    <!-- Ääniasetus -->
+    <div style="margin-bottom:16px;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🔊 Äänet</div>
+      <button id="settingsMuteBtn" onclick="toggleMuteFromSettings()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
+    </div>
+
+    <!-- Evästeasetukset -->
+    <div>
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🍪 Evästeet</div>
+      <button onclick="openCookieSettings();closeSettings();" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:left;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Muuta evästeasetuksia →</button>
+    </div>
+  </div>
+</div>
+
 <div id="skinModalOverlay" class="skin-modal-overlay" style="display:none" onclick="handleSkinOverlay(event)">
   <div class="skin-modal">
     <div class="skin-modal-title">🎨 Valitse ulkonäkö</div>
@@ -2586,7 +2633,35 @@ async function goStep3() {
 }
 
 // Step 4: luokkakoodi — näytetään aina kirjautumisen jälkeen
-function goStep4() {
+async function goStep4() {
+  // 1. Tarkista ensin localStorage (nopea)
+  const savedCode = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
+  if (savedCode) {
+    startGame();
+    return;
+  }
+
+  // 2. localStorage tyhjä — tarkista Supabasesta onko pelaaja jo luokassa
+  // (uusi laite, tyhjennetty selain jne.)
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/class_members?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=class_code&limit=1`,
+      { headers: SB_HEADERS }
+    );
+    if (res.ok) {
+      const rows = await res.json();
+      if (rows.length) {
+        // Löytyi luokka Supabasesta — tallenna localStorageen ja ohita step4
+        const code = rows[0].class_code;
+        localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1');
+        localStorage.setItem(`matikka_classCode_${pName}:${pChar}`, code);
+        startGame();
+        return;
+      }
+    }
+  } catch {}
+
+  // 3. Ei luokkaa — näytä step4
   document.getElementById('classCodeInput').value = '';
   document.getElementById('classCodeError').textContent = '';
   document.getElementById('step3').classList.remove('active');
@@ -2622,8 +2697,11 @@ async function joinClass() {
   } catch { /* ei kriittinen virhe */ }
 
   btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
-  // Merkitse luokkaan liittyminen saavutusta varten
-  try { localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1'); } catch {}
+  // Merkitse luokkaan liittyminen — tallenna myös koodi asetuksia varten
+  try {
+    localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1');
+    localStorage.setItem(`matikka_classCode_${pName}:${pChar}`, code);
+  } catch {}
   startGame();
 }
 async function startGame(){
@@ -4455,6 +4533,102 @@ function updateDiplomaBtn() {
   if (btn) btn.style.display = srData.diffLevel >= DIFF_LEVELS.length ? 'inline-flex' : 'none';
 }
 
+// ══ ASETUKSET MODAL ══════════════════════════════
+
+function openSettings() {
+  // Päivitä pelaajan tiedot
+  document.getElementById('settingsAvatar').textContent = pChar === 'boy' ? '🤴' : '👸';
+  document.getElementById('settingsName').textContent   = pName;
+  document.getElementById('settingsLevel').textContent  = `Taso ${srData.diffLevel} / 50`;
+
+  // Luokkakoodi
+  const savedCode = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
+  const classInfo = document.getElementById('settingsClassInfo');
+  const leaveBtn  = document.getElementById('settingsLeaveBtn');
+  if (savedCode) {
+    classInfo.innerHTML = `Olet luokassa <strong style="color:var(--accent3)">${escHtml(savedCode)}</strong>`;
+    leaveBtn.style.display = 'block';
+  } else {
+    classInfo.textContent = 'Et kuulu vielä mihinkään luokkaan';
+    leaveBtn.style.display = 'none';
+  }
+  document.getElementById('settingsClassInput').value = '';
+  document.getElementById('settingsClassError').textContent = '';
+
+  // Ääniasetus
+  updateSettingsMuteBtn();
+
+  document.getElementById('settingsModal').style.display = 'flex';
+}
+
+function closeSettings() {
+  document.getElementById('settingsModal').style.display = 'none';
+}
+
+function handleSettingsOverlay(e) {
+  if (e.target === document.getElementById('settingsModal')) closeSettings();
+}
+
+function updateSettingsMuteBtn() {
+  const btn = document.getElementById('settingsMuteBtn');
+  if (btn) btn.textContent = muted ? '🔇 Äänet pois — klikkaa päällä' : '🔊 Äänet päällä — klikkaa pois';
+}
+
+function toggleMuteFromSettings() {
+  toggleMute();
+  updateSettingsMuteBtn();
+}
+
+async function saveSettingsClass() {
+  const code = document.getElementById('settingsClassInput').value.trim().toUpperCase();
+  const errEl = document.getElementById('settingsClassError');
+  errEl.textContent = '';
+
+  if (!code) { errEl.textContent = 'Syötä luokkakoodi'; return; }
+
+  errEl.textContent = '⏳ Tarkistetaan...';
+
+  try {
+    const res  = await fetch(`${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(code)}&select=class_code&limit=1`, { headers: SB_HEADERS });
+    const rows = res.ok ? await res.json() : [];
+    if (!rows.length) { errEl.textContent = 'Luokkakoodia ei löydy ❌'; return; }
+
+    // Liity luokkaan
+    await fetch(`${SB_URL}/rest/v1/class_members`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'resolution=ignore-duplicates,return=minimal' },
+      body: JSON.stringify({ class_code: code, player_name: pName, player_char: pChar })
+    });
+
+    localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1');
+    localStorage.setItem(`matikka_classCode_${pName}:${pChar}`, code);
+    achCheck('joined_class');
+
+    errEl.style.color = 'var(--accent3)';
+    errEl.textContent = `✅ Liitytty luokkaan ${code}!`;
+    setTimeout(() => { errEl.style.color = 'var(--accent2)'; openSettings(); }, 1200);
+  } catch {
+    errEl.textContent = 'Verkkovirhe — yritä uudelleen';
+  }
+}
+
+async function leaveClass() {
+  if (!confirm('Haluatko varmasti poistua luokasta?')) return;
+  const code = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
+  localStorage.removeItem(`matikka_class_${pName}:${pChar}`);
+  localStorage.removeItem(`matikka_classCode_${pName}:${pChar}`);
+  // Poista myös Supabasesta
+  if (code) {
+    try {
+      await fetch(
+        `${SB_URL}/rest/v1/class_members?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&class_code=eq.${encodeURIComponent(code)}`,
+        { method: 'DELETE', headers: SB_HEADERS }
+      );
+    } catch {}
+  }
+  openSettings(); // päivitä näkymä
+}
+
 // ══ KEYBOARD ══════════════════════════════════════
 
 // MOBI-008 FIX: Virtuaalinäppäimistö peittää Seuraava-napin
@@ -4475,10 +4649,11 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&document.getElementById('switchModal').classList.contains('open')){closeSwitch();return;}
   if(e.key==='Escape'&&document.getElementById('diplomaModal').style.display==='flex'){closeDiploma();return;}
   if(e.key==='Escape'&&document.getElementById('skinModalOverlay').style.display==='flex'){closeSkinModal();return;}
+  if(e.key==='Escape'&&document.getElementById('settingsModal').style.display==='flex'){closeSettings();return;}
   if(!document.getElementById('gameScreen').classList.contains('active'))return;
   if(document.getElementById('switchModal').classList.contains('open'))return;
-  // BUG-7 FIX: Ei näppäinkomentoja kun skini-modal on auki
   if(document.getElementById('skinModalOverlay').style.display==='flex')return;
+  if(document.getElementById('settingsModal').style.display==='flex')return;
   if(e.key>='0'&&e.key<='9')np(parseInt(e.key));
   else if(e.key==='Backspace')npc();
   else if(e.key==='Enter')ck();
