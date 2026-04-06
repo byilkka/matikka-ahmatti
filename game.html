@@ -3044,13 +3044,6 @@ let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDro
 let retryQueue   = [];
 let roundHistory = [];
 
-async function srInit() {
-  srData = await srLoad();
-  retryQueue = [];
-  roundHistory = [];
-  updDiffLabel();
-}
-
 // ══ SKINI-JÄRJESTELMÄ ══════════════════════════════════
 const SKINS = [
   {
@@ -3550,6 +3543,8 @@ function genP(level) {
     }
   }
 }
+
+function genM(maxT=10){
   // Kertotaulumoodissa käytetään käyttäjän valitsemaa taulua
   // Muissa moodeissa (automaattinen) arvotaan 1-maxT
   const t = (mode==='m') ? selTable : rand(1,maxT);
