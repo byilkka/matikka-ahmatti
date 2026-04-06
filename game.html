@@ -2468,6 +2468,11 @@ nameInp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&nameInp.value.trim()
 async function goStep2() {
   if (goStep2InProgress) return;
   goStep2InProgress = true;
+  // BUG-5 FIX: Haetaan DOM-elementit aina tuoreina — restoreStep1() korvaa
+  // step1:n innerHTML:n jolloin const nameInp/nextBtn viittaavat poistettuihin elementteihin
+  const nextBtn = document.getElementById('nextBtn');
+  const nameInp = document.getElementById('nameInput');
+  if (!nextBtn || !nameInp) { goStep2InProgress = false; return; }
   nextBtn.disabled = true;
   nextBtn.textContent = '⏳ Tarkistetaan...';
 
@@ -2475,8 +2480,6 @@ async function goStep2() {
   try {
     const existingChar = await pinGetPlayerByName(pName);
     if (existingChar) {
-      // MAT-38 FIX: näytä varoitus — nimellä on jo pelaaja
-      // Kysy onko tämä sama pelaaja vai uusi
       pChar = existingChar;
       showExistingPlayerWarning(pName, existingChar);
     } else {
@@ -2484,11 +2487,12 @@ async function goStep2() {
       document.getElementById('step2').classList.add('active');
     }
   } catch {
-    nextBtn.disabled = false;
-    nextBtn.textContent = 'Seuraava →';
+    const nb = document.getElementById('nextBtn');
+    if (nb) { nb.disabled = false; nb.textContent = 'Seuraava →'; }
   } finally {
     goStep2InProgress = false;
-    nextBtn.textContent = 'Seuraava →';
+    const nb = document.getElementById('nextBtn');
+    if (nb) nb.textContent = 'Seuraava →';
   }
 }
 
@@ -2538,9 +2542,11 @@ function createNewProfile() {
 // Palaa nimen syöttöön
 function backToName() {
   restoreStep1();
-  document.getElementById('nameInput').value = '';
-  document.getElementById('nameInput').focus();
-  nextBtn.disabled = true;
+  // BUG-5 FIX: haetaan tuoreet referenssit restoreStep1():n jälkeen
+  const inp = document.getElementById('nameInput');
+  const btn = document.getElementById('nextBtn');
+  if (inp) { inp.value = ''; inp.focus(); }
+  if (btn) btn.disabled = true;
 }
 
 // Palauta step1 alkuperäiseen tilaan
@@ -2626,6 +2632,14 @@ async function startGame(){
   document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
   showScreen('gameScreen');
   roundStartTime = Date.now();
+
+  // BUG-21 FIX: Nollaa kaikki kierrosmuuttujat — profiilihvaihdon jälkeen
+  // rDone/corr/pts/streak saattoivat jäädä edellisestä kierroksesta
+  rDone=0; ans=''; busy=false; corr=0; streak=0; pts=0; maxStreakThisRound=0;
+  retryQueue=[]; roundHistory=[];
+  document.getElementById('resultsPanel').classList.remove('show');
+  document.getElementById('exerciseView').style.display='block';
+  hideExplain();
 
   // Lataa skini
   initSkin();
@@ -3183,7 +3197,11 @@ function srEvaluateRound(pct) {
 
   if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
     if (srData.levelDropCooldown > 0) {
+      // BUG-1 FIX: Cooldown aktiivinen — vähennetään laskuria mutta EI nosteta tasoa
       srData.levelDropCooldown--;
+      updXpBar();
+      srSave(srData);
+      return { changed: false, newLevel: srData.diffLevel };
     }
     srData.diffLevel++;
     srData.xp = 0; // nollaa XP tason noustessa
@@ -3214,9 +3232,12 @@ function checkLevelAchievement(level) {
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 
 // Tehtävägeneraattorit ottavat nyt effRange-parametrin
-function genH(r=range){const t=rand(2,r),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
+// BUG-14 FIX: rand(0,t) → rand(1,t-1): estää triviaaliset "5 = 0 + ?" tehtävät
+// Ennen: 33-67% tehtävistä oli a=0 tai b=0 (lapsi vastaa katsomalla toista lukua)
+function genH(r=range){const t=rand(2,r),a=t<2?1:rand(1,t-1),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
 function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
-function genS(r=range){const a=rand(2,r),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
+// BUG-14 FIX: rand(1,a) → rand(1,Math.max(1,a-1)): estää a=b → r=0 triviaaliset tehtävät
+function genS(r=range){const a=rand(2,r),b=rand(1,Math.max(1,a-1)),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
 function genM(maxT=10){
   // Kertotaulumoodissa käytetään käyttäjän valitsemaa taulua
   // Muissa moodeissa (automaattinen) arvotaan 1-maxT
@@ -3478,12 +3499,14 @@ function ck(){
     sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
     explainWrong(prob);
     updStats();rDone++;updProg();
-    // BUG FIX: Tarkista onko kierros päättynyt myös väärän vastauksen jälkeen
+    // BUG FIX (MAT-41): Tarkista onko kierros päättynyt myös väärän vastauksen jälkeen
     if (rDone >= rTotal) {
       setTimeout(()=>{ busy=false; showResults(); }, 1800);
     } else {
-      // Jatka kun käyttäjä näppäilee seuraavan vastauksen
-      setTimeout(()=>{ busy=false; ans=''; updB(); }, 600);
+      // BUG-2 FIX: Ladataan uusi tehtävä — ei anneta yrittää samaa tehtävää uudelleen
+      // (aiempi toteutus: busy=false + ans='' → käyttäjä saattoi yrittää samaa uudelleen,
+      //  rDone++ tapahtui jokaisella yrityksellä → kierros saattoi ylittyä 10:stä)
+      setTimeout(()=>{ newProblem(); }, 1400);
     }
     return;
   }
@@ -3548,6 +3571,7 @@ function explainWrong(p) {
 
   main.textContent  = `💡 ${msg}`;
   hint.textContent  = hintTxt;
+  if (!msg) return; // BUG-19 FIX: älä näytä tyhjää kuplaa tuntemattomalle tyypille
   bubble.classList.add('visible');
 }
 
@@ -4012,6 +4036,10 @@ async function renderAchievements() {
 
 // ── Check achievements after each round / event ──
 async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, atMaxLevel) {
+  // BUG-3 FIX: roundSecsTotal määriteltävä HETI funktion alussa — käytetään rivillä
+  // speed_demon-tarkistuksessa joka on ennen aiempaa määrittelykohtaa (TDZ-virhe)
+  const roundSecsTotal = (Date.now() - roundStartTime) / 1000;
+
   // first_login tarkistetaan vain startGame():ssa — ei joka kierroksella
   // ptsEarned = taso nousi TAI maksimitasolla
   const ptsEarned = levelRosedThisRound || atMaxLevel;
@@ -4113,8 +4141,8 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   const daysKey = `matikka_days_${pName}:${pChar}`;
   const streakDaysKey = `matikka_daystreak_${pName}:${pChar}`;
 
-  // BUGI-E FIX: yhdistetään roundSecs — lasketaan vain kerran
-  const roundSecsTotal = (Date.now() - roundStartTime) / 1000;
+  // BUGI-E FIX: yhdistetään roundSecs — lasketaan vain kerran (määritelty funktion alussa)
+  // const roundSecsTotal on jo määritelty funktion alussa BUG-3 FIX:nä
 
   try {
     const daysData = JSON.parse(localStorage.getItem(daysKey)||'{"days":[],"lastDay":""}');
@@ -4397,6 +4425,11 @@ function closeDiploma() {
 function printDiploma() {
   const content = document.getElementById('diplomaContent').innerHTML;
   const win = window.open('', '_blank');
+  // BUG-23 FIX: window.open() palauttaa null jos popup on blokatttu
+  if (!win) {
+    alert('Selain esti ponnahdusikkunan. Salli ponnahdusikkunat ja yritä uudelleen.');
+    return;
+  }
   win.document.write(`<!DOCTYPE html><html><head>
     <meta charset="UTF-8">
     <title>Diplomitodistus — ${pName} — Matikka-Ahmatti</title>
@@ -4441,8 +4474,11 @@ document.addEventListener('keydown',e=>{
   // Close modal on Escape
   if(e.key==='Escape'&&document.getElementById('switchModal').classList.contains('open')){closeSwitch();return;}
   if(e.key==='Escape'&&document.getElementById('diplomaModal').style.display==='flex'){closeDiploma();return;}
+  if(e.key==='Escape'&&document.getElementById('skinModalOverlay').style.display==='flex'){closeSkinModal();return;}
   if(!document.getElementById('gameScreen').classList.contains('active'))return;
   if(document.getElementById('switchModal').classList.contains('open'))return;
+  // BUG-7 FIX: Ei näppäinkomentoja kun skini-modal on auki
+  if(document.getElementById('skinModalOverlay').style.display==='flex')return;
   if(e.key>='0'&&e.key<='9')np(parseInt(e.key));
   else if(e.key==='Backspace')npc();
   else if(e.key==='Enter')ck();
