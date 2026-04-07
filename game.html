@@ -1723,7 +1723,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
         <button class="rp" onclick="setRange(5,this)">1–5</button>
         <button class="rp active" onclick="setRange(10,this)">1–10</button>
         <button class="rp" onclick="setRange(20,this)">1–20</button>
+        <button class="rp" onclick="setRange(50,this)">1–50</button>
         <button class="rp" onclick="setRange(100,this)">1–100</button>
+        <button class="rp" onclick="setRange(150,this)">1–150</button>
+        <button class="rp" onclick="setRange(200,this)">1–200</button>
+        <button class="rp" onclick="setRange(300,this)">1–300</button>
+        <button class="rp" onclick="setRange(500,this)">1–500</button>
+        <button class="rp" onclick="setRange(750,this)">1–750</button>
+        <button class="rp" onclick="setRange(1000,this)">1–1000</button>
       </div>
     </div>
     <div id="tableSection" style="display:none">
@@ -3673,27 +3680,32 @@ function setRange(r,el){
 function updateRangeButtons() {
   const lvl  = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
   const maxR = DIFF_LEVELS[lvl].range;
-  const rangeBtns = { 5: '1–5', 10: '1–10', 20: '1–20', 100: '1–100' };
+
+  // Mitkä tasot avaavat minkäkin lukualueen
+  const unlockLevel = { 5:1, 10:1, 20:6, 50:11, 100:16, 150:21, 200:26, 300:31, 500:36, 750:41, 1000:46 };
+
   document.querySelectorAll('.rp').forEach(btn => {
-    const btnRange = parseInt(btn.textContent.split('–')[1]) || 5;
+    const btnRange = parseInt(btn.textContent.replace('1–','').replace('1-','')) || 5;
     if (btnRange > maxR) {
-      btn.style.opacity = '0.35';
-      btn.style.pointerEvents = 'none';
-      btn.title = `Avautuu tasolla ${Object.entries([[5,1],[10,1],[20,6],[100,16]]).find(([r])=>r==btnRange)?.[1] || '?'}+`;
+      // Piilota napit jotka ylittävät tason maksimin
+      btn.style.display = 'none';
     } else {
+      btn.style.display = '';
       btn.style.opacity = '';
       btn.style.pointerEvents = '';
       btn.title = '';
     }
   });
+
   // Näytä tason max
   const el = document.getElementById('rangeLevelMax');
   if (el) el.textContent = `(taso sallii max 1–${maxR})`;
-  // Jos valittu range ylittää tason max, vaihda automaattisesti
+
+  // Jos valittu range ylittää tason max, vaihda automaattisesti tason maksimiiin
   if (range > maxR) {
     range = maxR;
     document.querySelectorAll('.rp').forEach(btn => {
-      const btnRange = parseInt(btn.textContent.split('–')[1]) || 5;
+      const btnRange = parseInt(btn.textContent.replace('1–','').replace('1-','')) || 5;
       btn.classList.toggle('active', btnRange === maxR);
     });
   }
