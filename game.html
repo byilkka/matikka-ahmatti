@@ -1074,22 +1074,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* ══ MAIN TABS (Hall of Fame | Saavutukset | Tasokartta) ══ */
 .main-tabs{
-  display:flex;gap:5px;margin-bottom:clamp(12px,2vh,20px);
+  display:flex;gap:5px;margin-bottom:clamp(10px,1.8vh,16px);
   background:var(--card);border-radius:14px;padding:4px;
 }
 .mtab{
-  flex:1;padding:clamp(8px,1.3vh,13px) 6px;border:none;
+  flex:1;padding:clamp(8px,1.4vh,14px) 4px;border:none;
   border-radius:10px;background:transparent;color:var(--muted);
-  font-family:'Fredoka One',cursive;font-size:clamp(.72rem,2.2vw,.95rem);
+  font-size:clamp(1.2rem,3.5vw,1.6rem);line-height:1;
   cursor:pointer;transition:all .18s;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  line-height:1.2;
 }
 .mtab.active{
   background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);
+  box-shadow:0 4px 14px rgba(247,201,72,.28);
 }
-.mtab:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
+.mtab:hover:not(.active){background:rgba(255,255,255,.06);}
+/* Ei tarvita enää mtab-icon/mtab-txt */
+.mtab-icon,.mtab-txt{display:none;}
 
 /* ══ HOF — Mobile-first leaderboard ══ */
 .hof-grid{
@@ -1195,12 +1195,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .hof-tags{display:none;}
 
-/* ══ ACHIEVEMENTS ══ */
-.ach-player-info{
-  display:flex;align-items:center;
-  background:var(--card);border-radius:16px;padding:12px 18px;
-  margin-bottom:clamp(14px,2vh,20px);
-  border:1px solid rgba(255,255,255,.07);
+/* ach-player-info: korvattu map-player-info:lla (MAT-66) */
+
+/* Paneelin otsikko — näkyy ikonivälilehden alla */
+.panel-heading{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2.5vw,1.4rem);
+  color:var(--text);
+  margin-bottom:clamp(10px,1.8vh,16px);
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.07);
 }
 .ach-grid{
   display:grid;
@@ -1690,6 +1694,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="si" title="Globaali putki — kasvaa oikeista vastauksista, nollautuu väärästä, säilyy kirjautumisten välillä">🔥 <span class="v" id="sStreak">0</span> putki</div>
     <div class="si">✅ <span class="v g" id="sCorr">0</span> oikein</div>
     <div class="si">⭐ <span class="v b" id="sPts">0</span> pistettä</div>
+    <div class="si" id="dayStreakBadge" title="Päiväputki — peräkkäiset pelipäivät" style="display:none">📅 <span class="v" id="sDayStreak">0</span> pv</div>
     <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
   </div>
 
@@ -1957,6 +1962,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <span class="re" id="rEmoji">🏆</span>
       <div class="rt" id="rTitle">Hienoa!</div>
       <div class="rs" id="rScore"></div>
+      <!-- MAT-28: Virheanalyysi — näytetään vain jos virheitä on -->
+      <div id="errorAnalysis" style="display:none;margin:8px 0 4px;width:100%;"></div>
       <div class="results-btns">
         <button class="try-btn" onclick="restartRound()">Uusi kierros 🚀</button>
         <button class="score-btn" onclick="showScores()">🐐 Hall of Fame</button>
@@ -1976,15 +1983,24 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <button class="back-btn" onclick="backToGame()">← Takaisin</button>
   </div>
 
-  <!-- Main tabs: Hall of Fame | Saavutukset -->
+  <!-- Main tabs — pelkät ikonit, ei leikkautumisongelmaa -->
   <div class="main-tabs">
-    <button class="mtab active" id="mtab-hof"  onclick="switchMainTab('hof',this)">🐐 Hall of Fame</button>
-    <button class="mtab"        id="mtab-ach"  onclick="switchMainTab('ach',this)">🏅 Saavutukset</button>
-    <button class="mtab"        id="mtab-map"  onclick="switchMainTab('map',this)">🗺️ Tasokartta</button>
+    <button class="mtab active" id="mtab-hof" onclick="switchMainTab('hof',this)" title="Hall of Fame">🐐</button>
+    <button class="mtab"        id="mtab-ach" onclick="switchMainTab('ach',this)" title="Saavutukset">🏅</button>
+    <button class="mtab"        id="mtab-map" onclick="switchMainTab('map',this)" title="Tasokartta">🗺️</button>
   </div>
 
   <!-- Hall of Fame panel -->
   <div id="hofPanel">
+    <div class="panel-heading">🐐 Hall of Fame</div>
+    <!-- Pelaajan info — sama rakenne kuin tasokartalla -->
+    <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
+      <span id="hofPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+      <div>
+        <div class="map-hname" id="hofPlayerName">—</div>
+        <div class="map-hsub" id="hofPlayerSub"></div>
+      </div>
+    </div>
     <div class="filter-tabs">
       <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
       <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
@@ -1996,18 +2012,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="hof-grid" id="scoreList"></div>
   </div>
 
-  <!-- Achievements panel -->
+  <!-- Saavutukset panel — sama player-info rakenne -->
   <div id="achPanel" style="display:none">
-    <div class="ach-player-info">
-      <span id="achPlayerAv" style="font-size:2rem;">🤴</span>
-      <span id="achPlayerName" style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-left:8px;">—</span>
-      <span id="achCount" style="font-size:.8rem;color:var(--muted);font-weight:700;margin-left:8px;"></span>
+    <div class="panel-heading">🏅 Saavutukset</div>
+    <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
+      <span id="achPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+      <div>
+        <div class="map-hname" id="achPlayerName">—</div>
+        <div class="map-hsub" id="achCount"></div>
+      </div>
     </div>
     <div class="ach-grid" id="achList"></div>
   </div>
 
   <!-- Tasokartta-paneeli -->
   <div id="mapPanel" style="display:none">
+    <div class="panel-heading">🗺️ Tasokartta</div>
     <div class="map-player-info">
       <span id="mapPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
       <div>
@@ -2893,6 +2913,8 @@ async function startGame(){
   // Tämä korjaa tilanteen jossa taso-saavutukset puuttuvat uudella laitteella
   await achInit();
   achCheck('first_login');
+  // MAT-18: Päiväputki-seuranta
+  checkDailyStreak();
   // Tarkista luokkaan liittyminen — localStorage + Supabase fallback
   try {
     const hasClassLocal = localStorage.getItem(`matikka_class_${pName}:${pChar}`);
@@ -2920,6 +2942,14 @@ async function showScores(){
   document.getElementById('hofPanel').style.display='block';
   document.getElementById('achPanel').style.display='none';
   document.getElementById('mapPanel').style.display='none';
+  // Päivitä HOF player-info
+  const av = pChar==='boy'?'🤴':'👸';
+  const el1 = document.getElementById('hofPlayerAv');
+  const el2 = document.getElementById('hofPlayerName');
+  const el3 = document.getElementById('hofPlayerSub');
+  if(el1) el1.textContent = av;
+  if(el2) el2.textContent = pName;
+  if(el3) el3.textContent = `Taso ${srData.diffLevel} / 50`;
   showScreen('scoreScreen');
   await renderScores('all');
 }
@@ -3390,7 +3420,8 @@ function srRecord(p, correct) {
     const alreadyQueued = retryQueue.some(q => probKey(q) === key);
     if (!alreadyQueued) retryQueue.push({ ...p });
   }
-  roundHistory.push(correct);
+  // MAT-28: Tallenna tehtävätyyppi analyysiä varten
+  roundHistory.push({ correct, type: p.type, subtype: p.subtype || null });
   srSave(srData);
 }
 
@@ -3470,6 +3501,45 @@ function srEvaluateRound(pct, playedRange) {
 }
 
 // Avaa tasosaavutus — kaikki ovat jo ACHIEVEMENTS-taulukossa alusta alkaen
+// MAT-18: Päiväputki-seuranta
+// Tarkistaa onko pelaaja pelannut peräkkäisinä päivinä ja myöntää saavutukset
+function checkDailyStreak() {
+  if (!pName || !pChar) return;
+  const key      = `matikka_daily_${pName}:${pChar}`;
+  const streakKey = `matikka_daystreak_${pName}:${pChar}`;
+  const today    = new Date().toISOString().slice(0, 10); // "2026-04-07"
+
+  try {
+    const lastPlayed  = localStorage.getItem(key) || '';
+    let   streak      = parseInt(localStorage.getItem(streakKey) || '0');
+
+    if (lastPlayed === today) {
+      // Jo pelattu tänään — ei muutoksia, vain tarkistetaan saavutukset
+    } else {
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      if (lastPlayed === yesterday) {
+        streak++; // Peräkkäinen päivä
+      } else if (lastPlayed === '') {
+        streak = 1; // Ensimmäinen kirjautuminen
+      } else {
+        streak = 1; // Putki katkesi
+      }
+      localStorage.setItem(key, today);
+      localStorage.setItem(streakKey, streak);
+    }
+
+    // Myönnä saavutukset
+    if (streak >= 3)  achCheck('day_streak_3');
+    if (streak >= 7)  achCheck('day_streak_7');
+    if (streak >= 14) achCheck('day_streak_14');
+    if (streak >= 30) achCheck('day_streak_30');
+
+    // Päivitä srData.dayStreak jotta se näkyy UI:ssa myöhemmin
+    srData.dayStreak = streak;
+
+  } catch {}
+}
+
 function checkLevelAchievement(level) {
   const ids = { 10:'level_10', 20:'level_20', 30:'level_30', 40:'level_40', 50:'level_50' };
   const id = ids[level];
@@ -4031,6 +4101,67 @@ function explainWrong(p) {
   bubble.classList.add('visible');
 }
 
+// MAT-28: Virheanalyysi kierroksen jälkeen
+function renderErrorAnalysis() {
+  const el = document.getElementById('errorAnalysis');
+  if (!el) return;
+
+  const errors = roundHistory.filter(h => !h.correct);
+  if (errors.length === 0) { el.style.display = 'none'; return; }
+
+  // Ryhmittele virheet tyypeittäin
+  const typeNames = {
+    h: 'Hajotelmat', a: 'Yhteenlasku', s: 'Vähennys',
+    m: 'Kertotaulu', p: 'Prosentit'
+  };
+  const subtypeNames = {
+    pct_of: 'Perusprosentti', pct_what: 'Käänteislasku', pct_how: 'Muutosprosentti'
+  };
+
+  // Laske virheet per tyyppi
+  const counts = {};
+  errors.forEach(h => {
+    const label = h.type === 'p' && h.subtype
+      ? subtypeNames[h.subtype] || typeNames[h.type]
+      : (typeNames[h.type] || h.type);
+    counts[label] = (counts[label] || 0) + 1;
+  });
+
+  const total = roundHistory.length;
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  // Rakenna visuaalinen analyysi
+  const bars = sorted.map(([label, count]) => {
+    const pct = Math.round(count / total * 100);
+    const w   = Math.round(count / errors.length * 100);
+    return `<div style="margin-bottom:5px;">
+      <div style="display:flex;justify-content:space-between;font-size:.75rem;font-weight:700;margin-bottom:2px;">
+        <span style="color:var(--text);">${label}</span>
+        <span style="color:var(--accent2);">${count} virhe${count>1?'ttä':''}</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;">
+        <div style="height:100%;width:${w}%;background:var(--accent2);border-radius:40px;transition:width .4s;"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Neuvo seuraavalle kierrokselle
+  const worstType = sorted[0]?.[0] || '';
+  const tip = errors.length >= 3
+    ? `💡 Harjoittele erityisesti: <strong>${worstType}</strong>`
+    : `💡 ${errors.length} virhe${errors.length>1?'ttä':''} — hyvää työtä!`;
+
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div style="background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.15);
+                border-radius:12px;padding:12px 14px;text-align:left;">
+      <div style="font-size:.72rem;font-weight:800;color:var(--muted);letter-spacing:.5px;
+                  text-transform:uppercase;margin-bottom:8px;">📊 Virheanalyysi</div>
+      ${bars}
+      <div style="font-size:.78rem;color:var(--muted);margin-top:8px;font-weight:700;">${tip}</div>
+    </div>`;
+}
+
 function hideExplain() {
   const bubble = document.getElementById('speechBubble');
   if (bubble) bubble.classList.remove('visible');
@@ -4045,6 +4176,14 @@ function updStats(){
     ptsEl.textContent = pts;
     ptsEl.style.opacity = srData.diffLevel >= DIFF_LEVELS.length ? '1' : '0.5';
     ptsEl.title = srData.diffLevel >= DIFF_LEVELS.length ? '' : 'Pisteet tallentuvat kun taso nousee';
+  }
+  // MAT-18: Näytä päiväputki jos ≥ 2 päivää
+  const dayStreak = srData.dayStreak || 0;
+  const dayBadge = document.getElementById('dayStreakBadge');
+  const dayEl    = document.getElementById('sDayStreak');
+  if (dayBadge && dayEl) {
+    dayBadge.style.display = dayStreak >= 2 ? '' : 'none';
+    dayEl.textContent = dayStreak;
   }
 }
 function updProg(){const p=Math.round((rDone/rTotal)*100);document.getElementById('pF').style.width=p+'%';document.getElementById('pT').textContent=rDone+' / '+rTotal;document.getElementById('pP').textContent=p+'%';}
@@ -4105,6 +4244,7 @@ async function showResults(){
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
   sfxRoundEnd(p);
   checkAllAchievements(p, mode, levelRosedThisRound, atMaxLevel);
+  renderErrorAnalysis(); // MAT-28
   updateDiplomaBtn();
 
   const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu',p:'Prosentit'};
@@ -4417,6 +4557,11 @@ const ACHIEVEMENTS = [
   // — Kellonaika —
   { id:'night_owl',      icon:'🦉', name:'Yöpöllö',              desc:'Pelasi kello 22 jälkeen' },
   { id:'weekend',        icon:'🏖️', name:'Viikonloppusankari',   desc:'Pelasi sekä lauantaina että sunnuntaina' },
+  // — Päiväputki (MAT-18) —
+  { id:'day_streak_3',   icon:'📅', name:'3 päivän putki',       desc:'Pelannut 3 päivää peräkkäin' },
+  { id:'day_streak_7',   icon:'🔥📅', name:'Viikon tulimörkö',   desc:'Pelannut 7 päivää peräkkäin' },
+  { id:'day_streak_14',  icon:'⭐📅', name:'Kahden viikon tähti', desc:'Pelannut 14 päivää peräkkäin' },
+  { id:'day_streak_30',  icon:'👑📅', name:'Kuukauden legenda',   desc:'Pelannut 30 päivää peräkkäin' },
   // — Sosiaaliset —
   { id:'joined_class',   icon:'🏫', name:'Luokkalainen',         desc:'Liittyi opettajan luokkaan' },
   // — Moodikohtaiset —
