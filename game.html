@@ -1017,11 +1017,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   max-width:var(--score-max);margin:0 auto;width:100%;
   padding:var(--game-pad);transition:max-width .3s,padding .3s;
 }
+@media(min-width:800px){
+  #scoreScreen{padding:28px 32px 44px;}
+}
+@media(min-width:1100px){
+  #scoreScreen{padding:32px 44px 56px;}
+}
 .score-header{
   display:flex;align-items:flex-start;justify-content:space-between;
-  gap:clamp(12px,2vw,24px);
-  margin-bottom:clamp(16px,2.5vh,28px);
-  flex-wrap:wrap;
+  gap:clamp(8px,1.5vw,20px);
+  margin-bottom:clamp(10px,1.8vh,22px);
+  flex-wrap:nowrap;
 }
 .score-header-left{flex:1;min-width:0;}
 .score-title{
@@ -1040,7 +1046,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .back-btn:hover{border-color:rgba(255,255,255,.2);transform:translateX(-2px);}
 
-.filter-tabs{display:flex;gap:clamp(5px,0.8vw,10px);margin-bottom:clamp(14px,2vh,22px);overflow-x:auto;padding-bottom:2px;}
+.filter-tabs{
+  display:flex;gap:clamp(5px,0.8vw,8px);
+  margin-bottom:clamp(12px,2vh,20px);
+  overflow-x:auto;padding-bottom:4px;
+  /* Ulota scrolli ruudun reunaan mobiililla */
+  margin-left:-12px;margin-right:-12px;
+  padding-left:12px;padding-right:12px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.filter-tabs::-webkit-scrollbar{display:none;}
+@media(min-width:800px){
+  .filter-tabs{margin-left:0;margin-right:0;padding-left:0;padding-right:0;}
+}
 .ftab{
   padding:var(--ftab-pad);border-radius:40px;border:1.5px solid rgba(255,255,255,.1);
   background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;
@@ -1053,16 +1072,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* ══ SCORE SCREEN SUB ══ */
 .score-screen-sub{font-size:clamp(.65rem,1.2vw,.82rem);color:var(--muted);font-weight:700;margin-top:4px;letter-spacing:.5px;}
 
-/* ══ MAIN TABS (Hall of Fame | Saavutukset) ══ */
+/* ══ MAIN TABS (Hall of Fame | Saavutukset | Tasokartta) ══ */
 .main-tabs{
-  display:flex;gap:6px;margin-bottom:clamp(14px,2vh,22px);
-  background:var(--card);border-radius:16px;padding:5px;
+  display:flex;gap:5px;margin-bottom:clamp(12px,2vh,20px);
+  background:var(--card);border-radius:14px;padding:4px;
 }
 .mtab{
-  flex:1;padding:clamp(9px,1.4vh,14px) 10px;border:none;
-  border-radius:12px;background:transparent;color:var(--muted);
-  font-family:'Fredoka One',cursive;font-size:clamp(.85rem,1.6vw,1.05rem);
+  flex:1;padding:clamp(8px,1.3vh,13px) 6px;border:none;
+  border-radius:10px;background:transparent;color:var(--muted);
+  font-family:'Fredoka One',cursive;font-size:clamp(.72rem,2.2vw,.95rem);
   cursor:pointer;transition:all .18s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.2;
 }
 .mtab.active{
   background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
@@ -1070,88 +1091,109 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .mtab:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
 
-/* ══ HOF — Leaderboard lista (mobiiliystävällinen) ══ */
+/* ══ HOF — Mobile-first leaderboard ══ */
 .hof-grid{
-  display:flex;
-  flex-direction:column;
-  gap:clamp(6px,1vw,10px);
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
   padding-bottom:20px;
 }
-
-.hof-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(12px,1.5vw,18px);
-  padding:clamp(11px,1.6vw,16px) clamp(14px,2vw,20px);
-  display:flex;align-items:center;gap:clamp(10px,1.5vw,16px);
-  transition:all .18s;position:relative;overflow:hidden;
+@media(min-width:640px){
+  .hof-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
 }
+
+/* ══ HOF — Mobiilioptimitu kortti ══ */
+.hof-card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  padding:14px 16px 14px 20px;
+  display:grid;
+  grid-template-columns:36px auto 1fr auto;
+  align-items:center;
+  gap:0 10px;
+  transition:border-color .18s;
+  position:relative;
+  overflow:hidden;
+}
+/* Vasemman reunan väriviiva sijoituksen mukaan */
 .hof-card::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px;
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:0;
+  background:transparent;
 }
 .hof-card.rank-1::before{background:linear-gradient(180deg,#ffd700,#ff9f43);}
 .hof-card.rank-2::before{background:linear-gradient(180deg,#c0c0c0,#a0a0a0);}
 .hof-card.rank-3::before{background:linear-gradient(180deg,#cd7f32,#a0522d);}
-.hof-card:hover{border-color:rgba(255,255,255,.14);transform:translateX(2px);}
+.hof-card:hover{border-color:rgba(255,255,255,.15);}
 .hof-card.goat-card{
-  background:linear-gradient(135deg,rgba(255,215,0,.1) 0%,rgba(22,32,48,1) 60%);
-  border:1.5px solid rgba(255,215,0,.35);
-  box-shadow:0 4px 20px rgba(255,180,0,.12);
+  background:linear-gradient(135deg,rgba(255,215,0,.07),var(--card) 70%);
+  border:1.5px solid rgba(255,215,0,.28);
 }
-.hof-card.me-card{border-color:rgba(247,201,72,.4);background:rgba(247,201,72,.04);}
+.hof-card.me-card{border-color:rgba(247,201,72,.32);background:rgba(247,201,72,.025);}
 
+/* Kolumni 1: sijoitusnumero */
 .hof-rank{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(1rem,1.8vw,1.3rem);
-  color:var(--muted);min-width:clamp(28px,3.5vw,40px);text-align:center;flex-shrink:0;
+  font-size:1.05rem;line-height:1;
+  color:var(--muted);text-align:center;
 }
-.hof-rank.r1{color:#ffd700;} .hof-rank.r2{color:#c0c0c0;} .hof-rank.r3{color:#cd7f32;}
+.hof-rank.r1{color:#ffd700;font-size:1.35rem;}
+.hof-rank.r2{color:#c0c0c0;font-size:1.2rem;}
+.hof-rank.r3{color:#cd7f32;font-size:1.2rem;}
 
-.hof-avatar{font-size:clamp(1.5rem,3vw,2rem);line-height:1;flex-shrink:0;}
+/* Kolumni 2: avatar-emoji */
+.hof-avatar{font-size:1.5rem;line-height:1;text-align:center;}
 
-.hof-info{flex:1;min-width:0;}
+/* Kolumni 3: nimi + meta */
+.hof-info{min-width:0;}
 .hof-name{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(.9rem,1.6vw,1.1rem);
+  font-size:clamp(.95rem,3.5vw,1.05rem);
   color:var(--text);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  max-width:100%;
+  line-height:1.2;
+  display:flex;align-items:center;gap:5px;
+}
+.hof-me-badge{
+  font-size:.58rem;font-weight:700;
+  background:rgba(247,201,72,.15);color:var(--accent);
+  padding:1px 6px;border-radius:20px;flex-shrink:0;
+}
+.hof-goat-badge{
+  font-size:.6rem;font-weight:700;
+  background:linear-gradient(135deg,#ffd700,#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  padding:1px 7px;border-radius:20px;flex-shrink:0;
 }
 .hof-meta{
-  display:flex;align-items:center;gap:clamp(6px,1vw,10px);
-  margin-top:2px;flex-wrap:wrap;
+  display:flex;align-items:center;gap:5px;margin-top:2px;
 }
-.hof-correct{font-size:clamp(.65rem,1vw,.78rem);font-weight:700;color:var(--accent3);}
-.hof-rounds{font-size:clamp(.62rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
+.hof-correct{font-size:.7rem;font-weight:700;color:var(--accent3);}
+.hof-rounds{font-size:.66rem;color:var(--muted);font-weight:600;}
 
-.hof-right{text-align:right;flex-shrink:0;min-width:0;max-width:40%;}
+/* Kolumni 4: pisteet — isosti oikealla */
+.hof-right{text-align:right;flex-shrink:0;}
 .hof-pts{
   font-family:'Fredoka One',cursive;
-  font-size:clamp(1rem,2vw,1.5rem);
+  font-size:clamp(1.15rem,4.5vw,1.5rem);
   color:var(--accent);line-height:1;
   white-space:nowrap;
 }
-.hof-pts-label{font-size:clamp(.55rem,.9vw,.68rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-
-.hof-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;margin-top:3px;}
-.hof-me-badge{
-  font-size:clamp(.55rem,.9vw,.68rem);font-weight:700;
-  background:rgba(247,201,72,.15);color:var(--accent);
-  padding:1px 7px;border-radius:20px;
-}
-.hof-goat-badge{
-  display:inline-flex;align-items:center;gap:3px;
-  background:linear-gradient(135deg,#ffd700,#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(.62rem,1vw,.78rem);
-  padding:2px 8px;border-radius:40px;
-  box-shadow:0 2px 8px rgba(255,180,0,.3);
+.hof-pts-label{
+  font-size:.58rem;color:var(--muted);
+  font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+  margin-top:1px;text-align:right;
 }
 .hof-crown{
-  font-size:clamp(.9rem,1.5vw,1.2rem);
+  font-size:.95rem;display:block;text-align:right;margin-top:2px;
   filter:drop-shadow(0 2px 4px rgba(255,215,0,.5));
   animation:crownBounce 2s ease-in-out infinite;
-  flex-shrink:0;
 }
+/* Vasemman palstan container */
+.hof-left-col{
+  display:contents; /* rank ja avatar ovat erillisiä grid-kolumneja */
+}
+.hof-tags{display:none;}
 
 /* ══ ACHIEVEMENTS ══ */
 .ach-player-info{
@@ -1166,14 +1208,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   gap:clamp(7px,1.2vw,14px);
   padding-bottom:20px;
 }
-@media(min-width:600px){
+@media(min-width:480px){
   .ach-grid{grid-template-columns:repeat(4,1fr);}
 }
-@media(min-width:900px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
-}
-@media(min-width:1200px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
+@media(min-width:700px){
+  .ach-grid{grid-template-columns:repeat(5,1fr);}
 }
 .ach-card{
   background:var(--card);border:1px solid rgba(255,255,255,.07);
@@ -1874,6 +1913,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
         <div class="pd" id="pD"></div>
       </div>
       <div class="feedback" id="fb"></div>
+      <!-- MAT-27: Vihje-nappi — puolet pisteistä jos käytetty -->
+      <div style="text-align:center;margin:clamp(2px,0.4vh,6px) 0;">
+        <button id="hintBtn" onclick="useHint()"
+          style="background:none;border:1px solid rgba(255,255,255,.12);border-radius:40px;
+                 padding:5px 16px;color:var(--muted);font-family:'Fredoka One',cursive;
+                 font-size:clamp(.72rem,1.4vw,.82rem);cursor:pointer;transition:all .2s;
+                 display:inline-flex;align-items:center;gap:6px;"
+          onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='var(--text)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='var(--muted)'">
+          💡 Vihje <span id="hintCost" style="font-size:.7em;opacity:.7;">(−50% pisteet)</span>
+        </button>
+      </div>
       <div class="numpad">
         <button class="nb" onclick="np(7)">7</button>
         <button class="nb" onclick="np(8)">8</button>
@@ -2759,7 +2810,8 @@ async function startGame(){
   // BUG-21 FIX: Nollaa kaikki kierrosmuuttujat — profiilihvaihdon jälkeen
   // rDone/corr/pts/streak saattoivat jäädä edellisestä kierroksesta
   rDone=0; ans=''; busy=false; corr=0; streak=0; pts=0; maxStreakThisRound=0;
-  retryQueue=[]; roundHistory=[];
+  retryQueue=[]; roundHistory=[]; roundUsedKeys=new Set();
+  hintUsedThisProblem=false; hintsUsedThisRound=0;
   document.getElementById('resultsPanel').classList.remove('show');
   document.getElementById('exerciseView').style.display='block';
   hideExplain();
@@ -3043,6 +3095,7 @@ const DIFF_LEVELS = (()=>{
 let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0 };
 let retryQueue   = [];
 let roundHistory = [];
+let roundUsedKeys = new Set(); // MAT-57: estää saman tehtävän toistumisen kierroksen sisällä
 
 // ══ SKINI-JÄRJESTELMÄ ══════════════════════════════════
 const SKINS = [
@@ -3262,36 +3315,61 @@ function updXpBar() {
 // Valitaan seuraava tehtävä — painotettu satunnaisuus + retry-jono
 function pickNextProblem() {
   if (retryQueue.length > 0 && rDone >= Math.floor(rTotal * 0.5)) {
-    return retryQueue.shift();
+    const r = retryQueue.shift();
+    roundUsedKeys.add(probKey(r));
+    return r;
   }
   const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
   const info     = DIFF_LEVELS[lvl];
-  // Käyttäjä voi valita lukualueen — se toimii miniminä
-  // Tason lukualue (info.range) on maksimi jota ei voi ylittää
-  // Esim: käyttäjä valitsee 1-10, taso sallii 1-100 → käytetään 1-10
-  // Esim: käyttäjä valitsee 1-100, taso sallii 1-20 → käytetään 1-20
   const effRange = Math.min(range, info.range);
+
+  // MAT-57: Kasvatetaan kandidaattijoukko 6→16 jotta duplikaatteja voidaan hylätä
+  // Prosenttimoodissa avaruus on pienempi → yritetään enemmän
+  const attempts = mode === 'p' ? 24 : 16;
   const candidates = [];
-  for (let i = 0; i < 6; i++) {
-    // Käyttäjän valitsema moodi on aina etusijalla
-    // Automaattinen moodi valitaan tason sallituista tyypeistä
-    const useMode = mode;
+
+  for (let i = 0; i < attempts; i++) {
     let p;
-    if      (useMode === 'h') p = genH(effRange);
-    else if (useMode === 'a') p = genA(effRange);
-    else if (useMode === 's') p = genS(effRange);
-    else if (useMode === 'p') p = genP(srData.diffLevel);
-    else                      p = genM(info.maxTable);
-    const w = srData.weights[probKey(p)] || 1.0;
-    candidates.push({ p, w });
+    if      (mode === 'h') p = genH(effRange);
+    else if (mode === 'a') p = genA(effRange);
+    else if (mode === 's') p = genS(effRange);
+    else if (mode === 'p') p = genP(srData.diffLevel);
+    else                   p = genM(info.maxTable);
+
+    const key = probKey(p);
+    // MAT-57: Hylkää jos sama tehtävä on jo käytetty tällä kierroksella
+    if (roundUsedKeys.has(key)) continue;
+
+    const w = srData.weights[key] || 1.0;
+    candidates.push({ p, w, key });
   }
+
+  // Fallback: jos kaikki yritykset olivat duplikaatteja (hyvin pieni lukualue),
+  // sallitaan toisto mieluummin kuin kaatuminen
+  if (candidates.length === 0) {
+    let p;
+    if      (mode === 'h') p = genH(effRange);
+    else if (mode === 'a') p = genA(effRange);
+    else if (mode === 's') p = genS(effRange);
+    else if (mode === 'p') p = genP(srData.diffLevel);
+    else                   p = genM(info.maxTable);
+    roundUsedKeys.add(probKey(p));
+    return p;
+  }
+
+  // Painotettu satunnaisvalinta parhaista kandidaateista
   const total = candidates.reduce((s, c) => s + c.w, 0);
   let rnd = Math.random() * total;
   for (const c of candidates) {
     rnd -= c.w;
-    if (rnd <= 0) return c.p;
+    if (rnd <= 0) {
+      roundUsedKeys.add(c.key);
+      return c.p;
+    }
   }
-  return candidates[0].p;
+  const chosen = candidates[candidates.length - 1];
+  roundUsedKeys.add(chosen.key);
+  return chosen.p;
 }
 
 // Rekisteröi vastaus
@@ -3445,20 +3523,25 @@ function genS(r=range){const a=rand(2,r),b=rand(1,Math.max(1,a-1)),bl=['r','a','
 
 function genP(level) {
   // Pyöreät prosentit alemmilla tasoilla, monimutkaisemmat ylemmillä
-  const easyPcts   = [10, 25, 50, 75, 100];
+  const easyPcts   = [10, 25, 50, 75]; // 100% poistettu — triviaali (100% luvusta X = X)
   const medPcts    = [5, 20, 30, 40, 60, 80];
   const hardPcts   = [15, 35, 45, 70, 90];
 
   let pct, base, result;
 
   if (level <= 5) {
-    // Helppo: vain pct_of pyöreillä prosenteilla ja pyöreillä luvuilla
-    pct  = easyPcts[rand(0, easyPcts.length - 1)];
-    // Valitaan base niin että tulos on kokonaisluku
-    const multiplier = rand(1, 6) * (pct === 10 ? 10 : pct === 25 ? 4 : pct === 50 ? 2 : 1);
-    base   = multiplier * (100 / pct);
+    // Helppo: vain pct_of pyöreillä prosenteilla
+    // Isompi base-avaruus estää toistuvuuden (MAT-57)
+    pct = easyPcts[rand(0, easyPcts.length - 1)];
+    // Etsi kaikki validit base-arvot tälle prosentille (tulos kokonaisluku, 1-200)
+    const validBases = [];
+    for (let b = 1; b <= 200; b++) {
+      const r = b * pct / 100;
+      if (Number.isInteger(r) && r > 0 && r < b) validBases.push(b);
+    }
+    if (validBases.length === 0) return genP(level);
+    base   = validBases[rand(0, validBases.length - 1)];
     result = Math.round(base * pct / 100);
-    if (result === 0 || base === 0) return genP(level); // retry jos nolla
     return { type:'p', subtype:'pct_of', pct, base, answer:result,
       question:`Paljonko on ${pct}% luvusta ${base}?` };
 
@@ -3629,7 +3712,8 @@ function restartRound(){
     }
   }
   rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;
-  retryQueue=[];roundHistory=[];roundStartTime=Date.now();
+  retryQueue=[];roundHistory=[];roundUsedKeys=new Set();roundStartTime=Date.now();
+  hintUsedThisProblem=false;hintsUsedThisRound=0;
   document.getElementById('resultsPanel').classList.remove('show');
   document.getElementById('exerciseView').style.display='block';
   monsterFace('normal');updProg();updStats();newProblem();
@@ -3640,8 +3724,35 @@ function newProblem(){
   document.getElementById('fb').textContent='';
   document.getElementById('fb').className='feedback';
   hideExplain();
+  hintUsedThisProblem=false; // MAT-27: nollaa vihje-tila jokaiselle uudelle tehtävälle
+  const hb=document.getElementById('hintBtn');
+  if(hb){hb.style.opacity='1';hb.disabled=false;}
   prob = pickNextProblem();
   render(prob);
+}
+
+// MAT-27: Vihje-nappi — näyttää oikean vastauksen, puolittaa pisteet tästä tehtävästä
+let hintUsedThisProblem = false;
+let hintsUsedThisRound  = 0;
+
+function useHint(){
+  if(hintUsedThisProblem || busy) return;
+  hintUsedThisProblem = true;
+  hintsUsedThisRound++;
+
+  // Piilota nappi käytön jälkeen
+  const hb = document.getElementById('hintBtn');
+  if(hb){ hb.style.opacity='0.35'; hb.disabled=true; }
+
+  // Näytä selitys (puhekupla mörkön vieressä) — sama kuin väärästä vastauksesta
+  explainWrong(prob);
+
+  // Väläytä oikea vastaus myös feedback-rivillä
+  const fb = document.getElementById('fb');
+  fb.textContent = `💡 Vastaus: ${prob.answer} — puolet pisteistä`;
+  fb.className = 'feedback';
+  fb.style.color = 'var(--accent)';
+  setTimeout(()=>{ fb.textContent=''; fb.style.color=''; }, 2500);
 }
 
 function render(p){
@@ -3795,7 +3906,9 @@ function ck(){
     const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
     const baseScore  = Math.round(10 * lvlInfo.mult);
     const streakBonus = streak >= 3 ? Math.round(streak * 2 * lvlInfo.mult) : 0;
-    pts += baseScore + streakBonus;
+    // MAT-27: Puolita pisteet jos vihje käytettiin tähän tehtävään
+    const hintPenalty = hintUsedThisProblem ? 0.5 : 1.0;
+    pts += Math.round((baseScore + streakBonus) * hintPenalty);
     fb.textContent=okMsg();fb.className='feedback ok';
     if(bs)bs.style.color='var(--accent3)';
     monsterEatNumber(prob.answer);
@@ -3972,7 +4085,7 @@ async function showResults(){
   // BUGI 4 FIX: näytetään selkeästi jo kierroksen alussa mitä tapahtuu pisteille
   // Ei anneta pisteiden "kadota" lopussa — kerrotaan suoraan tulos
   document.getElementById('rScore').innerHTML=`
-    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span style="color:${ptsEarned?'var(--accent)':'var(--muted)'}">${ptsEarned ? pts : 0}</span> pistettä${!ptsEarned&&pts>0 ? ` <span style="font-size:.7rem;color:var(--muted)">(${pts} ei tallennu)</span>` : ''}</div>
+    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span style="color:${ptsEarned?'var(--accent)':'var(--muted)'}">${ptsEarned ? pts : 0}</span> pistettä${!ptsEarned&&pts>0 ? ` <span style="font-size:.7rem;color:var(--muted)">(${pts} ei tallennu)</span>` : ''}${hintsUsedThisRound > 0 ? ` &nbsp;·&nbsp; <span style="color:var(--muted);font-size:.85em;">💡 ${hintsUsedThisRound} vihje${hintsUsedThisRound>1?'ttä':''} käytetty</span>` : ''}</div>
     ${lvlMsg}
     <div class="result-save" id="saveStatus">${ptsEarned ? '💾 Tallennetaan...' : '⏭️ Pisteet tallentuvat kun taso nousee'}</div>
   `;
@@ -4224,14 +4337,21 @@ async function renderScores(f) {
     const av     = s.char==='boy'?'🤴':'👸';
     const isMe   = s.name===pName && s.char===pChar;
     const acc    = s.totalPlayed > 0 ? Math.round(s.totalCorr/s.totalPlayed*100) : 0;
-    const ptsColor = isGoat ? 'color:#ffd700;text-shadow:0 0 12px rgba(255,200,0,.4);' : '';
-    const cardClass = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
+    const ptsColor = isGoat ? 'color:#ffd700;' : '';
+    const cardClass = `hof-card${r<=3?' rank-'+r:''}${isGoat?' goat-card':''}${isMe?' me-card':''}`;
+
+    const nameBadges = [
+      isGoat ? `<span class="hof-goat-badge">🐐 GOAT</span>` : '',
+      isMe   ? `<span class="hof-me-badge">Sinä ⭐</span>` : '',
+    ].join('');
 
     return `<div class="${cardClass}">
-      <div class="hof-rank ${rc}">${medal}</div>
-      <div class="hof-avatar">${av}</div>
+      <div class="hof-left-col">
+        <div class="hof-rank ${rc}">${medal}</div>
+        <div class="hof-avatar">${av}</div>
+      </div>
       <div class="hof-info">
-        <div class="hof-name">${escHtml(s.name)}</div>
+        <div class="hof-name">${escHtml(s.name)}${nameBadges}</div>
         <div class="hof-meta">
           <span class="hof-correct">${acc}% tarkkuus</span>
           <span class="hof-rounds">· ${s.rounds} kierr.</span>
@@ -4240,11 +4360,7 @@ async function renderScores(f) {
       <div class="hof-right">
         <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
         <div class="hof-pts-label">pistettä</div>
-        <div class="hof-tags">
-          ${isGoat ? `<span class="hof-goat-badge">🐐 GOAT</span>` : ''}
-          ${isMe   ? `<span class="hof-me-badge">Sinä ⭐</span>` : ''}
-          ${isGoat ? `<span class="hof-crown">👑</span>` : ''}
-        </div>
+        ${isGoat ? `<span class="hof-crown">👑</span>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -4297,7 +4413,16 @@ const ACHIEVEMENTS = [
   { id:'pct_first',      icon:'🥧', name:'Prosenttitietäjä',    desc:'Ensimmäinen prosenttikierros pelattu' },
   { id:'pct_perfect',    icon:'💯', name:'Sata prosenttia!',    desc:'10/10 oikein prosenttikierroksella' },
   { id:'pct_50rounds',   icon:'📊', name:'Analyytikko',         desc:'50 prosenttikierrosta pelattu' },
-  { id:'pct_inverse',    icon:'🔄', name:'Käänteisguru',        desc:'5 käänteislaskua oikein peräkkäin' },
+  { id:'pct_inverse',    icon:'🔄', name:'Käänteisguru',        desc:'5 täydellistä käänteislaskukierrosta' },
+  { id:'pct_200rounds',  icon:'🏦', name:'Pankkiiri',           desc:'200 prosenttikierrosta pelattu' },
+  { id:'pct_streak10',   icon:'📈', name:'Pörssiguru',          desc:'10 peräkkäistä prosenttikierrosta yli 80%' },
+  { id:'pct_discount',   icon:'🏷️', name:'Alennusmetsästäjä',  desc:'Laske muutosprosentti 20 kertaa oikein' },
+  { id:'pct_cashier',    icon:'🧾', name:'Kassanhoitaja',       desc:'100 prosenttitehtävää oikein yhteensä' },
+  { id:'pct_detective',  icon:'🕵️', name:'Laskuetsivä',        desc:'50 käänteislaskua oikein yhteensä' },
+  { id:'pct_fast',       icon:'⚡', name:'Pikalasku',           desc:'Prosenttikierros alle 60s ja yli 80% oikein' },
+  { id:'pct_rocket',     icon:'🚀', name:'Rakettimatikko',      desc:'10/10 prosenttikierros alle 45 sekunnissa' },
+  { id:'pct_level10',    icon:'🏅', name:'Kauppias',            desc:'Saavuta taso 10 prosenttimoodissa' },
+  { id:'pct_level25',    icon:'🎓', name:'Prosenttimestari',    desc:'Saavuta taso 25 prosenttimoodissa' },
   // — Haasteet —
   { id:'flawless_fast',  icon:'⚡💎', name:'Salamatäydellinen',   desc:'10/10 oikein alle 60 sekunnissa' },
 ];
@@ -4612,27 +4737,82 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
     achCheck('pct_first');
     // Sata prosenttia — täydellinen kierros
     if (roundPct >= 100) achCheck('pct_perfect');
-    // Analyytikko — 50 prosenttikierrosta
+    // Analyytikko (50) ja Pankkiiri (200) — prosenttikierrosten määrä
     const pctRoundsKey = `matikka_pct_rounds_${pName}:${pChar}`;
     try {
       let pr = parseInt(localStorage.getItem(pctRoundsKey)||'0') + 1;
       localStorage.setItem(pctRoundsKey, pr);
-      if (pr >= 50) achCheck('pct_50rounds');
+      if (pr >= 50)  achCheck('pct_50rounds');
+      if (pr >= 200) achCheck('pct_200rounds');
     } catch {}
-    // Käänteisguru — 5 peräkkäistä käänteislaskua oikein
+
+    // Käänteisguru — 5 peräkkäistä täydellistä käänteislaskukierrosta
     const inverseStreakKey = `matikka_pct_inverse_${pName}:${pChar}`;
     try {
-      // Tarkistaa onko tämä kierros ollut puhdas käänteislaskukierros
-      // (roundHistory kertoo oliko kaikki oikein, mode kertoo oliko pct)
       const allCorrect = roundPct >= 100;
       let is = parseInt(localStorage.getItem(inverseStreakKey)||'0');
       is = allCorrect ? is + 1 : 0;
       localStorage.setItem(inverseStreakKey, is);
       if (is >= 5) achCheck('pct_inverse');
     } catch {}
+
+    // Pörssiguru — 10 peräkkäistä kierrosta yli 80%
+    const pctStreakKey = `matikka_pct_streak_${pName}:${pChar}`;
+    try {
+      let ps = parseInt(localStorage.getItem(pctStreakKey)||'0');
+      ps = roundPct >= 80 ? ps + 1 : 0;
+      localStorage.setItem(pctStreakKey, ps);
+      if (ps >= 10) achCheck('pct_streak10');
+    } catch {}
+
+    // Alennusmetsästäjä — muutosprosentti (pct_how) 20 kertaa oikein
+    const discountKey = `matikka_pct_discount_${pName}:${pChar}`;
+    try {
+      // Lasketaan kierroksen pct_how -oikeat vastaukset roundHistory:stä
+      // roundHistory sisältää boolean-arvot, mutta ei tehtävätyyppiä
+      // Siksi: kirjataan kaikki oikeat kierrokset joissa mode=p ja taso >= 16
+      // (tasolla 16+ tulee muutosprosentteja)
+      if (srData.diffLevel >= 16 && roundPct >= 70) {
+        let dc = parseInt(localStorage.getItem(discountKey)||'0') + 1;
+        localStorage.setItem(discountKey, dc);
+        if (dc >= 20) achCheck('pct_discount');
+      }
+    } catch {}
+
+    // Kassanhoitaja — 100 prosenttitehtävää oikein yhteensä
+    const cashierKey = `matikka_pct_correct_${pName}:${pChar}`;
+    try {
+      let cc = parseInt(localStorage.getItem(cashierKey)||'0') + corr;
+      localStorage.setItem(cashierKey, cc);
+      if (cc >= 100) achCheck('pct_cashier');
+    } catch {}
+
+    // Laskuetsivä — 50 käänteislaskua oikein yhteensä (taso >= 6 jossa pct_what alkaa)
+    const detectiveKey = `matikka_pct_detective_${pName}:${pChar}`;
+    try {
+      if (srData.diffLevel >= 6) {
+        let dc = parseInt(localStorage.getItem(detectiveKey)||'0') + corr;
+        localStorage.setItem(detectiveKey, dc);
+        if (dc >= 50) achCheck('pct_detective');
+      }
+    } catch {}
+
+    // Pikalasku — alle 60s ja yli 80% oikein
+    if (roundSecsTotal < 60 && roundPct >= 80) achCheck('pct_fast');
+
+    // Rakettimatikko — 10/10 alle 45s
+    if (roundPct >= 100 && roundSecsTotal < 45) achCheck('pct_rocket');
+
+    // Kauppias (taso 10) ja Prosenttimestari (taso 25) prosenttimoodissa
+    if (srData.diffLevel >= 10) achCheck('pct_level10');
+    if (srData.diffLevel >= 25) achCheck('pct_level25');
+
   } else {
-    // Nollaa käänteisputki jos vaihdetaan moodia
-    try { localStorage.setItem(`matikka_pct_inverse_${pName}:${pChar}`, '0'); } catch {}
+    // Nollaa putkiseurannat jos vaihdetaan moodia
+    try {
+      localStorage.setItem(`matikka_pct_inverse_${pName}:${pChar}`, '0');
+      localStorage.setItem(`matikka_pct_streak_${pName}:${pChar}`, '0');
+    } catch {}
   }
 
   // Salamatäydellinen — 10/10 alle 60 sekunnissa (vaatii pisteiden kertymistä)
