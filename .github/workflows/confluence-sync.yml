@@ -78,4 +78,102 @@ jobs:
           EOF
 
       - name: Synkronoi Confluenceen
-        run: python3 confluence_sync.py
+        env:
+          CONFLUENCE_BASE_URL:  ${{ secrets.CONFLUENCE_BASE_URL }}
+          CONFLUENCE_EMAIL:     ${{ secrets.CONFLUENCE_EMAIL }}
+          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
+        run: |
+          python3 - << 'EOF'
+          import os, sys, json, re, base64
+          import urllib.request, urllib.error, urllib.parse
+
+          base  = os.environ["CONFLUENCE_BASE_URL"].rstrip("/")
+          email = os.environ["CONFLUENCE_EMAIL"]
+          token = os.environ["CONFLUENCE_API_TOKEN"]
+          space = os.environ["CONFLUENCE_SPACE_KEY"]
+          title = "Matikka-Ahmatti Runbook"
+
+          creds   = base64.b64encode(f"{email}:{token}".encode()).decode()
+          headers = {
+              "Authorization": f"Basic {creds}",
+              "Content-Type":  "application/json",
+              "Accept":        "application/json",
+          }
+
+          def req(method, url, data=None):
+              body = json.dumps(data).encode() if data else None
+              r = urllib.request.Request(url, data=body, headers=headers, method=method)
+              try:
+                  with urllib.request.urlopen(r) as resp:
+                      return resp.status, json.loads(resp.read())
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode()
+
+          # Lue runbook
+          with open("runbook.md", encoding="utf-8") as f:
+              md = f.read()
+          print(f"📄 Runbook luettu ({len(md)} merkkiä)")
+
+          # Yksinkertainen markdown → HTML
+          def md2html(md):
+              out = []
+              for line in md.split("\n"):
+                  m = re.match(r"^(#{1,6})\s+(.+)", line)
+                  if m:
+                      l = len(m.group(1))
+                      out.append(f"<h{l}>{m.group(2)}</h{l}>")
+                  elif line.startswith("```"):
+                      pass  # skip code fences
+                  elif line.startswith("|"):
+                      out.append(f"<p>{line}</p>")
+                  elif line.strip():
+                      line = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", line)
+                      line = re.sub(r"`([^`]+)`", r"<code>\1</code>", line)
+                      out.append(f"<p>{line}</p>")
+              return "\n".join(out)
+
+          body_html = md2html(md)
+          print("🔀 Muunnettu HTML-formaattiin")
+
+          # Hae olemassa oleva sivu
+          url = (f"{base}/wiki/rest/api/content"
+                 f"?spaceKey={urllib.parse.quote(space)}"
+                 f"&title={urllib.parse.quote(title)}"
+                 f"&expand=version&limit=1")
+          status, res = req("GET", url)
+          print(f"🔍 Haku: HTTP {status}")
+
+          if status == 200 and isinstance(res, dict) and res.get("results"):
+              # Päivitä
+              page    = res["results"][0]
+              page_id = page["id"]
+              version = page["version"]["number"]
+              print(f"✏️  Päivitetään sivu ID={page_id} v{version}→{version+1}")
+              update_url = f"{base}/wiki/rest/api/content/{page_id}"
+              s2, r2 = req("PUT", update_url, {
+                  "type": "page", "title": title,
+                  "version": {"number": version + 1},
+                  "body": {"storage": {"value": body_html, "representation": "storage"}},
+              })
+              if s2 in (200, 201):
+                  pid = r2.get("id") if isinstance(r2, dict) else "?"
+                  print(f"✅ Päivitetty! {base}/wiki/spaces/{space}/pages/{pid}")
+              else:
+                  print(f"❌ Päivitys epäonnistui HTTP {s2}: {str(r2)[:300]}")
+                  sys.exit(1)
+          else:
+              # Luo uusi
+              print(f"✨ Luodaan uusi sivu spaceen {space}...")
+              s2, r2 = req("POST", f"{base}/wiki/rest/api/content", {
+                  "type": "page", "title": title,
+                  "space": {"key": space},
+                  "body": {"storage": {"value": body_html, "representation": "storage"}},
+              })
+              if s2 in (200, 201):
+                  pid = r2.get("id") if isinstance(r2, dict) else "?"
+                  print(f"✅ Luotu! {base}/wiki/spaces/{space}/pages/{pid}")
+              else:
+                  print(f"❌ Luonti epäonnistui HTTP {s2}: {str(r2)[:400]}")
+                  sys.exit(1)
+          EOF
