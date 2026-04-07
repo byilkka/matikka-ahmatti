@@ -85,7 +85,7 @@ def api_request(method, url, headers, data=None):
 def find_page(base_url, headers, space_key, title):
     encoded_title = urllib.parse.quote(title)
     encoded_space = urllib.parse.quote(space_key)
-    url = f"{base_url}/rest/api/content?spaceKey={encoded_space}&title={encoded_title}&expand=version"
+    url = f"{base_url}/wiki/rest/api/content?spaceKey={encoded_space}&title={encoded_title}&expand=version"
     try:
         req = urllib.request.Request(url, headers=headers, method="GET")
         with urllib.request.urlopen(req) as r:
@@ -94,7 +94,7 @@ def find_page(base_url, headers, space_key, title):
         return results[0] if results else None
     except urllib.error.HTTPError as e:
         if e.code == 404:
-            return None  # Sivu ei ole olemassa → luodaan uusi
+            return None
         err = e.read().decode()
         print(f"❌ HTTP {e.code}: {err[:400]}")
         sys.exit(1)
@@ -114,7 +114,7 @@ def create_page(base_url, headers, space_key, title, body_html, parent_id=None):
     if parent_id:
         payload["ancestors"] = [{"id": parent_id}]
 
-    url = f"{base_url}/rest/api/content"
+    url = f"{base_url}/wiki/rest/api/content"
     return api_request("POST", url, headers, payload)
 
 def update_page(base_url, headers, page_id, title, body_html, current_version):
@@ -129,7 +129,7 @@ def update_page(base_url, headers, page_id, title, body_html, current_version):
             }
         },
     }
-    url = f"{base_url}/rest/api/content/{page_id}"
+    url = f"{base_url}/wiki/rest/api/content/{page_id}"
     return api_request("PUT", url, headers, payload)
 
 
