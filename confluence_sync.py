@@ -28,8 +28,8 @@ import urllib.request
 import urllib.error
 import urllib.parse
 
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'confluence_config.json')
-RUNBOOK_FILE = os.path.join(os.path.dirname(__file__), 'runbook.md')
+CONFIG_FILE  = os.path.join(os.path.dirname(__file__), 'confluence_config.json')
+RUNBOOK_FILE = 'runbook.md'  # Repon juuressa, ei skriptin hakemistossa
 
 # ── Konfiguraatio ──────────────────────────────────────
 
@@ -74,16 +74,30 @@ def api_request(method, url, headers, data=None):
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         err = e.read().decode()
-        print(f"❌ HTTP {e.code}: {err[:400]}")
+        print(f"❌ HTTP {e.code} ({method} {url}):")
+        try:
+            parsed = json.loads(err)
+            print(f"   {parsed.get('message') or parsed.get('errorMessage') or err[:300]}")
+        except Exception:
+            print(f"   {err[:300]}")
         sys.exit(1)
 
 def find_page(base_url, headers, space_key, title):
     encoded_title = urllib.parse.quote(title)
     encoded_space = urllib.parse.quote(space_key)
     url = f"{base_url}/rest/api/content?spaceKey={encoded_space}&title={encoded_title}&expand=version"
-    res = api_request("GET", url, headers)
-    results = res.get("results", [])
-    return results[0] if results else None
+    try:
+        req = urllib.request.Request(url, headers=headers, method="GET")
+        with urllib.request.urlopen(req) as r:
+            res = json.loads(r.read())
+        results = res.get("results", [])
+        return results[0] if results else None
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None  # Sivu ei ole olemassa → luodaan uusi
+        err = e.read().decode()
+        print(f"❌ HTTP {e.code}: {err[:400]}")
+        sys.exit(1)
 
 def create_page(base_url, headers, space_key, title, body_html, parent_id=None):
     payload = {
