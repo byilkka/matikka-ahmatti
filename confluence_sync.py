@@ -26,6 +26,7 @@ import re
 import base64
 import urllib.request
 import urllib.error
+import urllib.parse
 
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'confluence_config.json')
 RUNBOOK_FILE = os.path.join(os.path.dirname(__file__), 'runbook.md')
@@ -247,8 +248,6 @@ def md_to_confluence(md):
 # ── Pääohjelma ─────────────────────────────────────────
 
 def main():
-    import urllib.parse  # tarvitaan find_page:ssa
-
     print("🔄 Matikka-Ahmatti Runbook → Confluence")
     print("=" * 45)
 
