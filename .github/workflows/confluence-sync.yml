@@ -24,27 +24,58 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
           CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
         run: |
-          python3 -c "
+          python3 - << 'EOF'
           import os, json
           cfg = {
-            'base_url':       os.environ['CONFLUENCE_BASE_URL'],
-            'email':          os.environ['CONFLUENCE_EMAIL'],
-            'api_token':      os.environ['CONFLUENCE_API_TOKEN'],
-            'space_key':      os.environ['CONFLUENCE_SPACE_KEY'],
-            'page_title':     'Matikka-Ahmatti Runbook',
-            'parent_page_id': None,
+            "base_url":   os.environ["CONFLUENCE_BASE_URL"].rstrip("/"),
+            "email":      os.environ["CONFLUENCE_EMAIL"],
+            "api_token":  os.environ["CONFLUENCE_API_TOKEN"],
+            "space_key":  os.environ["CONFLUENCE_SPACE_KEY"],
+            "page_title": "Matikka-Ahmatti Runbook",
           }
-          with open('confluence_config.json', 'w') as f:
+          with open("confluence_config.json", "w") as f:
               json.dump(cfg, f)
-          print('Config luotu')
-          "
+          # Tulosta config ilman sensitiivisiä tietoja
+          print(f"base_url:  {cfg['base_url']}")
+          print(f"email:     {cfg['email']}")
+          print(f"space_key: {cfg['space_key']}")
+          print(f"api_token: {'*' * 8 + cfg['api_token'][-4:]}")
+          EOF
 
       - name: Tarkista tiedostot
         run: |
-          echo "Hakemisto:"
-          ls -la
-          echo "runbook.md löytyy:" && test -f runbook.md && echo "KYLLÄ" || echo "EI LÖYDY"
-          echo "confluence_sync.py löytyy:" && test -f confluence_sync.py && echo "KYLLÄ" || echo "EI LÖYDY"
+          echo "=== Tiedostot ==="
+          ls -la confluence_sync.py runbook.md confluence_config.json
+          echo ""
+          echo "=== confluence_sync.py versio (rivi 1-5) ==="
+          head -5 confluence_sync.py
+
+      - name: Testaa Confluence-yhteys
+        env:
+          CONFLUENCE_BASE_URL:  ${{ secrets.CONFLUENCE_BASE_URL }}
+          CONFLUENCE_EMAIL:     ${{ secrets.CONFLUENCE_EMAIL }}
+          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
+        run: |
+          python3 - << 'EOF'
+          import os, base64, urllib.request, urllib.error, json
+          base  = os.environ["CONFLUENCE_BASE_URL"].rstrip("/")
+          email = os.environ["CONFLUENCE_EMAIL"]
+          token = os.environ["CONFLUENCE_API_TOKEN"]
+          space = os.environ["CONFLUENCE_SPACE_KEY"]
+          creds = base64.b64encode(f"{email}:{token}".encode()).decode()
+          headers = {"Authorization": f"Basic {creds}", "Accept": "application/json"}
+          # Testaa space
+          url = f"{base}/wiki/rest/api/space/{space}"
+          req = urllib.request.Request(url, headers=headers)
+          try:
+              with urllib.request.urlopen(req) as r:
+                  data = json.loads(r.read())
+                  print(f"✅ Space löytyi: {data.get('name')} (key: {data.get('key')})")
+          except urllib.error.HTTPError as e:
+              print(f"❌ Space HTTP {e.code}: {e.read().decode()[:300]}")
+              import sys; sys.exit(1)
+          EOF
 
       - name: Synkronoi Confluenceen
         run: python3 confluence_sync.py
