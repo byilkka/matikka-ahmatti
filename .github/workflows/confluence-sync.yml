@@ -1,0 +1,32 @@
+name: Päivitä Runbook Confluenceen
+
+on:
+  push:
+    paths:
+      - 'runbook.md'    # Laukeaa vain kun runbook.md muuttuu
+  workflow_dispatch:     # Manuaalinen ajo
+
+jobs:
+  sync-confluence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Asenna Python-riippuvuudet
+        run: pip install requests
+
+      - name: Luo confluence_config.json
+        run: |
+          cat > confluence_config.json << EOF
+          {
+            "base_url":       "${{ secrets.CONFLUENCE_BASE_URL }}",
+            "email":          "${{ secrets.CONFLUENCE_EMAIL }}",
+            "api_token":      "${{ secrets.CONFLUENCE_API_TOKEN }}",
+            "space_key":      "${{ secrets.CONFLUENCE_SPACE_KEY }}",
+            "page_title":     "Matikka-Ahmatti Runbook",
+            "parent_page_id": null
+          }
+          EOF
+
+      - name: Synkronoi Confluenceen
+        run: python3 confluence_sync.py
