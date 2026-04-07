@@ -3,8 +3,8 @@ name: Päivitä Runbook Confluenceen
 on:
   push:
     paths:
-      - 'runbook.md'    # Laukeaa vain kun runbook.md muuttuu
-  workflow_dispatch:     # Manuaalinen ajo
+      - 'runbook.md'
+  workflow_dispatch:
 
 jobs:
   sync-confluence:
@@ -12,21 +12,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Asenna Python-riippuvuudet
-        run: pip install requests
+      - name: Asenna Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Luo confluence_config.json
+        env:
+          CONFLUENCE_BASE_URL:  ${{ secrets.CONFLUENCE_BASE_URL }}
+          CONFLUENCE_EMAIL:     ${{ secrets.CONFLUENCE_EMAIL }}
+          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
         run: |
-          cat > confluence_config.json << EOF
-          {
-            "base_url":       "${{ secrets.CONFLUENCE_BASE_URL }}",
-            "email":          "${{ secrets.CONFLUENCE_EMAIL }}",
-            "api_token":      "${{ secrets.CONFLUENCE_API_TOKEN }}",
-            "space_key":      "${{ secrets.CONFLUENCE_SPACE_KEY }}",
-            "page_title":     "Matikka-Ahmatti Runbook",
-            "parent_page_id": null
+          python3 -c "
+          import os, json
+          cfg = {
+            'base_url':       os.environ['CONFLUENCE_BASE_URL'],
+            'email':          os.environ['CONFLUENCE_EMAIL'],
+            'api_token':      os.environ['CONFLUENCE_API_TOKEN'],
+            'space_key':      os.environ['CONFLUENCE_SPACE_KEY'],
+            'page_title':     'Matikka-Ahmatti Runbook',
+            'parent_page_id': None,
           }
-          EOF
+          with open('confluence_config.json', 'w') as f:
+              json.dump(cfg, f)
+          print('Config luotu')
+          "
+
+      - name: Tarkista tiedostot
+        run: |
+          echo "Hakemisto:"
+          ls -la
+          echo "runbook.md löytyy:" && test -f runbook.md && echo "KYLLÄ" || echo "EI LÖYDY"
+          echo "confluence_sync.py löytyy:" && test -f confluence_sync.py && echo "KYLLÄ" || echo "EI LÖYDY"
 
       - name: Synkronoi Confluenceen
         run: python3 confluence_sync.py
