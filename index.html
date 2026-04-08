@@ -193,6 +193,61 @@ section{position:relative;z-index:1;}
 }
 .stat-pill .stat-n{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent);}
 
+/* ── ORIGIN STORY ── */
+.origin-section{padding:clamp(40px,8vw,100px) clamp(16px,4vw,48px);}
+.origin-box{
+  max-width:820px;margin:0 auto;
+  background:var(--card);border:1px solid rgba(255,255,255,.08);
+  border-radius:clamp(20px,3vw,32px);
+  padding:clamp(28px,4vw,52px);
+  display:flex;gap:clamp(20px,3vw,40px);
+  align-items:flex-start;
+  position:relative;overflow:hidden;
+}
+.origin-box::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(ellipse at 0% 0%,rgba(123,159,255,.06),transparent 60%);
+  pointer-events:none;
+}
+.origin-avatar{
+  font-size:clamp(2.8rem,6vw,4rem);
+  flex-shrink:0;line-height:1;
+  background:var(--card2);border-radius:50%;
+  width:clamp(64px,10vw,90px);height:clamp(64px,10vw,90px);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.08);
+}
+.origin-content{flex:1;min-width:0;}
+.origin-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.15rem,2.5vw,1.6rem);
+  color:var(--text);line-height:1.25;
+  margin-bottom:clamp(14px,2vh,20px);
+}
+.origin-text{
+  font-size:clamp(.85rem,1.5vw,.98rem);
+  color:var(--muted);line-height:1.7;font-weight:600;
+  margin-bottom:12px;
+}
+.origin-sig{
+  display:flex;flex-direction:column;gap:2px;
+  margin-top:clamp(16px,2.5vh,24px);
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.origin-sig-name{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1rem,2vw,1.2rem);color:var(--accent4);
+}
+.origin-sig-role{
+  font-size:clamp(.72rem,1.2vw,.82rem);
+  color:var(--muted);font-weight:700;
+}
+@media(max-width:520px){
+  .origin-box{flex-direction:column;align-items:center;text-align:center;}
+  .origin-sig{align-items:center;}
+}
+
 /* ── FEATURES ── */
 .features{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
 .section-label{
@@ -572,6 +627,23 @@ footer{
           💡 <strong style="color:var(--text);">Ehdotus opettajille:</strong> Aseta Grand Master -diplomi koko luokan tavoitteeksi. Diplomi on tulostettava todistus jonka lapsi voi viedä kotiin — konkreettinen palkinto oikeasta osaamisesta.
         </p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIGIN STORY -->
+<section class="origin-section">
+  <div class="origin-box reveal">
+    <div class="origin-avatar">👨‍💻</div>
+    <div class="origin-content">
+      <p class="section-label" style="text-align:left;margin-bottom:10px;">Miksi tein tämän?</p>
+      <h2 class="origin-title">Tyttäreni aloitti koulun 2025 — ja löysin vain vanhentuneita pelejä</h2>
+      <p class="origin-text">
+        Kun etsin hyvää matikkapeliä lapselleni, löysin pelejä jotka olivat joko ulkoasultaan vanhentuneita, täynnä mainoksia tai kalliita tilauspalveluja.
+      </p>
+      <p class="origin-text">
+        Päätin tehdä oman version: adaptiivinen vaikeus, ei mainoksia, toimii kaikilla laitteilla, täysin ilmainen. Peli jota itse olisin halunnut löytää.
+      </p>
     </div>
   </div>
 </section>

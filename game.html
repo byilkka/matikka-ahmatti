@@ -178,6 +178,15 @@
   --sc-card-gap: 7px;
 }
 
+/* ══ VAALEA TEEMA ══ */
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --card2: #e8eef5;
+  --text: #1a2840;
+  --muted: #5a6e88;
+}
+
 /* ── SM: 480px+ (large phone / small tablet) ── */
 @media (min-width: 480px) {
   :root {
@@ -2084,6 +2093,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🔊 Äänet</div>
       <button id="settingsMuteBtn" onclick="toggleMuteFromSettings()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
+    </div>
+
+    <!-- Teema -->
+    <div style="margin-bottom:16px;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Teema</div>
+      <button id="settingsThemeBtn" onclick="toggleTheme()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
     </div>
 
     <!-- Evästeasetukset -->
@@ -5253,6 +5268,7 @@ function openSettings() {
 
   // Ääniasetus
   updateSettingsMuteBtn();
+  updateSettingsThemeBtn();
 
   document.getElementById('settingsModal').style.display = 'flex';
 }
@@ -5268,6 +5284,25 @@ function handleSettingsOverlay(e) {
 function updateSettingsMuteBtn() {
   const btn = document.getElementById('settingsMuteBtn');
   if (btn) btn.textContent = muted ? '🔇 Äänet pois — klikkaa päällä' : '🔊 Äänet päällä — klikkaa pois';
+}
+
+function updateSettingsThemeBtn() {
+  const btn = document.getElementById('settingsThemeBtn');
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (btn) btn.textContent = isLight ? '☀️ Vaalea teema — klikkaa tummaan' : '🌙 Tumma teema — klikkaa vaaleaan';
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const newTheme = isLight ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('matikka_theme', newTheme);
+  updateSettingsThemeBtn();
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('matikka_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
 }
 
 function toggleMuteFromSettings() {
@@ -5436,6 +5471,8 @@ function openCookieSettings(){
   if(b) b.style.display = 'block';
   window.scrollTo(0,document.body.scrollHeight);
 }
+// Alusta teema heti
+initTheme();
 </script>
 </body>
 </html>
