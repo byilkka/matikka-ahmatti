@@ -1,3046 +1,711 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<!-- GA ladataan evästebannerin kautta suostumuksen jälkeen -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- ═══ SEO ═══ -->
 <title>Matikka-Ahmatti — Hauska matematiikan harjoittelupeli lapsille</title>
-<meta name="description" content="Matikka-Ahmatti on ilmainen matematiikan harjoittelupeli lapsille. Harjoittele hajotelmat, yhteenlasku, vähennyslasku ja kertotaulut hauskasti mörkön avulla. Sopii alakouluikäisille.">
-<meta name="keywords" content="matematiikka, lapsille, harjoittelu, kertotaulut, yhteenlasku, vähennyslasku, hajotelmat, peli, ilmainen, alakoulu, oppiminen">
+<meta name="description" content="Matikka-Ahmatti on ilmainen matematiikan harjoittelupeli alakouluikäisille lapsille. Harjoittele kertotaulut, yhteenlasku, vähennyslasku ja hajotelmat hauskasti mörkön kanssa. 50 tasoa, adaptiivinen vaikeus!">
+<meta name="keywords" content="matematiikka peli lapset, kertotaulut harjoittelu, alakoulu matikka, hajotelmat, yhteenlasku, vähennyslasku, ilmainen oppimispeli, matikkapeli">
 <meta name="author" content="Matikka-Ahmatti">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.matikka-ahmatti.fi/">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU" />
+<link rel="canonical" href="https://matikka-ahmatti.fi/">
 
-<!-- ═══ OPEN GRAPH (Facebook, WhatsApp, Discord jne.) ═══ -->
-<meta property="og:type"        content="website">
-<meta property="og:url"         content="https://www.matikka-ahmatti.fi/">
-<meta property="og:title"       content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
-<meta property="og:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Kertotaulut, hajotelmat ja laskut pelattavana mörkö-hahmolla. Adaptiivinen vaikeus kasvaa lapsen taitotason mukaan.">
-<meta property="og:image"       content="https://www.matikka-ahmatti.fi/og-image.png">
-<meta property="og:locale"      content="fi_FI">
-<meta property="og:site_name"   content="Matikka-Ahmatti">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Matikka-Ahmatti">
+<meta property="og:url" content="https://matikka-ahmatti.fi/">
+<meta property="og:title" content="Matikka-Ahmatti — Ilmainen matematiikan harjoittelupeli lapsille">
+<meta property="og:description" content="Hauska ja ilmainen matikkapeli alakouluikäisille. Harjoittele kertotaulut, hajotelmat ja laskut mörkön kanssa. 50 tasoa, adaptiivinen vaikeus — täysin ilmainen!">
+<meta property="og:image" content="https://matikka-ahmatti.fi/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Matikka-Ahmatti — matematiikan harjoittelupeli lapsille">
+<meta property="og:locale" content="fi_FI">
 
-<!-- ═══ TWITTER CARD ═══ -->
-<meta name="twitter:card"        content="summary_large_image">
-<meta name="twitter:title"       content="Matikka-Ahmatti — Matematiikan harjoittelupeli lapsille">
-<meta name="twitter:description" content="Hauska ja ilmainen matematiikan harjoittelupeli lapsille. Kertotaulut, hajotelmat ja laskut pelattavana.">
-<meta name="twitter:image"       content="https://www.matikka-ahmatti.fi/og-image.png">
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Matikka-Ahmatti — Ilmainen matikkapeli lapsille">
+<meta name="twitter:description" content="Hauska ja ilmainen matematiikan harjoittelupeli alakouluikäisille. Mörkö opettaa kertotaulut, hajotelmat ja laskut. Täysin ilmainen!">
+<meta name="twitter:image" content="https://matikka-ahmatti.fi/og-image.png">
 
-<!-- ═══ STRUCTURED DATA (JSON-LD) ═══ -->
+<!-- Structured Data (JSON-LD) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Matikka-Ahmatti",
-  "url": "https://www.matikka-ahmatti.fi/",
-  "description": "Ilmainen matematiikan harjoittelupeli alakouluikäisille lapsille. Sisältää kertotaulut, hajotelmat, yhteenlaskun ja vähennyslaskun adaptiivisella vaikeustasolla.",
+  "url": "https://matikka-ahmatti.fi",
+  "description": "Ilmainen matematiikan harjoittelupeli alakouluikäisille lapsille. Harjoittele kertotaulut, yhteenlasku, vähennyslasku ja hajotelmat hauskasti mörkön kanssa.",
   "applicationCategory": "EducationalApplication",
-  "operatingSystem": "All",
-  "inLanguage": "fi",
-  "isAccessibleForFree": true,
-  "audience": {
-    "@type": "EducationalAudience",
-    "educationalRole": "student",
-    "typicalAgeRange": "6-12"
-  },
-  "educationalAlignment": [
-    {
-      "@type": "AlignmentObject",
-      "alignmentType": "educationalSubject",
-      "targetName": "Matematiikka"
-    }
-  ],
+  "operatingSystem": "Web",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "EUR"
+  },
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student",
+    "audienceType": "Alakoululaiset, 6–12-vuotiaat"
+  },
+  "inLanguage": "fi",
+  "isAccessibleForFree": true,
+  "educationalUse": ["practice", "self-assessment"],
+  "learningResourceType": "game",
+  "teaches": ["matematiikka", "kertotaulut", "yhteenlasku", "vähennyslasku", "hajotelmat"],
+  "creator": {
+    "@type": "Person",
+    "name": "Ilkka Loutesalmi"
   }
 }
 </script>
 
+<meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════
-   DESIGN TOKENS — scale everything from one place
-══════════════════════════════════════════════════ */
-:root {
-  --bg: #0b1520;
-  --card: #162030;
-  --card2: #1a2840;
-  --accent: #f7c948;
-  --accent2: #ff6b6b;
-  --accent3: #5de8b5;
-  --accent4: #7b9fff;
-  --pink: #ff8ed4;
-  --purple: #c56cf0;
-  --text: #eef3ff;
-  --muted: #6a82a0;
-
-  /* ── MOBILE (default, max ~480px) ── */
-  --monster-size: 120px;
-  --login-title: 1.7rem;
-  --login-card-w: 100%;
-  --login-card-pad: 20px 18px;
-  --step-title: 1.1rem;
-  --char-avatar: 2.8rem;
-  --cta-font: 1rem;
-  --cta-pad: 12px;
-
-  --game-max: 100%;
-  --game-pad: 12px 12px 28px;
-  --header-gap: 6px;
-  --logo-mini-size: 30px;
-  --logo-text: .95rem;
-  --badge-pad: 5px 10px 5px 6px;
-  --badge-avatar: 1rem;
-  --badge-name: .7rem;
-  --top-btn-font: .7rem;
-  --top-btn-pad: 6px 10px;
-
-  --si-pad: 6px 10px;
-  --si-font: .68rem;
-  --si-gap: 4px;
-
-  --mode-pad: 4px;
-  --mode-btn-pad: 7px 3px;
-  --mode-icon: .9rem;
-  --mode-label: .6rem;
-
-  --card-pad: 16px 14px;
-  --sec-label: .6rem;
-  --rp-pad: 5px 10px;
-  --rp-font: .7rem;
-  --ti-pad: 6px 2px;
-  --ti-font: .7rem;
-
-  --ph-font: .7rem;
-  --problem-gap: 8px;
-  --problem-font: clamp(2rem, 9vw, 3rem);
-  --blank-w: 48px;
-  --blank-bdr: 3px;
-
-  --fb-font: .8rem;
-  --fb-h: 24px;
-
-  --nb-pad: 10px;
-  --nb-font: .95rem;
-  --nb-gap: 5px;
-  --nb-radius: 9px;
-  --en-font: .78rem;
-
-  --prog-font: .62rem;
-  --prog-h: 6px;
-
-  --re-font: 2.4rem;
-  --rt-font: 1.3rem;
-  --rs-font: .78rem;
-  --try-font: .88rem;
-  --try-pad: 10px 20px;
-
-  --score-max: 100%;
-  --score-title-font: 1.3rem;
-  --back-font: .72rem;
-  --back-pad: 7px 12px;
-  --ftab-font: .65rem;
-  --ftab-pad: 6px 10px;
-  --sc-card-pad: 10px 12px;
-  --sc-rank-font: .9rem;
-  --sc-avatar-font: 1.4rem;
-  --sc-name-font: .82rem;
-  --sc-detail-font: .58rem;
-  --sc-tag-font: .55rem;
-  --sc-pts-font: 1.2rem;
-  --sc-correct-font: .62rem;
-  --sc-gap: 8px;
-  --sc-card-gap: 7px;
-}
-
-/* ── SM: 480px+ (large phone / small tablet) ── */
-@media (min-width: 480px) {
-  :root {
-    --monster-size: 140px;
-    --login-title: 2rem;
-    --login-card-w: 420px;
-    --login-card-pad: 24px 22px;
-    --step-title: 1.25rem;
-    --char-avatar: 3.2rem;
-    --cta-font: 1.05rem;
-    --cta-pad: 13px;
-
-    --game-pad: 14px 14px 32px;
-    --logo-mini-size: 34px;
-    --logo-text: 1.05rem;
-    --badge-avatar: 1.1rem;
-    --badge-name: .75rem;
-    --top-btn-font: .75rem;
-    --top-btn-pad: 6px 11px;
-
-    --si-pad: 7px 12px;
-    --si-font: .72rem;
-
-    --mode-btn-pad: 8px 4px;
-    --mode-icon: 1rem;
-    --mode-label: .64rem;
-
-    --card-pad: 18px 16px;
-    --rp-pad: 5px 12px;
-    --rp-font: .74rem;
-    --ti-font: .74rem;
-
-    --ph-font: .74rem;
-    --problem-font: clamp(2.2rem, 8vw, 3.4rem);
-    --blank-w: 52px;
-
-    --nb-pad: 11px;
-    --nb-font: 1.05rem;
-    --nb-gap: 5px;
-
-    --re-font: 2.7rem;
-    --rt-font: 1.45rem;
-    --try-font: .92rem;
-
-    --score-title-font: 1.45rem;
-    --ftab-font: .68rem;
-    --sc-pts-font: 1.3rem;
-  }
-}
-
-/* ── MD: 768px+ (tablet / small desktop) ── */
-@media (min-width: 768px) {
-  :root {
-    --monster-size: 200px;
-    --login-title: 2.8rem;
-    --login-card-w: 500px;
-    --login-card-pad: 38px 36px;
-    --step-title: 1.7rem;
-    --char-avatar: 4.8rem;
-    --cta-font: 1.35rem;
-    --cta-pad: 17px;
-
-    --game-max: 820px;
-    --game-pad: 22px 28px 44px;
-    --header-gap: 10px;
-    --logo-mini-size: 48px;
-    --logo-text: 1.4rem;
-    --badge-pad: 8px 16px 8px 10px;
-    --badge-avatar: 1.5rem;
-    --badge-name: .9rem;
-    --top-btn-font: .9rem;
-    --top-btn-pad: 9px 16px;
-
-    --si-pad: 9px 16px;
-    --si-font: .85rem;
-    --si-gap: 6px;
-
-    --mode-pad: 6px;
-    --mode-btn-pad: 11px 6px;
-    --mode-icon: 1.25rem;
-    --mode-label: .78rem;
-
-    --card-pad: 28px 26px;
-    --sec-label: .72rem;
-    --rp-pad: 7px 16px;
-    --rp-font: .85rem;
-    --ti-pad: 8px 4px;
-    --ti-font: .88rem;
-
-    --ph-font: .88rem;
-    --problem-gap: 14px;
-    --problem-font: clamp(3rem, 6.5vw, 5rem);
-    --blank-w: 72px;
-    --blank-bdr: 4px;
-
-    --fb-font: 1rem;
-    --fb-h: 32px;
-
-    --nb-pad: 16px;
-    --nb-font: 1.35rem;
-    --nb-gap: 8px;
-    --nb-radius: 12px;
-    --en-font: 1rem;
-
-    --prog-font: .78rem;
-    --prog-h: 9px;
-
-    --re-font: 3.6rem;
-    --rt-font: 2rem;
-    --rs-font: 1rem;
-    --try-font: 1.1rem;
-    --try-pad: 13px 28px;
-
-    --score-max: 820px;
-    --score-title-font: 2.1rem;
-    --back-font: .9rem;
-    --back-pad: 10px 18px;
-    --ftab-font: .8rem;
-    --ftab-pad: 9px 18px;
-    --sc-card-pad: 16px 20px;
-    --sc-rank-font: 1.3rem;
-    --sc-avatar-font: 2rem;
-    --sc-name-font: 1.05rem;
-    --sc-detail-font: .72rem;
-    --sc-tag-font: .66rem;
-    --sc-pts-font: 1.6rem;
-    --sc-correct-font: .76rem;
-    --sc-gap: 13px;
-    --sc-card-gap: 10px;
-  }
-}
-
-/* ── LG: 1100px+ (desktop) ── */
-@media (min-width: 1100px) {
-  :root {
-    --monster-size: 260px;
-    --login-title: 3.4rem;
-    --login-card-w: 580px;
-    --login-card-pad: 48px 46px;
-    --step-title: 2rem;
-    --char-avatar: 5.8rem;
-    --cta-font: 1.55rem;
-    --cta-pad: 19px;
-
-    --game-max: 1020px;
-    --game-pad: 30px 44px 56px;
-    --header-gap: 12px;
-    --logo-mini-size: 58px;
-    --logo-text: 1.65rem;
-    --badge-pad: 10px 22px 10px 13px;
-    --badge-avatar: 1.85rem;
-    --badge-name: 1.08rem;
-    --top-btn-font: 1.02rem;
-    --top-btn-pad: 12px 22px;
-
-    --si-pad: 12px 22px;
-    --si-font: .96rem;
-    --si-gap: 7px;
-
-    --mode-pad: 7px;
-    --mode-btn-pad: 14px 9px;
-    --mode-icon: 1.5rem;
-    --mode-label: .9rem;
-
-    --card-pad: 40px 38px;
-    --sec-label: .78rem;
-    --rp-pad: 9px 22px;
-    --rp-font: .96rem;
-    --ti-pad: 11px 5px;
-    --ti-font: 1rem;
-
-    --ph-font: 1.02rem;
-    --problem-gap: 20px;
-    --problem-font: clamp(3.8rem, 5.5vw, 6.5rem);
-    --blank-w: 96px;
-    --blank-bdr: 5px;
-
-    --fb-font: 1.22rem;
-    --fb-h: 42px;
-
-    --nb-pad: 22px;
-    --nb-font: 1.65rem;
-    --nb-gap: 11px;
-    --nb-radius: 14px;
-    --en-font: 1.18rem;
-
-    --prog-font: .9rem;
-    --prog-h: 11px;
-
-    --re-font: 4.5rem;
-    --rt-font: 2.4rem;
-    --rs-font: 1.12rem;
-    --try-font: 1.28rem;
-    --try-pad: 16px 38px;
-
-    --score-max: 1020px;
-    --score-title-font: 2.5rem;
-    --back-font: 1rem;
-    --back-pad: 12px 22px;
-    --ftab-font: .9rem;
-    --ftab-pad: 11px 22px;
-    --sc-card-pad: 22px 28px;
-    --sc-rank-font: 1.7rem;
-    --sc-avatar-font: 2.6rem;
-    --sc-name-font: 1.25rem;
-    --sc-detail-font: .82rem;
-    --sc-tag-font: .74rem;
-    --sc-pts-font: 2rem;
-    --sc-correct-font: .88rem;
-    --sc-gap: 18px;
-    --sc-card-gap: 13px;
-  }
-}
-
-/* ── XL: 1440px+ (large desktop) ── */
-@media (min-width: 1440px) {
-  :root {
-    --monster-size: 300px;
-    --login-title: 4rem;
-    --login-card-w: 640px;
-    --login-card-pad: 56px 54px;
-    --step-title: 2.3rem;
-    --char-avatar: 6.8rem;
-    --cta-font: 1.75rem;
-    --cta-pad: 22px;
-
-    --game-max: 1180px;
-    --game-pad: 36px 52px 64px;
-    --logo-mini-size: 68px;
-    --logo-text: 1.9rem;
-    --badge-pad: 13px 26px 13px 15px;
-    --badge-avatar: 2.2rem;
-    --badge-name: 1.24rem;
-    --top-btn-font: 1.12rem;
-    --top-btn-pad: 14px 26px;
-
-    --si-pad: 14px 26px;
-    --si-font: 1.08rem;
-
-    --mode-pad: 9px;
-    --mode-btn-pad: 16px 12px;
-    --mode-icon: 1.7rem;
-    --mode-label: 1rem;
-
-    --card-pad: 50px 48px;
-    --rp-pad: 12px 26px;
-    --rp-font: 1.08rem;
-    --ti-font: 1.12rem;
-
-    --ph-font: 1.15rem;
-    --problem-font: clamp(4.5rem, 5vw, 7.5rem);
-    --blank-w: 116px;
-
-    --nb-pad: 26px;
-    --nb-font: 2rem;
-    --nb-gap: 13px;
-    --nb-radius: 17px;
-    --en-font: 1.4rem;
-
-    --prog-font: .98rem;
-    --prog-h: 13px;
-
-    --re-font: 5.2rem;
-    --rt-font: 2.8rem;
-    --try-font: 1.45rem;
-    --try-pad: 19px 46px;
-
-    --score-max: 1180px;
-    --score-title-font: 2.9rem;
-    --sc-card-pad: 28px 36px;
-    --sc-rank-font: 2.1rem;
-    --sc-avatar-font: 3.1rem;
-    --sc-name-font: 1.42rem;
-    --sc-pts-font: 2.5rem;
-    --sc-gap: 24px;
-    --sc-card-gap: 16px;
-  }
-}
-
-/* ══════════════════════════════════════════════════
-   BASE STYLES
-══════════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+:root{
+  --bg:#0b1520; --card:#162030; --card2:#1a2840;
+  --accent:#f7c948; --accent2:#ff6b6b; --accent3:#5de8b5;
+  --accent4:#7b9fff; --pink:#ff8ed4; --purple:#c56cf0;
+  --text:#eef3ff; --muted:#6a82a0;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 
-/* Floating numbers bg */
+/* ── Floating bg ── */
 #floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.fn{position:absolute;font-family:'Fredoka One',cursive;opacity:0;animation:floatUp linear infinite;user-select:none;will-change:transform,opacity;text-shadow:0 0 18px currentColor;}
-@keyframes floatUp{
-  0%  {transform:translateY(0) rotate(var(--r0)) scale(0.8);opacity:0;}
-  6%  {opacity:var(--maxOp);}
-  88% {opacity:var(--maxOp);}
-  100%{transform:translateY(-108vh) rotate(var(--r1)) scale(1.15);opacity:0;}
-}
+.fn{position:absolute;font-family:'Fredoka One',cursive;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
+@keyframes fnFloat{0%{transform:translateY(0) rotate(var(--r0));opacity:0;}10%{opacity:var(--op);}90%{opacity:var(--op);}100%{transform:translateY(-110vh) rotate(var(--r1));opacity:0;}}
 
-/* Screens */
-.screen{position:relative;z-index:1;display:none;min-height:100vh;}
-.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 10px 32px;}
-#gameScreen.active,#scoreScreen.active{justify-content:flex-start;}
-@media(min-width:480px){.screen.active{padding:20px 14px 36px;}}
-@media(min-width:768px){.screen.active{padding:24px 20px 44px;}}
-
-/* ══════════════════════════════════════════════════
-   LOGIN SCREEN
-══════════════════════════════════════════════════ */
-.login-logo{text-align:center;margin-bottom:28px;animation:bounceIn .8s cubic-bezier(.34,1.56,.64,1);}
-.monster-wrap{display:inline-block;position:relative;margin-bottom:12px;}
-.monster-svg{
-  width:var(--monster-size);height:var(--monster-size);
-  filter:drop-shadow(0 8px 32px rgba(93,232,181,.45));
-  animation:mFloat 3s ease-in-out infinite;
-  transition:width .3s, height .3s;
-}
-@keyframes mFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-14px) rotate(2deg);}}
-.login-title{
-  font-family:'Fredoka One',cursive;
-  font-size:var(--login-title);
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 55%,var(--accent3) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1.1;transition:font-size .3s;
-}
-.login-sub{color:var(--muted);font-size:clamp(.75rem,1.5vw,.95rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-top:6px;}
-
-.login-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:clamp(20px,2vw,32px);
-  padding:var(--login-card-pad);width:100%;max-width:var(--login-card-w);
-  box-shadow:0 24px 64px rgba(0,0,0,.55);animation:fadeUp .6s .25s both;
-  transition:max-width .3s,padding .3s;
-}
-.step{display:none;}.step.active{display:block;}
-.step-title{font-family:'Fredoka One',cursive;font-size:var(--step-title);margin-bottom:6px;transition:font-size .3s;}
-.step-sub{color:var(--muted);font-size:clamp(.75rem,1.5vw,.9rem);font-weight:600;margin-bottom:20px;}
-
-.name-input{
-  width:100%;background:var(--card2);border:2px solid rgba(255,255,255,.1);
-  border-radius:clamp(10px,1.5vw,16px);padding:clamp(11px,1.5vw,16px) clamp(14px,2vw,22px);
-  font-family:'Nunito',sans-serif;font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:var(--text);
-  outline:none;transition:all .2s;margin-bottom:14px;
-}
-.name-input::placeholder{color:var(--muted);font-weight:600;}
-.name-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(247,201,72,.13);}
-
-.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,18px);margin-bottom:20px;}
-.char-card{
-  background:var(--card2);border:2px solid rgba(255,255,255,.08);
-  border-radius:clamp(14px,2vw,22px);padding:clamp(18px,2.5vw,30px) clamp(8px,1.5vw,16px);
-  text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
-}
-.char-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;border-radius:inherit;}
-.char-card.boy::before{background:radial-gradient(circle at 50% 0%,rgba(123,159,255,.22),transparent 70%);}
-.char-card.girl::before{background:radial-gradient(circle at 50% 0%,rgba(255,142,212,.22),transparent 70%);}
-.char-card:hover::before,.char-card.selected::before{opacity:1;}
-.char-card.selected.boy{border-color:var(--accent4);box-shadow:0 0 0 4px rgba(123,159,255,.18);}
-.char-card.selected.girl{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,142,212,.18);}
-.char-card:hover{transform:translateY(-4px);}
-.char-avatar{font-size:var(--char-avatar);display:block;margin-bottom:8px;line-height:1;transition:font-size .3s;}
-.char-name{font-family:'Fredoka One',cursive;font-size:clamp(.9rem,2vw,1.2rem);}
-.char-badge{font-size:clamp(.6rem,1.2vw,.8rem);font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-top:6px;display:inline-block;}
-.char-card.boy .char-badge{background:rgba(123,159,255,.18);color:var(--accent4);}
-.char-card.girl .char-badge{background:rgba(255,142,212,.18);color:var(--pink);}
-.check-mark{position:absolute;top:10px;right:10px;width:clamp(20px,2.5vw,30px);height:clamp(20px,2.5vw,30px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(.7rem,1.5vw,1rem);opacity:0;transform:scale(0);transition:all .2s cubic-bezier(.34,1.56,.64,1);}
-.char-card.selected.boy .check-mark{background:var(--accent4);opacity:1;transform:scale(1);}
-.char-card.selected.girl .check-mark{background:var(--pink);opacity:1;transform:scale(1);}
-
-.cta-btn{
-  width:100%;padding:var(--cta-pad);border:none;border-radius:clamp(10px,1.5vw,16px);
-  font-family:'Fredoka One',cursive;font-size:var(--cta-font);
-  cursor:pointer;transition:all .2s;
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;box-shadow:0 6px 22px rgba(247,201,72,.3);
-}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(247,201,72,.42);}
-.cta-btn:active{transform:translateY(0);}
-.cta-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
-
-/* ══ PIN STYLES ══ */
-.pin-dots{
-  display:flex;justify-content:center;gap:clamp(12px,2.5vw,20px);
-  margin:clamp(18px,2.5vw,28px) 0 clamp(8px,1.2vw,14px);
-}
-.pin-dot{
-  width:clamp(16px,3.5vw,22px);height:clamp(16px,3.5vw,22px);
-  border-radius:50%;border:2.5px solid rgba(255,255,255,.2);
-  background:transparent;transition:all .15s;
-}
-.pin-dot.filled{background:var(--accent);border-color:var(--accent);transform:scale(1.15);}
-.pin-dot.error{background:var(--accent2);border-color:var(--accent2);}
-.pin-error{
-  text-align:center;font-size:clamp(.75rem,1.4vw,.88rem);
-  font-weight:700;color:var(--accent2);min-height:22px;
-  margin-bottom:clamp(8px,1.2vw,14px);
-  animation:shake .4s ease;
-}
-.pin-pad{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(7px,1.2vw,12px);
-  margin-bottom:clamp(10px,1.5vw,16px);
-}
-.pin-btn{
-  padding:clamp(14px,2.2vw,22px) 8px;
-  border-radius:clamp(10px,1.5vw,16px);
-  border:1.5px solid rgba(255,255,255,.1);
-  background:var(--card2);color:var(--text);
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1.2rem,2.5vw,1.8rem);
-  cursor:pointer;transition:all .13s;touch-action:manipulation;
-}
-.pin-btn:hover{background:rgba(255,255,255,.1);}
-.pin-btn:active{transform:scale(.9);}
-.pin-clear{color:var(--accent2);border-color:rgba(255,107,107,.2);}
-.pin-ok{
-  background:linear-gradient(135deg,var(--accent3),#36d7b7);
-  color:#0b1520;border-color:transparent;
-  box-shadow:0 4px 14px rgba(93,232,181,.28);
-}
-.pin-ok:disabled{opacity:.3;cursor:not-allowed;}
-.pin-ok:not(:disabled):hover{box-shadow:0 6px 20px rgba(93,232,181,.4);}
-
-/* ══════════════════════════════════════════════════
-   GAME SCREEN
-══════════════════════════════════════════════════ */
-#gameScreen{
-  max-width:var(--game-max);margin:0 auto;width:100%;
-  padding:var(--game-pad);transition:max-width .3s,padding .3s;
-}
-
-.game-header{
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:clamp(12px,2vh,22px);gap:var(--header-gap);
+  padding:14px clamp(16px,4vw,48px);
+  background:rgba(11,21,32,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
-.game-logo-mini{display:flex;align-items:center;gap:clamp(6px,1vw,12px);}
-.mini-svg{
-  width:var(--logo-mini-size);height:var(--logo-mini-size);
-  filter:drop-shadow(0 2px 8px rgba(93,232,181,.4));
-  animation:mFloat 3s ease-in-out infinite;
-  transition:width .3s,height .3s;
-  flex-shrink:0;
-}
-.game-logo-text{
-  font-family:'Fredoka One',cursive;font-size:var(--logo-text);
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;filter:drop-shadow(0 2px 8px rgba(93,232,181,.4));}
+.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.25rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:clamp(8px,1.5vw,20px);}
+.nav-link{color:var(--muted);font-weight:700;font-size:.85rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
+.nav-cta{
   background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;
+  padding:9px 20px;border-radius:40px;text-decoration:none;
+  box-shadow:0 4px 14px rgba(247,201,72,.28);transition:all .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(247,201,72,.4);}
+
+/* ── Sections ── */
+section{position:relative;z-index:1;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:clamp(100px,15vw,140px) clamp(16px,4vw,48px) clamp(60px,8vw,80px);
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(93,232,181,.1);border:1px solid rgba(93,232,181,.25);
+  border-radius:40px;padding:6px 16px;
+  font-size:.78rem;font-weight:800;color:var(--accent3);
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:clamp(20px,3vw,32px);
+  animation:fadeUp .6s .1s both;
+}
+.hero-monster{
+  width:clamp(140px,22vw,220px);
+  height:clamp(140px,22vw,220px);
+  margin:0 auto clamp(24px,4vw,40px);
+  filter:drop-shadow(0 12px 40px rgba(93,232,181,.4));
+  animation:heroFloat 3.5s ease-in-out infinite;
+}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
+.hero-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.8rem,8vw,6rem);
+  line-height:1;
+  margin-bottom:clamp(12px,2vw,20px);
+  animation:fadeUp .6s .2s both;
+}
+.hero-title .line1{
+  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 50%,var(--pink) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  transition:font-size .3s;
 }
-.header-right{display:flex;align-items:center;gap:clamp(6px,1vw,12px);}
-.player-badge{
-  display:flex;align-items:center;gap:clamp(5px,0.8vw,9px);
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--badge-pad);cursor:pointer;transition:all .2s;
+.hero-title .line2{color:var(--text);}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.35rem);
+  color:var(--muted);font-weight:700;
+  max-width:540px;line-height:1.6;
+  margin:0 auto clamp(28px,4vw,44px);
+  animation:fadeUp .6s .3s both;
 }
-.player-badge:hover{border-color:rgba(255,255,255,.18);}
-.player-avatar-mini{font-size:var(--badge-avatar);line-height:1;transition:font-size .3s;}
-.player-name-mini{font-size:var(--badge-name);font-weight:800;transition:font-size .3s;}
-.score-nav-btn{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--top-btn-pad);
-  font-family:'Fredoka One',cursive;font-size:var(--top-btn-font);
-  color:var(--accent);cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;gap:5px;white-space:nowrap;
+.hero-sub strong{color:var(--accent3);}
+.hero-btns{
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;
+  animation:fadeUp .6s .4s both;
 }
-.score-nav-btn:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(247,201,72,.12);}
-
-.mute-btn{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--top-btn-pad);
-  font-size:var(--top-btn-font);cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;line-height:1;
-}
-.mute-btn:hover{border-color:rgba(255,255,255,.2);}
-.mute-btn.muted{opacity:.5;}
-
-/* Streak bar */
-.streak-bar{display:flex;gap:clamp(5px,1vw,10px);margin-bottom:clamp(16px,2.5vh,26px);flex-wrap:nowrap;}
-.si{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--si-pad);font-size:var(--si-font);
-  font-weight:700;display:flex;align-items:center;gap:var(--si-gap);
-  flex:1;justify-content:center;min-width:0;transition:padding .3s,font-size .3s;
-}
-.si .v{color:var(--accent);}
-.si .v.g{color:var(--accent3);}
-.si .v.b{color:var(--accent4);}
-
-/* Mode selector */
-.mode-selector{
-  display:flex;gap:clamp(4px,0.8vw,8px);
-  margin-bottom:clamp(16px,2.5vh,26px);
-  background:var(--card);border-radius:clamp(12px,1.5vw,20px);
-  padding:var(--mode-pad);transition:padding .3s;
-}
-.mode-btn{
-  flex:1;padding:var(--mode-btn-pad);border:none;
-  border-radius:clamp(9px,1.2vw,15px);background:transparent;color:var(--muted);
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:var(--mode-label);
-  cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.4vw,5px);
-}
-.mode-btn .mi{font-size:var(--mode-icon);transition:font-size .3s;}
-.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);}
-.mode-btn:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
-
-/* Main card */
-.main-card{
-  background:var(--card);border-radius:clamp(18px,2vw,28px);
-  padding:var(--card-pad);border:1px solid rgba(255,255,255,.07);
-  box-shadow:0 20px 56px rgba(0,0,0,.45);position:relative;overflow:hidden;
-  transition:padding .3s;
-}
-.main-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;background:radial-gradient(circle,rgba(247,201,72,.06) 0%,transparent 70%);pointer-events:none;}
-
-.sec-label{
-  font-size:var(--sec-label);text-transform:uppercase;letter-spacing:1.5px;
-  color:var(--muted);font-weight:700;margin-bottom:clamp(6px,1vh,10px);transition:font-size .3s;
-}
-.range-pills{display:flex;gap:clamp(5px,0.8vw,8px);flex-wrap:wrap;margin-bottom:clamp(14px,2vh,22px);}
-.rp{
-  padding:var(--rp-pad);border-radius:40px;
-  border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:var(--rp-font);
-  cursor:pointer;transition:all .17s;
-}
-.rp:hover{border-color:var(--accent);color:var(--accent);}
-.rp.active{background:rgba(247,201,72,.11);border-color:var(--accent);color:var(--accent);}
-
-.tables-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(4px,0.6vw,7px);margin-bottom:clamp(14px,2vh,22px);}
-.ti{
-  background:var(--card2);border:1.5px solid rgba(255,255,255,.06);
-  border-radius:clamp(7px,1vw,12px);padding:var(--ti-pad);
-  text-align:center;cursor:pointer;transition:all .15s;
-  font-weight:700;font-size:var(--ti-font);color:var(--muted);
-}
-.ti:hover{border-color:var(--accent4);color:var(--accent4);}
-.ti.active{background:rgba(123,159,255,.11);border-color:var(--accent4);color:var(--accent4);}
-
-/* Problem area */
-.problem-area{
-  text-align:center;margin:clamp(4px,0.5vh,8px) 0 clamp(16px,2.5vh,26px);
-  min-height:clamp(90px,14vh,140px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.ph{font-size:var(--ph-font);color:var(--muted);font-weight:600;margin-bottom:clamp(6px,1vh,12px);transition:font-size .3s;}
-.pd{
-  font-family:'Fredoka One',cursive;font-size:var(--problem-font);
-  line-height:1;display:flex;align-items:center;gap:var(--problem-gap);
-  flex-wrap:wrap;justify-content:center;transition:font-size .3s,gap .3s;
-}
-.po{color:var(--accent);}
-.pb{
-  min-width:var(--blank-w);border-bottom:var(--blank-bdr) solid var(--accent3);
-  color:var(--accent3);text-align:center;transition:all .2s;
-}
-.pe{color:var(--muted);}
-.pr{color:var(--accent4);}
-
-/* ═══ MÖRKÖ ANIMAATIOKONTTI ═══ */
-.monster-game-wrap{
-  display:flex;justify-content:center;align-items:flex-end;
-  margin-bottom:clamp(6px,1vh,12px);
-  position:relative;height:clamp(80px,14vw,130px);
-}
-.monster-game-svg{
-  width:clamp(80px,14vw,130px);
-  height:clamp(80px,14vw,130px);
-  filter:drop-shadow(0 6px 20px rgba(93,232,181,.35));
-  transition:filter .3s;
-  transform-origin:center bottom;
-  animation:monsterIdle 3s ease-in-out infinite;
-}
-
-/* Floating number that flies into mouth on correct answer */
-.eat-number{
-  position:absolute;
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1.2rem,3vw,2rem);
-  color:var(--accent);
-  pointer-events:none;
-  animation:eatFly .55s cubic-bezier(.4,0,.2,1) forwards;
-  text-shadow:0 0 12px rgba(247,201,72,.6);
-  top:10%;left:50%;transform:translateX(-50%);
-}
-@keyframes eatFly{
-  0%  {opacity:1;transform:translateX(-50%) translateY(0) scale(1.2);}
-  60% {opacity:1;transform:translateX(-50%) translateY(55%) scale(.8);}
-  100%{opacity:0;transform:translateX(-50%) translateY(80%) scale(.3);}
-}
-
-/* ── Animaatiotilat ── */
-/* Perusleijunta */
-@keyframes monsterIdle{
-  0%,100%{transform:translateY(0) rotate(-1.5deg);}
-  50%    {transform:translateY(-8px) rotate(1.5deg);}
-}
-/* Oikea vastaus: pomppaa ylös ja alas */
-@keyframes monsterEat{
-  0%  {transform:translateY(0) scale(1);}
-  25% {transform:translateY(-18px) scale(1.12) rotate(-3deg);}
-  55% {transform:translateY(-6px) scale(1.06) rotate(2deg);}
-  75% {transform:translateY(-12px) scale(1.08) rotate(-2deg);}
-  100%{transform:translateY(0) scale(1) rotate(0deg);}
-}
-/* Väärä vastaus: ravistaa */
-@keyframes monsterShake{
-  0%,100%{transform:rotate(0deg) translateX(0);}
-  15%{transform:rotate(-8deg) translateX(-6px);}
-  30%{transform:rotate(8deg)  translateX(6px);}
-  45%{transform:rotate(-6deg) translateX(-5px);}
-  60%{transform:rotate(6deg)  translateX(5px);}
-  75%{transform:rotate(-3deg) translateX(-3px);}
-  90%{transform:rotate(3deg)  translateX(3px);}
-}
-/* Putki 5x: hyppy */
-@keyframes monsterJump{
-  0%  {transform:translateY(0) scale(1);}
-  20% {transform:translateY(-28px) scale(1.05) rotate(-5deg);}
-  40% {transform:translateY(-36px) scale(1.1) rotate(5deg);}
-  60% {transform:translateY(-22px) scale(1.05) rotate(-3deg);}
-  80% {transform:translateY(-6px)  scaleY(.9) scaleX(1.1);}
-  100%{transform:translateY(0) scale(1) rotate(0);}
-}
-/* Kierros päättyy hyvin: tanssi */
-@keyframes monsterDance{
-  0%  {transform:rotate(0) translateY(0);}
-  12% {transform:rotate(-12deg) translateY(-10px);}
-  25% {transform:rotate(12deg) translateY(-14px);}
-  37% {transform:rotate(-10deg) translateY(-8px);}
-  50% {transform:rotate(10deg) translateY(-14px);}
-  62% {transform:rotate(-8deg) translateY(-8px);}
-  75% {transform:rotate(8deg) translateY(-12px);}
-  87% {transform:rotate(-4deg) translateY(-5px);}
-  100%{transform:rotate(0) translateY(0);}
-}
-/* Kierros päättyy huonosti: surullinen */
-@keyframes monsterSad{
-  0%  {transform:translateY(0) rotate(0);}
-  30% {transform:translateY(4px) rotate(-4deg) scaleY(.95);}
-  60% {transform:translateY(6px) rotate(-5deg) scaleY(.93);}
-  80% {transform:translateY(4px) rotate(-3deg) scaleY(.95);}
-  100%{transform:translateY(0) rotate(0);}
-}
-
-/* Animaatioluokat jotka overridaavat idlen */
-.monster-game-svg.anim-eat   { animation:monsterEat  .6s ease forwards; }
-.monster-game-svg.anim-shake { animation:monsterShake .55s ease forwards; }
-.monster-game-svg.anim-jump  { animation:monsterJump  .7s ease forwards; }
-.monster-game-svg.anim-dance { animation:monsterDance 1.2s ease forwards; }
-.monster-game-svg.anim-sad   { animation:monsterSad   1.4s ease forwards; }
-
-/* Feedback */
-.feedback{
-  text-align:center;height:var(--fb-h);display:flex;align-items:center;justify-content:center;
-  font-size:var(--fb-font);font-weight:800;margin-bottom:clamp(2px,0.3vh,4px);transition:font-size .3s;
-}
-.feedback.ok{color:var(--accent3);}
-.feedback.no{color:var(--accent2);}
-
-/* Numpad */
-.numpad{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--nb-gap);margin-top:clamp(4px,0.6vh,8px);}
-.nb{
-  padding:var(--nb-pad);border-radius:var(--nb-radius);
-  border:1.5px solid rgba(255,255,255,.08);
-  background:var(--card2);color:var(--text);
-  font-family:'Fredoka One',cursive;font-size:var(--nb-font);
-  cursor:pointer;transition:all .12s;touch-action:manipulation;
-}
-.nb:hover{background:rgba(255,255,255,.09);}
-.nb:active{transform:scale(.92);}
-.nb.cl{color:var(--accent2);border-color:rgba(255,107,107,.2);}
-.nb.en{
-  background:linear-gradient(135deg,var(--accent3) 0%,#36d7b7 100%);
-  color:#0b1520;border-color:transparent;grid-column:span 2;
-  font-size:var(--en-font);box-shadow:0 4px 14px rgba(93,232,181,.28);
-}
-.nb.en:hover{box-shadow:0 6px 20px rgba(93,232,181,.38);}
-
-/* Progress */
-.prog-section{margin-top:clamp(14px,2vh,22px);padding-top:clamp(12px,1.8vh,18px);border-top:1px solid rgba(255,255,255,.06);}
-.prog-label{display:flex;justify-content:space-between;font-size:var(--prog-font);color:var(--muted);font-weight:700;margin-bottom:clamp(4px,0.6vh,8px);}
-.prog-bg{background:var(--card2);border-radius:40px;height:var(--prog-h);overflow:hidden;}
-.prog-fill{height:100%;border-radius:40px;background:linear-gradient(90deg,var(--accent3) 0%,var(--accent4) 100%);transition:width .5s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(93,232,181,.32);}
-
-/* Results */
-.results-panel{display:none;text-align:center;padding:clamp(14px,2vh,24px) 0 clamp(4px,0.6vh,8px);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
-.results-panel.show{display:block;}
-.re{font-size:var(--re-font);margin-bottom:clamp(6px,1vh,12px);display:block;animation:bounce .6s .2s both;transition:font-size .3s;}
-.rt{font-family:'Fredoka One',cursive;font-size:var(--rt-font);margin-bottom:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:font-size .3s;}
-.rs{font-size:var(--rs-font);color:var(--muted);margin-bottom:clamp(12px,2vh,20px);font-weight:700;}
-.rs span{color:var(--text);}
-
-/* Result panel sub-elements */
-.result-stat{
-  font-size:clamp(.95rem,2vw,1.2rem);font-weight:800;color:var(--muted);
-  margin-bottom:clamp(8px,1.2vh,14px);
-}
-.result-stat span{color:var(--text);}
-.result-tag{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(.9rem,1.8vw,1.15rem);
-  font-weight:700;
-  padding:clamp(6px,1vw,10px) clamp(14px,2vw,22px);
-  border-radius:40px;
-  margin-bottom:clamp(8px,1.2vh,14px);
-  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
-}
-.result-save{
-  font-size:clamp(.85rem,1.6vw,1.05rem);
-  font-weight:700;color:var(--muted);
-  margin-bottom:4px;
-  transition:color .3s;
-}
-.result-save--ok      { color:var(--accent3); }
-.result-save--offline { color:var(--accent); }
-.results-btns{display:flex;gap:clamp(6px,1vw,12px);justify-content:center;flex-wrap:wrap;}
-.try-btn{
-  padding:var(--try-pad);border-radius:40px;border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:var(--try-font);
-  cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(247,201,72,.28);
-}
-.try-btn:hover{transform:translateY(-2px) scale(1.03);}
-.score-btn{
-  padding:var(--try-pad);border-radius:40px;
-  border:1.5px solid rgba(255,255,255,.12);background:transparent;
-  color:var(--text);font-family:'Fredoka One',cursive;font-size:var(--try-font);
-  cursor:pointer;transition:all .2s;
-}
-.score-btn:hover{border-color:var(--accent4);color:var(--accent4);}
-
-/* ══════════════════════════════════════════════════
-   SCORE SCREEN
-══════════════════════════════════════════════════ */
-#scoreScreen{
-  max-width:var(--score-max);margin:0 auto;width:100%;
-  padding:var(--game-pad);transition:max-width .3s,padding .3s;
-}
-.score-header{
-  display:flex;align-items:flex-start;justify-content:space-between;
-  gap:clamp(12px,2vw,24px);
-  margin-bottom:clamp(16px,2.5vh,28px);
-  flex-wrap:wrap;
-}
-.score-header-left{flex:1;min-width:0;}
-.score-title{
-  font-family:'Fredoka One',cursive;font-size:var(--score-title-font);
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
   background:linear-gradient(135deg,var(--accent),#ff9f43);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  transition:font-size .3s;line-height:1.1;
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2.2vw,1.4rem);
+  padding:clamp(14px,2vw,18px) clamp(28px,4vw,44px);
+  border-radius:60px;text-decoration:none;
+  box-shadow:0 8px 28px rgba(247,201,72,.38);
+  transition:all .22s;
 }
-.back-btn{
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(247,201,72,.5);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;
+  color:var(--text);font-family:'Fredoka One',cursive;
+  font-size:clamp(1rem,2vw,1.25rem);
+  padding:clamp(13px,1.8vw,17px) clamp(24px,3.5vw,38px);
+  border-radius:60px;text-decoration:none;
+  border:2px solid rgba(255,255,255,.14);
+  transition:all .22s;
+}
+.btn-secondary:hover{border-color:var(--accent4);color:var(--accent4);transform:translateY(-2px);}
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,20px);justify-content:center;
+  margin-top:clamp(40px,6vw,64px);
+  animation:fadeUp .6s .5s both;
+}
+.stat-pill{
   background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--back-pad);
-  font-family:'Fredoka One',cursive;font-size:var(--back-font);
-  color:var(--text);cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;gap:6px;white-space:nowrap;
-  flex-shrink:0;align-self:flex-start;margin-top:4px;
+  border-radius:40px;padding:10px 20px;
+  display:flex;align-items:center;gap:8px;
+  font-size:.82rem;font-weight:800;
 }
-.back-btn:hover{border-color:rgba(255,255,255,.2);transform:translateX(-2px);}
+.stat-pill .stat-n{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent);}
 
-.filter-tabs{display:flex;gap:clamp(5px,0.8vw,10px);margin-bottom:clamp(14px,2vh,22px);overflow-x:auto;padding-bottom:2px;}
-.ftab{
-  padding:var(--ftab-pad);border-radius:40px;border:1.5px solid rgba(255,255,255,.1);
-  background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;
-  font-weight:700;font-size:var(--ftab-font);cursor:pointer;transition:all .17s;
-  white-space:nowrap;flex-shrink:0;
+/* ── FEATURES ── */
+.features{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
+.section-label{
+  text-align:center;font-size:.75rem;font-weight:800;
+  color:var(--accent4);text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:12px;
 }
-.ftab:hover{border-color:var(--accent4);color:var(--accent4);}
-.ftab.active{background:rgba(123,159,255,.12);border-color:var(--accent4);color:var(--accent4);}
-
-/* ══ SCORE SCREEN SUB ══ */
-.score-screen-sub{font-size:clamp(.65rem,1.2vw,.82rem);color:var(--muted);font-weight:700;margin-top:4px;letter-spacing:.5px;}
-
-/* ══ MAIN TABS (Hall of Fame | Saavutukset) ══ */
-.main-tabs{
-  display:flex;gap:6px;margin-bottom:clamp(14px,2vh,22px);
-  background:var(--card);border-radius:16px;padding:5px;
+.section-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,5vw,3.2rem);
+  text-align:center;
+  background:linear-gradient(135deg,var(--text),var(--muted));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:clamp(40px,6vw,64px);
 }
-.mtab{
-  flex:1;padding:clamp(9px,1.4vh,14px) 10px;border:none;
-  border-radius:12px;background:transparent;color:var(--muted);
-  font-family:'Fredoka One',cursive;font-size:clamp(.85rem,1.6vw,1.05rem);
-  cursor:pointer;transition:all .18s;
-}
-.mtab.active{
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);
-}
-.mtab:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
-
-/* ══ HOF GRID — kortit rinnakkain ══ */
-.hof-grid{
+.features-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(clamp(160px,22vw,240px),1fr));
-  gap:clamp(8px,1.2vw,14px);
-  padding-bottom:20px;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:clamp(14px,2vw,24px);
+  max-width:1100px;margin:0 auto;
 }
-
-.hof-card{
+.feature-card{
   background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(14px,1.8vw,20px);
-  padding:clamp(14px,2vw,20px) clamp(12px,1.6vw,18px);
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(5px,.8vh,8px);
-  transition:all .2s;position:relative;overflow:hidden;
+  border-radius:clamp(18px,2vw,28px);
+  padding:clamp(24px,3vw,36px);
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 0% 0%,var(--glow-color,.06) 0%,transparent 60%);
+  opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.feature-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(0,0,0,.3);}
+.feature-card:hover::before{opacity:1;}
+.feature-icon{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:16px;display:block;}
+.feature-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2vw,1.35rem);margin-bottom:10px;color:var(--text);}
+.feature-desc{font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.65;font-weight:600;}
+
+/* ── GAME MODES ── */
+.modes{
+  padding:clamp(60px,10vw,100px) clamp(16px,4vw,48px);
+  background:linear-gradient(180deg,transparent,rgba(22,32,48,.5),transparent);
+}
+.modes-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:clamp(10px,1.8vw,18px);
+  max-width:700px;margin:0 auto;
+}
+@media(min-width:600px){.modes-grid{grid-template-columns:repeat(4,1fr);}}
+.mode-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(14px,2vw,22px);
+  padding:clamp(20px,3vw,32px) 12px;
+  text-align:center;transition:all .22s;cursor:default;
+}
+.mode-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
+.mode-card .mode-emoji{font-size:clamp(2rem,4vw,3rem);display:block;margin-bottom:10px;}
+.mode-card .mode-name{font-family:'Fredoka One',cursive;font-size:clamp(.88rem,1.6vw,1.05rem);color:var(--text);}
+.mode-card .mode-desc{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--muted);font-weight:700;margin-top:4px;}
+.mode-card.m1{border-color:rgba(247,201,72,.2);} .mode-card.m1:hover{border-color:rgba(247,201,72,.4);}
+.mode-card.m2{border-color:rgba(93,232,181,.2);} .mode-card.m2:hover{border-color:rgba(93,232,181,.4);}
+.mode-card.m3{border-color:rgba(255,107,107,.2);} .mode-card.m3:hover{border-color:rgba(255,107,107,.4);}
+.mode-card.m4{border-color:rgba(123,159,255,.2);} .mode-card.m4:hover{border-color:rgba(123,159,255,.4);}
+.mode-card.m5{border-color:rgba(255,107,53,.2);} .mode-card.m5:hover{border-color:rgba(255,107,53,.4);}
+
+/* ── HOW IT WORKS ── */
+.how{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));
+  gap:clamp(14px,2vw,24px);
+  max-width:900px;margin:0 auto;
+  position:relative;
+}
+.step-card{
+  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  border-radius:clamp(18px,2vw,26px);
+  padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,30px);
+  text-align:center;
+  position:relative;
+}
+.step-num{
+  width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px);
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  font-size:clamp(1.1rem,2vw,1.4rem);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto clamp(14px,2vw,20px);
+  box-shadow:0 4px 16px rgba(247,201,72,.3);
+}
+.step-title{font-family:'Fredoka One',cursive;font-size:clamp(1rem,1.8vw,1.2rem);margin-bottom:8px;}
+.step-desc{font-size:clamp(.8rem,1.3vw,.9rem);color:var(--muted);font-weight:600;line-height:1.6;}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
   text-align:center;
 }
-.hof-card::before{
-  content:'';position:absolute;left:0;top:0;right:0;height:3px;border-radius:2px 2px 0 0;
+.cta-box{
+  background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(93,232,181,.08));
+  border:1px solid rgba(247,201,72,.2);
+  border-radius:clamp(24px,4vw,40px);
+  padding:clamp(40px,6vw,72px) clamp(24px,4vw,60px);
+  max-width:700px;margin:0 auto;
+  position:relative;overflow:hidden;
 }
-.hof-card.rank-1::before{background:linear-gradient(90deg,#ffd700,#ff9f43);}
-.hof-card.rank-2::before{background:linear-gradient(90deg,#c0c0c0,#a0a0a0);}
-.hof-card.rank-3::before{background:linear-gradient(90deg,#cd7f32,#a0522d);}
-.hof-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.3);}
-.hof-card.goat-card{
-  background:linear-gradient(160deg,rgba(255,215,0,.12) 0%,rgba(22,32,48,1) 100%);
-  border:1.5px solid rgba(255,215,0,.4);
-  box-shadow:0 4px 24px rgba(255,180,0,.15);
-}
-.hof-card.me-card{border-color:rgba(247,201,72,.4);box-shadow:0 0 0 2px rgba(247,201,72,.15);}
-
-.hof-rank{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(.9rem,1.6vw,1.2rem);
-  color:var(--muted);
-}
-.hof-rank.r1{color:#ffd700;} .hof-rank.r2{color:#c0c0c0;} .hof-rank.r3{color:#cd7f32;}
-.hof-avatar{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
-.hof-name{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(.88rem,1.5vw,1.1rem);
-  color:var(--text);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  max-width:100%;
-}
-.hof-pts{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1.3rem,2.5vw,1.8rem);
-  color:var(--accent);line-height:1;
-}
-.hof-pts-label{font-size:clamp(.58rem,1vw,.72rem);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-.hof-correct{font-size:clamp(.68rem,1.1vw,.82rem);font-weight:700;color:var(--accent3);}
-.hof-rounds{font-size:clamp(.6rem,.95vw,.72rem);color:var(--muted);font-weight:600;}
-.hof-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:2px;}
-.hof-me-badge{
-  font-size:clamp(.55rem,.9vw,.68rem);font-weight:700;
-  background:rgba(247,201,72,.15);color:var(--accent);
-  padding:1px 7px;border-radius:20px;
-}
-.hof-goat-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  background:linear-gradient(135deg,#ffd700,#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(.7rem,1.2vw,.88rem);
-  padding:3px 10px;border-radius:40px;
-  box-shadow:0 2px 10px rgba(255,180,0,.35);
-}
-.hof-crown{
-  position:absolute;top:-2px;left:50%;transform:translateX(-50%);
-  font-size:clamp(1rem,2vw,1.5rem);
-  filter:drop-shadow(0 2px 6px rgba(255,215,0,.5));
-  animation:crownBounce 2s ease-in-out infinite;
-}
-
-/* ══ ACHIEVEMENTS ══ */
-.ach-player-info{
-  display:flex;align-items:center;
-  background:var(--card);border-radius:16px;padding:12px 18px;
-  margin-bottom:clamp(14px,2vh,20px);
-  border:1px solid rgba(255,255,255,.07);
-}
-.ach-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:clamp(7px,1.2vw,14px);
-  padding-bottom:20px;
-}
-@media(min-width:600px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
-}
-@media(min-width:900px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
-}
-@media(min-width:1200px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
-}
-.ach-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(14px,1.8vw,20px);
-  padding:clamp(16px,2.2vw,24px) clamp(12px,1.5vw,18px);
-  text-align:center;display:flex;flex-direction:column;
-  align-items:center;gap:8px;transition:all .2s;position:relative;
-}
-.ach-card.locked{opacity:.4;filter:grayscale(1);}
-.ach-card.unlocked{border-color:rgba(247,201,72,.3);box-shadow:0 0 0 1px rgba(247,201,72,.1);}
-.ach-card.unlocked::before{
+.cta-box::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.08),transparent 70%);
-}
-.ach-icon{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
-.ach-name{font-family:'Fredoka One',cursive;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
-.ach-desc{font-size:clamp(.62rem,1vw,.76rem);color:var(--muted);font-weight:600;line-height:1.3;}
-.ach-date{font-size:clamp(.58rem,.9vw,.68rem);color:var(--accent3);font-weight:700;margin-top:2px;}
-.ach-lock-icon{font-size:1.2rem;color:var(--muted);margin-top:2px;}
-
-/* ══ ACHIEVEMENT TOAST ══ */
-.ach-toast{
-  position:fixed;bottom:-120px;left:50%;transform:translateX(-50%);
-  background:var(--card);border:1.5px solid var(--accent);
-  border-radius:20px;padding:14px 20px;
-  display:flex;align-items:center;gap:12px;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(247,201,72,.15);
-  z-index:998;transition:bottom .4s cubic-bezier(.34,1.56,.64,1);
-  min-width:260px;max-width:90vw;
-}
-.ach-toast.show{bottom:clamp(16px,3vh,32px);}
-.ach-toast-icon{font-size:2.2rem;line-height:1;flex-shrink:0;}
-.ach-toast-text{flex:1;}
-.ach-toast-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
-.ach-toast-name{font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.2rem);color:var(--text);}
-
-/* No scores */
-.no-scores{text-align:center;padding:clamp(28px,5vh,55px) 20px;color:var(--muted);font-size:clamp(.9rem,1.8vw,1.1rem);font-weight:600;grid-column:1/-1;}
-.no-scores .big{font-size:clamp(2.5rem,5vw,4rem);display:block;margin-bottom:12px;}
-
-/* GOAT card — #1 only */
-.sc-card.goat-card{
-  background:linear-gradient(135deg,rgba(255,215,0,.13) 0%,rgba(255,159,67,.09) 50%,rgba(22,32,48,1) 100%);
-  border:1.5px solid rgba(255,215,0,.45);
-  box-shadow:0 0 0 1px rgba(255,215,0,.12), 0 8px 40px rgba(255,180,0,.18);
-  padding:calc(var(--sc-card-pad-v, 18px) + clamp(10px,1.5vw,20px)) var(--sc-card-pad-h, 22px);
-  position:relative;
-}
-.sc-card.goat-card::after{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(135deg,rgba(255,215,0,.06) 0%,transparent 60%);
+  background:radial-gradient(ellipse at 50% -20%,rgba(247,201,72,.12),transparent 60%);
   pointer-events:none;
 }
-.goat-crown{
-  position:absolute;top:clamp(-14px,-2vw,-10px);left:50%;transform:translateX(-50%);
-  font-size:clamp(1.6rem,3vw,2.4rem);
-  filter:drop-shadow(0 2px 8px rgba(255,215,0,.6));
-  animation:crownBounce 2s ease-in-out infinite;
-  z-index:2;
+.cta-box .cta-emoji{font-size:clamp(3rem,7vw,5rem);display:block;margin-bottom:16px;}
+.cta-box .cta-title{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.8rem,4.5vw,3rem);
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:14px;
 }
-@keyframes crownBounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-5deg);}50%{transform:translateX(-50%) translateY(-5px) rotate(5deg);}}
-.goat-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  background:linear-gradient(135deg,#ffd700,#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(.72rem,1.3vw,.95rem);
-  padding:clamp(3px,0.5vw,6px) clamp(10px,1.2vw,16px);
-  border-radius:40px;margin-top:clamp(4px,0.5vw,7px);
-  box-shadow:0 2px 12px rgba(255,180,0,.4);
-  white-space:nowrap;
+.cta-box .cta-sub{
+  color:var(--muted);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:700;
+  margin-bottom:clamp(24px,4vw,36px);line-height:1.6;
 }
-.goat-name-row{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(5px,0.8vw,10px);margin-bottom:4px;}
 
-/* ══════════════════════════════════════════════════
-   SWITCH PLAYER MODAL
-══════════════════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(7,12,22,.85);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  z-index:500;display:none;align-items:center;justify-content:center;padding:20px;
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:clamp(24px,4vw,40px) clamp(16px,4vw,48px);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:16px;
+  position:relative;z-index:1;
 }
-.modal-overlay.open{display:flex;}
-.modal-box{
-  background:var(--card);border:1px solid rgba(255,255,255,.1);
-  border-radius:clamp(20px,2.5vw,32px);
-  padding:clamp(28px,4vw,48px) clamp(24px,3.5vw,44px);
-  width:100%;max-width:clamp(340px,55vw,520px);
-  box-shadow:0 32px 80px rgba(0,0,0,.7);
-  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);
-  position:relative;
-}
-.modal-close{
-  position:absolute;top:clamp(12px,1.5vw,20px);right:clamp(12px,1.5vw,20px);
-  background:rgba(255,255,255,.06);border:none;border-radius:50%;
-  width:clamp(28px,3vw,38px);height:clamp(28px,3vw,38px);
-  color:var(--muted);font-size:clamp(.9rem,1.5vw,1.2rem);
-  cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;
-}
-.modal-close:hover{background:rgba(255,255,255,.12);color:var(--text);}
-.modal-title{
-  font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,2.5vw,1.9rem);
-  margin-bottom:5px;
-}
-.modal-sub{color:var(--muted);font-size:clamp(.75rem,1.4vw,.92rem);font-weight:600;margin-bottom:clamp(18px,2.5vw,28px);}
+.footer-logo{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--muted);}
+.footer-links{display:flex;gap:clamp(12px,2vw,24px);flex-wrap:wrap;}
+.footer-link{color:var(--muted);font-size:.78rem;font-weight:700;text-decoration:none;transition:color .18s;}
+.footer-link:hover{color:var(--accent);}
+.footer-copy{color:var(--muted);font-size:.72rem;font-weight:600;width:100%;text-align:center;margin-top:8px;}
 
-/* Current player preview inside modal */
-.curr-player{
-  display:flex;align-items:center;gap:12px;
-  background:var(--card2);border-radius:clamp(12px,1.5vw,18px);
-  padding:clamp(12px,1.5vw,18px) clamp(14px,2vw,22px);
-  margin-bottom:clamp(18px,2.5vw,26px);
-  border:1px solid rgba(255,255,255,.06);
-}
-.curr-player-av{font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1;}
-.curr-player-info{flex:1;}
-.curr-player-label{font-size:clamp(.62rem,1.1vw,.75rem);text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:2px;}
-.curr-player-name{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2vw,1.5rem);color:var(--text);}
-
-.modal-divider{display:flex;align-items:center;gap:10px;margin-bottom:clamp(18px,2.5vw,26px);}
-.modal-divider::before,.modal-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
-.modal-divider span{color:var(--muted);font-size:clamp(.68rem,1.2vw,.82rem);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
-
-/* Confetti */
-.cc{position:fixed;top:0;left:0;right:0;height:100vh;pointer-events:none;z-index:999;overflow:hidden;}
-.cp{position:absolute;border-radius:2px;animation:cFall linear forwards;}
-@keyframes cFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-
-/* Keyframes */
-@keyframes bounceIn{from{opacity:0;transform:scale(.5) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-@keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s,transform .6s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+.reveal-delay-4{transition-delay:.4s;}
 </style>
 </head>
 <body>
 
 <div id="floatBg"></div>
-<div class="cc" id="confetti"></div>
 
-<!-- ════════ LOGIN ════════ -->
-<div class="screen active" id="loginScreen">
-  <div class="login-logo">
-    <div class="monster-wrap">
-      <svg class="monster-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="bG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
-          <radialGradient id="blyG" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#b0ffe8"/><stop offset="100%" stop-color="#5de8b5"/></radialGradient>
-          <radialGradient id="eyeG" cx="35%" cy="30%" r="60%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#ddeeff"/></radialGradient>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="sg" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <ellipse cx="100" cy="192" rx="44" ry="8" fill="rgba(0,0,0,.2)"/>
-        <ellipse cx="100" cy="125" rx="58" ry="62" fill="url(#bG)"/>
-        <ellipse cx="100" cy="138" rx="34" ry="32" fill="url(#blyG)" opacity=".55"/>
-        <text x="88" y="132" font-family="Fredoka One,cursive" font-size="13" fill="#0d5e3f" opacity=".6" text-anchor="middle">2+3</text>
-        <text x="114" y="145" font-family="Fredoka One,cursive" font-size="10" fill="#0d5e3f" opacity=".45" text-anchor="middle">×6</text>
-        <text x="90" y="152" font-family="Fredoka One,cursive" font-size="9" fill="#0d5e3f" opacity=".35" text-anchor="middle">=5</text>
-        <ellipse cx="52" cy="65" rx="13" ry="22" fill="#1a9068" transform="rotate(-18 52 65)"/>
-        <ellipse cx="148" cy="65" rx="13" ry="22" fill="#1a9068" transform="rotate(18 148 65)"/>
-        <ellipse cx="52" cy="61" rx="7" ry="13" fill="#7cffd4" opacity=".4" transform="rotate(-18 52 61)"/>
-        <ellipse cx="148" cy="61" rx="7" ry="13" fill="#7cffd4" opacity=".4" transform="rotate(18 148 61)"/>
-        <circle cx="44" cy="46" r="5" fill="#f7c948" opacity=".85" filter="url(#glow)"/>
-        <circle cx="156" cy="46" r="5" fill="#f7c948" opacity=".85" filter="url(#glow)"/>
-        <ellipse cx="100" cy="82" rx="52" ry="48" fill="url(#bG)"/>
-        <ellipse cx="76" cy="74" rx="16" ry="18" fill="url(#eyeG)" filter="url(#glow)"/>
-        <ellipse cx="124" cy="74" rx="16" ry="18" fill="url(#eyeG)" filter="url(#glow)"/>
-        <circle cx="79" cy="76" r="9" fill="#0f1923"/><circle cx="127" cy="76" r="9" fill="#0f1923"/>
-        <circle cx="82" cy="71" r="4" fill="white" opacity=".92"/><circle cx="130" cy="71" r="4" fill="white" opacity=".92"/>
-        <text x="79" y="79" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-        <text x="127" y="79" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-        <path d="M60 57 Q76 49 92 56" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M108 56 Q124 49 140 57" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M62 102 Q100 138 138 102" fill="#0f1923"/>
-        <path d="M62 102 Q100 118 138 102" fill="#c0334d" opacity=".85"/>
-        <rect x="66" y="102" width="12" height="11" rx="3" fill="white"/>
-        <rect x="82" y="102" width="12" height="11" rx="3" fill="white"/>
-        <rect x="98" y="102" width="12" height="11" rx="3" fill="white"/>
-        <rect x="114" y="102" width="11" height="11" rx="3" fill="white"/>
-        <rect x="72" y="120" width="9" height="8" rx="2" fill="rgba(255,255,255,.8)"/>
-        <rect x="86" y="123" width="9" height="8" rx="2" fill="rgba(255,255,255,.8)"/>
-        <rect x="100" y="124" width="9" height="8" rx="2" fill="rgba(255,255,255,.8)"/>
-        <rect x="114" y="121" width="9" height="8" rx="2" fill="rgba(255,255,255,.8)"/>
-        <ellipse cx="100" cy="124" rx="16" ry="9" fill="#ff8ed4" opacity=".9"/>
-        <text x="100" y="98" font-family="Fredoka One,cursive" font-size="22" fill="#f7c948" text-anchor="middle" filter="url(#sg)" opacity=".98">42</text>
-        <line x1="68" y1="92" x2="76" y2="95" stroke="#f7c948" stroke-width="2" opacity=".4" stroke-linecap="round"/>
-        <line x1="132" y1="92" x2="124" y2="95" stroke="#f7c948" stroke-width="2" opacity=".4" stroke-linecap="round"/>
-        <ellipse cx="55" cy="92" rx="12" ry="7" fill="#ff6b8a" opacity=".2"/>
-        <ellipse cx="145" cy="92" rx="12" ry="7" fill="#ff6b8a" opacity=".2"/>
-        <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
-        <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
-        <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
-        <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
-        <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
-        <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
-        <ellipse cx="77" cy="186" rx="20" ry="10" fill="#1a9068"/>
-        <ellipse cx="123" cy="186" rx="20" ry="10" fill="#1a9068"/>
-        <ellipse cx="77" cy="184" rx="13" ry="5" fill="#7cffd4" opacity=".3"/>
-        <ellipse cx="123" cy="184" rx="13" ry="5" fill="#7cffd4" opacity=".3"/>
-        <circle cx="62" cy="188" r="5" fill="#1a9068"/><circle cx="92" cy="190" r="5" fill="#1a9068"/>
-        <circle cx="108" cy="190" r="5" fill="#1a9068"/><circle cx="138" cy="188" r="5" fill="#1a9068"/>
-      </svg>
-    </div>
-    <div class="login-title">Matikka-Ahmatti</div>
-    <div class="login-sub">Hajotelmat &amp; Kertotaulut</div>
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
+      <ellipse cx="100" cy="125" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/>
+      <ellipse cx="78" cy="76" rx="13" ry="15" fill="white"/><ellipse cx="122" cy="76" rx="13" ry="15" fill="white"/>
+      <circle cx="81" cy="77" r="7" fill="#0f1923"/><circle cx="125" cy="77" r="7" fill="#0f1923"/>
+      <path d="M68 104 Q100 130 132 104" fill="#0f1923"/>
+      <path d="M68 104 Q100 116 132 104" fill="#c0334d" opacity=".85"/>
+    </svg>
+    <span class="nav-logo-text">Matikka-Ahmatti</span>
+  </a>
+  <div class="nav-links">
+    <a href="ohjeet.html" class="nav-link">📖 Ohjeet</a>
+    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
+    <a href="game.html" class="nav-cta" title="Pelaa nyt">🚀</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">⭐ Täysin ilmainen · Ei mainoksia</div>
+
+  <div class="hero-monster">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
+        <filter id="hGlow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="100" cy="194" rx="42" ry="8" fill="rgba(0,0,0,.2)"/>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#hbG)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95" filter="url(#hGlow)"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95" filter="url(#hGlow)"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#hbG)"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white" filter="url(#hGlow)"/>
+      <ellipse cx="122" cy="76" rx="14" ry="16" fill="white" filter="url(#hGlow)"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <text x="81" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+      <text x="125" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
+      <path d="M62 57 Q78 49 94 56" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M106 56 Q122 49 138 57" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <ellipse cx="100" cy="124" rx="15" ry="9" fill="#ff8ed4" opacity=".9"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+    </svg>
   </div>
 
-  <div class="login-card">
-    <div class="step active" id="step1">
-      <div class="step-title">Mikä sinun nimesi on? 👋</div>
-      <div class="step-sub">Kirjoita nimesi alle</div>
-      <input class="name-input" type="text" id="nameInput" placeholder="Esim. Emma tai Mikko" maxlength="20" autocomplete="off"/>
-      <button class="cta-btn" id="nextBtn" onclick="goStep2()" disabled>Seuraava →</button>
-    </div>
-    <div class="step" id="step2">
-      <div class="step-title">Valitse hahmosi! ✨</div>
-      <div class="step-sub">Oletko prinssi vai prinsessa?</div>
-      <div class="char-grid">
-        <div class="char-card boy" id="boyCard" onclick="selChar('boy')">
-          <div class="check-mark" id="boyCheck">✓</div>
-          <span class="char-avatar">🤴</span>
-          <div class="char-name">Prinssi</div>
-          <span class="char-badge">Poika</span>
-        </div>
-        <div class="char-card girl" id="girlCard" onclick="selChar('girl')">
-          <div class="check-mark" id="girlCheck">✓</div>
-          <span class="char-avatar">👸</span>
-          <div class="char-name">Prinsessa</div>
-          <span class="char-badge">Tyttö</span>
-        </div>
-      </div>
-      <button class="cta-btn" id="charNextBtn" onclick="goStep3()" disabled>Seuraava →</button>
-    </div>
-    <!-- Step 3: PIN -->
-    <div class="step" id="step3">
-      <div class="step-title" id="pinTitle">🔐 Luo PIN-koodi</div>
-      <div class="step-sub" id="pinSub">Valitse 4-numeroinen PIN jonka muistat</div>
-      <!-- PIN dots display -->
-      <div class="pin-dots" id="pinDots">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
-      </div>
-      <div class="pin-error" id="pinError"></div>
-      <!-- PIN numpad -->
-      <div class="pin-pad">
-        <button class="pin-btn" onclick="pinPress(1)">1</button>
-        <button class="pin-btn" onclick="pinPress(2)">2</button>
-        <button class="pin-btn" onclick="pinPress(3)">3</button>
-        <button class="pin-btn" onclick="pinPress(4)">4</button>
-        <button class="pin-btn" onclick="pinPress(5)">5</button>
-        <button class="pin-btn" onclick="pinPress(6)">6</button>
-        <button class="pin-btn" onclick="pinPress(7)">7</button>
-        <button class="pin-btn" onclick="pinPress(8)">8</button>
-        <button class="pin-btn" onclick="pinPress(9)">9</button>
-        <button class="pin-btn pin-clear" onclick="pinClear()">⌫</button>
-        <button class="pin-btn" onclick="pinPress(0)">0</button>
-        <button class="pin-btn pin-ok" id="pinOkBtn" onclick="pinConfirm()" disabled>✓</button>
-      </div>
-      <div id="pinAttemptsLeft" style="text-align:center;font-size:.75rem;color:var(--accent2);font-weight:700;margin-top:8px;min-height:18px;"></div>
-    </div>
+  <h1 class="hero-title">
+    <span class="line1">Matikka-Ahmatti</span><br>
+    <span class="line2">on hauska!</span>
+  </h1>
+  <p class="hero-sub">
+    Ilmainen matematiikan harjoittelupeli <strong>alakouluikäisille</strong> — ja prosenttilaskut myös yläkoulun kynnyksellä.<br>
+    Mörkö ahmii numeroita — sinä opit laskemaan. 🎮
+  </p>
+
+  <div class="hero-btns">
+    <a href="game.html" class="btn-primary">🚀 Aloita pelaaminen</a>
+    <a href="ohjeet.html" class="btn-secondary">📖 Miten pelataan?</a>
   </div>
 
-  <!-- Footer contact link -->
-  <div style="margin-top:clamp(20px,3vh,32px);text-align:center;">
-    <a href="contact.html" style="color:var(--muted);font-size:.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:40px;border:1px solid rgba(255,255,255,.07);background:var(--card);transition:all .2s;"
-       onmouseover="this.style.color='var(--accent)';this.style.borderColor='rgba(247,201,72,.3)'"
-       onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,.07)'">
-      ✉️ Ota yhteyttä
-    </a>
+  <div class="hero-stats">
+    <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
+    <div class="stat-pill"><span class="stat-n">5</span> pelimoodia</div>
+    <div class="stat-pill"><span class="stat-n">34</span> saavutusta</div>
+    <div class="stat-pill"><span class="stat-n">6</span> mörkö-skinit</div>
+    <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
+    <div class="stat-pill"><span class="stat-n">🎓</span> diplomi</div>
   </div>
-</div>
+</section>
 
-<!-- ════════ GAME ════════ -->
-<div class="screen" id="gameScreen">
-  <div class="game-header">
-    <div class="game-logo-mini">
-      <svg class="mini-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <defs><radialGradient id="mbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
-        <ellipse cx="100" cy="125" rx="58" ry="62" fill="url(#mbG)"/>
-        <ellipse cx="52" cy="65" rx="13" ry="22" fill="#1a9068" transform="rotate(-18 52 65)"/>
-        <ellipse cx="148" cy="65" rx="13" ry="22" fill="#1a9068" transform="rotate(18 148 65)"/>
-        <ellipse cx="100" cy="82" rx="52" ry="48" fill="url(#mbG)"/>
-        <ellipse cx="76" cy="74" rx="16" ry="18" fill="white"/><ellipse cx="124" cy="74" rx="16" ry="18" fill="white"/>
-        <circle cx="79" cy="76" r="9" fill="#0f1923"/><circle cx="127" cy="76" r="9" fill="#0f1923"/>
-        <circle cx="82" cy="71" r="4" fill="white" opacity=".9"/><circle cx="130" cy="71" r="4" fill="white" opacity=".9"/>
-        <text x="79" y="79" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-        <text x="127" y="79" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-        <path d="M65 104 Q100 132 135 104" fill="#0f1923"/>
-        <path d="M65 104 Q100 116 135 104" fill="#c0334d" opacity=".8"/>
-        <rect x="70" y="104" width="11" height="9" rx="2" fill="white"/><rect x="85" y="104" width="11" height="9" rx="2" fill="white"/>
-        <rect x="100" y="104" width="11" height="9" rx="2" fill="white"/><rect x="115" y="104" width="10" height="9" rx="2" fill="white"/>
-        <ellipse cx="77" cy="186" rx="20" ry="10" fill="#1a9068"/><ellipse cx="123" cy="186" rx="20" ry="10" fill="#1a9068"/>
-      </svg>
-      <span class="game-logo-text">Ahmatti</span>
+<!-- FEATURES -->
+<section class="features">
+  <p class="section-label reveal">Miksi Matikka-Ahmatti?</p>
+  <h2 class="section-title reveal">Oppiminen on hauskaa<br>kun mörkö on mukana</h2>
+
+  <div class="features-grid">
+    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
+      <span class="feature-icon">🧠</span>
+      <h3 class="feature-title">Adaptiivinen vaikeus</h3>
+      <p class="feature-desc">Peli oppii lapsen taitotason ja tarjoaa juuri sopivan haastavia tehtäviä. 50 tasoa luvuista 1–10 aina luvuille 1–1000 asti.</p>
     </div>
-    <div class="header-right">
-      <button class="score-nav-btn" onclick="showScores()">🐐 Hall of Fame</button>
-      <button class="mute-btn" id="muteBtn" onclick="toggleMute()" title="Äänet päälle/pois">🔊</button>
-      <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa">
-        <span class="player-avatar-mini" id="pAvatar">🤴</span>
-        <span class="player-name-mini" id="pName" style="display:none;">Pelaaja</span>
-        <span style="font-size:clamp(.6rem,1vw,.75rem);color:var(--muted);">🔄</span>
-      </div>
+    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
+      <span class="feature-icon">🏆</span>
+      <h3 class="feature-title">Hall of Fame</h3>
+      <p class="feature-desc">Globaali tulostaulukko jossa kilpaillaan kumulatiivisilla pisteillä. Pisteitä kertyy vain kun taso nousee — edistyminen palkitaan, ei toistelu!</p>
     </div>
-  </div>
-
-  <div class="streak-bar">
-    <div class="si">🔥 <span class="v" id="sStreak">0</span> putki</div>
-    <div class="si">✅ <span class="v g" id="sCorr">0</span> oikein</div>
-    <div class="si">⭐ <span class="v b" id="sPts">0</span> pistettä</div>
-    <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
-  </div>
-
-  <div class="mode-selector">
-    <button class="mode-btn active" onclick="setMode('h')" id="btn-h"><span class="mi">🔢</span>Hajotelmat</button>
-    <button class="mode-btn" onclick="setMode('a')" id="btn-a"><span class="mi">➕</span>Yhteenlasku</button>
-    <button class="mode-btn" onclick="setMode('s')" id="btn-s"><span class="mi">➖</span>Vähennys</button>
-    <button class="mode-btn" onclick="setMode('m')" id="btn-m"><span class="mi">✖️</span>Kertotaulu</button>
-  </div>
-
-  <div class="main-card">
-    <div id="rangeSection">
-      <div class="sec-label">Lukualue</div>
-      <div class="range-pills">
-        <button class="rp" onclick="setRange(5,this)">1–5</button>
-        <button class="rp active" onclick="setRange(10,this)">1–10</button>
-        <button class="rp" onclick="setRange(20,this)">1–20</button>
-        <button class="rp" onclick="setRange(100,this)">1–100</button>
-      </div>
+    <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,142,212,.08);">
+      <span class="feature-icon">🏅</span>
+      <h3 class="feature-title">34 saavutusta</h3>
+      <p class="feature-desc">Saavutukset motivoivat jatkamaan — aamulintu, viikon sankari, GOAT ja paljon muuta. Sitkeys palkitaan: pelaa 7 päivää peräkkäin tai kaikkina vuodenaikoina!</p>
     </div>
-    <div id="tableSection" style="display:none">
-      <div class="sec-label">Kertotaulu</div>
-      <div class="tables-grid" id="tablesGrid"></div>
+    <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(123,159,255,.08);">
+      <span class="feature-icon">🔐</span>
+      <h3 class="feature-title">Omat profiilit</h3>
+      <p class="feature-desc">Jokaisella pelaajalla on oma PIN-suojattu profiili. Sama laite, eri pelaajia — edistyminen tallentuu pilvipalveluun.</p>
     </div>
-
-    <div id="exerciseView">
-
-      <!-- ═══ MÖRKÖ ═══ -->
-      <div class="monster-game-wrap" id="monsterWrap">
-        <svg class="monster-game-svg" id="monsterSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="mgbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
-            <radialGradient id="mgblyG" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#b0ffe8"/><stop offset="100%" stop-color="#5de8b5"/></radialGradient>
-            <filter id="mgGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <!-- Shadow -->
-          <ellipse cx="100" cy="194" rx="40" ry="7" fill="rgba(0,0,0,.18)"/>
-          <!-- Body -->
-          <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#mgbG)"/>
-          <ellipse cx="100" cy="140" rx="32" ry="30" fill="url(#mgblyG)" opacity=".5"/>
-          <!-- Horns -->
-          <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
-          <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
-          <circle cx="46" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#mgGlow)"/>
-          <circle cx="154" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#mgGlow)"/>
-          <!-- Head -->
-          <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#mgbG)"/>
-          <!-- Eyes — id'd so JS can swap them -->
-          <g id="mgEyes">
-            <!-- Normal eyes -->
-            <ellipse cx="78"  cy="76" rx="14" ry="16" fill="white" filter="url(#mgGlow)"/>
-            <ellipse cx="122" cy="76" rx="14" ry="16" fill="white" filter="url(#mgGlow)"/>
-            <circle cx="81"  cy="77" r="8" fill="#0f1923"/>
-            <circle cx="125" cy="77" r="8" fill="#0f1923"/>
-            <circle cx="84"  cy="73" r="3.5" fill="white" opacity=".9"/>
-            <circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
-            <!-- Star pupils -->
-            <text id="mgPupilL" x="81"  y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-            <text id="mgPupilR" x="125" y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-          </g>
-          <!-- Eyebrows -->
-          <g id="mgBrows">
-            <path d="M62 58 Q78 51 94 57" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <path d="M106 57 Q122 51 138 58" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- Mouth — id'd for state changes -->
-          <g id="mgMouth">
-            <!-- Default: happy open mouth -->
-            <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
-            <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
-            <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
-            <rect x="85"  y="104" width="11" height="10" rx="3" fill="white"/>
-            <rect x="100" y="104" width="11" height="10" rx="3" fill="white"/>
-            <rect x="115" y="104" width="10" height="10" rx="3" fill="white"/>
-            <ellipse id="mgTongue" cx="100" cy="122" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>
-          </g>
-          <!-- Cheeks -->
-          <ellipse cx="56"  cy="94" rx="11" ry="6" fill="#ff6b8a" opacity=".2" id="mgCheeks"/>
-          <ellipse cx="144" cy="94" rx="11" ry="6" fill="#ff6b8a" opacity=".2"/>
-          <!-- Arms -->
-          <path d="M48 122 Q26 108 32 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
-          <ellipse cx="30" cy="90" rx="9" ry="8" fill="#1a9068"/>
-          <circle cx="22" cy="85" r="5" fill="#1a9068"/><circle cx="32" cy="81" r="5" fill="#1a9068"/><circle cx="40" cy="87" r="5" fill="#1a9068"/>
-          <path d="M152 122 Q174 108 168 93" stroke="#1a9068" stroke-width="12" fill="none" stroke-linecap="round"/>
-          <ellipse cx="170" cy="90" rx="9" ry="8" fill="#1a9068"/>
-          <circle cx="178" cy="85" r="5" fill="#1a9068"/><circle cx="168" cy="81" r="5" fill="#1a9068"/><circle cx="160" cy="87" r="5" fill="#1a9068"/>
-          <!-- Feet -->
-          <ellipse cx="80"  cy="184" rx="19" ry="9" fill="#1a9068"/>
-          <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
-        </svg>
-      </div>
-
-      <div class="problem-area">
-        <div class="ph" id="pH">Mikä luku puuttuu?</div>
-        <div class="pd" id="pD"></div>
-      </div>
-      <div class="feedback" id="fb"></div>
-      <div class="numpad">
-        <button class="nb" onclick="np(7)">7</button>
-        <button class="nb" onclick="np(8)">8</button>
-        <button class="nb" onclick="np(9)">9</button>
-        <button class="nb cl" onclick="npc()">⌫</button>
-        <button class="nb" onclick="np(4)">4</button>
-        <button class="nb" onclick="np(5)">5</button>
-        <button class="nb" onclick="np(6)">6</button>
-        <button class="nb cl" onclick="npa()">✕</button>
-        <button class="nb" onclick="np(1)">1</button>
-        <button class="nb" onclick="np(2)">2</button>
-        <button class="nb" onclick="np(3)">3</button>
-        <button class="nb" onclick="np(0)">0</button>
-        <button class="nb en" onclick="ck()">✓ Tarkista</button>
-      </div>
-      <div class="prog-section">
-        <div class="prog-label"><span id="pT">0 / 10</span><span id="pP">0%</span></div>
-        <div class="prog-bg"><div class="prog-fill" id="pF" style="width:0%"></div></div>
-      </div>
+    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
+      <span class="feature-icon">🎨</span>
+      <h3 class="feature-title">Mörkö-skinit</h3>
+      <p class="feature-desc">Klikkaa mörkön päällä ja vaihda sen ulkonäkö! 6 erilaista skinit jotka avautuvat edistymällä — Tulimörkö, Jäämörkö, Kultamörkö ja muita.</p>
     </div>
-
-    <div class="results-panel" id="resultsPanel">
-      <span class="re" id="rEmoji">🏆</span>
-      <div class="rt" id="rTitle">Hienoa!</div>
-      <div class="rs" id="rScore"></div>
-      <div class="results-btns">
-        <button class="try-btn" onclick="restartRound()">Uusi kierros 🚀</button>
-        <button class="score-btn" onclick="showScores()">🐐 Hall of Fame</button>
-      </div>
+    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
+      <span class="feature-icon">⚡</span>
+      <h3 class="feature-title">XP ja tasokartta</h3>
+      <p class="feature-desc">XP-palkki näyttää edistymisen tason sisällä. Tasokartta paljastaa koko seikkailureitin tasolta 1 Grand Masteriin — viisi vyöhykettä, 50 pysäkkiä.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,107,107,.08);">
+      <span class="feature-icon">📱</span>
+      <h3 class="feature-title">Toimii kaikkialla</h3>
+      <p class="feature-desc">Puhelin, tabletti tai tietokone — peli skaalautuu automaattisesti. Ei asennuksia, ei kirjautumista sähköpostilla.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(197,108,240,.08);">
+      <span class="feature-icon">🎓</span>
+      <h3 class="feature-title">Grand Master -diplomi</h3>
+      <p class="feature-desc">Tason 50 saavuttanut pelaaja saa tulostettavan diplomitodistuksen. Vaatii oikeaa laskutaitoa luvuille 1–1000 asti — pisteet kertyvät vain kun taso nousee!</p>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ════════ SCORES / ACHIEVEMENTS ════════ -->
-<div class="screen" id="scoreScreen">
-  <div class="score-header">
-    <div class="score-header-left">
-      <div class="score-title" id="scoreScreenTitle">🐐 Hall of Fame</div>
-      <div class="score-screen-sub" id="scoreScreenSub">Kaikkien aikojen parhaat matikka-ahmatit</div>
+<!-- GAME MODES -->
+<section class="modes">
+  <p class="section-label reveal">Pelimoodit</p>
+  <h2 class="section-title reveal">Viisi tapaa harjoitella</h2>
+  <div class="modes-grid">
+    <div class="mode-card m1 reveal reveal-delay-1">
+      <span class="mode-emoji">🔢</span>
+      <div class="mode-name">Hajotelmat</div>
+      <div class="mode-desc">Luvun osat</div>
     </div>
-    <button class="back-btn" onclick="backToGame()">← Takaisin</button>
-  </div>
-
-  <!-- Main tabs: Hall of Fame | Saavutukset -->
-  <div class="main-tabs">
-    <button class="mtab active" id="mtab-hof"  onclick="switchMainTab('hof',this)">🐐 Hall of Fame</button>
-    <button class="mtab"        id="mtab-ach"  onclick="switchMainTab('ach',this)">🏅 Saavutukset</button>
-  </div>
-
-  <!-- Hall of Fame panel -->
-  <div id="hofPanel">
-    <div class="filter-tabs">
-      <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
-      <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
-      <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
-      <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
-      <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
+    <div class="mode-card m2 reveal reveal-delay-2">
+      <span class="mode-emoji">➕</span>
+      <div class="mode-name">Yhteenlasku</div>
+      <div class="mode-desc">Lukujen summa</div>
     </div>
-    <div class="hof-grid" id="scoreList"></div>
-  </div>
-
-  <!-- Achievements panel -->
-  <div id="achPanel" style="display:none">
-    <div class="ach-player-info">
-      <span id="achPlayerAv" style="font-size:2rem;">🤴</span>
-      <span id="achPlayerName" style="font-family:'Fredoka One',cursive;font-size:1.1rem;margin-left:8px;">—</span>
-      <span id="achCount" style="font-size:.8rem;color:var(--muted);font-weight:700;margin-left:8px;"></span>
+    <div class="mode-card m3 reveal reveal-delay-3">
+      <span class="mode-emoji">➖</span>
+      <div class="mode-name">Vähennys</div>
+      <div class="mode-desc">Erotus</div>
     </div>
-    <div class="ach-grid" id="achList"></div>
-  </div>
-</div>
-
-<!-- ════════ ACHIEVEMENT TOAST ════════ -->
-<div id="achToast" class="ach-toast">
-  <div class="ach-toast-icon" id="achToastIcon">🏅</div>
-  <div class="ach-toast-text">
-    <div class="ach-toast-title">Saavutus avattu!</div>
-    <div class="ach-toast-name" id="achToastName">—</div>
-  </div>
-</div>
-
-<!-- ════════ SWITCH PLAYER MODAL ════════ -->
-<div class="modal-overlay" id="switchModal" onclick="handleOverlayClick(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeSwitch()">✕</button>
-    <div class="modal-title">Vaihda pelaajaa 🔄</div>
-    <div class="modal-sub">Nykyinen pelaaja</div>
-
-    <div class="curr-player">
-      <div class="curr-player-av" id="currAv">🤴</div>
-      <div class="curr-player-info">
-        <div class="curr-player-label">Pelaa nyt</div>
-        <div class="curr-player-name" id="currName">—</div>
-      </div>
+    <div class="mode-card m4 reveal reveal-delay-4">
+      <span class="mode-emoji">✖️</span>
+      <div class="mode-name">Kertotaulu</div>
+      <div class="mode-desc">1× – 10×</div>
     </div>
+    <div class="mode-card m5 reveal reveal-delay-4">
+      <span class="mode-emoji">💯</span>
+      <div class="mode-name">Prosentit</div>
+      <div class="mode-desc">Avautuu tasolla 8</div>
+    </div>
+  </div>
+</section>
 
-    <div class="modal-divider"><span>Uusi pelaaja</span></div>
+<!-- HOW IT WORKS -->
+<section class="how">
+  <p class="section-label reveal">Näin pääset alkuun</p>
+  <h2 class="section-title reveal">Kolme askelta<br>ja mörkö syö numeroita</h2>
+  <div class="steps">
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-num">1</div>
+      <h3 class="step-title">Luo profiili</h3>
+      <p class="step-desc">Kirjoita nimesi, valitse prinssi tai prinsessa, ja luo oma PIN-koodi. Kestää 30 sekuntia.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-num">2</div>
+      <h3 class="step-title">Valitse moodi</h3>
+      <p class="step-desc">Hajotelmat, yhteenlasku, vähennys vai kertotaulu. Peli valitsee vaikeustason automaattisesti.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-num">3</div>
+      <h3 class="step-title">Pelaa ja opi!</h3>
+      <p class="step-desc">Vastaa 10 tehtävään. Mörkö reagoi vastauksiin, taso nousee kun menee hyvin ja pisteet kertyvät Hall of Fameen — mutta vain kun taso nousee!</p>
+    </div>
+    <div class="step-card reveal reveal-delay-4">
+      <div class="step-num">4</div>
+      <h3 class="step-title">Kerää saavutuksia</h3>
+      <p class="step-desc">34 erilaista saavutusta motivoivat jatkamaan — pelaa päivittäin, nouse tasoille ja tavoittele GRAND MASTER -tasoa!</p>
+    </div>
+  </div>
+</section>
 
-    <div style="margin-bottom:clamp(14px,2vw,20px);">
-      <input class="name-input" type="text" id="switchNameInput" placeholder="Kirjoita nimi..." maxlength="20" autocomplete="off" style="margin-bottom:12px;"/>
-      <!-- Näytetään vain uusille pelaajille -->
-      <div id="swCharSection">
-        <div class="char-grid">
-          <div class="char-card boy" id="swBoyCard" onclick="swSelChar('boy')">
-            <div class="check-mark" id="swBoyCheck">✓</div>
-            <span class="char-avatar">🤴</span>
-            <div class="char-name">Prinssi</div>
-            <span class="char-badge">Poika</span>
+<!-- DIPLOMI OSIO -->
+<section class="features" style="padding-top:0;">
+  <div style="background:linear-gradient(135deg,rgba(197,108,240,.08) 0%,rgba(247,201,72,.06) 100%);border:1px solid rgba(197,108,240,.2);border-radius:clamp(20px,3vw,32px);padding:clamp(32px,5vw,56px) clamp(24px,4vw,48px);max-width:860px;margin:0 auto;">
+    <div style="display:flex;align-items:flex-start;gap:clamp(20px,3vw,40px);flex-wrap:wrap;">
+      <div style="font-size:clamp(3rem,6vw,4.5rem);line-height:1;flex-shrink:0;">🎓</div>
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:clamp(.65rem,1.2vw,.75rem);font-weight:800;color:var(--purple);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;">Opettajille &amp; vanhemmille</div>
+        <h2 style="font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:12px;line-height:1.2;">Grand Master -diplomi:<br>konkreettinen oppimisen tavoite</h2>
+        <p style="color:var(--muted);font-size:clamp(.82rem,1.5vw,.95rem);font-weight:600;line-height:1.7;margin-bottom:16px;">
+          Pelin taso 50 on aito oppimisen mittari. Se vaatii laskemista oikein luvuilla 1–1000 kaikissa neljässä moodissa — hajotelmat, yhteenlasku, vähennyslasku ja kertotaulut. <strong style="color:var(--text);">Taso nousee vain kun saa 9–10/10 oikein,</strong> eikä pisteitä voi kerätä toistamalla samaa helppojen laskujen kierrosta.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
+            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--accent);margin-bottom:4px;">~6–8 h</div>
+            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">pelailua tasolle 50</div>
           </div>
-          <div class="char-card girl" id="swGirlCard" onclick="swSelChar('girl')">
-            <div class="check-mark" id="swGirlCheck">✓</div>
-            <span class="char-avatar">👸</span>
-            <div class="char-name">Prinsessa</div>
-            <span class="char-badge">Tyttö</span>
+          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
+            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--accent3);margin-bottom:4px;">49 nousua</div>
+            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">jokainen ansaittu oikeasti</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
+            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--purple);margin-bottom:4px;">1–1000</div>
+            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">lukualue lopussa</div>
           </div>
         </div>
+        <p style="color:var(--muted);font-size:clamp(.78rem,1.4vw,.88rem);font-weight:600;line-height:1.7;border-left:3px solid var(--purple);padding-left:14px;">
+          💡 <strong style="color:var(--text);">Ehdotus opettajille:</strong> Aseta Grand Master -diplomi koko luokan tavoitteeksi. Diplomi on tulostettava todistus jonka lapsi voi viedä kotiin — konkreettinen palkinto oikeasta osaamisesta.
+        </p>
       </div>
-      <!-- Näytetään tutulla pelaajalla -->
-      <div id="swCharHint" style="display:none;text-align:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--accent3);padding:10px;background:rgba(93,232,181,.08);border-radius:12px;border:1px solid rgba(93,232,181,.2);"></div>
     </div>
-
-    <button class="cta-btn" id="swConfirmBtn" onclick="confirmSwitch()" disabled>Vaihda pelaaja ✓</button>
   </div>
-</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box reveal">
+    <span class="cta-emoji">🚀</span>
+    <h2 class="cta-title">Valmis kokeilemaan?</h2>
+    <p class="cta-sub">Täysin ilmainen. Ei rekisteröitymistä sähköpostilla.<br>Aloita pelaaminen heti!</p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+      <a href="game.html" class="btn-primary">🎮 Aloita nyt — ilmaiseksi</a>
+      <a href="ohjeet.html" class="btn-secondary">📖 Lue ohjeet</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🐐 Matikka-Ahmatti</div>
+  <div class="footer-links">
+    <a href="game.html" class="footer-link">Pelaa</a>
+    <a href="ohjeet.html" class="footer-link">Ohjeet</a>
+    <a href="vanhempi.html" class="footer-link">👨‍👩‍👧 Vanhemmille</a>
+    <a href="opettaja.html" class="footer-link">👩‍🏫 Opettajille</a>
+    <a href="contact.html" class="footer-link">Yhteystiedot</a>
+    <a href="tietosuoja.html" class="footer-link">Tietosuoja</a>
+    <a href="#" class="footer-link" onclick="openCookieSettings();return false;">Evästeasetukset</a>
+  </div>
+  <div class="footer-copy">© 2026 Matikka-Ahmatti · Tehty 🇫🇮 Suomessa · Ilmainen matematiikan harjoittelupeli lapsille</div>
+</footer>
 
 <script>
-// ══ AUDIO ENGINE — Pac-Man henkinen ══════════════
-// Matalat, pehmeät, nopeat piipitykset — ei kimeyttä
-
-let audioCtx = null;
-let muted = false;
-
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
-}
-
-function toggleMute() {
-  muted = !muted;
-  const btn = document.getElementById('muteBtn');
-  btn.textContent = muted ? '🔇' : '🔊';
-  btn.classList.toggle('muted', muted);
-}
-
-// Core: pehmeä piip — lowpass + triangle/square + pieni envelope
-function beep(ctx, freq, start, dur, vol = 0.07) {
-  const osc  = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const lp   = ctx.createBiquadFilter();
-  lp.type = 'lowpass';
-  lp.frequency.value = 900; // leikkaa kaikki korkeat taajuudet
-  lp.Q.value = 0.5;
-  osc.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
-  osc.type = 'square';
-  osc.frequency.setValueAtTime(freq, start);
-  gain.gain.setValueAtTime(0, start);
-  gain.gain.linearRampToValueAtTime(vol, start + 0.005);
-  gain.gain.setValueAtTime(vol, start + dur * 0.5);
-  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  osc.start(start);
-  osc.stop(start + dur + 0.01);
-}
-
-// ✅ Oikea — Pac-Man syö pisteytyksen: kaksi matalaa nopeaa piippiä
-function sfxCorrect() {
-  if (muted) return;
-  const ctx = getAudioCtx();
-  const t   = ctx.currentTime;
-  beep(ctx, 440, t,        0.06, 0.07); // A4
-  beep(ctx, 554, t + 0.07, 0.08, 0.07); // C#5
-}
-
-// ❌ Väärä — Pac-Man kuolee: lyhyt laskeva kaksoispiippi
-function sfxWrong() {
-  if (muted) return;
-  const ctx = getAudioCtx();
-  const t   = ctx.currentTime;
-  beep(ctx, 330, t,        0.07, 0.06); // E4
-  beep(ctx, 277, t + 0.08, 0.09, 0.06); // C#4
-}
-
-// 🔥 Putki 5x — kolme nousevaa piippiä
-function sfxStreak() {
-  if (muted) return;
-  const ctx = getAudioCtx();
-  const t   = ctx.currentTime;
-  [330, 440, 554].forEach((f, i) =>
-    beep(ctx, f, t + i * 0.08, 0.08, 0.07)
-  );
-}
-
-// 🔥🔥 Putki 10x — viisi nopeaa nousevaa piippiä
-function sfxSuperStreak() {
-  if (muted) return;
-  const ctx = getAudioCtx();
-  const t   = ctx.currentTime;
-  [294, 330, 392, 440, 554].forEach((f, i) =>
-    beep(ctx, f, t + i * 0.07, 0.08, 0.07)
-  );
-}
-
-// 🏆 Kierros päättyy
-function sfxRoundEnd(pct) {
-  if (muted) return;
-  const ctx = getAudioCtx();
-  const t   = ctx.currentTime;
-
-  if (pct >= 90) {
-    // Mestari — Pac-Man bonustaso: nopea iloinen melodia matalana
-    [
-      [294,0.00],[330,0.07],[370,0.14],[294,0.21],
-      [370,0.28],[440,0.36],[370,0.46]
-    ].forEach(([f,dt]) => beep(ctx, f, t+dt, 0.10, 0.07));
-
-  } else if (pct >= 70) {
-    // Hyvä — kolme nousevaa piippiä
-    [330, 392, 440].forEach((f, i) =>
-      beep(ctx, f, t + i * 0.10, 0.10, 0.07)
-    );
-
-  } else {
-    // Harjoitellaan — kaksi laskevaa piippiä, ei surullinen
-    [370, 294].forEach((f, i) =>
-      beep(ctx, f, t + i * 0.12, 0.10, 0.055)
-    );
-  }
-}
-
-// ══ FLOATING BG ══════════════════════════════════
-const SYMS=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','5−1','9+6','8×3','12','15','24','½','π','∞','3²','√4'];
-const COLS=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,','rgba(255,107,107,','rgba(197,108,240,'];
-(function initBg(){
+// Floating bg
+const S=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','12','15','8×3'];
+const C=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,'];
+(function(){
   const bg=document.getElementById('floatBg');
-  for(let i=0;i<55;i++){
+  for(let i=0;i<40;i++){
     const el=document.createElement('div');el.className='fn';
-    // Much higher opacity: 0.18–0.42
-    const op=(Math.random()*.24+.18).toFixed(3);
-    const dur=Math.random()*22+10;
-    el.textContent=SYMS[~~(Math.random()*SYMS.length)];
-    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*15}%;font-size:${Math.random()*30+14}px;color:${COLS[~~(Math.random()*COLS.length)]}${op});--maxOp:${op};--r0:${(Math.random()*40-20).toFixed(1)}deg;--r1:${(Math.random()*60-30).toFixed(1)}deg;animation-duration:${dur}s;animation-delay:${-(Math.random()*dur)}s;`;
+    const op=(Math.random()*.15+.08).toFixed(3);
+    const dur=Math.random()*20+14;
+    el.textContent=S[~~(Math.random()*S.length)];
+    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*8}%;font-size:${Math.random()*26+12}px;color:${C[~~(Math.random()*C.length)]}${op});--op:${op};--r0:${(Math.random()*30-15).toFixed(1)}deg;--r1:${(Math.random()*50-25).toFixed(1)}deg;--dur:${dur}s;--delay:-${(Math.random()*dur).toFixed(1)}s;`;
     bg.appendChild(el);
   }
 })();
 
-// ══ SUPABASE CONFIG ══════════════════════════════
-const SB_URL = 'https://whftebwchwvwlyfgytoo.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndoZnRlYndjaHd2d2x5Zmd5dG9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MzMyMjQsImV4cCI6MjA5MDMwOTIyNH0.nZ9toEBWzGaagueyiQXYJgulMaRnC4PP_3cadqdTUAo';
-const SB_HEADERS = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` };
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
-// ══ LOCAL FALLBACK ════════════════════════════════
-const SK = 'matikka_scores_v3';
-function localLoad(){try{return JSON.parse(localStorage.getItem(SK))||[];}catch{return[];}}
-function localSave(e){const s=localLoad();s.push(e);s.sort((a,b)=>b.pts-a.pts);localStorage.setItem(SK,JSON.stringify(s.slice(0,200)));}
+<!-- ═══ EVÄSTEBANNERI ═══ -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+        Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
+        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var CONSENT_KEY = 'matikka_cookie_consent';
+  var GA_ID = 'G-B0GHH9704Y';
 
-// ══ SUPABASE: SAVE SCORE ═════════════════════════
-async function saveScore(entry) {
-  // Always save locally as instant fallback
-  localSave(entry);
-
-  try {
-    const res = await fetch(`${SB_URL}/rest/v1/scores`, {
-      method: 'POST',
-      headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({
-        name:       entry.name,
-        char:       entry.char,
-        mode:       entry.mode,
-        mode_label: entry.modeLabel,
-        level:      entry.level,
-        pts:        entry.pts,
-        corr:       entry.corr,
-        total:      entry.total,
-        pct:        entry.pct
-      })
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return true; // ✅ Supabase success
-  } catch(err) {
-    console.warn('Supabase save failed, using local fallback:', err.message);
-    return false; // ❌ offline, local only
+  function loadGA(){
+    if(window._gaLoaded) return;
+    window._gaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
   }
-}
 
-// ══ SUPABASE: LOAD SCORES ════════════════════════
-async function loadScoresRemote(mode) {
-  let url = `${SB_URL}/rest/v1/scores?select=*&order=created_at.desc&limit=2000`;
-  if (mode && mode !== 'all') url += `&mode=eq.${mode}`;
-
-  try {
-    const res = await fetch(url, { headers: SB_HEADERS });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rows = await res.json();
-    // Normalise field names to match local format
-    return rows.map(r => ({
-      name:       r.name,
-      char:       r.char,
-      mode:       r.mode,
-      modeLabel:  r.mode_label,
-      level:      r.level,
-      pts:        r.pts,
-      corr:       r.corr,
-      total:      r.total,
-      pct:        r.pct,
-      ts:         new Date(r.created_at).getTime()
-    }));
-  } catch(err) {
-    console.warn('Supabase load failed, using local fallback:', err.message);
-    return null; // signals caller to use local
+  function disableGA(){
+    window['ga-disable-' + GA_ID] = true;
+    // Poista GA-evästeet
+    document.cookie = '_ga=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = '_ga_' + GA_ID.replace('G-','') + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
-}
 
-// ══ PIN SYSTEM ═══════════════════════════════════
+  window.cookieAccept = function(){
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    document.getElementById('cookieBanner').style.display = 'none';
+    loadGA();
+  };
 
-// ⚠️  VAIHDA TÄMÄ OMAKSI ADMIN-KOODIKSI ennen julkaisua
-const ADMIN_PIN = '0000';
+  window.cookieDecline = function(){
+    localStorage.setItem(CONSENT_KEY, 'declined');
+    document.getElementById('cookieBanner').style.display = 'none';
+    disableGA();
+  };
 
-// Simple hash — XOR + rotate, riittävä lapsipelin PIN-suojaukseen
-function hashPin(pin, salt) {
-  let h = 0;
-  const s = pin + salt + 'matikka_ahmatti_salt_2024';
-  for (let i = 0; i < s.length; i++) {
-    h = ((h << 5) - h) + s.charCodeAt(i);
-    h |= 0;
+  // Tarkista aiempi valinta
+  var consent = localStorage.getItem(CONSENT_KEY);
+  if(consent === 'accepted'){
+    loadGA();
+  } else if(consent === 'declined'){
+    disableGA();
+  } else {
+    // Näytä banneri lyhyen viiveen jälkeen
+    setTimeout(function(){
+      var b = document.getElementById('cookieBanner');
+      if(b) b.style.display = 'block';
+    }, 800);
   }
-  return Math.abs(h).toString(16);
-}
-
-// Supabase: hae pelaajan hash
-async function pinRemoteGet(name, char) {
-  try {
-    const url = `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=pin_hash&limit=1`;
-    const res = await fetch(url, {headers:SB_HEADERS});
-    if (!res.ok) throw new Error();
-    const rows = await res.json();
-    return rows.length ? rows[0].pin_hash : null;
-  } catch { return null; }
-}
-
-// Supabase: tallenna uusi pelaaja + hash
-async function pinRemoteSet(name, char, pin) {
-  const salt = name + char;
-  const hash = hashPin(pin, salt);
-  try {
-    await fetch(`${SB_URL}/rest/v1/players`, {
-      method:'POST',
-      headers:{...SB_HEADERS,'Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify({player_name:name, player_char:char, pin_hash:hash})
-    });
-  } catch {}
-  // Tallenna myös localStorageen
-  try {
-    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-    all[`${name}:${char}`] = hash;
-    localStorage.setItem('matikka_pins', JSON.stringify(all));
-  } catch {}
-}
-
-// Supabase: päivitä PIN (reset)
-async function pinRemoteReset(name, char, newPin) {
-  const salt = name + char;
-  const hash = hashPin(newPin, salt);
-  try {
-    await fetch(`${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}`, {
-      method:'PATCH',
-      headers:{...SB_HEADERS,'Prefer':'return=minimal'},
-      body:JSON.stringify({pin_hash:hash})
-    });
-  } catch {}
-  try {
-    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-    all[`${name}:${char}`] = hash;
-    localStorage.setItem('matikka_pins', JSON.stringify(all));
-  } catch {}
-}
-
-// Tarkista PIN paikallisesti tai remotesti
-async function pinVerify(name, char, pin) {
-  // Admin-koodi ohittaa aina
-  if (pin === ADMIN_PIN) return true;
-  const salt = name + char;
-  const hash = hashPin(pin, salt);
-  // Yritä ensin localStorage
-  try {
-    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-    if (all[`${name}:${char}`]) return all[`${name}:${char}`] === hash;
-  } catch {}
-  // Sitten Supabase
-  const remoteHash = await pinRemoteGet(name, char);
-  if (remoteHash) {
-    // Tallenna localStorageen cacheksi
-    try {
-      const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-      all[`${name}:${char}`] = remoteHash;
-      localStorage.setItem('matikka_pins', JSON.stringify(all));
-    } catch {}
-    return remoteHash === hash;
-  }
-  return false;
-}
-
-// Tarkista onko pelaaja jo rekisteröity
-async function pinExists(name, char) {
-  try {
-    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-    if (all[`${name}:${char}`]) return true;
-  } catch {}
-  const h = await pinRemoteGet(name, char);
-  return h !== null;
-}
-
-// ── PIN UI state ──
-let pinBuffer     = '';
-let pinMode       = 'new'; // 'new' | 'login' | 'reset' | 'confirm_new'
-let pinFirstEntry = '';    // tallennetaan uusi PIN vahvistusta varten
-let pinAttempts   = 0;
-const MAX_ATTEMPTS = 5;
-
-function pinUpdateDots() {
-  for (let i=0;i<4;i++) {
-    const d = document.getElementById('pd'+i);
-    if (!d) return;
-    d.classList.toggle('filled', i < pinBuffer.length);
-    d.classList.remove('error');
-  }
-  const okBtn = document.getElementById('pinOkBtn');
-  if (okBtn) okBtn.disabled = pinBuffer.length < 4;
-}
-
-function pinSetError(msg) {
-  const e = document.getElementById('pinError');
-  if (e) { e.textContent = msg; }
-  for (let i=0;i<4;i++) {
-    const d = document.getElementById('pd'+i);
-    if (d) d.classList.add('error');
-  }
-  setTimeout(()=>{ pinBuffer=''; pinUpdateDots(); if(e)e.textContent=''; }, 900);
-}
-
-function pinPress(n) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += n;
-  pinUpdateDots();
-  if (pinBuffer.length === 4) setTimeout(pinConfirm, 200);
-}
-
-function pinClear() {
-  pinBuffer = pinBuffer.slice(0,-1);
-  pinUpdateDots();
-}
-
-async function pinConfirm() {
-  if (pinBuffer.length < 4) return;
-  const pin = pinBuffer;
-  pinBuffer = '';
-  pinUpdateDots();
-
-  if (pinMode === 'new') {
-    // Ensimmäinen syöttö — pyydä vahvistus
-    pinFirstEntry = pin;
-    pinMode = 'confirm_new';
-    document.getElementById('pinTitle').textContent = '🔐 Vahvista PIN';
-    document.getElementById('pinSub').textContent   = 'Syötä sama PIN uudelleen';
-    document.getElementById('pinError').textContent = '';
-
-  } else if (pinMode === 'confirm_new') {
-    if (pin === pinFirstEntry) {
-      // BUG-004 FIX: käytä PATCH (pinRemoteReset) jos pelaaja on olemassa,
-      // POST (pinRemoteSet) vain uusille pelaajille — estää duplikaattirivit
-      const alreadyExists = await pinExists(pName, pChar);
-      if (alreadyExists) {
-        await pinRemoteReset(pName, pChar, pin);
-      } else {
-        await pinRemoteSet(pName, pChar, pin);
-      }
-      startGame();
-    } else {
-      pinMode = 'new';
-      pinFirstEntry = '';
-      document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
-      document.getElementById('pinSub').textContent   = 'PIN-koodit eivät täsmänneet, yritä uudelleen';
-      pinSetError('PIN-koodit eivät täsmänneet ❌');
-    }
-
-  } else if (pinMode === 'login') {
-    const ok = await pinVerify(pName, pChar, pin);
-    if (ok) {
-      if (pin === ADMIN_PIN) {
-        // Admin nollaa PIN:in — siirry uuden PIN:in luontiin
-        pinMode = 'new';
-        pinFirstEntry = '';
-        document.getElementById('pinTitle').textContent = '🔐 Luo uusi PIN';
-        document.getElementById('pinSub').textContent   = 'Admin-koodi hyväksytty! Luo uusi PIN';
-        document.getElementById('pinError').textContent = '';
-        document.getElementById('pinAttemptsLeft').textContent = '';
-      } else {
-        pinAttempts = 0;
-        startGame();
-      }
-    } else {
-      pinAttempts++;
-      const left = MAX_ATTEMPTS - pinAttempts;
-      if (pinAttempts >= MAX_ATTEMPTS) {
-        // Reset — anna mahdollisuus luoda uusi PIN
-        pinAttempts = 0;
-        pinMode = 'new';
-        pinFirstEntry = '';
-        document.getElementById('pinTitle').textContent = '🔐 Luo uusi PIN';
-        document.getElementById('pinSub').textContent   = '5 väärää yritystä — luo uusi PIN tai käytä admin-koodia';
-        document.getElementById('pinAttemptsLeft').textContent = '';
-        pinSetError('Liian monta yritystä — luo uusi PIN');
-      } else {
-        document.getElementById('pinAttemptsLeft').textContent =
-          `${left} yritys${left!==1?'tä':''} jäljellä`;
-        pinSetError(`Väärä PIN ❌`);
-      }
-    }
-  }
-}
-
-// Hae pelaajan hahmo pelkällä nimellä (ilman char-tietoa)
-async function pinGetPlayerByName(name) {
-  // BUG-006 FIX: käytä tarkkaa avainvastaavuutta startsWith:n sijaan
-  // Estää "Emma" löytämästä "Emma2":n tietoja
-  try {
-    const all = JSON.parse(localStorage.getItem('matikka_pins')||'{}');
-    // Tarkista molemmat hahmot eksplisiittisesti
-    if (all[`${name}:boy`])  return 'boy';
-    if (all[`${name}:girl`]) return 'girl';
-  } catch {}
-  // Sitten Supabase — hae ilman char-suodatinta
-  try {
-    const url = `${SB_URL}/rest/v1/players?player_name=eq.${encodeURIComponent(name)}&select=player_char&limit=1`;
-    const res = await fetch(url, {headers:SB_HEADERS});
-    if (!res.ok) throw new Error();
-    const rows = await res.json();
-    return rows.length ? rows[0].player_char : null;
-  } catch { return null; }
-}
-
-// ══ LOGIN FLOW ════════════════════════════════════
-let pName='', pChar='';
-let goStep2InProgress = false; // BUG-005 fix: estää rinnakkaiset kutsut
-const nameInp = document.getElementById('nameInput');
-const nextBtn  = document.getElementById('nextBtn');
-nameInp.addEventListener('input',()=>{ nextBtn.disabled=nameInp.value.trim().length<1; });
-nameInp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&nameInp.value.trim())goStep2(); });
-
-async function goStep2() {
-  if (goStep2InProgress) return; // BUG-005 fix: ei rinnakkaisia kutsuja
-  goStep2InProgress = true;
-  nextBtn.disabled = true;
-  nextBtn.textContent = '⏳ Tarkistetaan...';
-
-  pName = nameInp.value.trim();
-  try {
-    const existingChar = await pinGetPlayerByName(pName);
-    if (existingChar) {
-      pChar = existingChar;
-      pinBuffer = ''; pinAttempts = 0; pinMode = 'login';
-      document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
-      document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
-      document.getElementById('pinError').textContent = '';
-      document.getElementById('pinAttemptsLeft').textContent = '';
-      pinUpdateDots();
-      document.getElementById('step1').classList.remove('active');
-      document.getElementById('step3').classList.add('active');
-    } else {
-      document.getElementById('step1').classList.remove('active');
-      document.getElementById('step2').classList.add('active');
-    }
-  } catch {
-    // Verkkovirhe — anna käyttäjän yrittää uudelleen
-    nextBtn.disabled = false;
-    nextBtn.textContent = 'Seuraava →';
-  } finally {
-    goStep2InProgress = false;
-    nextBtn.textContent = 'Seuraava →';
-  }
-}
-
-function selChar(t) {
-  pChar=t;
-  document.getElementById('boyCard').classList.toggle('selected',t==='boy');
-  document.getElementById('girlCard').classList.toggle('selected',t==='girl');
-  document.getElementById('charNextBtn').disabled=false;
-}
-
-async function goStep3() {
-  if (!pChar) return;
-  // Tämä kutsutaan vain uusille pelaajille (tutut ohjataan suoraan step3:een goStep2:ssa)
-  pinBuffer = ''; pinAttempts = 0; pinMode = 'new'; pinFirstEntry = '';
-  document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
-  document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN jonka muistat';
-  document.getElementById('pinError').textContent = '';
-  document.getElementById('pinAttemptsLeft').textContent = '';
-  pinUpdateDots();
-  document.getElementById('step2').classList.remove('active');
-  document.getElementById('step3').classList.add('active');
-}
-async function startGame(){
-  if(!pChar)return;
-  document.getElementById('pName').textContent=pName;
-  document.getElementById('pAvatar').textContent=pChar==='boy'?'🤴':'👸';
-  showScreen('gameScreen');
-  roundStartTime = Date.now(); // BUG-008 fix: nollaa ajastin pelin alkaessa
-  srData = srLocalLoad(pName, pChar, mode);
-  retryQueue=[]; roundHistory=[];
-  updDiffLabel();
-  launchConfetti(); buildTablesGrid(); newProblem();
-  srRemoteLoad(pName, pChar, mode).then(remote => {
-    if (remote) { srData = remote; srLocalSave(pName, pChar, mode, remote); updDiffLabel(); }
-  }).catch(()=>{});
-  achInit().then(()=>achCheck('first_login'));
-}
-
-// ══ SCREEN NAV ═══════════════════════════════════
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-async function showScores(){
-  document.querySelectorAll('.ftab').forEach((t,i)=>t.classList.toggle('active',i===0));
-  document.querySelectorAll('.mtab').forEach((t,i)=>t.classList.toggle('active',i===0));
-  document.getElementById('hofPanel').style.display='block';
-  document.getElementById('achPanel').style.display='none';
-  showScreen('scoreScreen');
-  await renderScores('all');
-}
-function backToGame(){showScreen('gameScreen');}
-
-// ══ GAME STATE ═══════════════════════════════════
-let mode='h', range=10, selTable=2;
-let ans='', corr=0, streak=0, pts=0, rDone=0, rTotal=10;
-let prob=null, busy=false;
-let roundStartTime = Date.now();
-let maxStreakThisRound = 0; // BUG-002 fix: seuraa kierroksen parasta putkea
-
-// ══ ADAPTIVE ENGINE ══════════════════════════════
-// Spaced repetition: jokainen tehtävätyyppi saa "weight" (paino)
-// Väärä vastaus → paino nousee (tehtävä tulee todennäköisemmin uudelleen)
-// Oikea vastaus → paino laskee hitaasti
-// Kierroksen sisällä: väärät tehtävät lisätään retry-jonoon
-
-const SR_KEY = 'matikka_sr_v1'; // localStorage avain
-
-// ── localStorage apufunktiot ──────────────────────
-// Huom: avain on pelaaja-kohtainen (ei moodi-kohtainen)
-// Taso on yhteinen kaikille moodeille — vain weights ovat moodi-kohtaisia
-function srLocalLoad(name, char, md) {
-  try {
-    const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
-    const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
-    // Palauta rakenne joka sisältää yhteisen tason + moodi-kohtaiset painot
-    return {
-      weights:      playerData.modeWeights?.[md] || {},
-      roundsPlayed: playerData.roundsPlayed || 0,
-      diffLevel:    playerData.diffLevel    || 1
-    };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1 }; }
-}
-
-function srLocalSave(name, char, md, data) {
-  try {
-    const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
-    const playerKey = `${name}:${char}`;
-    const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{} };
-    // Päivitä yhteinen taso ja kierrosmäärä, mutta moodi-kohtaiset painot erikseen
-    playerData.diffLevel    = data.diffLevel;
-    playerData.roundsPlayed = data.roundsPlayed;
-    if (!playerData.modeWeights) playerData.modeWeights = {};
-    playerData.modeWeights[md] = data.weights;
-    all[playerKey] = playerData;
-    localStorage.setItem(SR_KEY, JSON.stringify(all));
-  } catch {}
-}
-
-// ── Supabase SR: lataa pelaajan edistyminen ───────
-async function srRemoteLoad(name, char, md) {
-  try {
-    // Hae kaikki moodit tälle pelaajalle — otetaan korkein diffLevel
-    const url = `${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=*`;
-    const res = await fetch(url, { headers: SB_HEADERS });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rows = await res.json();
-    if (!rows.length) return null;
-
-    // Korkein taso kaikista moodeista = pelaajan oikea taso
-    const maxLevel    = Math.max(...rows.map(r => r.diff_level || 1));
-    const totalRounds = rows.reduce((s, r) => s + (r.rounds_played || 0), 0);
-    // Moodi-kohtaiset painot nykyiselle moodille
-    const modeRow = rows.find(r => r.mode === md);
-
-    return {
-      weights:      modeRow?.weights       || {},
-      roundsPlayed: totalRounds,
-      diffLevel:    maxLevel
-    };
-  } catch (err) {
-    console.warn('SR remote load failed:', err.message);
-    return null;
-  }
-}
-
-// ── Supabase SR: tallenna / päivitä edistyminen ───
-async function srRemoteSave(name, char, md, data) {
-  try {
-    // Tallenna moodi-kohtainen rivi mutta käytä yhteistä diffLevel:ä
-    const res = await fetch(`${SB_URL}/rest/v1/player_progress`, {
-      method: 'POST',
-      headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-      body: JSON.stringify({
-        player_name:   name,
-        player_char:   char,
-        mode:          md,
-        weights:       data.weights,
-        diff_level:    data.diffLevel,
-        rounds_played: data.roundsPlayed,
-        updated_at:    new Date().toISOString()
-      })
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    // Päivitä myös muiden moodien diffLevel samaksi — taso on yhteinen
-    const otherModes = ['h','a','s','m'].filter(m => m !== md);
-    await Promise.all(otherModes.map(m =>
-      fetch(`${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&mode=eq.${m}`, {
-        method: 'PATCH',
-        headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ diff_level: data.diffLevel })
-      }).catch(()=>{}) // ei kriittinen jos rivi ei ole olemassa
-    ));
-  } catch (err) {
-    console.warn('SR remote save failed:', err.message);
-  }
-}
-
-// ── Pääfunktio: lataa SR-data (Supabase → localStorage) ──
-async function srLoad() {
-  // Yritä Supabasesta ensin
-  const remote = await srRemoteLoad(pName, pChar, mode);
-  if (remote) {
-    // Synkronoi myös localStorageen
-    srLocalSave(pName, pChar, mode, remote);
-    return remote;
-  }
-  // Fallback: localStorage
-  return srLocalLoad(pName, pChar, mode);
-}
-
-// ── Pääfunktio: tallenna SR-data (molemmat) ──────
-function srSave(data) {
-  // Tallenna heti localStorageen (synkroninen, nopea)
-  srLocalSave(pName, pChar, mode, data);
-  // Tallenna Supabaseen taustalla (asynkroninen)
-  srRemoteSave(pName, pChar, mode, data);
-}
-
-// Muodostaa tehtävän "tunnisteen" painotusta varten
-function probKey(p) {
-  if (p.type === 'h') return `h:${p.t}`;
-  if (p.type === 'a') return `a:${p.a}+${p.b}`;
-  if (p.type === 's') return `s:${p.a}-${p.b}`;
-  if (p.type === 'm') return `m:${p.t}x${p.m}`;
-  return 'x';
-}
-
-// 50 tasoa — lukualue kasvaa + tehtävätyypit vaikeutuvat
-const DIFF_LEVELS = (()=>{
-  const levels = [];
-  for (let i = 1; i <= 50; i++) {
-    let range;
-    if      (i <= 5)  range = 10;
-    else if (i <= 10) range = 20;
-    else if (i <= 15) range = 50;
-    else if (i <= 20) range = 100;
-    else if (i <= 25) range = 150;
-    else if (i <= 30) range = 200;
-    else if (i <= 35) range = 300;
-    else if (i <= 40) range = 500;
-    else if (i <= 45) range = 750;
-    else              range = 1000;
-    // Sallitut tehtävätyypit
-    let types;
-    if      (i <= 3)  types = ['h','a'];
-    else if (i <= 7)  types = ['h','a','s'];
-    else              types = ['h','a','s','m'];
-    // Kertotaulujen max-kerroin
-    const maxTable = i <= 12 ? 5 : i <= 20 ? 7 : 10;
-    // Pisteytyskerroin 1.0 → 8.35
-    const mult = +(1 + (i-1) * 0.15).toFixed(2);
-    // Väri per 10 tasoa
-    const colors = ['var(--accent3)','var(--accent4)','var(--accent)','var(--pink)','var(--purple)'];
-    const color  = colors[Math.floor((i-1)/10)];
-    levels.push({ label:`Taso ${i}`, range, types, maxTable, mult, color });
-  }
-  return levels;
 })();
+</script>
 
-// Adaptiivinen tila per kierros
-let srData       = { weights:{}, roundsPlayed:0, diffLevel:1 };
-let retryQueue   = [];
-let roundHistory = [];
 
-async function srInit() {
-  srData = await srLoad();
-  retryQueue = [];
-  roundHistory = [];
-  updDiffLabel();
+<script>
+// Evästeasetukset-nappi — avaa bannerin uudelleen
+function openCookieSettings(){
+  localStorage.removeItem('matikka_cookie_consent');
+  var b = document.getElementById('cookieBanner');
+  if(b) b.style.display = 'block';
+  window.scrollTo(0,document.body.scrollHeight);
 }
-
-function updDiffLabel() {
-  const lvl  = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
-  const info = DIFF_LEVELS[lvl];
-  const el   = document.getElementById('diffLabel');
-  if (el) { el.textContent = info.label; el.style.color = info.color; }
-}
-
-// Valitaan seuraava tehtävä — painotettu satunnaisuus + retry-jono
-function pickNextProblem() {
-  if (retryQueue.length > 0 && rDone >= Math.floor(rTotal * 0.5)) {
-    return retryQueue.shift();
-  }
-  const lvl      = Math.min(srData.diffLevel - 1, DIFF_LEVELS.length - 1);
-  const info     = DIFF_LEVELS[lvl];
-  // BUG-010 FIX: käyttäjän valitsema range on alaraja, adaptiivinen taso on yläraja
-  // Jos käyttäjä on valinnut "Luvut 1-50" mutta taso sallii vain 1-20,
-  // käytetään käyttäjän valintaa — ei hiljaa typistytä
-  const effRange = Math.max(range, Math.min(range, info.range));
-  const candidates = [];
-  for (let i = 0; i < 6; i++) {
-    // Käyttäjän valitsema moodi on aina etusijalla
-    // Automaattinen moodi valitaan tason sallituista tyypeistä
-    const useMode = mode;
-    let p;
-    if      (useMode === 'h') p = genH(effRange);
-    else if (useMode === 'a') p = genA(effRange);
-    else if (useMode === 's') p = genS(effRange);
-    else                      p = genM(info.maxTable);
-    const w = srData.weights[probKey(p)] || 1.0;
-    candidates.push({ p, w });
-  }
-  const total = candidates.reduce((s, c) => s + c.w, 0);
-  let rnd = Math.random() * total;
-  for (const c of candidates) {
-    rnd -= c.w;
-    if (rnd <= 0) return c.p;
-  }
-  return candidates[0].p;
-}
-
-// Rekisteröi vastaus
-function srRecord(p, correct) {
-  const key = probKey(p);
-  const w   = srData.weights[key] || 1.0;
-  if (correct) {
-    srData.weights[key] = Math.max(0.5, w * 0.75);
-  } else {
-    srData.weights[key] = Math.min(5.0, w * 2.0);
-    const alreadyQueued = retryQueue.some(q => probKey(q) === key);
-    if (!alreadyQueued) retryQueue.push({ ...p });
-  }
-  roundHistory.push(correct);
-  srSave(srData);
-}
-
-// Kierroksen jälkeen: harkitse tasonvaihto
-function srEvaluateRound(pct) {
-  srData.roundsPlayed++;
-  if (pct >= 85 && srData.diffLevel < DIFF_LEVELS.length) {
-    srData.diffLevel++;
-    updDiffLabel();
-    srSave(srData);
-    // Tasosaavutus joka 10. tasolla
-    if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
-    return { changed: true, up: true, newLevel: srData.diffLevel };
-  } else if (pct < 50 && srData.diffLevel > 1) {
-    srData.diffLevel--;
-    updDiffLabel();
-    srSave(srData);
-    return { changed: true, up: false, newLevel: srData.diffLevel };
-  }
-  srSave(srData);
-  return { changed: false, newLevel: srData.diffLevel };
-}
-
-// Avaa tasosaavutus — kaikki ovat jo ACHIEVEMENTS-taulukossa alusta alkaen
-function checkLevelAchievement(level) {
-  const ids = { 10:'level_10', 20:'level_20', 30:'level_30', 40:'level_40', 50:'level_50' };
-  const id = ids[level];
-  if (id) achCheck(id);
-}
-
-function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-
-// Tehtävägeneraattorit ottavat nyt effRange-parametrin
-function genH(r=range){const t=rand(2,r),a=rand(0,t),b=t-a,bp=['a','b','total'][rand(0,2)];return{type:'h',t,a,b,bp,answer:bp==='a'?a:bp==='b'?b:t};}
-function genA(r=range){const a=rand(1,r),b=rand(1,Math.max(1,r-a)),bl=['r','a','b'][rand(0,2)];return{type:'a',a,b,r:a+b,bl,answer:bl==='r'?a+b:bl==='a'?a:b};}
-function genS(r=range){const a=rand(2,r),b=rand(1,a),bl=['r','a','b'][rand(0,2)];return{type:'s',a,b,r:a-b,bl,answer:bl==='r'?a-b:bl==='a'?a:b};}
-function genM(maxT=10){
-  // Kertotaulumoodissa käytetään käyttäjän valitsemaa taulua
-  // Muissa moodeissa (automaattinen) arvotaan 1-maxT
-  const t = (mode==='m') ? selTable : rand(1,maxT);
-  const m = rand(1,maxT);
-  const bl = Math.random()<.5?'r':'m';
-  return {type:'m', t, m, r:t*m, bl, answer:bl==='r'?t*m:m};
-}
-
-function buildTablesGrid(){
-  const g=document.getElementById('tablesGrid');g.innerHTML='';
-  for(let i=1;i<=10;i++){const el=document.createElement('div');el.className='ti'+(i===selTable?' active':'');el.textContent=i+'×';el.onclick=()=>{selTable=i;document.querySelectorAll('.ti').forEach((x,j)=>x.className='ti'+(j+1===i?' active':''));restartRound();};g.appendChild(el);}
-}
-function setMode(m){
-  mode=m;
-  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('btn-'+m).classList.add('active');
-  document.getElementById('rangeSection').style.display=m==='m'?'none':'block';
-  document.getElementById('tableSection').style.display=m==='m'?'block':'none';
-  // Lataa moodi-kohtaiset painot mutta säilytä yhteinen taso
-  const currentLevel = srData.diffLevel;
-  const currentRounds = srData.roundsPlayed;
-  srData = srLocalLoad(pName, pChar, m);
-  srData.diffLevel = currentLevel;    // yhteinen taso säilyy
-  srData.roundsPlayed = currentRounds;
-  updDiffLabel();
-  // Lataa Supabasesta taustalla
-  srRemoteLoad(pName, pChar, m).then(remote => {
-    if (remote) {
-      srData.weights = remote.weights; // vain painot päivitetään
-      srLocalSave(pName, pChar, m, srData);
-    }
-  }).catch(()=>{});
-  restartRound();
-}
-function setRange(r,el){range=r;document.querySelectorAll('.rp').forEach(p=>p.classList.remove('active'));el.classList.add('active');restartRound();}
-function restartRound(){rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;retryQueue=[];roundHistory=[];roundStartTime=Date.now();document.getElementById('resultsPanel').classList.remove('show');document.getElementById('exerciseView').style.display='block';monsterFace('normal');updProg();updStats();newProblem();}
-
-function newProblem(){
-  ans='';busy=false;
-  document.getElementById('fb').textContent='';
-  document.getElementById('fb').className='feedback';
-  prob = pickNextProblem();
-  render(prob);
-}
-
-function render(p){
-  const el=document.getElementById('pD'),hint=document.getElementById('pH');
-  const bk=`<span class="pb" id="bS">${ans||'?'}</span>`;let h='';
-  if(p.type==='h'){hint.textContent='Mikä luku puuttuu?';if(p.bp==='total')h=bk+`<span class="po">=</span><span>${p.a}</span><span class="po">+</span><span>${p.b}</span>`;else if(p.bp==='a')h=`<span>${p.t}</span><span class="po">=</span>`+bk+`<span class="po">+</span><span>${p.b}</span>`;else h=`<span>${p.t}</span><span class="po">=</span><span>${p.a}</span><span class="po">+</span>`+bk;}
-  else if(p.type==='a'){hint.textContent='Laske yhteenlasku';h=(p.bl==='a'?bk:`<span>${p.a}</span>`)+`<span class="po">+</span>`+(p.bl==='b'?bk:`<span>${p.b}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
-  else if(p.type==='s'){hint.textContent='Laske vähennyslasku';h=(p.bl==='a'?bk:`<span>${p.a}</span>`)+`<span class="po">−</span>`+(p.bl==='b'?bk:`<span>${p.b}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
-  else{hint.textContent=`${p.t}:n kertotaulu`;h=`<span>${p.t}</span><span class="po">×</span>`+(p.bl==='m'?bk:`<span>${p.m}</span>`)+`<span class="pe">=</span>`+(p.bl==='r'?bk:`<span class="pr">${p.r}</span>`);}
-  el.innerHTML=h;
-}
-
-// ══ MÖRKÖ ANIMAATIOT ═════════════════════════════
-
-function monsterAnimate(anim, duration=700) {
-  const svg = document.getElementById('monsterSvg');
-  if (!svg) return;
-  // Poista kaikki animaatioluokat
-  svg.classList.remove('anim-eat','anim-shake','anim-jump','anim-dance','anim-sad');
-  // Pakota reflow jotta animaatio käynnistyy uudelleen
-  void svg.offsetWidth;
-  svg.classList.add('anim-'+anim);
-  // Palaa idle-animaatioon
-  setTimeout(()=>{
-    svg.classList.remove('anim-eat','anim-shake','anim-jump','anim-dance','anim-sad');
-  }, duration);
-}
-
-// Vaihda mörkön ilme
-function monsterFace(state) {
-  const mouth  = document.getElementById('mgMouth');
-  const brows  = document.getElementById('mgBrows');
-  const pupilL = document.getElementById('mgPupilL');
-  const pupilR = document.getElementById('mgPupilR');
-  if (!mouth) return;
-
-  if (state === 'eat') {
-    // Iso auki oleva suu ahmimiseen, tähtisilmät
-    mouth.innerHTML = `
-      <path d="M60 102 Q100 145 140 102" fill="#0f1923"/>
-      <path d="M60 102 Q100 120 140 102" fill="#c0334d" opacity=".9"/>
-      <rect x="64"  y="102" width="13" height="11" rx="3" fill="white"/>
-      <rect x="81"  y="102" width="13" height="11" rx="3" fill="white"/>
-      <rect x="98"  y="102" width="13" height="11" rx="3" fill="white"/>
-      <rect x="115" y="102" width="12" height="11" rx="3" fill="white"/>
-      <ellipse cx="100" cy="122" rx="16" ry="10" fill="#ff8ed4" opacity=".9"/>`;
-    if(pupilL){ pupilL.textContent='★'; pupilL.setAttribute('fill','#f7c948'); }
-    if(pupilR){ pupilR.textContent='★'; pupilR.setAttribute('fill','#f7c948'); }
-    brows && (brows.innerHTML = `
-      <path d="M62 55 Q78 46 94 54" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M106 54 Q122 46 138 55" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
-
-  } else if (state === 'wrong') {
-    // Pettynyt suu, kulmat alas
-    mouth.innerHTML = `
-      <path d="M72 118 Q100 106 128 118" fill="none" stroke="#0f1923" stroke-width="5" stroke-linecap="round"/>`;
-    if(pupilL){ pupilL.textContent='×'; pupilL.setAttribute('fill','var(--accent2)'); }
-    if(pupilR){ pupilR.textContent='×'; pupilR.setAttribute('fill','var(--accent2)'); }
-    brows && (brows.innerHTML = `
-      <path d="M62 60 Q78 67 94 61" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M106 61 Q122 67 138 60" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
-
-  } else if (state === 'happy') {
-    // Leveä hymy, sydämet silmissä
-    mouth.innerHTML = `
-      <path d="M62 102 Q100 140 138 102" fill="#0f1923"/>
-      <path d="M62 102 Q100 118 138 102" fill="#c0334d" opacity=".85"/>
-      <rect x="66"  y="102" width="12" height="10" rx="3" fill="white"/>
-      <rect x="82"  y="102" width="12" height="10" rx="3" fill="white"/>
-      <rect x="98"  y="102" width="12" height="10" rx="3" fill="white"/>
-      <rect x="114" y="102" width="11" height="10" rx="3" fill="white"/>
-      <ellipse cx="100" cy="120" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>`;
-    if(pupilL){ pupilL.textContent='♥'; pupilL.setAttribute('fill','#ff8ed4'); }
-    if(pupilR){ pupilR.textContent='♥'; pupilR.setAttribute('fill','#ff8ed4'); }
-    brows && (brows.innerHTML = `
-      <path d="M62 56 Q78 48 94 56" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M106 56 Q122 48 138 56" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
-
-  } else if (state === 'sad') {
-    // Surullinen suu, kyyneleet
-    mouth.innerHTML = `
-      <path d="M72 122 Q100 110 128 122" fill="none" stroke="#0f1923" stroke-width="5" stroke-linecap="round"/>`;
-    if(pupilL){ pupilL.textContent='😢'.split('')[0]; pupilL.setAttribute('fill','#7b9fff'); }
-    if(pupilR){ pupilR.setAttribute('fill','#7b9fff'); }
-    brows && (brows.innerHTML = `
-      <path d="M62 62 Q78 68 94 62" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M106 62 Q122 68 138 62" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
-
-  } else {
-    // Normaalitila
-    mouth.innerHTML = `
-      <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
-      <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
-      <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
-      <rect x="85"  y="104" width="11" height="10" rx="3" fill="white"/>
-      <rect x="100" y="104" width="11" height="10" rx="3" fill="white"/>
-      <rect x="115" y="104" width="10" height="10" rx="3" fill="white"/>
-      <ellipse cx="100" cy="122" rx="14" ry="8" fill="#ff8ed4" opacity=".9"/>`;
-    if(pupilL){ pupilL.textContent='★'; pupilL.setAttribute('fill','#f7c948'); }
-    if(pupilR){ pupilR.textContent='★'; pupilR.setAttribute('fill','#f7c948'); }
-    brows && (brows.innerHTML = `
-      <path d="M62 58 Q78 51 94 57" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <path d="M106 57 Q122 51 138 58" stroke="#0d5e3f" stroke-width="3.5" fill="none" stroke-linecap="round"/>`);
-  }
-  // Palaa normaaliksi hetken päästä
-  if (state !== 'normal') {
-    setTimeout(() => monsterFace('normal'), state === 'sad' ? 3000 : state === 'happy' ? 2500 : 900);
-  }
-}
-
-// Lentävä numero mörkön suuhun
-function monsterEatNumber(numText) {
-  const wrap = document.getElementById('monsterWrap');
-  if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = 'eat-number';
-  el.textContent = numText;
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), 600);
-}
-function np(n){if(busy||ans.length>=4)return;ans+=n;updB();}
-function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
-function npa(){if(busy)return;ans='';updB();}
-function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
-
-function ck(){
-  if(!ans||busy)return;
-  const u=parseInt(ans),ok=u===prob.answer;busy=true;
-  const fb=document.getElementById('fb'),bs=document.getElementById('bS');
-  srRecord(prob, ok); // ← adaptiivinen kirjaus
-  if(ok){
-    streak++;corr++;
-    if(streak > maxStreakThisRound) maxStreakThisRound = streak; // BUG-002 fix
-    // Pisteytys: tason kerroin × perusarvo + putkibonus
-    const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
-    const baseScore  = Math.round(10 * lvlInfo.mult);
-    const streakBonus = streak >= 3 ? Math.round(streak * 2 * lvlInfo.mult) : 0;
-    pts += baseScore + streakBonus;
-    fb.textContent=okMsg();fb.className='feedback ok';
-    if(bs)bs.style.color='var(--accent3)';
-    // Mörkö ahmii vastauksen
-    monsterEatNumber(prob.answer);
-    if(streak>=10&&streak%10===0){
-      sfxSuperStreak(); monsterFace('happy'); monsterAnimate('jump',800);
-      achCheck('streak_10');
-    } else if(streak>=5&&streak%5===0){
-      sfxStreak(); monsterFace('happy'); monsterAnimate('jump',700);
-      achCheck('streak_5');
-    } else {
-      sfxCorrect(); monsterFace('eat'); monsterAnimate('eat',600);
-    }
-    if(streak>0&&streak%5===0)launchConfetti();
-  }else{
-    streak=0;
-    fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
-    fb.className='feedback no';
-    if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
-    sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
-  }
-  updStats();rDone++;updProg();
-  setTimeout(()=>{if(rDone>=rTotal)showResults();else newProblem();},ok?600:1300);
-}
-function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Loistava! 🔥','Hienoa! 💪','Aivan oikein! 🎯'][~~(Math.random()*6)];}
-function updStats(){document.getElementById('sStreak').textContent=streak;document.getElementById('sCorr').textContent=corr;document.getElementById('sPts').textContent=pts;}
-function updProg(){const p=Math.round((rDone/rTotal)*100);document.getElementById('pF').style.width=p+'%';document.getElementById('pT').textContent=rDone+' / '+rTotal;document.getElementById('pP').textContent=p+'%';}
-
-async function showResults(){
-  document.getElementById('exerciseView').style.display='none';
-  document.getElementById('resultsPanel').classList.add('show');
-  const p=Math.round((corr/rTotal)*100);
-  let e,t;
-  if(p>=90){e='🏆';t='Mestari, '+pName+'!';}else if(p>=70){e='🌟';t='Hienoa, '+pName+'!';}else if(p>=50){e='👏';t='Hyvä yritys, '+pName+'!';}else{e='💡';t='Harjoitellaan lisää!';}
-  document.getElementById('rEmoji').textContent=e;
-  document.getElementById('rTitle').textContent=t;
-
-  // Arvioi kierros ja mahdollinen tasonvaihto
-  const lvlChange = srEvaluateRound(p);
-  let lvlMsg = '';
-  if (lvlChange.changed && lvlChange.up) {
-    const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
-    lvlMsg = `<div class="result-tag" style="background:rgba(93,232,181,.15);color:${newLvl.color};border:1.5px solid ${newLvl.color};">⬆️ Taso nousi! ${newLvl.label}</div>`;
-  } else if (lvlChange.changed && !lvlChange.up) {
-    const newLvl = DIFF_LEVELS[Math.min(lvlChange.newLevel-1, DIFF_LEVELS.length-1)];
-    lvlMsg = `<div class="result-tag" style="background:rgba(106,130,160,.12);color:var(--muted);border:1.5px solid var(--muted);">⬇️ Harjoitellaan tasolla ${newLvl.label}</div>`;
-  }
-
-  document.getElementById('rScore').innerHTML=`
-    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span>${pts}</span> pistettä</div>
-    ${lvlMsg}
-    <div class="result-save" id="saveStatus">💾 Tallennetaan...</div>
-  `;
-  if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
-  else      { monsterFace('sad'); monsterAnimate('sad',1500); }
-  sfxRoundEnd(p);
-  checkAllAchievements(p, mode);
-  const ml={h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennyslasku',m:'Kertotaulu'};
-  const entry={name:pName,char:pChar,mode,modeLabel:ml[mode],level:mode==='m'?selTable+'× kertotaulu':'Luvut 1–'+range,corr,total:rTotal,pts,pct:p,ts:Date.now()};
-  const saved = await saveScore(entry);
-  const statusEl = document.getElementById('saveStatus');
-  if(statusEl){
-    if(saved){statusEl.className='result-save result-save--ok';statusEl.textContent='✅ Tallennettu Hall of Fameen!';}
-    else{statusEl.className='result-save result-save--offline';statusEl.textContent='📱 Tallennettu laitteelle (offline-tila)';}
-  }
-  retryQueue=[];roundHistory=[];
-}
-
-// ══ SCORES — HOF GRID ════════════════════════════
-
-function switchMainTab(tab, el) {
-  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  const isHof = tab==='hof';
-  document.getElementById('hofPanel').style.display = isHof ? 'block' : 'none';
-  document.getElementById('achPanel').style.display = isHof ? 'none'  : 'block';
-  if (!isHof) renderAchievements();
-}
-
-function filterScores(f,el){
-  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderScores(f);
-}
-
-async function renderScores(f) {
-  const list = document.getElementById('scoreList');
-  list.innerHTML = `<div class="no-scores"><span class="big" style="font-size:2rem;display:block;">⏳</span>Ladataan...</div>`;
-
-  let raw = await loadScoresRemote(f);
-  if (raw === null) {
-    raw = localLoad();
-    if (f && f !== 'all') raw = raw.filter(s => s.mode === f);
-  }
-
-  // ── Aggregoi kaikki kierrokset per pelaaja ──
-  // HOF-pisteet = kaikkien kierrosten pisteet yhteenlaskettuna
-  // Näin jokainen kierros kartuttaa tulosta ja pitkään pelannut erottuu
-  const playerMap = new Map();
-  raw.forEach(s => {
-    const key = `${s.name}::${s.char}`;
-    const ex  = playerMap.get(key);
-    if (!ex) {
-      playerMap.set(key, {
-        name:       s.name,
-        char:       s.char,
-        totalPts:   s.pts,           // kumulatiiviset pisteet
-        bestRound:  s.pts,           // paras yksittäinen kierros
-        totalCorr:  s.corr,
-        totalPlayed:s.total,
-        rounds:     1,
-        bestPct:    s.pct || 0,
-        ts:         s.ts,
-        mode:       s.mode,
-        modeLabel:  s.modeLabel,
-        level:      s.level,
-      });
-    } else {
-      ex.totalPts   += s.pts;
-      ex.totalCorr  += s.corr;
-      ex.totalPlayed+= s.total;
-      ex.rounds     += 1;
-      if (s.pts > ex.bestRound) ex.bestRound = s.pts;
-      if ((s.pct||0) > ex.bestPct) ex.bestPct = s.pct||0;
-    }
-  });
-
-  // Järjestä kumulatiivisten pisteiden mukaan
-  let players = Array.from(playerMap.values())
-    .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound)
-    .slice(0, 200);
-
-  if (!players.length) {
-    list.innerHTML = `<div class="no-scores"><span class="big">🎮</span>Ei tuloksia vielä!<br>Pelaa kierros ja tule takaisin.</div>`;
-    return;
-  }
-
-  list.innerHTML = players.map((s, i) => {
-    const r      = i+1;
-    const isGoat = r===1;
-    const rc     = r===1?'r1':r===2?'r2':r===3?'r3':'';
-    const medal  = r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`;
-    const av     = s.char==='boy'?'🤴':'👸';
-    const isMe   = s.name===pName && s.char===pChar;
-    const acc    = s.totalPlayed > 0 ? Math.round(s.totalCorr/s.totalPlayed*100) : 0;
-
-    const goatBadge = isGoat ? `<div class="hof-goat-badge">🐐 GOAT</div>` : '';
-    const crown     = isGoat ? `<div class="hof-crown">👑</div>` : '';
-    const meBadge   = isMe   ? `<div class="hof-me-badge">Sinä ⭐</div>` : '';
-    const cardClass = `hof-card ${r<=3?'rank-'+r:''} ${isGoat?'goat-card':''} ${isMe?'me-card':''}`;
-    const ptsColor  = isGoat ? 'color:#ffd700;text-shadow:0 0 14px rgba(255,200,0,.4);' : '';
-
-    return `<div class="${cardClass}">
-      ${crown}
-      <div class="hof-rank ${rc}">${medal}</div>
-      <div class="hof-avatar">${av}</div>
-      <div class="hof-name">${s.name}</div>
-      ${goatBadge}
-      ${meBadge}
-      <div class="hof-pts" style="${ptsColor}">${s.totalPts.toLocaleString('fi-FI')}</div>
-      <div class="hof-pts-label">yhteispisteet</div>
-      <div class="hof-correct">paras ${s.bestRound}p · ${acc}% tarkkuus</div>
-      <div class="hof-rounds">${s.rounds} kierros${s.rounds!==1?'ta':''}</div>
-    </div>`;
-  }).join('');
-}
-
-// ══ ACHIEVEMENTS SYSTEM ══════════════════════════
-
-const ACHIEVEMENTS = [
-  // — Alkuperäiset 8 —
-  { id:'first_login',    icon:'👋', name:'Tervetuloa!',          desc:'Kirjautui ensimmäisen kerran' },
-  { id:'perfect_round',  icon:'🌟', name:'Täydellinen!',         desc:'10/10 oikein yhdellä kierroksella' },
-  { id:'streak_5',       icon:'🔥', name:'Putkihaaste',          desc:'5 peräkkäin oikein' },
-  { id:'streak_10',      icon:'🔥🔥',name:'Superputki!',          desc:'10 peräkkäin oikein' },
-  { id:'all_tables',     icon:'✖️', name:'Kertotaulumestari',    desc:'Kaikki kertotaulut 1–10 pelattu' },
-  { id:'level_4',        icon:'🚀', name:'Taso 4!',              desc:'Saavutti tason 4' },
-  { id:'rounds_100',     icon:'🏆', name:'Satanen!',             desc:'100 kierrosta yhteensä' },
-  { id:'hof_1',          icon:'🐐', name:'GOAT',                 desc:'Hall of Famen #1 sija' },
-  // — Uudet 8 —
-  { id:'rounds_10',      icon:'🎮', name:'Harjoittelija',        desc:'10 kierrosta yhteensä' },
-  { id:'rounds_50',      icon:'🎯', name:'Ahkera ahmatti',       desc:'50 kierrosta yhteensä' },
-  { id:'perfect_3',      icon:'💎', name:'Kolme täydellistä',    desc:'3 täydellistä 10/10 kierrosta' },
-  { id:'all_modes',      icon:'🌈', name:'Monipuolinen',         desc:'Pelattu kaikkia 4 pelimoodia' },
-  { id:'streak_20',      icon:'⚡', name:'Salamaputki!',         desc:'20 peräkkäin oikein' },
-  { id:'speed_demon',    icon:'💨', name:'Salamanopea',          desc:'Kierros alle 90 sekunnissa' },
-  { id:'comeback',       icon:'💪', name:'Tekee paluun!',        desc:'Parani 3 peräkkäisellä kierroksella' },
-  { id:'early_bird',     icon:'🌅', name:'Aamulintu',            desc:'Pelasi ennen kello 8' },
-  // — Tasosaavutukset (BUG-009 fix: mukana alusta lukittuina) —
-  { id:'level_10',       icon:'🌟', name:'Tason 10 Mestari!',   desc:'Saavutti tason 10' },
-  { id:'level_20',       icon:'🔥', name:'Tason 20 Sankari!',   desc:'Saavutti tason 20' },
-  { id:'level_30',       icon:'⚡', name:'Tason 30 Legenda!',   desc:'Saavutti tason 30' },
-  { id:'level_40',       icon:'🚀', name:'Tason 40 Tähti!',     desc:'Saavutti tason 40' },
-  { id:'level_50',       icon:'🏆', name:'GRAND MASTER! 🐐',    desc:'Saavutti maksimitason 50!' },
-];
-
-const ACH_KEY = 'matikka_ach_v1';
-
-// localStorage: unlocked achievement ids per player
-function achLocalLoad() {
-  try {
-    const all = JSON.parse(localStorage.getItem(ACH_KEY)||'{}');
-    return new Set(all[`${pName}:${pChar}`]||[]);
-  } catch { return new Set(); }
-}
-function achLocalSave(ids) {
-  try {
-    const all = JSON.parse(localStorage.getItem(ACH_KEY)||'{}');
-    all[`${pName}:${pChar}`] = [...ids];
-    localStorage.setItem(ACH_KEY, JSON.stringify(all));
-  } catch {}
-}
-
-// Supabase: load unlocked achievements for current player
-async function achRemoteLoad() {
-  try {
-    const url = `${SB_URL}/rest/v1/achievements?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=achievement_id`;
-    const res = await fetch(url, {headers:SB_HEADERS});
-    if (!res.ok) throw new Error();
-    const rows = await res.json();
-    return new Set(rows.map(r=>r.achievement_id));
-  } catch { return null; }
-}
-
-// Supabase: unlock a single achievement
-async function achRemoteUnlock(id) {
-  try {
-    await fetch(`${SB_URL}/rest/v1/achievements`, {
-      method:'POST',
-      headers:{...SB_HEADERS,'Prefer':'resolution=ignore-duplicates,return=minimal'},
-      body:JSON.stringify({player_name:pName,player_char:pChar,achievement_id:id})
-    });
-  } catch {}
-}
-
-let unlockedAch = new Set();
-
-async function achInit() {
-  // Local first, remote in background
-  unlockedAch = achLocalLoad();
-  achRemoteLoad().then(remote => {
-    if (remote) {
-      unlockedAch = new Set([...unlockedAch, ...remote]);
-      achLocalSave(unlockedAch);
-    }
-  }).catch(()=>{});
-}
-
-// Check and unlock achievement — show toast if new
-async function achCheck(id) {
-  if (unlockedAch.has(id)) return;
-  const def = ACHIEVEMENTS.find(a=>a.id===id);
-  if (!def) return;
-  unlockedAch.add(id);
-  achLocalSave(unlockedAch);
-  achRemoteUnlock(id);
-  showAchToast(def);
-}
-
-// Toast notification
-let toastTimer = null;
-function showAchToast(def) {
-  const toast = document.getElementById('achToast');
-  document.getElementById('achToastIcon').textContent = def.icon;
-  document.getElementById('achToastName').textContent = def.name;
-  toast.classList.add('show');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toast.classList.remove('show'), 3500);
-}
-
-// Render achievements page
-async function renderAchievements() {
-  const list = document.getElementById('achList');
-  document.getElementById('achPlayerAv').textContent   = pChar==='boy'?'🤴':'👸';
-  document.getElementById('achPlayerName').textContent = pName;
-
-  // Refresh from remote
-  const remote = await achRemoteLoad();
-  if (remote) { unlockedAch = new Set([...unlockedAch,...remote]); achLocalSave(unlockedAch); }
-
-  const count = [...unlockedAch].filter(id=>ACHIEVEMENTS.some(a=>a.id===id)).length;
-  document.getElementById('achCount').textContent = `${count} / ${ACHIEVEMENTS.length} avattu`;
-
-  list.innerHTML = ACHIEVEMENTS.map(a => {
-    const ok   = unlockedAch.has(a.id);
-    const date = ok ? '' : '';
-    return `<div class="ach-card ${ok?'unlocked':'locked'}">
-      <div class="ach-icon">${a.icon}</div>
-      <div class="ach-name">${a.name}</div>
-      <div class="ach-desc">${a.desc}</div>
-      ${ok ? `<div class="ach-date">✅ Avattu!</div>` : `<div class="ach-lock-icon">🔒</div>`}
-    </div>`;
-  }).join('');
-}
-
-// ── Check achievements after each round / event ──
-async function checkAllAchievements(roundPct, currentMode) {
-  // First login — checked at startGame
-  achCheck('first_login');
-
-  // Perfect round (BUG-003 fix: >= 100 ei === 100)
-  if (roundPct >= 100) achCheck('perfect_round');
-
-  // BUG-002 FIX: streak-saavutukset tarkistetaan maxStreakThisRound:lla
-  // ei "streak":lla joka voi olla 0 kierroksen lopussa
-  if (maxStreakThisRound >= 5)  achCheck('streak_5');
-  if (maxStreakThisRound >= 10) achCheck('streak_10');
-  if (maxStreakThisRound >= 20) achCheck('streak_20');
-
-  // Taso 4+ (vanha saavutus yhteensopivuuden vuoksi)
-  if (srData.diffLevel >= 4) achCheck('level_4');
-  // Tasosaavutukset joka 10. tasolla
-  [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
-
-  // Kaikki kertotaulut 1–10 pelattu
-  const tablesKey = `matikka_tables_${pName}:${pChar}`;
-  try {
-    const played = new Set(JSON.parse(localStorage.getItem(tablesKey)||'[]'));
-    if (currentMode==='m') played.add(selTable);
-    localStorage.setItem(tablesKey, JSON.stringify([...played]));
-    if (played.size >= 10) achCheck('all_tables');
-  } catch {}
-
-  // Kierrosmäärät
-  if (srData.roundsPlayed >= 10)  achCheck('rounds_10');
-  if (srData.roundsPlayed >= 50)  achCheck('rounds_50');
-  if (srData.roundsPlayed >= 100) achCheck('rounds_100');
-
-  // Salamanopea
-  const roundSecs = (Date.now() - roundStartTime) / 1000;
-  if (roundSecs < 90 && roundPct >= 80) achCheck('speed_demon');
-
-  // Kaikki 4 pelimoodia pelattu
-  const modesKey = `matikka_modes_${pName}:${pChar}`;
-  try {
-    const playedModes = new Set(JSON.parse(localStorage.getItem(modesKey)||'[]'));
-    playedModes.add(currentMode);
-    localStorage.setItem(modesKey, JSON.stringify([...playedModes]));
-    if (playedModes.size >= 4) achCheck('all_modes');
-  } catch {}
-
-  // Kolme täydellistä kierrosta
-  const perfectKey = `matikka_perfect_${pName}:${pChar}`;
-  try {
-    let perfectCount = parseInt(localStorage.getItem(perfectKey)||'0');
-    if (roundPct >= 100) perfectCount++;
-    localStorage.setItem(perfectKey, perfectCount);
-    if (perfectCount >= 3) achCheck('perfect_3');
-  } catch {}
-
-  // Aamulintu
-  if (new Date().getHours() < 8) achCheck('early_bird');
-
-  // Tekee paluun — parantunut 3 peräkkäisellä kierroksella
-  const pctKey = `matikka_pcthistory_${pName}:${pChar}`;
-  try {
-    const history = JSON.parse(localStorage.getItem(pctKey)||'[]');
-    history.push(roundPct);
-    if (history.length > 4) history.shift();
-    localStorage.setItem(pctKey, JSON.stringify(history));
-    if (history.length >= 3 &&
-        history[history.length-1] > history[history.length-2] &&
-        history[history.length-2] > history[history.length-3]) {
-      achCheck('comeback');
-    }
-  } catch {}
-
-  // BUG-001 FIX: HOF #1 tarkistaa kumulatiiviset pisteet, ei yksittäistä kierrosta
-  setTimeout(async () => {
-    const raw = await loadScoresRemote('all');
-    if (!raw || !raw.length) return;
-    // Aggregoi kuten renderScores tekee
-    const playerMap = new Map();
-    raw.forEach(s => {
-      const key = `${s.name}::${s.char}`;
-      const ex  = playerMap.get(key);
-      if (!ex) playerMap.set(key, { name:s.name, char:s.char, totalPts:s.pts });
-      else ex.totalPts += s.pts;
-    });
-    const sorted = Array.from(playerMap.values()).sort((a,b) => b.totalPts - a.totalPts);
-    if (sorted[0]?.name === pName && sorted[0]?.char === pChar) achCheck('hof_1');
-  }, 2500);
-}
-
-// ══ SWITCH PLAYER MODAL ══════════════════════════
-let swChar='';
-
-function openSwitch(){
-  document.getElementById('currAv').textContent=pChar==='boy'?'🤴':'👸';
-  document.getElementById('currName').textContent=pName;
-  document.getElementById('switchNameInput').value='';
-  swChar='';
-  document.getElementById('swBoyCard').classList.remove('selected');
-  document.getElementById('swGirlCard').classList.remove('selected');
-  document.getElementById('swConfirmBtn').disabled=true;
-  // Näytä hahmonvalinta oletuksena — piilotetaan jos pelaaja on tuttu
-  document.getElementById('swCharSection').style.display='block';
-  document.getElementById('swCharHint').style.display='none';
-  document.getElementById('switchModal').classList.add('open');
-  setTimeout(()=>document.getElementById('switchNameInput').focus(),100);
-}
-
-function closeSwitch(){
-  document.getElementById('switchModal').classList.remove('open');
-}
-
-function handleOverlayClick(e){
-  if(e.target===document.getElementById('switchModal'))closeSwitch();
-}
-
-function swSelChar(t){
-  swChar=t;
-  document.getElementById('swBoyCard').classList.toggle('selected',t==='boy');
-  document.getElementById('swGirlCard').classList.toggle('selected',t==='girl');
-  checkSwReady();
-}
-
-// Kun nimi muuttuu — tarkista onko pelaaja tuttu ja piilota hahmonvalinta
-let swNameTimer = null;
-document.getElementById('switchNameInput').addEventListener('input', ()=>{
-  clearTimeout(swNameTimer);
-  const name = document.getElementById('switchNameInput').value.trim();
-  swChar = '';
-  document.getElementById('swBoyCard').classList.remove('selected');
-  document.getElementById('swGirlCard').classList.remove('selected');
-  document.getElementById('swCharSection').style.display='block';
-  document.getElementById('swCharHint').style.display='none';
-  document.getElementById('swConfirmBtn').disabled=true;
-  if (!name) return;
-  // Debounce — tarkista 400ms kirjoittamisen jälkeen
-  swNameTimer = setTimeout(async ()=>{
-    const existingChar = await pinGetPlayerByName(name);
-    if (existingChar) {
-      swChar = existingChar;
-      document.getElementById('swCharSection').style.display='none';
-      document.getElementById('swCharHint').style.display='block';
-      document.getElementById('swCharHint').textContent =
-        `${existingChar==='boy'?'🤴':'👸'} ${name} — PIN-koodi tunnistaa sinut`;
-      document.getElementById('swConfirmBtn').disabled=false;
-    } else {
-      document.getElementById('swCharSection').style.display='block';
-      document.getElementById('swCharHint').style.display='none';
-      checkSwReady();
-    }
-  }, 400);
-});
-
-document.getElementById('switchNameInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter' && !document.getElementById('swConfirmBtn').disabled) confirmSwitch();
-});
-
-function checkSwReady(){
-  const name = document.getElementById('switchNameInput').value.trim();
-  const ok = name.length > 0 && swChar !== '';
-  document.getElementById('swConfirmBtn').disabled=!ok;
-  return ok;
-}
-
-async function confirmSwitch(){
-  const newName=document.getElementById('switchNameInput').value.trim();
-  if(!newName||!swChar)return;
-
-  const tmpName = newName;
-  const tmpChar = swChar;
-
-  // Tarkista onko pelaaja olemassa
-  const existingChar = await pinGetPlayerByName(tmpName);
-  closeSwitch();
-
-  if (existingChar) {
-    // Tuttu pelaaja — pyydä PIN suoraan ilman hahmonvalintaa
-    pName = tmpName; pChar = existingChar;
-    pinBuffer=''; pinAttempts=0; pinMode='login';
-    document.getElementById('pinTitle').textContent = `🔐 Hei, ${pName}!`;
-    document.getElementById('pinSub').textContent   = 'Syötä PIN-koodisi';
-    document.getElementById('pinError').textContent = '';
-    document.getElementById('pinAttemptsLeft').textContent = '';
-    pinUpdateDots();
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    document.getElementById('step3').classList.add('active');
-    showScreen('loginScreen');
-  } else {
-    // Uusi pelaaja — luo PIN (hahmo on jo valittu modalissa)
-    pName=tmpName; pChar=tmpChar;
-    pinBuffer=''; pinFirstEntry=''; pinMode='new';
-    document.getElementById('pinTitle').textContent = '🔐 Luo PIN-koodi';
-    document.getElementById('pinSub').textContent   = 'Valitse 4-numeroinen PIN';
-    document.getElementById('pinError').textContent = '';
-    pinUpdateDots();
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    document.getElementById('step3').classList.add('active');
-    showScreen('loginScreen');
-  }
-}
-
-// ══ CONFETTI ═════════════════════════════════════
-function launchConfetti(){
-  const c=document.getElementById('confetti');
-  const cols=['#f7c948','#ff6b6b','#5de8b5','#7b9fff','#ff9f43','#ff8ed4','#c56cf0'];
-  for(let i=0;i<80;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${Math.random()*2+1.4}s;animation-delay:${Math.random()*.8}s;`;c.appendChild(p);setTimeout(()=>p.remove(),3600);}
-}
-
-// ══ KEYBOARD ══════════════════════════════════════
-document.addEventListener('keydown',e=>{
-  // Close modal on Escape
-  if(e.key==='Escape'&&document.getElementById('switchModal').classList.contains('open')){closeSwitch();return;}
-  if(!document.getElementById('gameScreen').classList.contains('active'))return;
-  if(document.getElementById('switchModal').classList.contains('open'))return;
-  if(e.key>='0'&&e.key<='9')np(parseInt(e.key));
-  else if(e.key==='Backspace')npc();
-  else if(e.key==='Enter')ck();
-  else if(e.key==='Escape')npa();
-});
 </script>
 </body>
 </html>
