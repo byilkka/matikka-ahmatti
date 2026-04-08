@@ -1639,19 +1639,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <!-- Step 4: Luokkakoodi (vapaaehtoinen) -->
-    <div class="step" id="step4">
-      <div class="step-title">🏫 Onko sinulla luokkakoodi?</div>
-      <div class="step-sub">Opettajalta saatu koodi — voit myös ohittaa tämän</div>
-      <input class="name-input" type="text" id="classCodeInput"
-             placeholder="Esim. KOALA42" maxlength="12"
-             autocomplete="off" autocapitalize="characters"
-             style="text-transform:uppercase;letter-spacing:2px;font-family:'Fredoka One',cursive;font-size:1.2rem;text-align:center;"/>
-      <div id="classCodeError" style="color:var(--accent2);font-size:.78rem;font-weight:700;min-height:18px;text-align:center;margin-top:4px;"></div>
-      <button class="cta-btn" onclick="joinClass()" id="joinClassBtn">🏫 Liity luokkaan</button>
-      <button style="width:100%;margin-top:10px;padding:12px;border-radius:40px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;transition:all .2s;" onclick="startGame()" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">
-        Ohita →
-      </button>
-    </div>
   </div>
 
   <!-- Footer contact link -->
@@ -2594,7 +2581,7 @@ async function pinConfirm() {
       } else {
         await pinRemoteSet(pName, pChar, pin);
       }
-      goStep4(); // ← luokkakoodi myös uusille pelaajille
+      startGame(); // MAT-83: suoraan peliin, luokka löytyy asetuksista
     } else {
       pinMode = 'new';
       pinFirstEntry = '';
@@ -2787,78 +2774,6 @@ async function goStep3() {
   document.getElementById('step3').classList.add('active');
 }
 
-// Step 4: luokkakoodi — näytetään aina kirjautumisen jälkeen
-async function goStep4() {
-  // 1. Tarkista ensin localStorage (nopea)
-  const savedCode = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
-  if (savedCode) {
-    startGame();
-    return;
-  }
-
-  // 2. localStorage tyhjä — tarkista Supabasesta onko pelaaja jo luokassa
-  // (uusi laite, tyhjennetty selain jne.)
-  try {
-    const res = await fetch(
-      `${SB_URL}/rest/v1/class_members?player_name=eq.${encodeURIComponent(pName)}&player_char=eq.${encodeURIComponent(pChar)}&select=class_code&limit=1`,
-      { headers: SB_HEADERS }
-    );
-    if (res.ok) {
-      const rows = await res.json();
-      if (rows.length) {
-        // Löytyi luokka Supabasesta — tallenna localStorageen ja ohita step4
-        const code = rows[0].class_code;
-        localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1');
-        localStorage.setItem(`matikka_classCode_${pName}:${pChar}`, code);
-        startGame();
-        return;
-      }
-    }
-  } catch {}
-
-  // 3. Ei luokkaa — näytä step4
-  document.getElementById('classCodeInput').value = '';
-  document.getElementById('classCodeError').textContent = '';
-  document.getElementById('step3').classList.remove('active');
-  document.getElementById('step4').classList.add('active');
-}
-
-// Liity luokkaan ja käynnistä peli
-async function joinClass() {
-  const code = document.getElementById('classCodeInput').value.trim().toUpperCase();
-  if (!code) { startGame(); return; }
-
-  const btn = document.getElementById('joinClassBtn');
-  btn.disabled = true; btn.textContent = '⏳ Tarkistetaan...';
-
-  try {
-    // Tarkista onko luokka olemassa
-    const res = await fetch(
-      `${SB_URL}/rest/v1/classes?class_code=eq.${encodeURIComponent(code)}&select=class_code&limit=1`,
-      {headers: SB_HEADERS}
-    );
-    const rows = res.ok ? await res.json() : [];
-    if (!rows.length) {
-      document.getElementById('classCodeError').textContent = 'Luokkakoodia ei löydy ❌';
-      btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
-      return;
-    }
-    // Lisää pelaaja luokkaan (duplikaatit ignorataan)
-    await fetch(`${SB_URL}/rest/v1/class_members`, {
-      method: 'POST',
-      headers: {...SB_HEADERS, 'Prefer': 'resolution=ignore-duplicates,return=minimal'},
-      body: JSON.stringify({class_code: code, player_name: pName, player_char: pChar})
-    });
-  } catch { /* ei kriittinen virhe */ }
-
-  btn.disabled = false; btn.textContent = '🏫 Liity luokkaan';
-  // Merkitse luokkaan liittyminen — tallenna myös koodi asetuksia varten
-  try {
-    localStorage.setItem(`matikka_class_${pName}:${pChar}`, '1');
-    localStorage.setItem(`matikka_classCode_${pName}:${pChar}`, code);
-  } catch {}
-  startGame();
-}
 async function startGame(){
   if(!pChar)return;
   document.getElementById('pName').textContent=pName;
@@ -5368,7 +5283,7 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', () => {
     const active = document.activeElement;
     if (!active) return;
-    const isTextInput = ['nameInput','classCodeInput','switchNameInput'].includes(active.id);
+    const isTextInput = ['nameInput','switchNameInput'].includes(active.id);
     if (isTextInput) {
       setTimeout(() => active.scrollIntoView({block:'nearest',behavior:'smooth'}), 80);
     }
