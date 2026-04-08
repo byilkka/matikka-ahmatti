@@ -1678,10 +1678,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <button class="score-nav-btn" onclick="showScores()">🐐 Hall of Fame</button>
       <button class="mute-btn" id="muteBtn" onclick="toggleMute()" title="Äänet päälle/pois">🔊</button>
       <button class="mute-btn" onclick="openSettings()" title="Pelaajan asetukset" style="font-size:clamp(.9rem,1.6vw,1.1rem);">⚙️</button>
-      <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa">
+      <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa tai kirjaudu ulos">
         <span class="player-avatar-mini" id="pAvatar">🤴</span>
         <span class="player-name-mini" id="pName" style="display:none;">Pelaaja</span>
-        <span style="font-size:clamp(.6rem,1vw,.75rem);color:var(--muted);">🔄</span>
+        <span style="font-size:clamp(.6rem,1vw,.75rem);color:var(--muted);">🚪</span>
       </div>
     </div>
   </div>
@@ -2181,7 +2181,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <div class="modal-overlay" id="switchModal" onclick="handleOverlayClick(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeSwitch()">✕</button>
-    <div class="modal-title">Vaihda pelaajaa 🔄</div>
+    <div class="modal-title">Vaihda pelaajaa</div>
     <div class="modal-sub">Nykyinen pelaaja</div>
 
     <div class="curr-player">
@@ -2218,6 +2218,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <button class="cta-btn" id="swConfirmBtn" onclick="confirmSwitch()" disabled>Vaihda pelaaja ✓</button>
+
+    <!-- Kirjaudu ulos -->
+    <button onclick="logout('home')" style="width:100%;margin-top:10px;padding:12px;border-radius:40px;
+      border:1.5px solid rgba(255,107,107,.2);background:rgba(255,107,107,.06);
+      color:var(--accent2);font-family:'Fredoka One',cursive;font-size:1rem;
+      cursor:pointer;transition:all .2s;"
+      onmouseover="this.style.background='rgba(255,107,107,.12)'"
+      onmouseout="this.style.background='rgba(255,107,107,.06)'">
+      🚪 Kirjaudu ulos
+    </button>
   </div>
 </div>
 
