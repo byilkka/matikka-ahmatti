@@ -1684,8 +1684,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <button class="mute-btn" onclick="openSettings()" title="Pelaajan asetukset" style="font-size:clamp(.9rem,1.6vw,1.1rem);">⚙️</button>
       <div class="player-badge" onclick="openSwitch()" title="Vaihda pelaajaa">
         <span class="player-avatar-mini" id="pAvatar">🤴</span>
-        <span class="player-name-mini" id="pName">Pelaaja</span>
-        <span style="font-size:clamp(.6rem,1vw,.75rem);color:var(--muted);margin-left:2px;">🔄</span>
+        <span class="player-name-mini" id="pName" style="display:none;">Pelaaja</span>
+        <span style="font-size:clamp(.6rem,1vw,.75rem);color:var(--muted);">🔄</span>
       </div>
     </div>
   </div>
@@ -2061,16 +2061,23 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <!-- Luokkakoodi-asetus -->
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🏫 Luokka</div>
-      <div id="settingsClassInfo" style="font-size:.88rem;color:var(--text);font-weight:700;margin-bottom:8px;"></div>
-      <div style="display:flex;gap:8px;">
-        <input id="settingsClassInput" type="text" placeholder="Uusi luokkakoodi" maxlength="12"
-          autocomplete="off" autocapitalize="characters"
-          style="flex:1;background:var(--bg);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;outline:none;transition:border-color .2s;"
-          onfocus="this.style.borderColor='var(--accent3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"/>
-        <button onclick="saveSettingsClass()" style="padding:10px 16px;border-radius:10px;border:none;background:var(--accent3);color:#0b1520;font-family:'Fredoka One',cursive;font-size:.9rem;font-weight:700;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Tallenna</button>
+      <!-- Tila: ei luokassa -->
+      <div id="settingsNoClass">
+        <div style="font-size:.82rem;color:var(--muted);font-weight:700;margin-bottom:8px;">Et ole liittynyt luokkaan</div>
+        <div style="display:flex;gap:8px;">
+          <input id="settingsClassInput" type="text" placeholder="Luokkakoodi" maxlength="12"
+            autocomplete="off" autocapitalize="characters"
+            style="flex:1;background:var(--bg);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='var(--accent3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"/>
+          <button onclick="saveSettingsClass()" style="padding:10px 16px;border-radius:10px;border:none;background:var(--accent3);color:#0b1520;font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Liity</button>
+        </div>
+        <div id="settingsClassError" style="color:var(--accent2);font-size:.75rem;font-weight:700;min-height:16px;margin-top:4px;"></div>
       </div>
-      <div id="settingsClassError" style="color:var(--accent2);font-size:.75rem;font-weight:700;min-height:16px;margin-top:4px;"></div>
-      <button onclick="leaveClass()" id="settingsLeaveBtn" style="display:none;margin-top:8px;width:100%;padding:9px;border-radius:10px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;">Poistu luokasta</button>
+      <!-- Tila: luokassa -->
+      <div id="settingsInClass" style="display:none;">
+        <div id="settingsClassInfo" style="font-size:.88rem;color:var(--accent3);font-weight:700;margin-bottom:8px;"></div>
+        <button onclick="leaveClass()" style="width:100%;padding:9px;border-radius:10px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;">Poistu luokasta</button>
+      </div>
     </div>
 
     <!-- Ääniasetus -->
@@ -2080,9 +2087,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
 
     <!-- Evästeasetukset -->
-    <div>
+    <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🍪 Evästeet</div>
       <button onclick="openCookieSettings();closeSettings();" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:left;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Muuta evästeasetuksia →</button>
+    </div>
+
+    <!-- Uloskirjautuminen -->
+    <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-top:4px;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🚪 Kirjautuminen</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="logout('login')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,.25)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,.1)'">🔄 Vaihda pelaajaa</button>
+        <button onclick="logout('home')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,107,107,.2);background:rgba(255,107,107,.06);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,107,107,.12)'" onmouseout="this.style.background='rgba(255,107,107,.06)'">🏠 Etusivulle</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2585,7 +2601,8 @@ async function pinConfirm() {
         document.getElementById('pinAttemptsLeft').textContent = '';
       } else {
         pinAttempts = 0;
-        goStep4(); // ← luokkakoodi-vaihe ennen pelin alkua
+        // Palaava pelaaja → suoraan peliin (luokka löytyy asetuksista)
+        startGame();
       }
     } else {
       pinAttempts++;
@@ -2954,6 +2971,21 @@ async function showScores(){
   await renderScores('all');
 }
 function backToGame(){showScreen('gameScreen');}
+
+function logout(dest) {
+  // Tyhjennä istuntotiedot muistista
+  pName = ''; pChar = '';
+  // Nollaa pelitila
+  corr = 0; streak = 0; pts = 0; rDone = 0; ans = '';
+  srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0 };
+  closeSettings();
+  if (dest === 'home') {
+    window.location.href = 'index.html';
+  } else {
+    // Palauta login-ruudulle
+    showScreen('loginScreen');
+  }
+}
 
 // ══ GAME STATE ═══════════════════════════════════
 let mode='h', range=10, selTable=2;
@@ -5203,18 +5235,20 @@ function openSettings() {
   document.getElementById('settingsName').textContent   = pName;
   document.getElementById('settingsLevel').textContent  = `Taso ${srData.diffLevel} / 50`;
 
-  // Luokkakoodi
-  const savedCode = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
-  const classInfo = document.getElementById('settingsClassInfo');
-  const leaveBtn  = document.getElementById('settingsLeaveBtn');
+  // Luokkakoodi — näytä oikea tila
+  const savedCode  = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
+  const noClassEl  = document.getElementById('settingsNoClass');
+  const inClassEl  = document.getElementById('settingsInClass');
+  const classInfo  = document.getElementById('settingsClassInfo');
   if (savedCode) {
-    classInfo.innerHTML = `Olet luokassa <strong style="color:var(--accent3)">${escHtml(savedCode)}</strong>`;
-    leaveBtn.style.display = 'block';
+    noClassEl.style.display = 'none';
+    inClassEl.style.display = 'block';
+    classInfo.innerHTML = `Olet luokassa <strong>${escHtml(savedCode)}</strong>`;
   } else {
-    classInfo.textContent = 'Et kuulu vielä mihinkään luokkaan';
-    leaveBtn.style.display = 'none';
+    noClassEl.style.display = 'block';
+    inClassEl.style.display = 'none';
   }
-  document.getElementById('settingsClassInput').value = '';
+  document.getElementById('settingsClassInput').value   = '';
   document.getElementById('settingsClassError').textContent = '';
 
   // Ääniasetus
