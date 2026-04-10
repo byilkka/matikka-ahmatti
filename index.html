@@ -396,6 +396,30 @@ footer{
 .reveal-delay-2{transition-delay:.2s;}
 .reveal-delay-3{transition-delay:.3s;}
 .reveal-delay-4{transition-delay:.4s;}
+
+/* ── Professional icon containers ── */
+.feat-icon{
+  width:clamp(44px,5.5vw,52px);height:clamp(44px,5.5vw,52px);
+  border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:clamp(14px,2vw,20px);
+  flex-shrink:0;
+}
+.feat-icon svg{width:clamp(20px,2.8vw,24px);height:clamp(20px,2.8vw,24px);}
+.mode-icon{
+  width:clamp(52px,8vw,62px);height:clamp(52px,8vw,62px);
+  border-radius:clamp(14px,2vw,16px);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto clamp(10px,1.5vw,14px);
+}
+.mode-icon svg{width:clamp(22px,3.2vw,27px);height:clamp(22px,3.2vw,27px);}
+
+/* ── Nav refinements ── */
+.nav-cta{letter-spacing:.2px;display:inline-flex;align-items:center;gap:6px;}
+.nav-link{display:inline-flex;align-items:center;gap:5px;}
+
+/* ── Origin avatar upgrade ── */
+.origin-avatar svg{width:clamp(32px,6vw,46px);height:clamp(32px,6vw,46px);}
 </style>
 </head>
 <body>
@@ -417,9 +441,18 @@ footer{
     <span class="nav-logo-text">Matikka-Ahmatti</span>
   </a>
   <div class="nav-links">
-    <a href="ohjeet.html" class="nav-link">📖 Ohjeet</a>
-    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
-    <a href="game.html" class="nav-cta" title="Pelaa nyt">🚀</a>
+    <a href="ohjeet.html" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Ohjeet
+    </a>
+    <a href="contact.html" class="nav-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Yhteystiedot
+    </a>
+    <a href="game.html" class="nav-cta">
+      Pelaa nyt
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
   </div>
 </nav>
 
@@ -482,9 +515,8 @@ footer{
     <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
     <div class="stat-pill"><span class="stat-n">5</span> pelimoodia</div>
     <div class="stat-pill"><span class="stat-n">34</span> saavutusta</div>
-    <div class="stat-pill"><span class="stat-n">6</span> mörkö-skinit</div>
-    <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
-    <div class="stat-pill"><span class="stat-n">🎓</span> diplomi</div>
+    <div class="stat-pill"><span class="stat-n">6</span> skinit</div>
+    <div class="stat-pill"><span class="stat-n">Grand Master</span> diplomi</div>
   </div>
 </section>
 
@@ -495,42 +527,42 @@ footer{
 
   <div class="features-grid">
     <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
-      <span class="feature-icon">🧠</span>
+      <div class="feat-icon" style="background:rgba(93,232,181,.12);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
       <h3 class="feature-title">Adaptiivinen vaikeus</h3>
       <p class="feature-desc">Peli oppii lapsen taitotason ja tarjoaa juuri sopivan haastavia tehtäviä. 50 tasoa luvuista 1–10 aina luvuille 1–1000 asti.</p>
     </div>
     <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
-      <span class="feature-icon">🏆</span>
+      <div class="feat-icon" style="background:rgba(247,201,72,.12);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
       <h3 class="feature-title">Hall of Fame</h3>
       <p class="feature-desc">Globaali tulostaulukko jossa kilpaillaan kumulatiivisilla pisteillä. Pisteitä kertyy vain kun taso nousee — edistyminen palkitaan, ei toistelu!</p>
     </div>
     <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,142,212,.08);">
-      <span class="feature-icon">🏅</span>
+      <div class="feat-icon" style="background:rgba(255,142,212,.12);color:var(--pink);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
       <h3 class="feature-title">34 saavutusta</h3>
       <p class="feature-desc">Saavutukset motivoivat jatkamaan — aamulintu, viikon sankari, GOAT ja paljon muuta. Sitkeys palkitaan: pelaa 7 päivää peräkkäin tai kaikkina vuodenaikoina!</p>
     </div>
     <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(123,159,255,.08);">
-      <span class="feature-icon">🔐</span>
+      <div class="feat-icon" style="background:rgba(123,159,255,.12);color:var(--accent4);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
       <h3 class="feature-title">Omat profiilit</h3>
       <p class="feature-desc">Jokaisella pelaajalla on oma PIN-suojattu profiili. Sama laite, eri pelaajia — edistyminen tallentuu pilvipalveluun.</p>
     </div>
     <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
-      <span class="feature-icon">🎨</span>
+      <div class="feat-icon" style="background:rgba(93,232,181,.12);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg></div>
       <h3 class="feature-title">Mörkö-skinit</h3>
       <p class="feature-desc">Klikkaa mörkön päällä ja vaihda sen ulkonäkö! 6 erilaista skinit jotka avautuvat edistymällä — Tulimörkö, Jäämörkö, Kultamörkö ja muita.</p>
     </div>
     <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
-      <span class="feature-icon">⚡</span>
+      <div class="feat-icon" style="background:rgba(247,201,72,.12);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
       <h3 class="feature-title">XP ja tasokartta</h3>
       <p class="feature-desc">XP-palkki näyttää edistymisen tason sisällä. Tasokartta paljastaa koko seikkailureitin tasolta 1 Grand Masteriin — viisi vyöhykettä, 50 pysäkkiä.</p>
     </div>
     <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,107,107,.08);">
-      <span class="feature-icon">📱</span>
+      <div class="feat-icon" style="background:rgba(255,107,107,.12);color:var(--accent2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
       <h3 class="feature-title">Toimii kaikkialla</h3>
       <p class="feature-desc">Puhelin, tabletti tai tietokone — peli skaalautuu automaattisesti. Ei asennuksia, ei kirjautumista sähköpostilla.</p>
     </div>
     <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(197,108,240,.08);">
-      <span class="feature-icon">🎓</span>
+      <div class="feat-icon" style="background:rgba(197,108,240,.12);color:var(--purple);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
       <h3 class="feature-title">Grand Master -diplomi</h3>
       <p class="feature-desc">Tason 50 saavuttanut pelaaja saa tulostettavan diplomitodistuksen. Vaatii oikeaa laskutaitoa luvuille 1–1000 asti — pisteet kertyvät vain kun taso nousee!</p>
     </div>
@@ -543,27 +575,27 @@ footer{
   <h2 class="section-title reveal">Viisi tapaa harjoitella</h2>
   <div class="modes-grid">
     <div class="mode-card m1 reveal reveal-delay-1">
-      <span class="mode-emoji">🔢</span>
+      <div class="mode-icon" style="background:rgba(247,201,72,.14);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg></div>
       <div class="mode-name">Hajotelmat</div>
       <div class="mode-desc">Luvun osat</div>
     </div>
     <div class="mode-card m2 reveal reveal-delay-2">
-      <span class="mode-emoji">➕</span>
+      <div class="mode-icon" style="background:rgba(93,232,181,.14);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       <div class="mode-name">Yhteenlasku</div>
       <div class="mode-desc">Lukujen summa</div>
     </div>
     <div class="mode-card m3 reveal reveal-delay-3">
-      <span class="mode-emoji">➖</span>
+      <div class="mode-icon" style="background:rgba(255,107,107,.14);color:var(--accent2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
       <div class="mode-name">Vähennys</div>
       <div class="mode-desc">Erotus</div>
     </div>
     <div class="mode-card m4 reveal reveal-delay-4">
-      <span class="mode-emoji">✖️</span>
+      <div class="mode-icon" style="background:rgba(123,159,255,.14);color:var(--accent4);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
       <div class="mode-name">Kertotaulu</div>
       <div class="mode-desc">1× – 10×</div>
     </div>
     <div class="mode-card m5 reveal reveal-delay-4">
-      <span class="mode-emoji">💯</span>
+      <div class="mode-icon" style="background:rgba(255,107,53,.14);color:#ff6b35;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
       <div class="mode-name">Prosentit</div>
       <div class="mode-desc">Avautuu tasolla 8</div>
     </div>
@@ -634,7 +666,9 @@ footer{
 <!-- ORIGIN STORY -->
 <section class="origin-section">
   <div class="origin-box reveal">
-    <div class="origin-avatar">👨‍💻</div>
+    <div class="origin-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent4)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><path d="M16 11.5c1 .5 2 1.5 2 3.5v1h2"/><path d="M16 16h4"/></svg>
+    </div>
     <div class="origin-content">
       <p class="section-label" style="text-align:left;margin-bottom:10px;">Miksi tein tämän?</p>
       <h2 class="origin-title">Tyttäreni aloitti koulun 2025 — ja löysin vain vanhentuneita pelejä</h2>
@@ -663,7 +697,10 @@ footer{
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🐐 Matikka-Ahmatti</div>
+  <div class="footer-logo" style="display:flex;align-items:center;gap:8px;">
+    <svg width="22" height="22" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="fg" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs><ellipse cx="100" cy="125" rx="54" ry="58" fill="url(#fg)"/><ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#fg)"/><ellipse cx="78" cy="76" rx="13" ry="15" fill="white"/><ellipse cx="122" cy="76" rx="13" ry="15" fill="white"/><circle cx="81" cy="77" r="7" fill="#0f1923"/><circle cx="125" cy="77" r="7" fill="#0f1923"/><path d="M68 104 Q100 130 132 104" fill="#0f1923"/><path d="M68 104 Q100 116 132 104" fill="#c0334d" opacity=".85"/></svg>
+    Matikka-Ahmatti
+  </div>
   <div class="footer-links">
     <a href="game.html" class="footer-link">Pelaa</a>
     <a href="ohjeet.html" class="footer-link">Ohjeet</a>
