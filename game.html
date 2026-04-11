@@ -1626,6 +1626,23 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
 }
 .ml-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 36px rgba(204,255,0,.35);}
 .ml-btn:active{transform:translateY(0) scale(.99);}
+/* ══ MAT-87 DAILY QUEST ══ */
+.dq-box{background:var(--surface);border:1.5px solid rgba(204,255,0,.25);border-radius:16px;padding:14px 16px;margin:12px 0 14px;box-shadow:0 6px 20px rgba(0,0,0,.2);transition:border-color .3s,transform .2s;}
+.dq-box.dq-completed{border-color:var(--mint);background:linear-gradient(135deg,rgba(0,255,170,.08),var(--surface));}
+.dq-box.dq-in-progress{border-color:var(--lime);}
+.dq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.dq-title{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:6px;}
+.dq-icon{font-size:1.1rem;}
+.dq-countdown{font-size:.72rem;color:var(--muted);font-weight:700;}
+.dq-quest-title{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;color:var(--text);margin-bottom:3px;}
+.dq-quest-desc{font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:10px;}
+.dq-progress-wrap{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dq-progress-bar{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;}
+.dq-progress-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--lime));border-radius:40px;width:0%;transition:width .4s ease;}
+.dq-progress-text{font-size:.72rem;color:var(--muted);font-weight:700;min-width:40px;text-align:right;}
+.dq-status{font-size:.78rem;font-weight:700;color:var(--lime);}
+.dq-box.dq-completed .dq-status{color:var(--mint);}
+.dq-reward{font-size:.72rem;color:var(--muted);font-weight:700;margin-top:4px;}
 </style>
 </head>
 <body>
@@ -1809,6 +1826,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
     <div class="si">✅ <span class="v g" id="sCorr">0</span> oikein</div>
     <div class="si">⭐ <span class="v b" id="sPts">0</span> pistettä</div>
     <div class="si" id="dayStreakBadge" title="Päiväputki — peräkkäiset pelipäivät" style="display:none">📅 <span class="v" id="sDayStreak">0</span> pv</div>
+    <div class="si" id="shieldBadge" title="Streak-suojat — suojaavat päiväputkea yhden päivän unohdukselta (max 2, täydentyy 1/viikko)" style="display:none">🛡️ <span class="v" id="sShields">0</span>/2</div>
     <div class="si" id="diffBadge" title="Vaikeustaso mukautuu suorituksesi mukaan">🎯 <span id="diffLabel" style="color:var(--accent3)">Taso 1</span></div>
   </div>
 
@@ -1824,6 +1842,23 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
       <div class="xp-dot" id="xpd2"></div>
       <div class="xp-dot" id="xpd3"></div>
       <div class="xp-dot" id="xpd4"></div>
+    </div>
+  </div>
+
+  <div id="dailyQuestBox" class="dq-box" style="display:none;">
+    <div class="dq-header">
+      <div class="dq-title"><span class="dq-icon">🌅</span><span>Päivän haaste</span></div>
+      <div class="dq-countdown" id="dqCountdown">—</div>
+    </div>
+    <div class="dq-body">
+      <div class="dq-quest-title" id="dqQuestTitle">—</div>
+      <div class="dq-quest-desc" id="dqQuestDesc">—</div>
+      <div class="dq-progress-wrap">
+        <div class="dq-progress-bar"><div class="dq-progress-fill" id="dqProgressFill"></div></div>
+        <div class="dq-progress-text" id="dqProgressText">0 / 0</div>
+      </div>
+      <div class="dq-status" id="dqStatus">⏳ Odottaa</div>
+      <div class="dq-reward" id="dqReward">🎁 +0 bonus-pisteet</div>
     </div>
   </div>
 
@@ -2178,6 +2213,26 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
     </div>
     <p class="ml-explain" id="mlExplain">3 riviä × 4 palloa = 12 palloa yhteensä</p>
     <button class="ml-btn" onclick="closeMiniLesson()">Ymmärsin! ✨</button>
+  </div>
+</div>
+
+<!-- ════════ STREAK SHIELD -ILMOITUS (MAT-88) ════════ -->
+<div id="shieldUsedModal" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div class="ml-card" style="border-color:rgba(204,255,0,.3);">
+    <div style="font-size:3.5rem;text-align:center;margin-bottom:8px;">🛡️</div>
+    <h2 class="ml-title">Streak shield säästi sinut!</h2>
+    <p class="ml-sub">Päiväputkesi (<span id="shieldSavedStreak">0</span> päivää) säilyi.<br>Pelataan tänään!</p>
+    <button class="ml-btn" onclick="closeShieldUsedModal()">OK, pelataan! ✨</button>
+  </div>
+</div>
+
+<!-- ════════ DAILY QUEST REWARD MODAL (MAT-87) ════════ -->
+<div id="dqRewardModal" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div class="ml-card" style="border-color:rgba(204,255,0,.4);">
+    <div style="font-size:3.5rem;text-align:center;margin-bottom:8px;">🎉</div>
+    <h2 class="ml-title">Päivän haaste suoritettu!</h2>
+    <p class="ml-sub"><span id="dqRewardQuestTitle">—</span><br><br>🎁 Sait <strong><span id="dqRewardPts">0</span> bonus-pistettä</strong> seuraavaan kierrokseesi!<br><br>Hienoa! Tule huomenna takaisin uuden haasteen pariin 🌅</p>
+    <button class="ml-btn" onclick="closeDqRewardModal()">Jatketaan! ✨</button>
   </div>
 </div>
 
@@ -3041,6 +3096,11 @@ async function startGame(){
   achCheck('first_login');
   // MAT-18: Päiväputki-seuranta
   checkDailyStreak();
+  // MAT-88: Päivitä yläpalkin tilastot heti, jotta shield-badge näkyy loginin jälkeen
+  if (typeof updStats === 'function') updStats();
+  // MAT-87: Päivän haaste -laatikko
+  if (typeof renderDailyQuestBox === 'function') renderDailyQuestBox();
+  if (typeof startDailyQuestCountdown === 'function') startDailyQuestCountdown();
   // Tarkista luokkaan liittyminen — localStorage + Supabase fallback
   try {
     const hasClassLocal = localStorage.getItem(`matikka_class_${pName}:${pChar}`);
@@ -3089,7 +3149,7 @@ function logout(dest) {
   pName = ''; pChar = '';
   // Nollaa pelitila
   corr = 0; streak = 0; pts = 0; rDone = 0; ans = '';
-  srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0 };
+  srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:new Date().toISOString().slice(0,10), pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 };
   closeSettings();
   if (dest === 'home') {
     window.location.href = 'index.html';
@@ -3130,8 +3190,16 @@ function srLocalLoad(name, char, md) {
       levelDropCooldown:          playerData.levelDropCooldown   || 0,
       xp:                         playerData.xp                  || 0,
       consecutiveGoodRounds:      playerData.consecutiveGoodRounds || 0,
+      // MAT-88 Streak Shield -kentät
+      streakShields:              (playerData.streakShields ?? null),
+      lastShieldGivenAt:          playerData.lastShieldGivenAt  || null,
+      pendingShieldNotice:        playerData.pendingShieldNotice || null,
+      // MAT-87 Daily Quest -kentät
+      dailyQuests:                playerData.dailyQuests        || {},
+      dailyQuestProgress:         playerData.dailyQuestProgress || null,
+      dailyBonusPts:              playerData.dailyBonusPts      || 0,
     };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0 }; }
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, streakShields:null, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 }; }
 }
 
 function srLocalSave(name, char, md, data) {
@@ -3145,6 +3213,15 @@ function srLocalSave(name, char, md, data) {
     playerData.levelDropCooldown  = data.levelDropCooldown  || 0;
     playerData.xp                 = data.xp                 || 0;
     playerData.consecutiveGoodRounds = data.consecutiveGoodRounds || 0;
+    // MAT-88 Streak Shield -kentät (tallennetaan localStorageen — Supabase-sarakkeet
+    // edellyttäisivät player_progress-taulun migraatiota, ks. srRemoteSave TODO)
+    if (data.streakShields !== undefined)     playerData.streakShields     = data.streakShields;
+    if (data.lastShieldGivenAt !== undefined) playerData.lastShieldGivenAt = data.lastShieldGivenAt;
+    if (data.pendingShieldNotice !== undefined) playerData.pendingShieldNotice = data.pendingShieldNotice;
+    // MAT-87 Daily Quest -kentät
+    if (data.dailyQuests        !== undefined) playerData.dailyQuests        = data.dailyQuests;
+    if (data.dailyQuestProgress !== undefined) playerData.dailyQuestProgress = data.dailyQuestProgress;
+    if (data.dailyBonusPts      !== undefined) playerData.dailyBonusPts      = data.dailyBonusPts;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -3180,6 +3257,15 @@ async function srRemoteLoad(name, char, md) {
 }
 
 // ── Supabase SR: tallenna / päivitä edistyminen ───
+// TODO MAT-88: player_progress-taulu tallentaa datan sarakkeittain, ei JSON-blobina.
+// Streak Shield -tila (streakShields, lastShieldGivenAt, pendingShieldNotice) elää
+// toistaiseksi vain localStoragessa. Migraatio edellyttäisi seuraavaa SQL:ää:
+//   ALTER TABLE player_progress
+//     ADD COLUMN streak_shields smallint DEFAULT 1,
+//     ADD COLUMN last_shield_given_at date,
+//     ADD COLUMN pending_shield_notice jsonb;
+// ja vastaavat kentät srRemoteLoad/srRemoteSaveen. Koodi toimii gracefullysti
+// myös ilman migraatiota — tila vain ei synkronoidu laitteiden välillä.
 async function srRemoteSave(name, char, md, data) {
   try {
     // Tallenna moodi-kohtainen rivi mutta käytä yhteistä diffLevel:ä
@@ -3272,8 +3358,153 @@ const DIFF_LEVELS = (()=>{
   return levels;
 })();
 
+// ══ MAT-87 DAILY QUEST -JÄRJESTELMÄ ════════════════
+const DAILY_QUEST_TYPES = [
+  { id:'add_correct',    title:'➕ Yhteenlaskija',        descTemplate:lvl=>`Tee ${5+Math.min(lvl,15)} yhteenlaskua oikein`,       targetFn:lvl=>5+Math.min(lvl,15),       rewardFn:lvl=>30+lvl*3, minLevel:1, track:(e,c,s)=>(e==='correct'&&c.prob.type==='a')?{progress:s.progress+1}:null },
+  { id:'sub_correct',    title:'➖ Vähentäjä',            descTemplate:lvl=>`Tee ${5+Math.min(lvl,15)} vähennyslaskua oikein`,    targetFn:lvl=>5+Math.min(lvl,15),       rewardFn:lvl=>30+lvl*3, minLevel:1, track:(e,c,s)=>(e==='correct'&&c.prob.type==='s')?{progress:s.progress+1}:null },
+  { id:'mul_correct',    title:'✖️ Kertotaulu-päivä',     descTemplate:lvl=>`Tee ${5+Math.min(lvl,15)} kertolaskua oikein`,        targetFn:lvl=>5+Math.min(lvl,15),       rewardFn:lvl=>40+lvl*3, minLevel:5, track:(e,c,s)=>(e==='correct'&&c.prob.type==='m')?{progress:s.progress+1}:null },
+  { id:'decomp_correct', title:'🔢 Hajotelma-haaste',     descTemplate:lvl=>`Tee ${5+Math.min(lvl,15)} hajotelmaa oikein`,         targetFn:lvl=>5+Math.min(lvl,15),       rewardFn:lvl=>30+lvl*3, minLevel:1, track:(e,c,s)=>(e==='correct'&&c.prob.type==='h')?{progress:s.progress+1}:null },
+  { id:'perfect_round',  title:'🏆 Täydellinen kierros',  descTemplate:lvl=>`Pelaa 1 kierros virheettömästi (10/10)`,             targetFn:lvl=>1,                       rewardFn:lvl=>80+lvl*5, minLevel:1, track:(e,c,s)=>(e==='round_end'&&c.corr===c.rTotal)?{progress:s.progress+1}:null },
+  { id:'accuracy_80',    title:'🎯 Tarkka tähtääjä',       descTemplate:lvl=>`Suorita kierros vähintään 80% tarkkuudella`,          targetFn:lvl=>1,                       rewardFn:lvl=>50+lvl*3, minLevel:1, track:(e,c,s)=>{if(e==='round_end'&&c.rTotal>0){const p=Math.round((c.corr/c.rTotal)*100); if(p>=80) return {progress:s.progress+1};} return null;} },
+  { id:'streak_n',       title:'🔥 Putki-mestari',         descTemplate:lvl=>`Saavuta ${5+Math.min(Math.floor(lvl/2),10)} oikeaa peräkkäin samassa kierroksessa`, targetFn:lvl=>5+Math.min(Math.floor(lvl/2),10), rewardFn:lvl=>60+lvl*4, minLevel:1, track:(e,c,s)=>{if(e==='correct'){const st=window.streak||0; if(st>s.progress) return {progress:Math.min(st,s.target)};} if(e==='round_end'){const b=c.maxStreakThisRound||0; if(b>s.progress) return {progress:Math.min(b,s.target)};} return null;} },
+  { id:'try_mode',       title:'🧭 Tutustuja',             descTemplate:lvl=>`Pelaa vähintään 1 kierros 4 eri moodissa (h/a/s/m)`, targetFn:lvl=>4,                       rewardFn:lvl=>70+lvl*4, minLevel:3, track:(e,c,s)=>{if(e==='round_end'&&c.corr>=1){const t=new Set(s.modesTried||[]); if(!t.has(c.mode)&&['h','a','s','m'].includes(c.mode)){t.add(c.mode); return {progress:t.size, modesTried:Array.from(t)};}} return null;} },
+  { id:'speed_round',    title:'⚡ Salamannopea',          descTemplate:lvl=>`Suorita kierros alle 90 sekunnissa (väh. 7/10 oikein)`, targetFn:lvl=>1,                     rewardFn:lvl=>70+lvl*4, minLevel:3, track:(e,c,s)=>{if(e==='round_end'&&c.corr>=7){const sec=(Date.now()-c.roundStartTime)/1000; if(sec<90) return {progress:s.progress+1};} return null;} },
+  { id:'two_rounds',     title:'🌱 Harjoittelija',         descTemplate:lvl=>`Pelaa 2 kierrosta loppuun asti`,                     targetFn:lvl=>2,                       rewardFn:lvl=>30+lvl*2, minLevel:1, track:(e,c,s)=>(e==='round_end')?{progress:s.progress+1}:null }
+];
+
+function todayLocalStr(){
+  const d=new Date();
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function dqHash(str){let h=0x811c9dc5; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=(h*0x01000193)>>>0;} return h>>>0;}
+
+function getTodaysQuest(){
+  const date=todayLocalStr();
+  const existing=srData.dailyQuests?.[date];
+  if(existing){const def=DAILY_QUEST_TYPES.find(q=>q.id===existing.questId); return def?{def,date,state:existing}:null;}
+  const level=srData.diffLevel||1;
+  const eligible=DAILY_QUEST_TYPES.filter(q=>level>=q.minLevel);
+  if(!eligible.length) return null;
+  const seed=dqHash(`${pName}:${pChar}:${date}`);
+  const def=eligible[seed%eligible.length];
+  return {def,date,state:null};
+}
+
+function trackDailyQuestProgress(event,ctx){
+  try{
+    const today=todayLocalStr();
+    const quest=getTodaysQuest();
+    if(!quest) return;
+    if(srData.dailyQuests?.[today]?.completed) return;
+    // MAT-87 fix: Pin questId heti ensimmäisellä trackingilla, jotta tasonnousu
+    // kesken päivän ei aiheuta questin uudelleenarvontaa ja edistymisen menetystä
+    if(!srData.dailyQuests) srData.dailyQuests={};
+    if(!srData.dailyQuests[today]){
+      srData.dailyQuests[today]={questId:quest.def.id,completed:false,pinned:true};
+    }
+    let state=srData.dailyQuestProgress;
+    if(!state||state.date!==today||state.questId!==quest.def.id){
+      state={questId:quest.def.id,date:today,progress:0,target:quest.def.targetFn(srData.diffLevel||1),modesTried:[]};
+    }
+    const delta=quest.def.track(event,ctx,state);
+    if(!delta) return;
+    Object.assign(state,delta);
+    srData.dailyQuestProgress=state;
+    if(state.progress>=state.target){completeTodaysQuest(quest,state);}
+    else{srSave(srData); renderDailyQuestBox();}
+  }catch(e){console.warn('[MAT-87] daily quest tracking error:',e);}
+}
+
+function completeTodaysQuest(quest,state){
+  const date=quest.date;
+  const level=srData.diffLevel||1;
+  const reward=quest.def.rewardFn(level);
+  if(!srData.dailyQuests) srData.dailyQuests={};
+  srData.dailyQuests[date]={questId:quest.def.id,completed:true,completedAt:Date.now(),rewardPts:reward};
+  srData.dailyQuestProgress=null;
+  // Lisää bonus potiin
+  srData.dailyBonusPts=(srData.dailyBonusPts||0)+reward;
+  // Siivoa historia — pidä 7 viimeisintä
+  const keys=Object.keys(srData.dailyQuests).sort();
+  while(keys.length>7) delete srData.dailyQuests[keys.shift()];
+  srSave(srData);
+  if(typeof launchConfetti==='function') launchConfetti();
+  if(typeof sfxSuperStreak==='function') sfxSuperStreak();
+  showDailyQuestRewardModal(quest.def,reward);
+  renderDailyQuestBox();
+}
+
+function showDailyQuestRewardModal(def,reward){
+  const t=document.getElementById('dqRewardQuestTitle');
+  const r=document.getElementById('dqRewardPts');
+  if(t) t.textContent=def.title;
+  if(r) r.textContent=reward;
+  const m=document.getElementById('dqRewardModal');
+  if(m) m.style.display='flex';
+}
+function closeDqRewardModal(){
+  const m=document.getElementById('dqRewardModal');
+  if(m) m.style.display='none';
+}
+
+function renderDailyQuestBox(){
+  try{
+    const box=document.getElementById('dailyQuestBox');
+    if(!box) return;
+    if(!pName||!pChar){box.style.display='none'; return;}
+    // Piilota kesken kierroksen
+    const exView=document.getElementById('exerciseView');
+    const exVisible=exView&&exView.style.display!=='none';
+    const inRound=exVisible&&rDone>0&&rDone<rTotal;
+    if(inRound){box.style.display='none'; return;}
+    const quest=getTodaysQuest();
+    if(!quest){box.style.display='none'; return;}
+    box.style.display='block';
+    const today=todayLocalStr();
+    const done=!!srData.dailyQuests?.[today]?.completed;
+    const level=srData.diffLevel||1;
+    const target=quest.def.targetFn(level);
+    const progress=(!done&&srData.dailyQuestProgress?.date===today&&srData.dailyQuestProgress?.questId===quest.def.id)?srData.dailyQuestProgress.progress:0;
+    const reward=quest.def.rewardFn(level);
+    const setTxt=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+    setTxt('dqQuestTitle',quest.def.title);
+    setTxt('dqQuestDesc',quest.def.descTemplate(level));
+    setTxt('dqProgressText',done?`${target} / ${target}`:`${progress} / ${target}`);
+    setTxt('dqReward',`🎁 +${reward} bonus-pisteet`);
+    const fill=document.getElementById('dqProgressFill');
+    if(fill) fill.style.width=Math.min(100,Math.round((done?1:progress/target)*100))+'%';
+    box.classList.toggle('dq-completed',done);
+    box.classList.toggle('dq-in-progress',!done&&progress>0);
+    const statusEl=document.getElementById('dqStatus');
+    if(statusEl){
+      if(done) statusEl.textContent='✅ Suoritettu — tule huomenna takaisin 🌅';
+      else if(progress>0) statusEl.textContent='🎯 Käynnissä';
+      else statusEl.textContent='⏳ Odottaa — aloita kierros!';
+    }
+  }catch(e){console.warn('[MAT-87] renderDailyQuestBox error:',e);}
+}
+
+let dqCountdownTimer=null;
+function startDailyQuestCountdown(){
+  if(dqCountdownTimer) clearInterval(dqCountdownTimer);
+  const update=()=>{
+    const el=document.getElementById('dqCountdown');
+    if(!el) return;
+    const now=new Date();
+    const eod=new Date(now); eod.setHours(24,0,0,0);
+    const ms=eod-now;
+    if(ms<=0){renderDailyQuestBox(); return;}
+    const h=Math.floor(ms/3600000);
+    const m=Math.floor((ms%3600000)/60000);
+    el.textContent=`⏰ ${h}h ${m}min`;
+  };
+  update();
+  dqCountdownTimer=setInterval(update,60000);
+}
+
 // Adaptiivinen tila per kierros
-let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0 };
+let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 };
 let retryQueue   = [];
 let roundHistory = [];
 let roundUsedKeys = new Set(); // MAT-57: estää saman tehtävän toistumisen kierroksen sisällä
@@ -3644,29 +3875,81 @@ function srEvaluateRound(pct, playedRange) {
   return { changed: false, newLevel: srData.diffLevel };
 }
 
+// ── MAT-88: Streak Shield -apufunktiot ────────────
+// Lisää suojaa viikon välein (max 2). Kutsutaan checkDailyStreakin alussa.
+function replenishStreakShieldsIfDue(today) {
+  // Backward compat: vanhat pelaajat saavat aloitussuojan
+  if (srData.streakShields == null) srData.streakShields = 1;
+  // Jos timestamppia ei ole vielä asetettu, aseta se nyt estääksemme exploitin
+  // (muuten "ei päiväystä" tulkittaisi "viikkoja kulunut")
+  if (!srData.lastShieldGivenAt) {
+    srData.lastShieldGivenAt = today;
+    srSave(srData);
+    return;
+  }
+  const MS_PER_DAY = 86400000;
+  const t0 = new Date(srData.lastShieldGivenAt + 'T00:00:00Z').getTime();
+  const t1 = new Date(today + 'T00:00:00Z').getTime();
+  const daysSince = Math.floor((t1 - t0) / MS_PER_DAY);
+  if (daysSince < 7) return;
+  const weeks = Math.floor(daysSince / 7);
+  const current = srData.streakShields || 0;
+  const newShields = Math.min(2, current + weeks);
+  if (newShields > current) {
+    srData.streakShields = newShields;
+    const next = new Date(t0 + weeks * 7 * MS_PER_DAY);
+    srData.lastShieldGivenAt = next.toISOString().slice(0, 10);
+    srSave(srData);
+  }
+}
+
+function showShieldUsedModal(notice) {
+  if (!notice) return;
+  const modal = document.getElementById('shieldUsedModal');
+  const savedEl = document.getElementById('shieldSavedStreak');
+  if (savedEl) savedEl.textContent = notice.savedStreak;
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeShieldUsedModal() {
+  const modal = document.getElementById('shieldUsedModal');
+  if (modal) modal.style.display = 'none';
+}
+
 // Avaa tasosaavutus — kaikki ovat jo ACHIEVEMENTS-taulukossa alusta alkaen
 // MAT-18: Päiväputki-seuranta
+// MAT-88: Streak Shield voi pelastaa yhden päivän tauon
 // Tarkistaa onko pelaaja pelannut peräkkäisinä päivinä ja myöntää saavutukset
 function checkDailyStreak() {
   if (!pName || !pChar) return;
   const key      = `matikka_daily_${pName}:${pChar}`;
   const streakKey = `matikka_daystreak_${pName}:${pChar}`;
   const today    = new Date().toISOString().slice(0, 10); // "2026-04-07"
+  const yesterday         = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const dayBeforeYesterday = new Date(Date.now() - 2*86400000).toISOString().slice(0, 10);
 
   try {
+    // MAT-88: Täydennä suojat ennen päiväputken tarkistusta
+    replenishStreakShieldsIfDue(today);
+
     const lastPlayed  = localStorage.getItem(key) || '';
     let   streak      = parseInt(localStorage.getItem(streakKey) || '0');
 
     if (lastPlayed === today) {
       // Jo pelattu tänään — ei muutoksia, vain tarkistetaan saavutukset
     } else {
-      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
       if (lastPlayed === yesterday) {
         streak++; // Peräkkäinen päivä
       } else if (lastPlayed === '') {
         streak = 1; // Ensimmäinen kirjautuminen
+      } else if (lastPlayed === dayBeforeYesterday && (srData.streakShields || 0) > 0 && streak >= 1) {
+        // MAT-88: yksi päivä unohtui mutta pelaajalla on suoja
+        srData.streakShields = (srData.streakShields || 0) - 1;
+        srData.pendingShieldNotice = { savedStreak: streak, usedOn: yesterday };
+        streak++; // tänään pelataan → putki jatkuu
+        srSave(srData);
       } else {
-        streak = 1; // Putki katkesi
+        streak = 1; // Tauko 2+ päivää → putki katkesi
       }
       localStorage.setItem(key, today);
       localStorage.setItem(streakKey, streak);
@@ -3680,6 +3963,14 @@ function checkDailyStreak() {
 
     // Päivitä srData.dayStreak jotta se näkyy UI:ssa myöhemmin
     srData.dayStreak = streak;
+
+    // MAT-88: Näytä suojan käyttöilmoitus jos sellainen odottaa
+    if (srData.pendingShieldNotice) {
+      const notice = srData.pendingShieldNotice;
+      srData.pendingShieldNotice = null;
+      srSave(srData);
+      showShieldUsedModal(notice);
+    }
 
   } catch {}
 }
@@ -3871,9 +4162,16 @@ function setMode(m){
   // Lataa moodi-kohtaiset painot mutta säilytä yhteinen taso
   const currentLevel = srData.diffLevel;
   const currentRounds = srData.roundsPlayed;
+  // MAT-87: Säilytä myös päivän haaste -kentät jotka eivät kuulu moodi-kohtaiseen tilaan
+  const currentDailyQuests = srData.dailyQuests;
+  const currentDailyQuestProgress = srData.dailyQuestProgress;
+  const currentDailyBonusPts = srData.dailyBonusPts;
   srData = srLocalLoad(pName, pChar, m);
   srData.diffLevel = currentLevel;
   srData.roundsPlayed = currentRounds;
+  srData.dailyQuests = currentDailyQuests;
+  srData.dailyQuestProgress = currentDailyQuestProgress;
+  srData.dailyBonusPts = currentDailyBonusPts;
   updDiffLabel();
   srRemoteLoad(pName, pChar, m).then(remote => {
     if (remote) {
@@ -3882,6 +4180,8 @@ function setMode(m){
     }
   }).catch(()=>{});
   restartRound();
+  // MAT-87: Päivitä päivän haaste -laatikko moodin vaihdon yhteydessä
+  if (typeof renderDailyQuestBox === 'function') renderDailyQuestBox();
 }
 function setRange(r,el){
   range=r;
@@ -4219,6 +4519,9 @@ function ck(){
     srData.globalStreak = (srData.globalStreak || 0) + 1;
     if(streak > maxStreakThisRound) maxStreakThisRound = streak;
     srSave(srData); // tallenna heti jotta putki säilyy jos poistutaan
+    // MAT-87: Päivän haaste -seuranta (streak on päivitetty ennen kutsua)
+    window.streak = streak;
+    trackDailyQuestProgress('correct', { prob });
     const lvlInfo    = DIFF_LEVELS[Math.min(srData.diffLevel-1, DIFF_LEVELS.length-1)];
     const baseScore  = Math.round(10 * lvlInfo.mult);
     const streakBonus = streak >= 3 ? Math.round(streak * 2 * lvlInfo.mult) : 0;
@@ -4242,6 +4545,9 @@ function ck(){
     streak=0;
     srData.globalStreak = 0;
     srSave(srData);
+    // MAT-87: Päivän haaste -seuranta väärästä vastauksesta
+    window.streak = 0;
+    trackDailyQuestProgress('wrong', { prob });
     fb.textContent=`Ei ihan — vastaus oli ${prob.answer}`;
     fb.className='feedback no';
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
@@ -4433,11 +4739,21 @@ function updStats(){
     dayBadge.style.display = dayStreak >= 2 ? '' : 'none';
     dayEl.textContent = dayStreak;
   }
+  // MAT-88: Streak Shield -badge
+  const shields = srData.streakShields ?? 0;
+  const shieldBadge = document.getElementById('shieldBadge');
+  const shieldEl    = document.getElementById('sShields');
+  if (shieldBadge && shieldEl) {
+    shieldBadge.style.display = (shields > 0 || (srData.dayStreak || 0) > 0) ? '' : 'none';
+    shieldEl.textContent = shields;
+  }
 }
 function updProg(){const p=Math.round((rDone/rTotal)*100);document.getElementById('pF').style.width=p+'%';document.getElementById('pT').textContent=rDone+' / '+rTotal;document.getElementById('pP').textContent=p+'%';}
 
 async function showResults(){
   hideExplain();
+  // MAT-87: Päivän haaste -seuranta kierroksen päätteeksi
+  trackDailyQuestProgress('round_end', { corr, rTotal, roundStartTime, maxStreakThisRound, mode, selTable, range });
   document.getElementById('exerciseView').style.display='none';
   document.getElementById('resultsPanel').classList.add('show');
   const p=Math.round((corr/rTotal)*100);
@@ -4454,7 +4770,13 @@ async function showResults(){
   const onCooldown = (srData.levelDropCooldown || 0) > 0;
   const ptsEarned  = (levelRosedThisRound || atMaxLevel) && !onCooldown;
 
-  const ptsToSave = ptsEarned ? pts : 0;
+  // MAT-87: Päivän haaste -bonus pot — lisätään tallennettaviin pisteisiin
+  const bonusPot = srData.dailyBonusPts || 0;
+  const ptsToSave = ptsEarned ? (pts + bonusPot) : 0;
+  if (ptsEarned && bonusPot > 0) {
+    srData.dailyBonusPts = 0;
+    srSave(srData);
+  }
 
   let lvlMsg = '';
   if (levelRosedThisRound && onCooldown) {
@@ -4483,8 +4805,12 @@ async function showResults(){
 
   // BUGI 4 FIX: näytetään selkeästi jo kierroksen alussa mitä tapahtuu pisteille
   // Ei anneta pisteiden "kadota" lopussa — kerrotaan suoraan tulos
+  const bonusMsg = (ptsEarned && bonusPot > 0)
+    ? `<div class="result-tag" style="background:rgba(0,255,170,.12);color:var(--mint);border:1.5px solid rgba(0,255,170,.35);">🌅 +${bonusPot} päivän bonus pisteet sisältyvät</div>`
+    : '';
   document.getElementById('rScore').innerHTML=`
-    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span style="color:${ptsEarned?'var(--accent)':'var(--muted)'}">${ptsEarned ? pts : 0}</span> pistettä${!ptsEarned&&pts>0 ? ` <span style="font-size:.7rem;color:var(--muted)">(${pts} ei tallennu)</span>` : ''}${hintsUsedThisRound > 0 ? ` &nbsp;·&nbsp; <span style="color:var(--muted);font-size:.85em;">💡 ${hintsUsedThisRound} vihje${hintsUsedThisRound>1?'ttä':''} käytetty</span>` : ''}</div>
+    <div class="result-stat"><span>${corr}</span> / ${rTotal} oikein &nbsp;·&nbsp; <span style="color:${ptsEarned?'var(--accent)':'var(--muted)'}">${ptsEarned ? (pts + bonusPot) : 0}</span> pistettä${!ptsEarned&&pts>0 ? ` <span style="font-size:.7rem;color:var(--muted)">(${pts} ei tallennu)</span>` : ''}${hintsUsedThisRound > 0 ? ` &nbsp;·&nbsp; <span style="color:var(--muted);font-size:.85em;">💡 ${hintsUsedThisRound} vihje${hintsUsedThisRound>1?'ttä':''} käytetty</span>` : ''}</div>
+    ${bonusMsg}
     ${lvlMsg}
     <div class="result-save" id="saveStatus">${ptsEarned ? '💾 Tallennetaan...' : '⏭️ Pisteet tallentuvat kun taso nousee'}</div>
   `;
