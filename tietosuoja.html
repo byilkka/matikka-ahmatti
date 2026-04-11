@@ -9,68 +9,99 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.matikka-ahmatti.fi/tietosuoja.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0b1520;--card:#162030;--card2:#1a2840;
-  --accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;
-  --accent4:#7b9fff;--text:#eef3ff;--muted:#6a82a0;
+  --bg: #0C0A1A; --surface: #161330; --surface2: #1E1A40;
+  --lime: #CCFF00; --mint: #00FFAA; --coral: #FF5C5C;
+  --sky: #5CB8FF; --peach: #FFB088; --violet: #B488FF;
+  --text: #F0EEF6; --muted: #8A84A0; --radius: 24px;
 }
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+body{font-family:'Bricolage Grotesque', system-ui, sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;opacity:.4;}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,4vw,48px);background:rgba(11,21,32,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-links{display:flex;align-items:center;gap:clamp(6px,1.2vw,16px);}
-.nav-link{color:var(--muted);font-weight:700;font-size:.83rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,4vw,48px);background:rgba(12,10,26,.7);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.04);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;}
+.nav-logo-text{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px;}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{color:var(--muted);font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;transition:all .2s;letter-spacing:-.2px;}
 .nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
-.nav-cta{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.85rem;padding:8px 18px;border-radius:40px;text-decoration:none;transition:all .2s;}
-.nav-cta:hover{transform:translateY(-1px);}
+.nav-cta{background:var(--lime);color:var(--bg);font-weight:800;font-size:.82rem;padding:10px 22px;border-radius:12px;text-decoration:none;transition:all .2s;letter-spacing:-.2px;}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(204,255,0,.2);}
+@media(max-width:600px){.nav-link:not(.nav-cta){display:none;}}
 
 .page{max-width:780px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,40px) clamp(60px,8vw,100px);}
-.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(123,159,255,.1);border:1px solid rgba(123,159,255,.25);border-radius:40px;padding:6px 16px;font-size:.75rem;font-weight:800;color:var(--accent4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
-.page-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;line-height:1.1;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.2);border-radius:40px;padding:6px 16px;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;color:var(--lime);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;}
+.page-title{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800;letter-spacing:-1px;color:var(--text);margin-bottom:8px;line-height:1.1;}
 .page-meta{color:var(--muted);font-size:.8rem;font-weight:700;margin-bottom:clamp(32px,5vw,52px);}
 
 .section{margin-bottom:clamp(28px,4vw,44px);}
-.section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2.2vw,1.45rem);color:var(--accent3);display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);}
-.card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(16px,2.5vw,24px) clamp(18px,3vw,28px);margin-bottom:12px;font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.75;font-weight:600;}
+.section-title{font-weight:800;font-size:clamp(1.2rem,2.2vw,1.5rem);color:var(--lime);display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);}
+.card{background:var(--surface);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:clamp(20px,3vw,32px);margin-bottom:12px;font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.75;font-weight:600;}
 .card p{margin-bottom:10px;}
 .card p:last-child{margin-bottom:0;}
 .card ul{padding-left:18px;margin-top:6px;}
 .card ul li{margin-bottom:6px;}
 .card strong{color:var(--text);}
-.card a{color:var(--accent4);text-decoration:none;font-weight:700;}
+.card a{color:var(--sky);text-decoration:none;font-weight:700;}
 .card a:hover{text-decoration:underline;}
 
-.highlight{background:rgba(93,232,181,.06);border:1px solid rgba(93,232,181,.2);border-radius:14px;padding:16px 20px;margin-bottom:16px;font-size:clamp(.82rem,1.4vw,.92rem);font-weight:700;color:var(--accent3);line-height:1.6;}
+.highlight{background:rgba(0,255,170,.05);border:1px solid rgba(0,255,170,.15);border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;font-size:clamp(.82rem,1.4vw,.92rem);font-weight:700;color:var(--mint);line-height:1.6;}
 .highlight strong{color:var(--text);}
 
-.contact-box{background:var(--card2);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.contact-box-icon{font-size:2rem;}
+.contact-box{background:var(--surface2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
 .contact-box-info{flex:1;}
-.contact-box-title{font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:4px;}
+.contact-box-title{font-weight:800;font-size:1rem;margin-bottom:4px;}
 .contact-box-sub{font-size:.8rem;color:var(--muted);font-weight:700;}
-.contact-box-link{display:inline-flex;margin-top:8px;padding:8px 18px;background:rgba(123,159,255,.1);border:1.5px solid rgba(123,159,255,.25);border-radius:40px;color:var(--accent4);font-size:.78rem;font-weight:800;text-decoration:none;transition:all .18s;}
-.contact-box-link:hover{background:rgba(123,159,255,.2);}
+.contact-box-link{display:inline-flex;margin-top:8px;padding:8px 18px;background:rgba(92,184,255,.1);border:1.5px solid rgba(92,184,255,.25);border-radius:12px;color:var(--sky);font-size:.78rem;font-weight:800;text-decoration:none;transition:all .18s;}
+.contact-box-link:hover{background:rgba(92,184,255,.2);}
 </style>
 </head>
 <body>
 <nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-text">🐐 Matikka-Ahmatti</span>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+    </svg>
+    <span class="nav-logo-text">Matikka-Ahmatti</span>
   </a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link">← Etusivu</a>
-    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
-    <a href="game.html" class="nav-cta">🚀 Pelaa nyt</a>
+    <a href="ohjeet.html" class="nav-link">Ohjeet</a>
+    <a href="vanhempi.html" class="nav-link">Vanhemmille</a>
+    <a href="opettaja.html" class="nav-link">Opettajille</a>
+    <a href="contact.html" class="nav-link">Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">Pelaa nyt &rarr;</a>
   </div>
 </nav>
 
 <div class="page">
 
-  <div class="page-badge">🔒 Tietosuoja</div>
+  <div class="page-badge">Tietosuoja</div>
   <h1 class="page-title">Tietosuojaseloste</h1>
   <p class="page-meta">Päivitetty: huhtikuu 2026 · Voimassa toistaiseksi</p>
 
@@ -80,7 +111,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 1 -->
   <div class="section">
-    <h2 class="section-title">📋 1. Rekisterinpitäjä</h2>
+    <h2 class="section-title">1. Rekisterinpitäjä</h2>
     <div class="card">
       <p><strong>Matikka-Ahmatti</strong><br>
       Verkkopalvelu: <a href="https://matikka-ahmatti.fi">matikka-ahmatti.fi</a><br>
@@ -91,7 +122,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 2 -->
   <div class="section">
-    <h2 class="section-title">🎮 2. Mitä tietoja keräämme</h2>
+    <h2 class="section-title">2. Mitä tietoja keräämme</h2>
     <div class="card">
       <p><strong>Pelaajaprofiili (pelin toimintaa varten):</strong></p>
       <ul>
@@ -126,7 +157,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 3 -->
   <div class="section">
-    <h2 class="section-title">⚖️ 3. Käsittelyn perusteet</h2>
+    <h2 class="section-title">3. Käsittelyn perusteet</h2>
     <div class="card">
       <ul>
         <li><strong>Sopimus / palvelun tuottaminen</strong> — pelaajaprofiili ja tulokset tarvitaan pelin toimintaan (GDPR art. 6(1)(b))</li>
@@ -138,7 +169,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 4 -->
   <div class="section">
-    <h2 class="section-title">🍪 4. Evästeet</h2>
+    <h2 class="section-title">4. Evästeet</h2>
     <div class="card">
       <p>Käytämme kahta tyyppiä evästeitä:</p>
       <p><strong>Välttämättömät (ei suostumusta tarvita):</strong></p>
@@ -157,7 +188,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 5 -->
   <div class="section">
-    <h2 class="section-title">👶 5. Lasten tiedot</h2>
+    <h2 class="section-title">5. Lasten tiedot</h2>
     <div class="card">
       <p>Palvelu on suunnattu alakouluikäisille lapsille (6–12 v). Noudatamme erityistä varovaisuutta lasten tietojen käsittelyssä:</p>
       <ul>
@@ -172,7 +203,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 6 -->
   <div class="section">
-    <h2 class="section-title">🏢 6. Kolmannet osapuolet</h2>
+    <h2 class="section-title">6. Kolmannet osapuolet</h2>
     <div class="card">
       <ul>
         <li><strong>Supabase</strong> (supabase.com) — tietokanta pelituloksille ja profiileille. Palvelimet EU-alueella.</li>
@@ -185,7 +216,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 7 -->
   <div class="section">
-    <h2 class="section-title">⏱️ 7. Tietojen säilytys</h2>
+    <h2 class="section-title">7. Tietojen säilytys</h2>
     <div class="card">
       <ul>
         <li><strong>Pelaajaprofiili ja tulokset</strong> — säilytetään toistaiseksi palvelun käyttämiseksi. Voidaan poistaa pyynnöstä.</li>
@@ -198,7 +229,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 8 -->
   <div class="section">
-    <h2 class="section-title">✅ 8. Oikeutesi</h2>
+    <h2 class="section-title">8. Oikeutesi</h2>
     <div class="card">
       <p>GDPR:n mukaan sinulla on oikeus:</p>
       <ul>
@@ -215,7 +246,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- 9 -->
   <div class="section">
-    <h2 class="section-title">📝 9. Muutokset tähän selosteeseen</h2>
+    <h2 class="section-title">9. Muutokset tähän selosteeseen</h2>
     <div class="card">
       <p>Voimme päivittää tätä selostetta palvelun kehittyessä. Merkittävistä muutoksista ilmoitetaan sivuston etusivulla. Päivämäärä sivun yläosassa kertoo viimeisimmän päivityksen.</p>
     </div>
@@ -223,29 +254,41 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- Yhteystiedot -->
   <div class="contact-box">
-    <div class="contact-box-icon">📬</div>
     <div class="contact-box-info">
       <div class="contact-box-title">Tietosuoja-kysymykset</div>
       <div class="contact-box-sub">Tietojen poisto, oikaisu tai muut pyynnöt</div>
-      <a href="contact.html" class="contact-box-link">✉️ Ota yhteyttä</a>
+      <a href="contact.html" class="contact-box-link">Ota yhteyttä</a>
     </div>
   </div>
 
 </div>
 
+<footer style="border-top:1px solid rgba(255,255,255,.04);padding:clamp(28px,4vw,48px) clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:0 auto;">
+  <div style="font-weight:800;font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:10px;">Matikka-Ahmatti</div>
+  <div style="display:flex;gap:clamp(14px,2vw,28px);flex-wrap:wrap;">
+    <a href="game.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Pelaa</a>
+    <a href="ohjeet.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Ohjeet</a>
+    <a href="vanhempi.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Vanhemmille</a>
+    <a href="opettaja.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Opettajille</a>
+    <a href="contact.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Yhteystiedot</a>
+    <a href="tietosuoja.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Tietosuoja</a>
+  </div>
+  <div style="width:100%;text-align:center;margin-top:12px;color:var(--muted);font-size:.72rem;font-weight:500;opacity:.6;">&copy; 2026 Matikka-Ahmatti &middot; Tehty Suomessa</div>
+</footer>
+
 <!-- ═══ EVÄSTEBANNERI ═══ -->
-<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--surface,#161330);border-top:1px solid rgba(255,255,255,.06);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Bricolage Grotesque',system-ui,sans-serif;">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
-      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+      <div style="font-weight:800;font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--text);margin-bottom:5px;">Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:var(--muted);font-weight:700;line-height:1.5;">
         Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
-        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+        <a href="tietosuoja.html" style="color:var(--sky);text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
-      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:12px;border:1.5px solid rgba(255,255,255,.08);background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:12px;border:none;background:var(--lime);color:var(--bg);font-weight:800;font-size:.82rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki</button>
     </div>
   </div>
 </div>

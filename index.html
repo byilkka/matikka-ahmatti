@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Ahmatti" />
+<link rel="manifest" href="/site.webmanifest" />
 <!-- GA ladataan evästebannerin kautta suostumuksen jälkeen -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,400 +68,716 @@
 </script>
 
 <meta name="google-site-verification" content="E89pXkHlH0Wgdnv0wfOgh1ODEL_LDivBlSipHZ_U9hU">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════
+   Matikka-Ahmatti Landing Page
+   Bento + Scroll-driven + Editorial
+   ═══════════════════════════════════════════ */
+
 *{box-sizing:border-box;margin:0;padding:0;}
+
 :root{
-  --bg:#0b1520; --card:#162030; --card2:#1a2840;
-  --accent:#f7c948; --accent2:#ff6b6b; --accent3:#5de8b5;
-  --accent4:#7b9fff; --pink:#ff8ed4; --purple:#c56cf0;
-  --text:#eef3ff; --muted:#6a82a0;
+  --bg: #0C0A1A;
+  --surface: #161330;
+  --surface2: #1E1A40;
+  --lime: #CCFF00;
+  --mint: #00FFAA;
+  --coral: #FF5C5C;
+  --sky: #5CB8FF;
+  --peach: #FFB088;
+  --violet: #B488FF;
+  --text: #F0EEF6;
+  --muted: #8A84A0;
+  --radius: 24px;
 }
+
 html{scroll-behavior:smooth;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 
-/* ── Floating bg ── */
-#floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.fn{position:absolute;font-family:'Fredoka One',cursive;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
-@keyframes fnFloat{0%{transform:translateY(0) rotate(var(--r0));opacity:0;}10%{opacity:var(--op);}90%{opacity:var(--op);}100%{transform:translateY(-110vh) rotate(var(--r1));opacity:0;}}
+body{
+  font-family:'Bricolage Grotesque', system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
-/* ── Nav ── */
+/* ── Noise overlay for texture ── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;
+  opacity:.4;
+}
+
+/* ── NAVIGATION ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px clamp(16px,4vw,48px);
-  background:rgba(11,21,32,.85);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:16px clamp(20px,4vw,48px);
+  background:rgba(12,10,26,.7);
+  backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid rgba(255,255,255,.04);
 }
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo svg{width:36px;height:36px;filter:drop-shadow(0 2px 8px rgba(93,232,181,.4));}
-.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.25rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-links{display:flex;align-items:center;gap:clamp(8px,1.5vw,20px);}
-.nav-link{color:var(--muted);font-weight:700;font-size:.85rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;text-decoration:none;
+}
+.nav-logo svg{width:36px;height:36px;}
+.nav-logo-text{
+  font-weight:800;font-size:1.15rem;color:var(--text);
+  letter-spacing:-.5px;
+}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{
+  color:var(--muted);font-weight:600;font-size:.82rem;
+  text-decoration:none;padding:8px 14px;border-radius:12px;
+  transition:all .2s;letter-spacing:-.2px;
+}
 .nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
 .nav-cta{
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;
-  padding:9px 20px;border-radius:40px;text-decoration:none;
-  box-shadow:0 4px 14px rgba(247,201,72,.28);transition:all .2s;
+  background:var(--lime);color:var(--bg);
+  font-weight:800;font-size:.82rem;
+  padding:10px 22px;border-radius:12px;text-decoration:none;
+  transition:all .2s;letter-spacing:-.2px;
 }
-.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(247,201,72,.4);}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(204,255,0,.2);}
 
-/* ── Sections ── */
-section{position:relative;z-index:1;}
-
-/* ── HERO ── */
+/* ── HERO — Editorial style, full viewport ── */
 .hero{
   min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;
-  padding:clamp(100px,15vw,140px) clamp(16px,4vw,48px) clamp(60px,8vw,80px);
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(93,232,181,.1);border:1px solid rgba(93,232,181,.25);
-  border-radius:40px;padding:6px 16px;
-  font-size:.78rem;font-weight:800;color:var(--accent3);
-  letter-spacing:.5px;text-transform:uppercase;
-  margin-bottom:clamp(20px,3vw,32px);
-  animation:fadeUp .6s .1s both;
-}
-.hero-monster{
-  width:clamp(140px,22vw,220px);
-  height:clamp(140px,22vw,220px);
-  margin:0 auto clamp(24px,4vw,40px);
-  filter:drop-shadow(0 12px 40px rgba(93,232,181,.4));
-  animation:heroFloat 3.5s ease-in-out infinite;
-}
-@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-16px) rotate(2deg);}}
-.hero-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(2.8rem,8vw,6rem);
-  line-height:1;
-  margin-bottom:clamp(12px,2vw,20px);
-  animation:fadeUp .6s .2s both;
-}
-.hero-title .line1{
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 50%,var(--pink) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-title .line2{color:var(--text);}
-.hero-sub{
-  font-size:clamp(1rem,2.5vw,1.35rem);
-  color:var(--muted);font-weight:700;
-  max-width:540px;line-height:1.6;
-  margin:0 auto clamp(28px,4vw,44px);
-  animation:fadeUp .6s .3s both;
-}
-.hero-sub strong{color:var(--accent3);}
-.hero-btns{
-  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;
-  animation:fadeUp .6s .4s both;
-}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(1.1rem,2.2vw,1.4rem);
-  padding:clamp(14px,2vw,18px) clamp(28px,4vw,44px);
-  border-radius:60px;text-decoration:none;
-  box-shadow:0 8px 28px rgba(247,201,72,.38);
-  transition:all .22s;
-}
-.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(247,201,72,.5);}
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:8px;
-  background:transparent;
-  color:var(--text);font-family:'Fredoka One',cursive;
-  font-size:clamp(1rem,2vw,1.25rem);
-  padding:clamp(13px,1.8vw,17px) clamp(24px,3.5vw,38px);
-  border-radius:60px;text-decoration:none;
-  border:2px solid rgba(255,255,255,.14);
-  transition:all .22s;
-}
-.btn-secondary:hover{border-color:var(--accent4);color:var(--accent4);transform:translateY(-2px);}
-.hero-stats{
-  display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,20px);justify-content:center;
-  margin-top:clamp(40px,6vw,64px);
-  animation:fadeUp .6s .5s both;
-}
-.stat-pill{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:10px 20px;
-  display:flex;align-items:center;gap:8px;
-  font-size:.82rem;font-weight:800;
-}
-.stat-pill .stat-n{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--accent);}
-
-/* ── ORIGIN STORY ── */
-.origin-section{padding:clamp(40px,8vw,100px) clamp(16px,4vw,48px);}
-.origin-box{
-  max-width:820px;margin:0 auto;
-  background:var(--card);border:1px solid rgba(255,255,255,.08);
-  border-radius:clamp(20px,3vw,32px);
-  padding:clamp(28px,4vw,52px);
-  display:flex;gap:clamp(20px,3vw,40px);
-  align-items:flex-start;
+  display:grid;
+  grid-template-rows:1fr auto;
+  padding:clamp(100px,14vw,140px) clamp(20px,5vw,80px) clamp(40px,6vw,80px);
   position:relative;overflow:hidden;
 }
-.origin-box::before{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(ellipse at 0% 0%,rgba(123,159,255,.06),transparent 60%);
+
+/* Gradient orbs */
+.hero::before{
+  content:'';position:absolute;
+  width:min(800px,90vw);height:min(800px,90vw);
+  top:-20%;right:-20%;
+  background:radial-gradient(circle,rgba(204,255,0,.08) 0%,transparent 70%);
   pointer-events:none;
 }
-.origin-avatar{
-  font-size:clamp(2.8rem,6vw,4rem);
-  flex-shrink:0;line-height:1;
-  background:var(--card2);border-radius:50%;
-  width:clamp(64px,10vw,90px);height:clamp(64px,10vw,90px);
-  display:flex;align-items:center;justify-content:center;
-  border:1px solid rgba(255,255,255,.08);
-}
-.origin-content{flex:1;min-width:0;}
-.origin-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1.15rem,2.5vw,1.6rem);
-  color:var(--text);line-height:1.25;
-  margin-bottom:clamp(14px,2vh,20px);
-}
-.origin-text{
-  font-size:clamp(.85rem,1.5vw,.98rem);
-  color:var(--muted);line-height:1.7;font-weight:600;
-  margin-bottom:12px;
-}
-.origin-sig{
-  display:flex;flex-direction:column;gap:2px;
-  margin-top:clamp(16px,2.5vh,24px);
-  padding-top:16px;
-  border-top:1px solid rgba(255,255,255,.07);
-}
-.origin-sig-name{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1rem,2vw,1.2rem);color:var(--accent4);
-}
-.origin-sig-role{
-  font-size:clamp(.72rem,1.2vw,.82rem);
-  color:var(--muted);font-weight:700;
-}
-@media(max-width:520px){
-  .origin-box{flex-direction:column;align-items:center;text-align:center;}
-  .origin-sig{align-items:center;}
+.hero::after{
+  content:'';position:absolute;
+  width:min(600px,70vw);height:min(600px,70vw);
+  bottom:-10%;left:-15%;
+  background:radial-gradient(circle,rgba(0,255,170,.06) 0%,transparent 70%);
+  pointer-events:none;
 }
 
-/* ── FEATURES ── */
-.features{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
-.section-label{
-  text-align:center;font-size:.75rem;font-weight:800;
-  color:var(--accent4);text-transform:uppercase;letter-spacing:2px;
-  margin-bottom:12px;
+.hero-content{
+  display:flex;flex-direction:column;
+  justify-content:center;
+  max-width:1200px;margin:0 auto;width:100%;
+  position:relative;z-index:1;
 }
-.section-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(2rem,5vw,3.2rem);
-  text-align:center;
-  background:linear-gradient(135deg,var(--text),var(--muted));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:clamp(40px,6vw,64px);
+
+.hero-tag{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.7rem,1.2vw,.82rem);
+  color:var(--lime);
+  text-transform:uppercase;letter-spacing:3px;
+  margin-bottom:clamp(16px,3vw,32px);
+  opacity:0;animation:slideUp .8s .2s forwards;
 }
-.features-grid{
+
+.hero-title{
+  font-size:clamp(3.5rem,11vw,9rem);
+  font-weight:800;
+  line-height:.88;
+  letter-spacing:clamp(-3px,-0.04em,-5px);
+  margin-bottom:clamp(20px,3vw,40px);
+  opacity:0;animation:slideUp .8s .3s forwards;
+}
+.hero-title .highlight{
+  background:linear-gradient(135deg,var(--lime),var(--mint));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-desc{
+  font-size:clamp(1rem,2vw,1.3rem);
+  color:var(--muted);font-weight:500;
+  max-width:480px;line-height:1.7;
+  margin-bottom:clamp(28px,4vw,48px);
+  opacity:0;animation:slideUp .8s .4s forwards;
+}
+
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;
+  align-items:center;
+  opacity:0;animation:slideUp .8s .5s forwards;
+}
+.btn-play{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--lime);color:var(--bg);
+  font-weight:800;font-size:clamp(1rem,1.8vw,1.2rem);
+  padding:clamp(16px,2vw,20px) clamp(32px,4vw,48px);
+  border-radius:16px;text-decoration:none;
+  letter-spacing:-.3px;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+.btn-play:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 16px 48px rgba(204,255,0,.25);
+}
+.btn-play svg{width:20px;height:20px;}
+.btn-how{
+  color:var(--muted);font-weight:700;font-size:clamp(.9rem,1.6vw,1.1rem);
+  text-decoration:none;padding:16px 24px;
+  border:1.5px solid rgba(255,255,255,.1);border-radius:16px;
+  transition:all .2s;letter-spacing:-.2px;
+}
+.btn-how:hover{color:var(--text);border-color:rgba(255,255,255,.2);}
+
+/* Monster floating on the right side */
+.hero-monster{
+  position:absolute;
+  right:clamp(20px,8vw,120px);
+  top:50%;transform:translateY(-50%);
+  width:clamp(200px,28vw,380px);
+  filter:drop-shadow(0 0 60px rgba(0,255,170,.15)) drop-shadow(0 20px 40px rgba(0,0,0,.4));
+  animation:monsterFloat 5s ease-in-out infinite;
+  z-index:1;
+}
+@keyframes monsterFloat{
+  0%,100%{transform:translateY(-50%) rotate(-2deg);}
+  50%{transform:translateY(calc(-50% - 18px)) rotate(2deg);}
+}
+
+/* Stats bar at bottom of hero */
+.hero-stats{
+  display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap;
+  padding-top:clamp(24px,4vw,48px);
+  border-top:1px solid rgba(255,255,255,.06);
+  max-width:1200px;margin:0 auto;width:100%;
+  opacity:0;animation:slideUp .8s .6s forwards;
+}
+.stat{display:flex;flex-direction:column;gap:2px;}
+.stat-value{
+  font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;
+  letter-spacing:-1px;
+}
+.stat-value.c1{color:var(--lime);}
+.stat-value.c2{color:var(--mint);}
+.stat-value.c3{color:var(--peach);}
+.stat-value.c4{color:var(--sky);}
+.stat-value.c5{color:var(--violet);}
+.stat-label{
+  font-size:clamp(.68rem,1vw,.78rem);
+  color:var(--muted);font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;
+}
+
+/* ── MARQUEE — Infinite scrolling text ── */
+.marquee-wrapper{
+  overflow:hidden;
+  padding:clamp(20px,3vw,32px) 0;
+  border-top:1px solid rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  background:var(--surface);
+}
+.marquee{
+  display:flex;gap:clamp(24px,4vw,48px);
+  animation:marquee 30s linear infinite;
+  width:max-content;
+}
+.marquee span{
+  font-size:clamp(1rem,2vw,1.4rem);
+  font-weight:700;color:var(--muted);
+  white-space:nowrap;
+  display:flex;align-items:center;gap:12px;
+}
+.marquee span::before{content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.marquee .m-lime::before{background:var(--lime);}
+.marquee .m-mint::before{background:var(--mint);}
+.marquee .m-coral::before{background:var(--coral);}
+.marquee .m-sky::before{background:var(--sky);}
+.marquee .m-peach::before{background:var(--peach);}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── BENTO GRID — Features section ── */
+.bento-section{
+  padding:clamp(60px,10vw,120px) clamp(20px,5vw,80px);
+  max-width:1200px;margin:0 auto;
+}
+.bento-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:clamp(32px,5vw,56px);flex-wrap:wrap;gap:20px;
+}
+.bento-header h2{
+  font-size:clamp(2.2rem,6vw,4.5rem);
+  font-weight:800;line-height:.95;
+  letter-spacing:clamp(-2px,-.03em,-3px);
+  max-width:600px;
+}
+.bento-header .sub{
+  font-size:clamp(.85rem,1.4vw,1rem);
+  color:var(--muted);max-width:320px;
+  font-weight:500;line-height:1.6;
+}
+
+.bento-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
-  gap:clamp(14px,2vw,24px);
-  max-width:1100px;margin:0 auto;
+  grid-template-columns:repeat(4,1fr);
+  grid-auto-rows:minmax(180px,auto);
+  gap:clamp(12px,1.5vw,18px);
 }
-.feature-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(18px,2vw,28px);
+
+.bento-card{
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:var(--radius);
   padding:clamp(24px,3vw,36px);
-  transition:all .25s;position:relative;overflow:hidden;
+  position:relative;overflow:hidden;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
 }
-.feature-card::before{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 0% 0%,var(--glow-color,.06) 0%,transparent 60%);
-  opacity:0;transition:opacity .25s;pointer-events:none;
+.bento-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.1);
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
 }
-.feature-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(0,0,0,.3);}
-.feature-card:hover::before{opacity:1;}
-.feature-icon{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:16px;display:block;}
-.feature-title{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2vw,1.35rem);margin-bottom:10px;color:var(--text);}
-.feature-desc{font-size:clamp(.82rem,1.4vw,.95rem);color:var(--muted);line-height:1.65;font-weight:600;}
 
-/* ── GAME MODES ── */
-.modes{
-  padding:clamp(60px,10vw,100px) clamp(16px,4vw,48px);
-  background:linear-gradient(180deg,transparent,rgba(22,32,48,.5),transparent);
+/* Card sizes */
+.bento-card.span-2{grid-column:span 2;}
+.bento-card.span-3{grid-column:span 3;}
+.bento-card.tall{grid-row:span 2;}
+
+/* Card accent glow */
+.bento-card::before{
+  content:'';position:absolute;
+  width:200px;height:200px;border-radius:50%;
+  top:-60px;right:-60px;
+  background:var(--card-glow,rgba(204,255,0,.06));
+  filter:blur(60px);
+  pointer-events:none;
+  transition:opacity .3s;
+  opacity:.5;
 }
-.modes-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:clamp(10px,1.8vw,18px);
-  max-width:700px;margin:0 auto;
+.bento-card:hover::before{opacity:1;}
+
+.bento-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+  background:var(--icon-bg,rgba(204,255,0,.1));
 }
-@media(min-width:600px){.modes-grid{grid-template-columns:repeat(4,1fr);}}
+.bento-icon svg{width:24px;height:24px;}
+.bento-title{
+  font-size:clamp(1.1rem,1.8vw,1.4rem);
+  font-weight:800;margin-bottom:8px;letter-spacing:-.3px;
+}
+.bento-desc{
+  font-size:clamp(.8rem,1.2vw,.92rem);
+  color:var(--muted);line-height:1.65;font-weight:500;
+}
+
+/* Special: big feature card with visual */
+.bento-card.feature-hero{
+  background:linear-gradient(135deg,var(--surface),var(--surface2));
+  justify-content:space-between;
+}
+.bento-card.feature-hero .bento-visual{
+  font-size:clamp(3rem,6vw,5rem);
+  text-align:right;opacity:.3;
+  position:absolute;top:20px;right:24px;
+}
+
+/* ── GAME MODES — Horizontal scroll cards ── */
+.modes-section{
+  padding:clamp(60px,10vw,100px) 0;
+  position:relative;
+}
+.modes-header{
+  padding:0 clamp(20px,5vw,80px);
+  margin-bottom:clamp(28px,4vw,48px);
+}
+.modes-header h2{
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:800;letter-spacing:clamp(-1px,-.02em,-2px);
+  line-height:.95;
+}
+.modes-header .tag{
+  font-family:'Space Mono',monospace;
+  font-size:.75rem;color:var(--mint);
+  text-transform:uppercase;letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.modes-scroll{
+  display:flex;gap:clamp(14px,2vw,20px);
+  padding:0 clamp(20px,5vw,80px);
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -ms-overflow-style:none;scrollbar-width:none;
+  padding-bottom:20px;
+}
+.modes-scroll::-webkit-scrollbar{display:none;}
+
 .mode-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(14px,2vw,22px);
-  padding:clamp(20px,3vw,32px) 12px;
-  text-align:center;transition:all .22s;cursor:default;
+  flex:0 0 clamp(240px,30vw,300px);
+  scroll-snap-align:start;
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--radius);
+  padding:clamp(28px,3vw,40px);
+  transition:all .3s;
+  position:relative;overflow:hidden;
 }
-.mode-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.3);}
-.mode-card .mode-emoji{font-size:clamp(2rem,4vw,3rem);display:block;margin-bottom:10px;}
-.mode-card .mode-name{font-family:'Fredoka One',cursive;font-size:clamp(.88rem,1.6vw,1.05rem);color:var(--text);}
-.mode-card .mode-desc{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--muted);font-weight:700;margin-top:4px;}
-.mode-card.m1{border-color:rgba(247,201,72,.2);} .mode-card.m1:hover{border-color:rgba(247,201,72,.4);}
-.mode-card.m2{border-color:rgba(93,232,181,.2);} .mode-card.m2:hover{border-color:rgba(93,232,181,.4);}
-.mode-card.m3{border-color:rgba(255,107,107,.2);} .mode-card.m3:hover{border-color:rgba(255,107,107,.4);}
-.mode-card.m4{border-color:rgba(123,159,255,.2);} .mode-card.m4:hover{border-color:rgba(123,159,255,.4);}
-.mode-card.m5{border-color:rgba(255,107,53,.2);} .mode-card.m5:hover{border-color:rgba(255,107,53,.4);}
+.mode-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 48px rgba(0,0,0,.3);
+}
+.mode-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--mode-color,var(--lime));
+  transform:scaleX(0);transition:transform .3s;
+  transform-origin:left;
+}
+.mode-card:hover::after{transform:scaleX(1);}
 
-/* ── HOW IT WORKS ── */
-.how{padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);}
-.steps{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));
-  gap:clamp(14px,2vw,24px);
+.mode-card .mode-emoji{
+  font-size:2.5rem;margin-bottom:16px;display:block;
+}
+.mode-card .mode-icon-wrap{
+  width:56px;height:56px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+  background:var(--mode-icon-bg,rgba(204,255,0,.08));
+}
+.mode-card .mode-icon-wrap svg{width:28px;height:28px;}
+.mode-card .mode-name{
+  font-size:clamp(1.15rem,2vw,1.4rem);
+  font-weight:800;margin-bottom:6px;letter-spacing:-.3px;
+}
+.mode-card .mode-desc{
+  font-size:.82rem;color:var(--muted);
+  font-weight:500;line-height:1.5;
+}
+
+/* ── HOW IT WORKS — Timeline style ── */
+.how-section{
+  padding:clamp(80px,12vw,140px) clamp(20px,5vw,80px);
   max-width:900px;margin:0 auto;
   position:relative;
 }
-.step-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(18px,2vw,26px);
-  padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,30px);
+.how-section h2{
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:800;letter-spacing:clamp(-1px,-.02em,-2px);
+  text-align:center;margin-bottom:clamp(48px,8vw,80px);
+  line-height:.95;
+}
+.how-section .tag{
+  font-family:'Space Mono',monospace;
+  font-size:.75rem;color:var(--peach);
+  text-transform:uppercase;letter-spacing:3px;
+  text-align:center;display:block;
+  margin-bottom:12px;
+}
+
+.timeline{
+  position:relative;
+  display:flex;flex-direction:column;gap:0;
+}
+/* Vertical line */
+.timeline::before{
+  content:'';position:absolute;
+  left:clamp(24px,4vw,40px);top:0;bottom:0;
+  width:2px;background:rgba(255,255,255,.06);
+}
+
+.timeline-step{
+  display:flex;gap:clamp(20px,3vw,36px);
+  padding:clamp(28px,4vw,44px) 0;
+  position:relative;
+  align-items:flex-start;
+}
+.timeline-step:not(:last-child){
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+
+.step-marker{
+  width:clamp(48px,7vw,64px);height:clamp(48px,7vw,64px);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:clamp(1.1rem,2vw,1.5rem);
+  flex-shrink:0;position:relative;z-index:1;
+}
+.step-marker.s1{background:var(--lime);color:var(--bg);}
+.step-marker.s2{background:var(--mint);color:var(--bg);}
+.step-marker.s3{background:var(--peach);color:var(--bg);}
+.step-marker.s4{background:var(--sky);color:var(--bg);}
+
+.step-body h3{
+  font-size:clamp(1.2rem,2.2vw,1.6rem);
+  font-weight:800;margin-bottom:8px;letter-spacing:-.3px;
+}
+.step-body p{
+  font-size:clamp(.85rem,1.3vw,.95rem);
+  color:var(--muted);line-height:1.7;font-weight:500;
+}
+
+/* ── DIPLOMA — Full-width editorial section ── */
+.diploma-section{
+  padding:clamp(80px,12vw,140px) clamp(20px,5vw,80px);
+  background:var(--surface);
+  border-top:1px solid rgba(255,255,255,.04);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.diploma-section::before{
+  content:'';position:absolute;
+  width:500px;height:500px;top:-200px;right:-100px;
+  background:radial-gradient(circle,rgba(180,136,255,.06),transparent 70%);
+  pointer-events:none;
+}
+.diploma-inner{
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(32px,5vw,64px);
+  align-items:center;
+}
+.diploma-left .tag{
+  font-family:'Space Mono',monospace;
+  font-size:.75rem;color:var(--violet);
+  text-transform:uppercase;letter-spacing:3px;
+  margin-bottom:16px;
+}
+.diploma-left h2{
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800;line-height:.95;
+  letter-spacing:-1px;margin-bottom:20px;
+}
+.diploma-left p{
+  color:var(--muted);font-size:clamp(.88rem,1.3vw,.98rem);
+  line-height:1.75;font-weight:500;margin-bottom:16px;
+}
+.diploma-left p strong{color:var(--text);font-weight:700;}
+
+.diploma-right{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.diploma-stat-card{
+  background:var(--surface2);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:18px;padding:clamp(20px,2.5vw,28px);
+}
+.diploma-stat-card .num{
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:800;letter-spacing:-1px;margin-bottom:4px;
+}
+.diploma-stat-card .label{
+  font-size:.75rem;color:var(--muted);font-weight:600;
+}
+.diploma-tip{
+  grid-column:span 2;
+  background:rgba(180,136,255,.06);
+  border:1px solid rgba(180,136,255,.12);
+  border-radius:18px;padding:clamp(18px,2.5vw,24px);
+  font-size:.88rem;color:var(--muted);line-height:1.65;font-weight:500;
+}
+.diploma-tip strong{color:var(--text);}
+
+/* ── ORIGIN STORY — Asymmetric layout ── */
+.origin-section{
+  padding:clamp(80px,12vw,140px) clamp(20px,5vw,80px);
+  max-width:900px;margin:0 auto;
+}
+.origin-card{
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:var(--radius);
+  padding:clamp(36px,5vw,60px);
+  position:relative;overflow:hidden;
+}
+/* Gradient top border */
+.origin-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--lime),var(--mint),var(--sky),var(--violet));
+}
+.origin-tag{
+  font-family:'Space Mono',monospace;
+  font-size:.75rem;color:var(--sky);
+  text-transform:uppercase;letter-spacing:3px;
+  margin-bottom:16px;
+}
+.origin-card h2{
+  font-size:clamp(1.3rem,2.5vw,1.8rem);
+  font-weight:800;line-height:1.2;
+  margin-bottom:clamp(16px,2vw,24px);letter-spacing:-.3px;
+}
+.origin-card p{
+  color:var(--muted);font-size:clamp(.88rem,1.3vw,.98rem);
+  line-height:1.75;font-weight:500;
+  margin-bottom:14px;
+}
+
+/* ── CTA — Big dramatic finish ── */
+.cta-section{
+  padding:clamp(100px,15vw,180px) clamp(20px,5vw,80px);
   text-align:center;
   position:relative;
 }
-.step-num{
-  width:clamp(40px,6vw,52px);height:clamp(40px,6vw,52px);
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
-  font-size:clamp(1.1rem,2vw,1.4rem);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto clamp(14px,2vw,20px);
-  box-shadow:0 4px 16px rgba(247,201,72,.3);
-}
-.step-title{font-family:'Fredoka One',cursive;font-size:clamp(1rem,1.8vw,1.2rem);margin-bottom:8px;}
-.step-desc{font-size:clamp(.8rem,1.3vw,.9rem);color:var(--muted);font-weight:600;line-height:1.6;}
-
-/* ── CTA SECTION ── */
-.cta-section{
-  padding:clamp(60px,10vw,120px) clamp(16px,4vw,48px);
-  text-align:center;
-}
-.cta-box{
-  background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(93,232,181,.08));
-  border:1px solid rgba(247,201,72,.2);
-  border-radius:clamp(24px,4vw,40px);
-  padding:clamp(40px,6vw,72px) clamp(24px,4vw,60px);
-  max-width:700px;margin:0 auto;
-  position:relative;overflow:hidden;
-}
-.cta-box::before{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(ellipse at 50% -20%,rgba(247,201,72,.12),transparent 60%);
+.cta-section::before{
+  content:'';position:absolute;
+  width:min(600px,80vw);height:min(600px,80vw);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(204,255,0,.06),transparent 70%);
   pointer-events:none;
 }
-.cta-box .cta-emoji{font-size:clamp(3rem,7vw,5rem);display:block;margin-bottom:16px;}
-.cta-box .cta-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(1.8rem,4.5vw,3rem);
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:14px;
+.cta-section .monster-small{
+  width:clamp(80px,12vw,130px);
+  margin:0 auto clamp(20px,3vw,32px);
+  filter:drop-shadow(0 0 40px rgba(0,255,170,.2));
+  animation:monsterFloat 5s ease-in-out infinite;
 }
-.cta-box .cta-sub{
-  color:var(--muted);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:700;
-  margin-bottom:clamp(24px,4vw,36px);line-height:1.6;
+.cta-section h2{
+  font-size:clamp(2.5rem,7vw,5.5rem);
+  font-weight:800;letter-spacing:clamp(-2px,-.03em,-4px);
+  line-height:.9;margin-bottom:clamp(16px,3vw,28px);
+}
+.cta-section h2 .highlight{
+  background:linear-gradient(135deg,var(--lime),var(--mint));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.cta-section p{
+  color:var(--muted);font-size:clamp(1rem,1.8vw,1.2rem);
+  font-weight:500;margin-bottom:clamp(32px,5vw,48px);
+  line-height:1.6;
 }
 
 /* ── FOOTER ── */
 footer{
-  border-top:1px solid rgba(255,255,255,.06);
-  padding:clamp(24px,4vw,40px) clamp(16px,4vw,48px);
+  border-top:1px solid rgba(255,255,255,.04);
+  padding:clamp(28px,4vw,48px) clamp(20px,5vw,80px);
   display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
-  gap:16px;
-  position:relative;z-index:1;
+  gap:16px;max-width:1200px;margin:0 auto;
 }
-.footer-logo{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--muted);}
-.footer-links{display:flex;gap:clamp(12px,2vw,24px);flex-wrap:wrap;}
-.footer-link{color:var(--muted);font-size:.78rem;font-weight:700;text-decoration:none;transition:color .18s;}
-.footer-link:hover{color:var(--accent);}
-.footer-copy{color:var(--muted);font-size:.72rem;font-weight:600;width:100%;text-align:center;margin-top:8px;}
+.footer-logo{
+  font-weight:800;font-size:.9rem;color:var(--muted);
+  display:flex;align-items:center;gap:10px;
+}
+.footer-links{display:flex;gap:clamp(14px,2vw,28px);flex-wrap:wrap;}
+.footer-link{
+  color:var(--muted);font-size:.78rem;font-weight:600;
+  text-decoration:none;transition:color .2s;
+}
+.footer-link:hover{color:var(--lime);}
+.footer-copy{
+  width:100%;text-align:center;margin-top:12px;
+  color:var(--muted);font-size:.72rem;font-weight:500;opacity:.6;
+}
 
-/* ── Animations ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s,transform .6s;}
+/* ── ANIMATIONS ── */
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.reveal{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.22,.61,.36,1);}
 .reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-delay-1{transition-delay:.1s;}
-.reveal-delay-2{transition-delay:.2s;}
-.reveal-delay-3{transition-delay:.3s;}
-.reveal-delay-4{transition-delay:.4s;}
+.reveal-d1{transition-delay:.06s;}
+.reveal-d2{transition-delay:.12s;}
+.reveal-d3{transition-delay:.18s;}
+.reveal-d4{transition-delay:.24s;}
+.reveal-d5{transition-delay:.3s;}
+.reveal-d6{transition-delay:.36s;}
+.reveal-d7{transition-delay:.42s;}
+.reveal-d8{transition-delay:.48s;}
 
-/* ── Professional icon containers ── */
-.feat-icon{
-  width:clamp(44px,5.5vw,52px);height:clamp(44px,5.5vw,52px);
-  border-radius:13px;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:clamp(14px,2vw,20px);
-  flex-shrink:0;
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .bento-grid{grid-template-columns:repeat(2,1fr);}
+  .bento-card.span-3{grid-column:span 2;}
+  .diploma-inner{grid-template-columns:1fr;}
+  .hero-monster{
+    position:relative;right:auto;top:auto;transform:none;
+    width:clamp(160px,40vw,240px);margin:0 auto 32px;
+  }
+  .hero{grid-template-rows:auto auto 1fr auto;}
+  .hero-content{text-align:center;}
+  .hero-actions{justify-content:center;}
+  .hero-stats{justify-content:center;}
 }
-.feat-icon svg{width:clamp(20px,2.8vw,24px);height:clamp(20px,2.8vw,24px);}
-.mode-icon{
-  width:clamp(52px,8vw,62px);height:clamp(52px,8vw,62px);
-  border-radius:clamp(14px,2vw,16px);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto clamp(10px,1.5vw,14px);
+@media(max-width:600px){
+  .bento-grid{grid-template-columns:1fr;}
+  .bento-card.span-2,.bento-card.span-3{grid-column:span 1;}
+  .bento-card.tall{grid-row:span 1;}
+  .nav-link:not(.nav-cta){display:none;}
+  .diploma-right{grid-template-columns:1fr;}
+  .diploma-tip{grid-column:span 1;}
 }
-.mode-icon svg{width:clamp(22px,3.2vw,27px);height:clamp(22px,3.2vw,27px);}
-
-/* ── Nav refinements ── */
-.nav-cta{letter-spacing:.2px;display:inline-flex;align-items:center;gap:6px;}
-.nav-link{display:inline-flex;align-items:center;gap:5px;}
-
-/* ── Origin avatar upgrade ── */
-.origin-avatar svg{width:clamp(32px,6vw,46px);height:clamp(32px,6vw,46px);}
 </style>
 </head>
 <body>
-
-<div id="floatBg"></div>
 
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-logo">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
-      <ellipse cx="100" cy="125" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/>
       <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/>
-      <ellipse cx="78" cy="76" rx="13" ry="15" fill="white"/><ellipse cx="122" cy="76" rx="13" ry="15" fill="white"/>
-      <circle cx="81" cy="77" r="7" fill="#0f1923"/><circle cx="125" cy="77" r="7" fill="#0f1923"/>
-      <path d="M68 104 Q100 130 132 104" fill="#0f1923"/>
-      <path d="M68 104 Q100 116 132 104" fill="#c0334d" opacity=".85"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
     </svg>
     <span class="nav-logo-text">Matikka-Ahmatti</span>
   </a>
   <div class="nav-links">
-    <a href="ohjeet.html" class="nav-link">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      Ohjeet
-    </a>
-    <a href="contact.html" class="nav-link">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      Yhteystiedot
-    </a>
-    <a href="game.html" class="nav-cta">
-      Pelaa nyt
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-    </a>
+    <a href="ohjeet.html" class="nav-link">Ohjeet</a>
+    <a href="vanhempi.html" class="nav-link">Vanhemmille</a>
+    <a href="opettaja.html" class="nav-link">Opettajille</a>
+    <a href="contact.html" class="nav-link">Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">Pelaa nyt &rarr;</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">⭐ Täysin ilmainen · Ei mainoksia</div>
+  <div class="hero-content">
+    <div class="hero-tag">Ilmainen &middot; Ei mainoksia &middot; Ei rekisteröitymistä</div>
 
+    <h1 class="hero-title">
+      Matikka on<br>
+      <span class="highlight">hauskaa.</span>
+    </h1>
+
+    <p class="hero-desc">
+      Mörkö ahmii numeroita, sinä opit laskemaan. Adaptiivinen matikkapeli alakouluikäisille — 50 tasoa hajotelmista prosenttilaskuihin.
+    </p>
+
+    <div class="hero-actions">
+      <a href="game.html" class="btn-play">
+        Aloita pelaaminen
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+      <a href="ohjeet.html" class="btn-how">Miten pelataan?</a>
+    </div>
+  </div>
+
+  <!-- Monster on the right -->
   <div class="hero-monster">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -477,8 +795,6 @@ footer{
       <ellipse cx="122" cy="76" rx="14" ry="16" fill="white" filter="url(#hGlow)"/>
       <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
       <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
-      <text x="81" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
-      <text x="125" y="80" font-size="9" text-anchor="middle" fill="#f7c948" font-family="Arial">★</text>
       <path d="M62 57 Q78 49 94 56" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
       <path d="M106 56 Q122 49 138 57" stroke="#0d5e3f" stroke-width="4" fill="none" stroke-linecap="round"/>
       <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
@@ -497,167 +813,261 @@ footer{
     </svg>
   </div>
 
-  <h1 class="hero-title">
-    <span class="line1">Matikka-Ahmatti</span><br>
-    <span class="line2">on hauska!</span>
-  </h1>
-  <p class="hero-sub">
-    Ilmainen matematiikan harjoittelupeli <strong>alakouluikäisille</strong> — ja prosenttilaskut myös yläkoulun kynnyksellä.<br>
-    Mörkö ahmii numeroita — sinä opit laskemaan. 🎮
-  </p>
-
-  <div class="hero-btns">
-    <a href="game.html" class="btn-primary">🚀 Aloita pelaaminen</a>
-    <a href="ohjeet.html" class="btn-secondary">📖 Miten pelataan?</a>
-  </div>
-
   <div class="hero-stats">
-    <div class="stat-pill"><span class="stat-n">50</span> tasoa</div>
-    <div class="stat-pill"><span class="stat-n">5</span> pelimoodia</div>
-    <div class="stat-pill"><span class="stat-n">34</span> saavutusta</div>
-    <div class="stat-pill"><span class="stat-n">6</span> skinit</div>
-    <div class="stat-pill"><span class="stat-n">Grand Master</span> diplomi</div>
+    <div class="stat"><div class="stat-value c1">50</div><div class="stat-label">tasoa</div></div>
+    <div class="stat"><div class="stat-value c2">5</div><div class="stat-label">pelimoodia</div></div>
+    <div class="stat"><div class="stat-value c3">34</div><div class="stat-label">saavutusta</div></div>
+    <div class="stat"><div class="stat-value c4">6</div><div class="stat-label">skinit</div></div>
+    <div class="stat"><div class="stat-value c5">GM</div><div class="stat-label">diplomi</div></div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <p class="section-label reveal">Miksi Matikka-Ahmatti?</p>
-  <h2 class="section-title reveal">Oppiminen on hauskaa<br>kun mörkö on mukana</h2>
+<!-- MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee">
+    <span class="m-lime">Adaptiivinen vaikeus</span>
+    <span class="m-mint">Ei mainoksia</span>
+    <span class="m-coral">34 saavutusta</span>
+    <span class="m-sky">Toimii kaikkialla</span>
+    <span class="m-peach">Täysin ilmainen</span>
+    <span class="m-lime">50 tasoa</span>
+    <span class="m-mint">PIN-suojatut profiilit</span>
+    <span class="m-coral">Hall of Fame</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="m-lime">Adaptiivinen vaikeus</span>
+    <span class="m-mint">Ei mainoksia</span>
+    <span class="m-coral">34 saavutusta</span>
+    <span class="m-sky">Toimii kaikkialla</span>
+    <span class="m-peach">Täysin ilmainen</span>
+    <span class="m-lime">50 tasoa</span>
+    <span class="m-mint">PIN-suojatut profiilit</span>
+    <span class="m-coral">Hall of Fame</span>
+  </div>
+</div>
 
-  <div class="features-grid">
-    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
-      <div class="feat-icon" style="background:rgba(93,232,181,.12);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
-      <h3 class="feature-title">Adaptiivinen vaikeus</h3>
-      <p class="feature-desc">Peli oppii lapsen taitotason ja tarjoaa juuri sopivan haastavia tehtäviä. 50 tasoa luvuista 1–10 aina luvuille 1–1000 asti.</p>
+<!-- BENTO FEATURES -->
+<section class="bento-section">
+  <div class="bento-header reveal">
+    <h2>Miksi mörkö on<br>paras matikkaope?</h2>
+    <p class="sub">Ei tylsiä harjoituksia. Peli joka oikeasti motivoi lasta harjoittelemaan — ja tekee siitä hauskaa.</p>
+  </div>
+
+  <div class="bento-grid">
+    <!-- Big card: Adaptiivinen -->
+    <div class="bento-card span-2 feature-hero reveal reveal-d1" style="--card-glow:rgba(204,255,0,.08);">
+      <div class="bento-visual" style="opacity:.08;font-size:6rem;position:absolute;top:16px;right:20px;line-height:1;">
+        <svg width="120" height="120" viewBox="0 0 48 48" fill="none" stroke="var(--lime)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="30" width="6" height="12" rx="2" opacity=".3"/><rect x="15" y="24" width="6" height="18" rx="2" opacity=".5"/><rect x="24" y="16" width="6" height="26" rx="2" opacity=".7"/><rect x="33" y="6" width="6" height="36" rx="2"/><path d="M9 12l8-4 8 2 8-6" stroke-width="2"/><circle cx="9" cy="12" r="2" fill="var(--lime)"/><circle cx="17" cy="8" r="2" fill="var(--lime)"/><circle cx="25" cy="10" r="2" fill="var(--lime)"/><circle cx="33" cy="4" r="2" fill="var(--lime)"/></svg>
+      </div>
+      <div>
+        <div class="bento-icon" style="--icon-bg:rgba(204,255,0,.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="16" width="4" height="5" rx="1"/><rect x="10" y="11" width="4" height="10" rx="1"/><rect x="17" y="5" width="4" height="16" rx="1"/><path d="M5 8l5-3 5 2 5-4"/><circle cx="5" cy="8" r="1.5" fill="var(--lime)"/><circle cx="20" cy="3" r="1.5" fill="var(--lime)"/></svg>
+        </div>
+        <div class="bento-title">Adaptiivinen vaikeus</div>
+        <div class="bento-desc">Peli oppii lapsen taitotason ja tarjoaa juuri sopivan haastavia tehtäviä. 50 tasoa luvuista 1–10 aina luvuille 1–1000 asti.</div>
+      </div>
     </div>
-    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
-      <div class="feat-icon" style="background:rgba(247,201,72,.12);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
-      <h3 class="feature-title">Hall of Fame</h3>
-      <p class="feature-desc">Globaali tulostaulukko jossa kilpaillaan kumulatiivisilla pisteillä. Pisteitä kertyy vain kun taso nousee — edistyminen palkitaan, ei toistelu!</p>
+
+    <!-- Hall of Fame -->
+    <div class="bento-card reveal reveal-d2" style="--card-glow:rgba(255,176,136,.08);">
+      <div class="bento-icon" style="--icon-bg:rgba(255,176,136,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--peach)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 9a6 6 0 006 6 6 6 0 006-6"/><path d="M6 9H3l1 4h2"/><path d="M18 9h3l-1 4h-2"/><path d="M12 15v3"/><path d="M8 21h8"/><path d="M8 18h8" stroke-width="1.2" opacity=".4"/><circle cx="12" cy="8" r="2" fill="var(--peach)" stroke="none" opacity=".5"/></svg>
+      </div>
+      <div class="bento-title">Hall of Fame</div>
+      <div class="bento-desc">Globaali tulostaulukko — pisteitä vain kun taso nousee.</div>
     </div>
-    <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,142,212,.08);">
-      <div class="feat-icon" style="background:rgba(255,142,212,.12);color:var(--pink);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
-      <h3 class="feature-title">34 saavutusta</h3>
-      <p class="feature-desc">Saavutukset motivoivat jatkamaan — aamulintu, viikon sankari, GOAT ja paljon muuta. Sitkeys palkitaan: pelaa 7 päivää peräkkäin tai kaikkina vuodenaikoina!</p>
+
+    <!-- Saavutukset -->
+    <div class="bento-card reveal reveal-d3" style="--card-glow:rgba(255,92,92,.08);">
+      <div class="bento-icon" style="--icon-bg:rgba(255,92,92,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 3v1"/><path d="M7.5 15l-2 6 4.5-2 2 3.5 2-3.5 4.5 2-2-6"/><polygon points="12,6 13.2,8.5 16,8.8 14,10.6 14.5,13.4 12,12 9.5,13.4 10,10.6 8,8.8 10.8,8.5" fill="var(--coral)" stroke="none" opacity=".4"/></svg>
+      </div>
+      <div class="bento-title">34 saavutusta</div>
+      <div class="bento-desc">Aamulintu, viikon sankari, GOAT — sitkeys palkitaan.</div>
     </div>
-    <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(123,159,255,.08);">
-      <div class="feat-icon" style="background:rgba(123,159,255,.12);color:var(--accent4);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
-      <h3 class="feature-title">Omat profiilit</h3>
-      <p class="feature-desc">Jokaisella pelaajalla on oma PIN-suojattu profiili. Sama laite, eri pelaajia — edistyminen tallentuu pilvipalveluun.</p>
+
+    <!-- Profiilit -->
+    <div class="bento-card reveal reveal-d4" style="--card-glow:rgba(92,184,255,.08);">
+      <div class="bento-icon" style="--icon-bg:rgba(92,184,255,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11V7a5 5 0 00-10 0v4"/><rect x="5" y="11" width="14" height="10" rx="3"/><circle cx="12" cy="16" r="1.5" fill="var(--sky)" stroke="none"/><path d="M12 17.5v2"/></svg>
+      </div>
+      <div class="bento-title">Omat profiilit</div>
+      <div class="bento-desc">PIN-suojattu profiili jokaiselle pelaajalle. Edistyminen tallentuu pilveen.</div>
     </div>
-    <div class="feature-card reveal reveal-delay-1" style="--glow-color:rgba(93,232,181,.08);">
-      <div class="feat-icon" style="background:rgba(93,232,181,.12);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg></div>
-      <h3 class="feature-title">Mörkö-skinit</h3>
-      <p class="feature-desc">Klikkaa mörkön päällä ja vaihda sen ulkonäkö! 6 erilaista skinit jotka avautuvat edistymällä — Tulimörkö, Jäämörkö, Kultamörkö ja muita.</p>
+
+    <!-- Skinit — wide -->
+    <div class="bento-card span-2 reveal reveal-d5" style="--card-glow:rgba(0,255,170,.08);justify-content:flex-start;">
+      <div class="bento-icon" style="--icon-bg:rgba(0,255,170,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.5" fill="var(--mint)" stroke="none"/><circle cx="15" cy="10" r="1.5" fill="var(--mint)" stroke="none"/><path d="M8.5 14.5Q12 18 15.5 14.5"/><path d="M3 12h2" opacity=".4"/><path d="M19 12h2" opacity=".4"/><path d="M12 3v2" opacity=".4"/><path d="M5.6 5.6l1.4 1.4" opacity=".4"/><path d="M17 7l1.4-1.4" opacity=".4"/></svg>
+      </div>
+      <div class="bento-title">6 mörkö-skiniä</div>
+      <div class="bento-desc">Tulimörkö, Jäämörkö, Kultamörkö ja muita — avautuvat edistymällä. Klikkaa mörkön päällä ja vaihda!</div>
     </div>
-    <div class="feature-card reveal reveal-delay-2" style="--glow-color:rgba(247,201,72,.08);">
-      <div class="feat-icon" style="background:rgba(247,201,72,.12);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
-      <h3 class="feature-title">XP ja tasokartta</h3>
-      <p class="feature-desc">XP-palkki näyttää edistymisen tason sisällä. Tasokartta paljastaa koko seikkailureitin tasolta 1 Grand Masteriin — viisi vyöhykettä, 50 pysäkkiä.</p>
+
+    <!-- XP -->
+    <div class="bento-card reveal reveal-d6" style="--card-glow:rgba(204,255,0,.08);">
+      <div class="bento-icon" style="--icon-bg:rgba(204,255,0,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l4-4 3 2 4-6 3 3 4-8"/><circle cx="21" cy="7" r="2" fill="var(--lime)" stroke="none" opacity=".5"/><circle cx="3" cy="20" r="2" fill="var(--lime)" stroke="none" opacity=".3"/><path d="M18 5l3 2" stroke-width="1.2" opacity=".5"/><path d="M19 3l2 4" stroke-width="1.2" opacity=".5"/></svg>
+      </div>
+      <div class="bento-title">XP ja tasokartta</div>
+      <div class="bento-desc">Viisi vyöhykettä, 50 pysäkkiä — näe koko seikkailureitti.</div>
     </div>
-    <div class="feature-card reveal reveal-delay-3" style="--glow-color:rgba(255,107,107,.08);">
-      <div class="feat-icon" style="background:rgba(255,107,107,.12);color:var(--accent2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div>
-      <h3 class="feature-title">Toimii kaikkialla</h3>
-      <p class="feature-desc">Puhelin, tabletti tai tietokone — peli skaalautuu automaattisesti. Ei asennuksia, ei kirjautumista sähköpostilla.</p>
+
+    <!-- Toimii kaikkialla -->
+    <div class="bento-card reveal reveal-d7" style="--card-glow:rgba(180,136,255,.08);">
+      <div class="bento-icon" style="--icon-bg:rgba(180,136,255,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="18" rx="2.5"/><path d="M12 17h.01" stroke-width="2.5"/><rect x="1" y="6" width="5" height="10" rx="1.5" stroke-width="1.4" opacity=".45"/><path d="M3.5 13h.01" stroke-width="2" opacity=".45"/><rect x="18" y="4" width="5" height="12" rx="1.5" stroke-width="1.4" opacity=".45"/><path d="M20.5 13h.01" stroke-width="2" opacity=".45"/></svg>
+      </div>
+      <div class="bento-title">Toimii kaikkialla</div>
+      <div class="bento-desc">Puhelin, tabletti, tietokone. Ei asennuksia.</div>
     </div>
-    <div class="feature-card reveal reveal-delay-4" style="--glow-color:rgba(197,108,240,.08);">
-      <div class="feat-icon" style="background:rgba(197,108,240,.12);color:var(--purple);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-      <h3 class="feature-title">Grand Master -diplomi</h3>
-      <p class="feature-desc">Tason 50 saavuttanut pelaaja saa tulostettavan diplomitodistuksen. Vaatii oikeaa laskutaitoa luvuille 1–1000 asti — pisteet kertyvät vain kun taso nousee!</p>
+
+    <!-- Diplomi — wide -->
+    <div class="bento-card span-2 reveal reveal-d8" style="--card-glow:rgba(180,136,255,.08);justify-content:flex-start;">
+      <div class="bento-icon" style="--icon-bg:rgba(180,136,255,.1);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M8 8h8" opacity=".4"/><path d="M8 11h6" opacity=".4"/><path d="M8 14h4" opacity=".4"/><circle cx="16" cy="17" r="4.5" fill="var(--surface)" stroke="var(--violet)" stroke-width="1.8"/><path d="M14.5 17l1 1 2-2.5" stroke-width="2"/></svg>
+      </div>
+      <div class="bento-title">Grand Master -diplomi</div>
+      <div class="bento-desc">Tason 50 saavuttanut pelaaja saa tulostettavan diplomitodistuksen — aito mittari oikeasta osaamisesta.</div>
     </div>
   </div>
 </section>
 
 <!-- GAME MODES -->
-<section class="modes">
-  <p class="section-label reveal">Pelimoodit</p>
-  <h2 class="section-title reveal">Viisi tapaa harjoitella</h2>
-  <div class="modes-grid">
-    <div class="mode-card m1 reveal reveal-delay-1">
-      <div class="mode-icon" style="background:rgba(247,201,72,.14);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg></div>
+<section class="modes-section">
+  <div class="modes-header reveal">
+    <div class="tag">Pelimoodit</div>
+    <h2>Viisi tapaa<br>harjoitella</h2>
+  </div>
+  <div class="modes-scroll">
+    <div class="mode-card reveal reveal-d1" style="--mode-color:var(--lime);--mode-icon-bg:rgba(204,255,0,.08);">
+      <div class="mode-icon-wrap">
+        <svg viewBox="0 0 28 28" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="22" height="8" rx="2.5" opacity=".35"/>
+          <rect x="3" y="4" width="14" height="8" rx="2.5"/>
+          <rect x="3" y="16" width="22" height="8" rx="2.5" opacity=".35"/>
+          <rect x="3" y="16" width="8" height="8" rx="2.5"/>
+          <path d="M20 8v8" stroke-dasharray="2 2" opacity=".3"/>
+        </svg>
+      </div>
       <div class="mode-name">Hajotelmat</div>
-      <div class="mode-desc">Luvun osat</div>
+      <div class="mode-desc">Hajota luku osiinsa — luvun rakenne tutuksi</div>
     </div>
-    <div class="mode-card m2 reveal reveal-delay-2">
-      <div class="mode-icon" style="background:rgba(93,232,181,.14);color:var(--accent3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <div class="mode-card reveal reveal-d2" style="--mode-color:var(--mint);--mode-icon-bg:rgba(0,255,170,.08);">
+      <div class="mode-icon-wrap">
+        <svg viewBox="0 0 28 28" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/>
+          <line x1="14" y1="8" x2="14" y2="20"/>
+          <line x1="8" y1="14" x2="20" y2="14"/>
+          <circle cx="14" cy="14" r="3" fill="var(--mint)" stroke="none" opacity=".15"/>
+        </svg>
+      </div>
       <div class="mode-name">Yhteenlasku</div>
-      <div class="mode-desc">Lukujen summa</div>
+      <div class="mode-desc">Lukujen summa — peruslaskutoimitukset haltuun</div>
     </div>
-    <div class="mode-card m3 reveal reveal-delay-3">
-      <div class="mode-icon" style="background:rgba(255,107,107,.14);color:var(--accent2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-      <div class="mode-name">Vähennys</div>
-      <div class="mode-desc">Erotus</div>
+    <div class="mode-card reveal reveal-d3" style="--mode-color:var(--coral);--mode-icon-bg:rgba(255,92,92,.08);">
+      <div class="mode-icon-wrap">
+        <svg viewBox="0 0 28 28" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/>
+          <line x1="8" y1="14" x2="20" y2="14"/>
+          <circle cx="14" cy="14" r="3" fill="var(--coral)" stroke="none" opacity=".15"/>
+        </svg>
+      </div>
+      <div class="mode-name">Vähennyslasku</div>
+      <div class="mode-desc">Erotus — harjoittele vähentämistä kaikilla luvuilla</div>
     </div>
-    <div class="mode-card m4 reveal reveal-delay-4">
-      <div class="mode-icon" style="background:rgba(123,159,255,.14);color:var(--accent4);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    <div class="mode-card reveal reveal-d4" style="--mode-color:var(--sky);--mode-icon-bg:rgba(92,184,255,.08);">
+      <div class="mode-icon-wrap">
+        <svg viewBox="0 0 28 28" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/>
+          <line x1="10" y1="10" x2="18" y2="18"/>
+          <line x1="18" y1="10" x2="10" y2="18"/>
+          <circle cx="14" cy="14" r="3" fill="var(--sky)" stroke="none" opacity=".15"/>
+        </svg>
+      </div>
       <div class="mode-name">Kertotaulu</div>
-      <div class="mode-desc">1× – 10×</div>
+      <div class="mode-desc">1&times; – 10&times; kertotaulut automaattisesti vaikeutuen</div>
     </div>
-    <div class="mode-card m5 reveal reveal-delay-4">
-      <div class="mode-icon" style="background:rgba(255,107,53,.14);color:#ff6b35;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+    <div class="mode-card reveal reveal-d5" style="--mode-color:var(--peach);--mode-icon-bg:rgba(255,176,136,.08);">
+      <div class="mode-icon-wrap">
+        <svg viewBox="0 0 28 28" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/>
+          <circle cx="11" cy="10.5" r="2" fill="var(--peach)" stroke="none" opacity=".4"/>
+          <circle cx="17" cy="17.5" r="2" fill="var(--peach)" stroke="none" opacity=".4"/>
+          <line x1="18" y1="9" x2="10" y2="19"/>
+        </svg>
+      </div>
       <div class="mode-name">Prosentit</div>
-      <div class="mode-desc">Avautuu tasolla 8</div>
+      <div class="mode-desc">Avautuu tasolla 8 — myös yläkoululaisille</div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how">
-  <p class="section-label reveal">Näin pääset alkuun</p>
-  <h2 class="section-title reveal">Kolme askelta<br>ja mörkö syö numeroita</h2>
-  <div class="steps">
-    <div class="step-card reveal reveal-delay-1">
-      <div class="step-num">1</div>
-      <h3 class="step-title">Luo profiili</h3>
-      <p class="step-desc">Kirjoita nimesi, valitse prinssi tai prinsessa, ja luo oma PIN-koodi. Kestää 30 sekuntia.</p>
+<section class="how-section">
+  <div class="tag reveal">Näin pääset alkuun</div>
+  <h2 class="reveal">Neljä askelta<br>ja mörkö syö numeroita</h2>
+
+  <div class="timeline">
+    <div class="timeline-step reveal reveal-d1">
+      <div class="step-marker s1">1</div>
+      <div class="step-body">
+        <h3>Luo profiili</h3>
+        <p>Kirjoita nimesi, valitse prinssi tai prinsessa, ja luo oma PIN-koodi. Kestää 30 sekuntia.</p>
+      </div>
     </div>
-    <div class="step-card reveal reveal-delay-2">
-      <div class="step-num">2</div>
-      <h3 class="step-title">Valitse moodi</h3>
-      <p class="step-desc">Hajotelmat, yhteenlasku, vähennys vai kertotaulu. Peli valitsee vaikeustason automaattisesti.</p>
+    <div class="timeline-step reveal reveal-d2">
+      <div class="step-marker s2">2</div>
+      <div class="step-body">
+        <h3>Valitse moodi</h3>
+        <p>Hajotelmat, yhteenlasku, vähennys vai kertotaulu. Peli valitsee vaikeustason automaattisesti.</p>
+      </div>
     </div>
-    <div class="step-card reveal reveal-delay-3">
-      <div class="step-num">3</div>
-      <h3 class="step-title">Pelaa ja opi!</h3>
-      <p class="step-desc">Vastaa 10 tehtävään. Mörkö reagoi vastauksiin, taso nousee kun menee hyvin ja pisteet kertyvät Hall of Fameen — mutta vain kun taso nousee!</p>
+    <div class="timeline-step reveal reveal-d3">
+      <div class="step-marker s3">3</div>
+      <div class="step-body">
+        <h3>Pelaa ja opi!</h3>
+        <p>Vastaa 10 tehtävään. Mörkö reagoi vastauksiin, taso nousee kun menee hyvin ja pisteet kertyvät Hall of Fameen.</p>
+      </div>
     </div>
-    <div class="step-card reveal reveal-delay-4">
-      <div class="step-num">4</div>
-      <h3 class="step-title">Kerää saavutuksia</h3>
-      <p class="step-desc">34 erilaista saavutusta motivoivat jatkamaan — pelaa päivittäin, nouse tasoille ja tavoittele GRAND MASTER -tasoa!</p>
+    <div class="timeline-step reveal reveal-d4">
+      <div class="step-marker s4">4</div>
+      <div class="step-body">
+        <h3>Kerää saavutuksia</h3>
+        <p>34 erilaista saavutusta — pelaa päivittäin, nouse tasoille ja tavoittele Grand Master -tasoa!</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- DIPLOMI OSIO -->
-<section class="features" style="padding-top:0;">
-  <div style="background:linear-gradient(135deg,rgba(197,108,240,.08) 0%,rgba(247,201,72,.06) 100%);border:1px solid rgba(197,108,240,.2);border-radius:clamp(20px,3vw,32px);padding:clamp(32px,5vw,56px) clamp(24px,4vw,48px);max-width:860px;margin:0 auto;">
-    <div style="display:flex;align-items:flex-start;gap:clamp(20px,3vw,40px);flex-wrap:wrap;">
-      <div style="font-size:clamp(3rem,6vw,4.5rem);line-height:1;flex-shrink:0;">🎓</div>
-      <div style="flex:1;min-width:220px;">
-        <div style="font-size:clamp(.65rem,1.2vw,.75rem);font-weight:800;color:var(--purple);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;">Opettajille &amp; vanhemmille</div>
-        <h2 style="font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:12px;line-height:1.2;">Grand Master -diplomi:<br>konkreettinen oppimisen tavoite</h2>
-        <p style="color:var(--muted);font-size:clamp(.82rem,1.5vw,.95rem);font-weight:600;line-height:1.7;margin-bottom:16px;">
-          Pelin taso 50 on aito oppimisen mittari. Se vaatii laskemista oikein luvuilla 1–1000 kaikissa neljässä moodissa — hajotelmat, yhteenlasku, vähennyslasku ja kertotaulut. <strong style="color:var(--text);">Taso nousee vain kun saa 9–10/10 oikein,</strong> eikä pisteitä voi kerätä toistamalla samaa helppojen laskujen kierrosta.
-        </p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
-          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
-            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--accent);margin-bottom:4px;">~6–8 h</div>
-            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">pelailua tasolle 50</div>
-          </div>
-          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
-            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--accent3);margin-bottom:4px;">49 nousua</div>
-            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">jokainen ansaittu oikeasti</div>
-          </div>
-          <div style="background:var(--card);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.07);">
-            <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--purple);margin-bottom:4px;">1–1000</div>
-            <div style="font-size:.75rem;color:var(--muted);font-weight:700;">lukualue lopussa</div>
-          </div>
-        </div>
-        <p style="color:var(--muted);font-size:clamp(.78rem,1.4vw,.88rem);font-weight:600;line-height:1.7;border-left:3px solid var(--purple);padding-left:14px;">
-          💡 <strong style="color:var(--text);">Ehdotus opettajille:</strong> Aseta Grand Master -diplomi koko luokan tavoitteeksi. Diplomi on tulostettava todistus jonka lapsi voi viedä kotiin — konkreettinen palkinto oikeasta osaamisesta.
-        </p>
+<!-- DIPLOMA -->
+<section class="diploma-section">
+  <div class="diploma-inner reveal">
+    <div class="diploma-left">
+      <div class="tag">Opettajille &amp; vanhemmille</div>
+      <h2>Grand Master -diplomi on aito mittari</h2>
+      <p>
+        Taso 50 vaatii laskemista oikein luvuilla 1–1000 kaikissa neljässä moodissa. <strong>Taso nousee vain kun saa 9–10/10 oikein,</strong> eikä pisteitä voi kerätä toistamalla samaa kierrosta.
+      </p>
+    </div>
+    <div class="diploma-right">
+      <div class="diploma-stat-card">
+        <div class="num" style="color:var(--lime);">~6–8 h</div>
+        <div class="label">pelailua tasolle 50</div>
+      </div>
+      <div class="diploma-stat-card">
+        <div class="num" style="color:var(--mint);">49</div>
+        <div class="label">nousua — jokainen ansaittu</div>
+      </div>
+      <div class="diploma-stat-card">
+        <div class="num" style="color:var(--peach);">1–1000</div>
+        <div class="label">lukualue lopussa</div>
+      </div>
+      <div class="diploma-stat-card">
+        <div class="num" style="color:var(--sky);">4</div>
+        <div class="label">moodia hallittava</div>
+      </div>
+      <div class="diploma-tip">
+        <strong>Ehdotus opettajille:</strong> Aseta Grand Master -diplomi koko luokan tavoitteeksi. Diplomi on tulostettava todistus jonka lapsi voi viedä kotiin.
       </div>
     </div>
   </div>
@@ -665,90 +1075,90 @@ footer{
 
 <!-- ORIGIN STORY -->
 <section class="origin-section">
-  <div class="origin-box reveal">
-    <div class="origin-avatar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent4)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><path d="M16 11.5c1 .5 2 1.5 2 3.5v1h2"/><path d="M16 16h4"/></svg>
-    </div>
-    <div class="origin-content">
-      <p class="section-label" style="text-align:left;margin-bottom:10px;">Miksi tein tämän?</p>
-      <h2 class="origin-title">Tyttäreni aloitti koulun 2025 — ja löysin vain vanhentuneita pelejä</h2>
-      <p class="origin-text">
-        Kun etsin hyvää matikkapeliä lapselleni, löysin pelejä jotka olivat joko ulkoasultaan vanhentuneita, täynnä mainoksia tai kalliita tilauspalveluja.
-      </p>
-      <p class="origin-text">
-        Päätin tehdä oman version: adaptiivinen vaikeus, ei mainoksia, toimii kaikilla laitteilla, täysin ilmainen. Peli jota itse olisin halunnut löytää.
-      </p>
-    </div>
+  <div class="origin-card reveal">
+    <div class="origin-tag">Miksi tein tämän?</div>
+    <h2>Tyttäreni aloitti koulun 2025 — ja löysin vain vanhentuneita pelejä</h2>
+    <p>Kun etsin hyvää matikkapeliä lapselleni, löysin pelejä jotka olivat joko ulkoasultaan vanhentuneita, täynnä mainoksia tai kalliita tilauspalveluja.</p>
+    <p>Päätin tehdä oman version: adaptiivinen vaikeus, ei mainoksia, toimii kaikilla laitteilla, täysin ilmainen. Peli jota itse olisin halunnut löytää.</p>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-  <div class="cta-box reveal">
-    <span class="cta-emoji">🚀</span>
-    <h2 class="cta-title">Valmis kokeilemaan?</h2>
-    <p class="cta-sub">Täysin ilmainen. Ei rekisteröitymistä sähköpostilla.<br>Aloita pelaaminen heti!</p>
-    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
-      <a href="game.html" class="btn-primary">🎮 Aloita nyt — ilmaiseksi</a>
-      <a href="ohjeet.html" class="btn-secondary">📖 Lue ohjeet</a>
-    </div>
+  <div class="monster-small">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#cg)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#cg)"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <ellipse cx="100" cy="124" rx="15" ry="9" fill="#ff8ed4" opacity=".9"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+    </svg>
+  </div>
+  <h2 class="reveal">Valmis<br><span class="highlight">kokeilemaan?</span></h2>
+  <p class="reveal">Täysin ilmainen. Ei rekisteröitymistä.<br>Aloita pelaaminen heti.</p>
+  <div class="reveal" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+    <a href="game.html" class="btn-play">Aloita nyt &rarr;</a>
+    <a href="ohjeet.html" class="btn-how">Lue ohjeet</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo" style="display:flex;align-items:center;gap:8px;">
-    <svg width="22" height="22" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="fg" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs><ellipse cx="100" cy="125" rx="54" ry="58" fill="url(#fg)"/><ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#fg)"/><ellipse cx="78" cy="76" rx="13" ry="15" fill="white"/><ellipse cx="122" cy="76" rx="13" ry="15" fill="white"/><circle cx="81" cy="77" r="7" fill="#0f1923"/><circle cx="125" cy="77" r="7" fill="#0f1923"/><path d="M68 104 Q100 130 132 104" fill="#0f1923"/><path d="M68 104 Q100 116 132 104" fill="#c0334d" opacity=".85"/></svg>
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="fg" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs><ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#fg)"/><ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/><ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/><circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/><circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/><ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#fg)"/><ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/><circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/><circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/><path d="M62 104 Q100 140 138 104" fill="#0f1923"/><path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/><rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/><rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/><path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/><circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/><path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/><circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/><ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/><ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/></svg>
     Matikka-Ahmatti
   </div>
   <div class="footer-links">
     <a href="game.html" class="footer-link">Pelaa</a>
     <a href="ohjeet.html" class="footer-link">Ohjeet</a>
-    <a href="vanhempi.html" class="footer-link">👨‍👩‍👧 Vanhemmille</a>
-    <a href="opettaja.html" class="footer-link">👩‍🏫 Opettajille</a>
+    <a href="vanhempi.html" class="footer-link">Vanhemmille</a>
+    <a href="opettaja.html" class="footer-link">Opettajille</a>
     <a href="contact.html" class="footer-link">Yhteystiedot</a>
     <a href="tietosuoja.html" class="footer-link">Tietosuoja</a>
     <a href="#" class="footer-link" onclick="openCookieSettings();return false;">Evästeasetukset</a>
   </div>
-  <div class="footer-copy">© 2026 Matikka-Ahmatti · Tehty 🇫🇮 Suomessa · Ilmainen matematiikan harjoittelupeli lapsille</div>
+  <div class="footer-copy">&copy; 2026 Matikka-Ahmatti &middot; Tehty Suomessa &middot; Ilmainen matematiikan harjoittelupeli lapsille</div>
 </footer>
 
 <script>
-// Floating bg
-const S=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','12','15','8×3'];
-const C=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,'];
-(function(){
-  const bg=document.getElementById('floatBg');
-  for(let i=0;i<40;i++){
-    const el=document.createElement('div');el.className='fn';
-    const op=(Math.random()*.15+.08).toFixed(3);
-    const dur=Math.random()*20+14;
-    el.textContent=S[~~(Math.random()*S.length)];
-    el.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*8}%;font-size:${Math.random()*26+12}px;color:${C[~~(Math.random()*C.length)]}${op});--op:${op};--r0:${(Math.random()*30-15).toFixed(1)}deg;--r1:${(Math.random()*50-25).toFixed(1)}deg;--dur:${dur}s;--delay:-${(Math.random()*dur).toFixed(1)}s;`;
-    bg.appendChild(el);
-  }
-})();
-
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold:.12});
+}, {threshold:.1});
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
-<!-- ═══ EVÄSTEBANNERI ═══ -->
-<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+<!-- EVÄSTEBANNERI -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--surface);border-top:1px solid rgba(255,255,255,.06);padding:clamp(16px,2vw,22px) clamp(16px,3vw,28px);font-family:'Bricolage Grotesque',system-ui,sans-serif;box-shadow:0 -4px 24px rgba(0,0,0,.3);">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
-      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+      <div style="font-weight:800;font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--text);margin-bottom:5px;">Käytämme evästeitä</div>
+      <div style="font-size:clamp(.74rem,1.2vw,.84rem);color:var(--muted);font-weight:500;line-height:1.6;">
         Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
-        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+        <a href="tietosuoja.html" style="color:var(--lime);text-decoration:none;font-weight:700;">Tietosuojaseloste</a>
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
-      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+      <button onclick="cookieDecline()" style="padding:10px 20px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:10px 20px;border-radius:12px;border:none;background:var(--lime);color:var(--bg);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;transition:all .2s;white-space:nowrap;">Hyväksy kaikki</button>
     </div>
   </div>
 </div>
@@ -773,7 +1183,6 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   function disableGA(){
     window['ga-disable-' + GA_ID] = true;
-    // Poista GA-evästeet
     document.cookie = '_ga=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     document.cookie = '_ga_' + GA_ID.replace('G-','') + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
@@ -790,14 +1199,12 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     disableGA();
   };
 
-  // Tarkista aiempi valinta
   var consent = localStorage.getItem(CONSENT_KEY);
   if(consent === 'accepted'){
     loadGA();
   } else if(consent === 'declined'){
     disableGA();
   } else {
-    // Näytä banneri lyhyen viiveen jälkeen
     setTimeout(function(){
       var b = document.getElementById('cookieBanner');
       if(b) b.style.display = 'block';
@@ -806,9 +1213,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 </script>
 
-
 <script>
-// Evästeasetukset-nappi — avaa bannerin uudelleen
 function openCookieSettings(){
   localStorage.removeItem('matikka_cookie_consent');
   var b = document.getElementById('cookieBanner');

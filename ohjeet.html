@@ -12,48 +12,60 @@
 <link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0b1520;--card:#162030;--card2:#1a2840;
-  --accent:#f7c948;--accent2:#ff6b6b;--accent3:#5de8b5;
-  --accent4:#7b9fff;--pink:#ff8ed4;--text:#eef3ff;--muted:#6a82a0;
+  --bg: #0C0A1A; --surface: #161330; --surface2: #1E1A40;
+  --lime: #CCFF00; --mint: #00FFAA; --coral: #FF5C5C;
+  --sky: #5CB8FF; --peach: #FFB088; --violet: #B488FF;
+  --text: #F0EEF6; --muted: #8A84A0; --radius: 24px;
 }
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+body{font-family:'Bricolage Grotesque', system-ui, sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;opacity:.4;}
+
 #floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.fn{position:absolute;font-family:'Fredoka One',cursive;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
+.fn{position:absolute;font-family:'Space Mono',monospace;animation:fnFloat var(--dur,16s) ease-in-out infinite var(--delay,0s);opacity:0;}
 @keyframes fnFloat{0%{transform:translateY(0) rotate(var(--r0));opacity:0;}10%{opacity:var(--op);}90%{opacity:var(--op);}100%{transform:translateY(-110vh) rotate(var(--r1));opacity:0;}}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px clamp(16px,4vw,48px);background:rgba(11,21,32,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo-text{font-family:'Fredoka One',cursive;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-links{display:flex;align-items:center;gap:clamp(6px,1.2vw,16px);}
-.nav-link{color:var(--muted);font-weight:700;font-size:.83rem;text-decoration:none;padding:6px 12px;border-radius:40px;transition:all .18s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,4vw,48px);background:rgba(12,10,26,.7);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.04);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;}
+.nav-logo-text{font-weight:800;font-size:1.15rem;color:var(--text);letter-spacing:-.5px;}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{color:var(--muted);font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;transition:all .2s;letter-spacing:-.2px;}
 .nav-link:hover{color:var(--text);background:rgba(255,255,255,.06);}
-.nav-cta{background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.85rem;padding:8px 18px;border-radius:40px;text-decoration:none;transition:all .2s;}
-.nav-cta:hover{transform:translateY(-1px);}
+.nav-cta{background:var(--lime);color:var(--bg);font-weight:800;font-size:.82rem;padding:10px 22px;border-radius:12px;text-decoration:none;transition:all .2s;letter-spacing:-.2px;}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(204,255,0,.2);}
+@media(max-width:600px){.nav-link:not(.nav-cta){display:none;}}
 
 .page{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:clamp(90px,14vw,130px) clamp(16px,4vw,40px) clamp(40px,8vw,80px);}
 
 .page-header{text-align:center;margin-bottom:clamp(40px,6vw,64px);}
-.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(123,159,255,.1);border:1px solid rgba(123,159,255,.25);border-radius:40px;padding:6px 16px;font-size:.75rem;font-weight:800;color:var(--accent4);letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px;}
-.page-title{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,6vw,3.5rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;line-height:1.1;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.2);border-radius:40px;padding:6px 16px;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;color:var(--lime);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;}
+.page-title{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800;letter-spacing:-1px;color:var(--text);margin-bottom:12px;line-height:1.1;}
 .page-sub{color:var(--muted);font-size:clamp(.9rem,1.8vw,1.05rem);font-weight:700;line-height:1.6;}
 
 /* Quick start */
 .quick-start{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:clamp(10px,1.8vw,16px);margin-bottom:clamp(40px,6vw,60px);}
-.qs-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:clamp(18px,2.5vw,28px) 16px;text-align:center;position:relative;}
-.qs-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
-.qs-icon{font-size:clamp(2rem,4vw,2.8rem);display:block;margin:8px auto 10px;}
-.qs-title{font-family:'Fredoka One',cursive;font-size:clamp(.9rem,1.6vw,1.05rem);margin-bottom:6px;}
+.qs-card{background:var(--surface);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:clamp(18px,2.5vw,28px) 16px;text-align:center;position:relative;}
+.qs-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--bg);font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;}
+.qs-icon{width:clamp(44px,5vw,52px);height:clamp(44px,5vw,52px);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:8px auto 12px;background:rgba(204,255,0,.08);}
+.qs-icon svg{width:clamp(22px,2.8vw,26px);height:clamp(22px,2.8vw,26px);}
+.qs-card:nth-child(1) .qs-icon{background:rgba(204,255,0,.08);}
+.qs-card:nth-child(2) .qs-icon{background:rgba(0,255,170,.08);}
+.qs-card:nth-child(3) .qs-icon{background:rgba(92,184,255,.08);}
+.qs-card:nth-child(4) .qs-icon{background:rgba(255,176,136,.08);}
+.qs-title{font-weight:800;font-size:clamp(.9rem,1.6vw,1.05rem);margin-bottom:6px;}
 .qs-desc{font-size:clamp(.7rem,1.1vw,.8rem);color:var(--muted);font-weight:600;line-height:1.5;}
 
 /* Sections */
 .guide-section{margin-bottom:clamp(36px,5vw,52px);}
-.guide-section-title{font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,2.8vw,1.8rem);display:flex;align-items:center;gap:12px;margin-bottom:clamp(16px,2.5vw,24px);padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07);}
-.guide-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(16px,2.5vw,26px) clamp(18px,3vw,28px);margin-bottom:clamp(8px,1.2vw,14px);}
-.guide-card-title{font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.15rem);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.guide-section-title{font-weight:800;font-size:clamp(1.3rem,2.8vw,1.8rem);color:var(--lime);display:flex;align-items:center;gap:12px;margin-bottom:clamp(16px,2.5vw,24px);padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06);}
+.guide-card{background:var(--surface);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:clamp(20px,3vw,32px);margin-bottom:clamp(8px,1.2vw,14px);}
+.guide-card-title{font-weight:800;font-size:clamp(.95rem,1.8vw,1.15rem);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
 .guide-card p{color:var(--muted);font-size:clamp(.8rem,1.4vw,.92rem);font-weight:600;line-height:1.7;}
 .guide-card ul{color:var(--muted);font-size:clamp(.8rem,1.4vw,.92rem);font-weight:600;line-height:1.7;padding-left:20px;}
 .guide-card ul li{margin-bottom:6px;}
@@ -62,20 +74,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* Mode grid */
 .mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,1.5vw,14px);}
 @media(min-width:500px){.mode-grid{grid-template-columns:repeat(4,1fr);}}
-.mode-tile{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:clamp(14px,2vw,22px) 10px;text-align:center;}
-.mode-tile .mt-icon{font-size:clamp(1.6rem,3.5vw,2.4rem);display:block;margin-bottom:8px;}
-.mode-tile .mt-name{font-family:'Fredoka One',cursive;font-size:clamp(.8rem,1.4vw,.95rem);margin-bottom:4px;}
-.mode-tile .mt-ex{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--accent);font-weight:800;font-family:'Fredoka One',cursive;}
-.mode-tile.m1{border-color:rgba(247,201,72,.2);}
-.mode-tile.m2{border-color:rgba(93,232,181,.2);}
-.mode-tile.m3{border-color:rgba(255,107,107,.2);}
-.mode-tile.m4{border-color:rgba(123,159,255,.2);}
+.mode-tile{background:var(--surface);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:clamp(14px,2vw,22px) 10px;text-align:center;}
+.mode-tile .mt-icon{width:clamp(44px,6vw,56px);height:clamp(44px,6vw,56px);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.mode-tile .mt-icon svg{width:clamp(22px,3vw,28px);height:clamp(22px,3vw,28px);}
+.mode-tile.m1 .mt-icon{background:rgba(204,255,0,.08);}
+.mode-tile.m2 .mt-icon{background:rgba(0,255,170,.08);}
+.mode-tile.m3 .mt-icon{background:rgba(255,92,92,.08);}
+.mode-tile.m4 .mt-icon{background:rgba(92,184,255,.08);}
+.mode-tile .mt-name{font-weight:800;font-size:clamp(.8rem,1.4vw,.95rem);margin-bottom:4px;}
+.mode-tile .mt-ex{font-size:clamp(.68rem,1.1vw,.78rem);color:var(--lime);font-weight:800;font-family:'Space Mono',monospace;}
+.mode-tile.m1{border-color:rgba(204,255,0,.2);}
+.mode-tile.m2{border-color:rgba(0,255,170,.2);}
+.mode-tile.m3{border-color:rgba(255,92,92,.2);}
+.mode-tile.m4{border-color:rgba(92,184,255,.2);}
 
 /* Achievements preview */
 .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
-.ach-tile{background:var(--card2);border-radius:14px;padding:14px 10px;text-align:center;}
+.ach-tile{background:var(--surface2);border:1px solid rgba(255,255,255,.05);border-radius:var(--radius);padding:14px 10px;text-align:center;}
 .ach-tile .at-icon{font-size:1.8rem;display:block;margin-bottom:6px;}
-.ach-tile .at-name{font-family:'Fredoka One',cursive;font-size:.78rem;color:var(--text);margin-bottom:4px;}
+.ach-tile .at-name{font-weight:800;font-size:.78rem;color:var(--text);margin-bottom:4px;}
 .ach-tile .at-desc{font-size:.65rem;color:var(--muted);font-weight:600;}
 
 /* Level table */
@@ -87,15 +104,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 /* Tips */
 .tip-list{display:grid;gap:10px;}
-.tip{background:var(--card);border-left:3px solid var(--accent3);border-radius:0 14px 14px 0;padding:14px 18px;font-size:clamp(.8rem,1.4vw,.92rem);font-weight:700;color:var(--muted);line-height:1.6;}
+.tip{background:var(--surface);border-left:3px solid var(--mint);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;font-size:clamp(.8rem,1.4vw,.92rem);font-weight:700;color:var(--muted);line-height:1.6;}
 .tip strong{color:var(--text);}
 
 /* CTA */
-.cta-bar{background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(93,232,181,.06));border:1px solid rgba(247,201,72,.2);border-radius:24px;padding:clamp(24px,4vw,40px);text-align:center;margin-top:clamp(40px,6vw,64px);}
-.cta-bar h3{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,3vw,2rem);background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.cta-bar{background:rgba(204,255,0,.04);border:1px solid rgba(204,255,0,.15);border-radius:var(--radius);padding:clamp(24px,4vw,40px);text-align:center;margin-top:clamp(40px,6vw,64px);}
+.cta-bar h3{font-weight:800;font-size:clamp(1.4rem,3vw,2rem);color:var(--text);margin-bottom:10px;}
 .cta-bar p{color:var(--muted);font-weight:700;margin-bottom:20px;font-size:clamp(.85rem,1.6vw,1rem);}
-.btn-play{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.25rem);padding:clamp(12px,1.8vw,16px) clamp(24px,3.5vw,36px);border-radius:50px;text-decoration:none;box-shadow:0 6px 22px rgba(247,201,72,.32);transition:all .2s;}
-.btn-play:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(247,201,72,.45);}
+.btn-play{display:inline-flex;align-items:center;gap:10px;background:var(--lime);color:var(--bg);font-weight:800;font-size:clamp(1rem,2vw,1.25rem);padding:clamp(12px,1.8vw,16px) clamp(24px,3.5vw,36px);border-radius:12px;text-decoration:none;box-shadow:0 6px 22px rgba(204,255,0,.2);transition:all .2s;}
+.btn-play:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(204,255,0,.35);}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s,transform .55s;}
@@ -106,20 +123,46 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 <div id="floatBg"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-text">🐐 Matikka-Ahmatti</span>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs>
+      <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#ng)"/>
+      <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
+      <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
+      <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+      <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/>
+      <ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
+      <circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/>
+      <circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
+      <path d="M62 104 Q100 140 138 104" fill="#0f1923"/>
+      <path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/>
+      <rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/>
+      <rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/>
+      <path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/>
+      <path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/>
+      <ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/>
+      <circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/>
+      <ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/>
+      <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
+    </svg>
+    <span class="nav-logo-text">Matikka-Ahmatti</span>
   </a>
   <div class="nav-links">
-    <a href="index.html" class="nav-link">← Etusivu</a>
-    <a href="contact.html" class="nav-link">✉️ Yhteystiedot</a>
-    <a href="game.html" class="nav-cta">🚀 Pelaa nyt</a>
+    <a href="ohjeet.html" class="nav-link">Ohjeet</a>
+    <a href="vanhempi.html" class="nav-link">Vanhemmille</a>
+    <a href="opettaja.html" class="nav-link">Opettajille</a>
+    <a href="contact.html" class="nav-link">Yhteystiedot</a>
+    <a href="game.html" class="nav-cta">Pelaa nyt &rarr;</a>
   </div>
 </nav>
 
 <div class="page">
 
   <div class="page-header">
-    <div class="page-badge">📖 Peliohje</div>
+    <div class="page-badge">Peliohje</div>
     <h1 class="page-title">Näin pelaat!</h1>
     <p class="page-sub">Kaikki mitä tarvitset tietää Matikka-Ahmatin pelaamiseen.<br>Sopii lapsille, vanhemmille ja opettajille.</p>
   </div>
@@ -128,25 +171,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   <div class="quick-start reveal">
     <div class="qs-card">
       <div class="qs-num">1</div>
-      <span class="qs-icon">✍️</span>
+      <span class="qs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/><path d="M14 6l4 4" opacity=".5"/></svg></span>
       <div class="qs-title">Kirjoita nimi</div>
       <div class="qs-desc">Kirjoita nimesi tai nimimerkkisi</div>
     </div>
     <div class="qs-card">
       <div class="qs-num">2</div>
-      <span class="qs-icon">🤴</span>
+      <span class="qs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l2-5 3 4 2-5 2 5 3-4 2 5"/><path d="M5 9v4a7 7 0 0014 0V9"/><circle cx="10" cy="12" r="1" fill="var(--mint)" stroke="none"/><circle cx="14" cy="12" r="1" fill="var(--mint)" stroke="none"/><path d="M10 15q2 1.5 4 0"/></svg></span>
       <div class="qs-title">Valitse hahmo</div>
       <div class="qs-desc">Prinssi tai Prinsessa</div>
     </div>
     <div class="qs-card">
       <div class="qs-num">3</div>
-      <span class="qs-icon">🔐</span>
+      <span class="qs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11V7a5 5 0 00-10 0v4"/><rect x="5" y="11" width="14" height="10" rx="3"/><circle cx="9" cy="16" r="1" fill="var(--sky)" stroke="none"/><circle cx="12" cy="16" r="1" fill="var(--sky)" stroke="none"/><circle cx="15" cy="16" r="1" fill="var(--sky)" stroke="none"/></svg></span>
       <div class="qs-title">Luo PIN</div>
       <div class="qs-desc">4-numeroinen koodi — muista se!</div>
     </div>
     <div class="qs-card">
       <div class="qs-num">4</div>
-      <span class="qs-icon">🎮</span>
+      <span class="qs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--peach)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="4"/><line x1="7" y1="12" x2="9" y2="12"/><line x1="8" y1="11" x2="8" y2="13"/><circle cx="16" cy="11" r="1" fill="var(--peach)" stroke="none"/><circle cx="18" cy="13" r="1" fill="var(--peach)" stroke="none"/></svg></span>
       <div class="qs-title">Pelaa!</div>
       <div class="qs-desc">Valitse moodi ja aloita</div>
     </div>
@@ -154,61 +197,61 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- Pelimoodit -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">🎯 Pelimoodit</h2>
+    <h2 class="guide-section-title">Pelimoodit</h2>
     <div class="mode-grid" style="margin-bottom:16px;">
       <div class="mode-tile m1">
-        <span class="mt-icon">🔢</span>
+        <span class="mt-icon"><svg viewBox="0 0 28 28" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="22" height="8" rx="2.5" opacity=".35"/><rect x="3" y="4" width="14" height="8" rx="2.5"/><rect x="3" y="16" width="22" height="8" rx="2.5" opacity=".35"/><rect x="3" y="16" width="8" height="8" rx="2.5"/></svg></span>
         <div class="mt-name">Hajotelmat</div>
         <div class="mt-ex">7 = ? + 3</div>
       </div>
       <div class="mode-tile m2">
-        <span class="mt-icon">➕</span>
+        <span class="mt-icon"><svg viewBox="0 0 28 28" fill="none" stroke="var(--mint)" stroke-width="2.2" stroke-linecap="round"><circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/><line x1="14" y1="8" x2="14" y2="20"/><line x1="8" y1="14" x2="20" y2="14"/><circle cx="14" cy="14" r="3" fill="var(--mint)" stroke="none" opacity=".15"/></svg></span>
         <div class="mt-name">Yhteenlasku</div>
         <div class="mt-ex">4 + ? = 9</div>
       </div>
       <div class="mode-tile m3">
-        <span class="mt-icon">➖</span>
+        <span class="mt-icon"><svg viewBox="0 0 28 28" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/><line x1="8" y1="14" x2="20" y2="14"/><circle cx="14" cy="14" r="3" fill="var(--coral)" stroke="none" opacity=".15"/></svg></span>
         <div class="mt-name">Vähennys</div>
-        <div class="mt-ex">8 − ? = 5</div>
+        <div class="mt-ex">8 &#8722; ? = 5</div>
       </div>
       <div class="mode-tile m4">
-        <span class="mt-icon">✖️</span>
+        <span class="mt-icon"><svg viewBox="0 0 28 28" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round"><circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/><line x1="10" y1="10" x2="18" y2="18"/><line x1="18" y1="10" x2="10" y2="18"/><circle cx="14" cy="14" r="3" fill="var(--sky)" stroke="none" opacity=".15"/></svg></span>
         <div class="mt-name">Kertotaulu</div>
-        <div class="mt-ex">6 × 7 = ?</div>
+        <div class="mt-ex">6 &#215; 7 = ?</div>
       </div>
-      <div class="mode-tile" style="border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.05);">
-        <span class="mt-icon">💯</span>
+      <div class="mode-tile" style="border-color:rgba(255,176,136,.3);background:rgba(255,176,136,.05);">
+        <span class="mt-icon" style="background:rgba(255,176,136,.08);"><svg viewBox="0 0 28 28" fill="none" stroke="var(--peach)" stroke-width="2.2" stroke-linecap="round"><circle cx="14" cy="14" r="10" stroke-width="1.6" opacity=".2"/><circle cx="11" cy="10.5" r="2" fill="var(--peach)" stroke="none" opacity=".4"/><circle cx="17" cy="17.5" r="2" fill="var(--peach)" stroke="none" opacity=".4"/><line x1="18" y1="9" x2="10" y2="19"/></svg></span>
         <div class="mt-name">Prosentit</div>
-        <div class="mt-ex" style="color:rgba(255,107,53,.8);">Avautuu tasolla 8</div>
+        <div class="mt-ex" style="color:var(--peach);">Avautuu tasolla 8</div>
       </div>
     </div>
     <div class="guide-card">
       <p>Jokaisessa moodissa on <strong style="color:var(--text)">puuttuva luku</strong> joka pitää löytää. Se voi olla tulos, ensimmäinen luku tai toinen luku — vaihtelee tehtävittäin jotta laskeminen pysyy monipuolisena!</p>
     </div>
-    <div class="guide-card" style="border-left:3px solid rgba(255,107,53,.5);margin-top:12px;">
-      <div class="guide-card-title" style="color:rgba(255,107,53,.9);">💯 Prosenttilaskut — lisämoodi</div>
+    <div class="guide-card" style="border-left:3px solid rgba(255,176,136,.5);margin-top:12px;">
+      <div class="guide-card-title" style="color:var(--peach);">Prosenttilaskut — lisämoodi</div>
       <p>Prosenttimoodi avautuu kun olet saavuttanut tason 8 jossakin perusmoodeista. Tehtävät vaikeutuvat tason mukaan:</p>
       <ul style="margin:8px 0 0 16px;font-size:.85rem;color:var(--text);line-height:1.7;">
         <li><strong>Tasot 1–5:</strong> Pyöreät prosentit — "Paljonko on 50% luvusta 80?"</li>
         <li><strong>Tasot 6–15:</strong> Yleisimmät prosentit — 20%, 30%, 40%...</li>
         <li><strong>Tasot 16–30:</strong> Käänteislasku — "X on 25% jostakin luvusta. Mistä?"</li>
-        <li><strong>Tasot 31–50:</strong> Muutosprosentti — "Hinta nousi 80€ → 96€. Montako %?"</li>
+        <li><strong>Tasot 31–50:</strong> Muutosprosentti — "Hinta nousi 80&#8364; &#8594; 96&#8364;. Montako %?"</li>
       </ul>
     </div>
   </div>
 
   <!-- Vastaaminen -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">🔢 Vastaaminen</h2>
+    <h2 class="guide-section-title">Vastaaminen</h2>
     <div class="guide-card">
       <div class="guide-card-title">Numeronäppäimistö</div>
       <p>Paina numeroita ruudulla (tai näppäimistöllä) muodostaaksesi vastauksesi. Sininen viiva näyttää mitä olet kirjoittanut.<br><br>
-      <strong style="color:var(--accent3)">✓ Tarkista</strong> — lähettää vastauksen<br>
-      <strong style="color:var(--accent2)">⌫</strong> — poistaa viimeisen numeron<br>
-      <strong style="color:var(--accent2)">✕</strong> — tyhjentää koko vastauksen</p>
+      <strong style="color:var(--mint)">&#10003; Tarkista</strong> — lähettää vastauksen<br>
+      <strong style="color:var(--coral)">&#9003;</strong> — poistaa viimeisen numeron<br>
+      <strong style="color:var(--coral)">&#10005;</strong> — tyhjentää koko vastauksen</p>
     </div>
     <div class="guide-card">
-      <div class="guide-card-title">⌨️ Näppäinoikotiet (tietokoneella)</div>
+      <div class="guide-card-title">Näppäinoikotiet (tietokoneella)</div>
       <ul>
         <li><strong>0–9</strong> — kirjoita numero</li>
         <li><strong>Enter</strong> — tarkista vastaus</li>
@@ -220,9 +263,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- Vaikeustasot -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">📈 Vaikeustasot</h2>
+    <h2 class="guide-section-title">Vaikeustasot</h2>
     <div class="guide-card" style="margin-bottom:14px;">
-      <p>Peli säätää vaikeustason automaattisesti suorituksesi perusteella. <strong style="color:var(--accent3)">≥85% oikein</strong> → taso nousee. <strong style="color:var(--accent2)">alle 50%</strong> → taso laskee.</p>
+      <p>Peli säätää vaikeustason automaattisesti suorituksesi perusteella. <strong style="color:var(--mint)">&#8805;85% oikein</strong> &#8594; taso nousee. <strong style="color:var(--coral)">alle 50%</strong> &#8594; taso laskee.</p>
     </div>
     <div class="guide-card">
       <table class="level-table">
@@ -230,16 +273,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
           <tr><th>Tasot</th><th>Lukualue</th><th>Pistekerroin</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="badge" style="background:rgba(93,232,181,.15);color:var(--accent3)">1–5</span></td><td>Luvut 1–10</td><td>1.0–1.6×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(93,232,181,.15);color:var(--accent3)">6–10</span></td><td>Luvut 1–20</td><td>1.75–2.35×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(123,159,255,.15);color:var(--accent4)">11–15</span></td><td>Luvut 1–50</td><td>2.5–3.1×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(123,159,255,.15);color:var(--accent4)">16–20</span></td><td>Luvut 1–100</td><td>3.25–4.0×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(247,201,72,.15);color:var(--accent)">21–25</span></td><td>Luvut 1–150</td><td>4.15–4.9×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(247,201,72,.15);color:var(--accent)">26–30</span></td><td>Luvut 1–200</td><td>5.05–5.8×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(255,142,212,.15);color:var(--pink)">31–35</span></td><td>Luvut 1–300</td><td>5.95–6.7×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(255,142,212,.15);color:var(--pink)">36–40</span></td><td>Luvut 1–500</td><td>6.85–7.6×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(197,108,240,.15);color:#c56cf0">41–45</span></td><td>Luvut 1–750</td><td>7.75–8.35×</td></tr>
-          <tr><td><span class="badge" style="background:rgba(197,108,240,.15);color:#c56cf0">46–50</span></td><td>Luvut 1–1000</td><td>8.35×</td></tr>
+          <tr><td><span class="badge" style="background:rgba(0,255,170,.1);color:var(--mint)">1–5</span></td><td>Luvut 1–10</td><td>1.0–1.6&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(0,255,170,.1);color:var(--mint)">6–10</span></td><td>Luvut 1–20</td><td>1.75–2.35&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(92,184,255,.1);color:var(--sky)">11–15</span></td><td>Luvut 1–50</td><td>2.5–3.1&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(92,184,255,.1);color:var(--sky)">16–20</span></td><td>Luvut 1–100</td><td>3.25–4.0&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(204,255,0,.1);color:var(--lime)">21–25</span></td><td>Luvut 1–150</td><td>4.15–4.9&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(204,255,0,.1);color:var(--lime)">26–30</span></td><td>Luvut 1–200</td><td>5.05–5.8&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(255,176,136,.1);color:var(--peach)">31–35</span></td><td>Luvut 1–300</td><td>5.95–6.7&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(255,176,136,.1);color:var(--peach)">36–40</span></td><td>Luvut 1–500</td><td>6.85–7.6&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(180,136,255,.1);color:var(--violet)">41–45</span></td><td>Luvut 1–750</td><td>7.75–8.35&#215;</td></tr>
+          <tr><td><span class="badge" style="background:rgba(180,136,255,.1);color:var(--violet)">46–50</span></td><td>Luvut 1–1000</td><td>8.35&#215;</td></tr>
         </tbody>
       </table>
     </div>
@@ -247,132 +290,132 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- Pisteet -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">⭐ Pisteet ja Hall of Fame</h2>
+    <h2 class="guide-section-title">Pisteet ja Hall of Fame</h2>
     <div class="guide-card">
       <div class="guide-card-title">Miten pisteet kertyvät?</div>
       <ul>
         <li>Pisteitä kertyy <strong>vain kun taso nousee</strong> — tai kun olet jo maksimitasolla 50</li>
-        <li>Jokaisesta oikeasta vastauksesta saa <strong>peruspisteet × tason kerroin</strong></li>
-        <li>3+ peräkkäistä oikeaa → <strong>putkibonus</strong> kasvaa</li>
+        <li>Jokaisesta oikeasta vastauksesta saa <strong>peruspisteet &#215; tason kerroin</strong></li>
+        <li>3+ peräkkäistä oikeaa &#8594; <strong>putkibonus</strong> kasvaa</li>
         <li>Korkeammalla tasolla pisteitä kertyy paljon enemmän</li>
       </ul>
     </div>
     <div class="guide-card">
       <div class="guide-card-title">Miksi pisteet eivät tallennu?</div>
-      <p>Jos taso ei noussut kierroksen jälkeen, pisteet näkyvät ruudulla mutta <strong style="color:var(--accent2)">eivät tallennu Hall of Fameen</strong>. Tämä kannustaa oikeaan edistymiseen — saman tason toistaminen loputtomiin ei nosta sijoitusta!</p>
+      <p>Jos taso ei noussut kierroksen jälkeen, pisteet näkyvät ruudulla mutta <strong style="color:var(--coral)">eivät tallennu Hall of Fameen</strong>. Tämä kannustaa oikeaan edistymiseen — saman tason toistaminen loputtomiin ei nosta sijoitusta!</p>
     </div>
     <div class="guide-card">
-      <div class="guide-card-title">🐐 Hall of Fame</div>
-      <p>Hall of Famessa näkyy <strong style="color:var(--accent)">kaikkien kierrosten pisteet yhteenlaskettuna</strong>. Mitä enemmän edistyt, sitä korkeammalle nousee! Yksi täydellinen kierros ei riitä GOAT-titteliin — se vaatii säännöllistä edistymistä.</p>
+      <div class="guide-card-title">Hall of Fame</div>
+      <p>Hall of Famessa näkyy <strong style="color:var(--lime)">kaikkien kierrosten pisteet yhteenlaskettuna</strong>. Mitä enemmän edistyt, sitä korkeammalle nousee! Yksi täydellinen kierros ei riitä GOAT-titteliin — se vaatii säännöllistä edistymistä.</p>
     </div>
   </div>
 
   <!-- Saavutukset -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">🏅 Saavutukset</h2>
+    <h2 class="guide-section-title">Saavutukset</h2>
     <div class="guide-card" style="margin-bottom:14px;">
-      <p>Pelissä on <strong style="color:var(--accent)">34 saavutusta</strong> kuudessa kategoriassa. Ne avataan automaattisesti kun ehto täyttyy — peli ilmoittaa ponnahdusviestillä!</p>
+      <p>Pelissä on <strong style="color:var(--lime)">34 saavutusta</strong> kuudessa kategoriassa. Ne avataan automaattisesti kun ehto täyttyy — peli ilmoittaa ponnahdusviestillä!</p>
     </div>
 
     <div class="guide-card" style="margin-bottom:10px;">
-      <div class="guide-card-title">🎯 Tarkkuus</div>
+      <div class="guide-card-title">Tarkkuus</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">👋</span><div class="at-name">Tervetuloa!</div><div class="at-desc">Ensimmäinen kirjautuminen</div></div>
-        <div class="ach-tile"><span class="at-icon">🌟</span><div class="at-name">Täydellinen!</div><div class="at-desc">10/10 oikein</div></div>
-        <div class="ach-tile"><span class="at-icon">💎</span><div class="at-name">Kolme täydellistä</div><div class="at-desc">3 kertaa 10/10</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128075;</span><div class="at-name">Tervetuloa!</div><div class="at-desc">Ensimmäinen kirjautuminen</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127775;</span><div class="at-name">Täydellinen!</div><div class="at-desc">10/10 oikein</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128142;</span><div class="at-name">Kolme täydellistä</div><div class="at-desc">3 kertaa 10/10</div></div>
       </div>
     </div>
 
     <div class="guide-card" style="margin-bottom:10px;">
-      <div class="guide-card-title">🔥 Putki</div>
+      <div class="guide-card-title">Putki</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">🔥</span><div class="at-name">Putkihaaste</div><div class="at-desc">5 peräkkäin oikein</div></div>
-        <div class="ach-tile"><span class="at-icon">🔥🔥</span><div class="at-name">Superputki!</div><div class="at-desc">10 peräkkäin oikein</div></div>
-        <div class="ach-tile"><span class="at-icon">⚡</span><div class="at-name">Salamaputki!</div><div class="at-desc">20 peräkkäin (vaatii tason nousun)</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128293;</span><div class="at-name">Putkihaaste</div><div class="at-desc">5 peräkkäin oikein</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128293;&#128293;</span><div class="at-name">Superputki!</div><div class="at-desc">10 peräkkäin oikein</div></div>
+        <div class="ach-tile"><span class="at-icon">&#9889;</span><div class="at-name">Salamaputki!</div><div class="at-desc">20 peräkkäin (vaatii tason nousun)</div></div>
       </div>
     </div>
 
     <div class="guide-card" style="margin-bottom:10px;">
-      <div class="guide-card-title">📈 Edistyminen</div>
+      <div class="guide-card-title">Edistyminen</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">🎮</span><div class="at-name">Harjoittelija</div><div class="at-desc">10 edistyvää kierrosta</div></div>
-        <div class="ach-tile"><span class="at-icon">🎯</span><div class="at-name">Ahkera ahmatti</div><div class="at-desc">50 edistyvää kierrosta</div></div>
-        <div class="ach-tile"><span class="at-icon">🏆</span><div class="at-name">Satanen!</div><div class="at-desc">100 edistyvää kierrosta</div></div>
-        <div class="ach-tile"><span class="at-icon">💪</span><div class="at-name">Tekee paluun!</div><div class="at-desc">Parantunut 3 kierrosta peräkkäin</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127918;</span><div class="at-name">Harjoittelija</div><div class="at-desc">10 edistyvää kierrosta</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127919;</span><div class="at-name">Ahkera ahmatti</div><div class="at-desc">50 edistyvää kierrosta</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127942;</span><div class="at-name">Satanen!</div><div class="at-desc">100 edistyvää kierrosta</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128170;</span><div class="at-name">Tekee paluun!</div><div class="at-desc">Parantunut 3 kierrosta peräkkäin</div></div>
       </div>
     </div>
 
     <div class="guide-card" style="margin-bottom:10px;">
-      <div class="guide-card-title">🏋️ Sitkeys</div>
+      <div class="guide-card-title">Sitkeys</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">📅</span><div class="at-name">Viikon sankari</div><div class="at-desc">7 päivää peräkkäin</div></div>
-        <div class="ach-tile"><span class="at-icon">🗓️</span><div class="at-name">Kuukauden mestari</div><div class="at-desc">30 päivää peräkkäin</div></div>
-        <div class="ach-tile"><span class="at-icon">🔄</span><div class="at-name">Paluun tekijä</div><div class="at-desc">Palasi viikon tauon jälkeen</div></div>
-        <div class="ach-tile"><span class="at-icon">🎯</span><div class="at-name">Kolmen kierroksen päivä</div><div class="at-desc">3 edistyvää kierrosta yhtenä päivänä</div></div>
-        <div class="ach-tile"><span class="at-icon">🔋</span><div class="at-name">Täyspäiväinen ahmatti</div><div class="at-desc">5 edistyvää kierrosta yhtenä päivänä</div></div>
-        <div class="ach-tile"><span class="at-icon">📆</span><div class="at-name">Viikon kattaus</div><div class="at-desc">Pelannut jokaisena viikonpäivänä</div></div>
-        <div class="ach-tile"><span class="at-icon">💯</span><div class="at-name">Satapäiväinen</div><div class="at-desc">100 eri päivänä pelannut</div></div>
-        <div class="ach-tile"><span class="at-icon">🌍</span><div class="at-name">Neljän vuodenajan ahmatti</div><div class="at-desc">Pelannut kaikilla vuodenajoilla</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128197;</span><div class="at-name">Viikon sankari</div><div class="at-desc">7 päivää peräkkäin</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128198;</span><div class="at-name">Kuukauden mestari</div><div class="at-desc">30 päivää peräkkäin</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128260;</span><div class="at-name">Paluun tekijä</div><div class="at-desc">Palasi viikon tauon jälkeen</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127919;</span><div class="at-name">Kolmen kierroksen päivä</div><div class="at-desc">3 edistyvää kierrosta yhtenä päivänä</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128267;</span><div class="at-name">Täyspäiväinen ahmatti</div><div class="at-desc">5 edistyvää kierrosta yhtenä päivänä</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128198;</span><div class="at-name">Viikon kattaus</div><div class="at-desc">Pelannut jokaisena viikonpäivänä</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128175;</span><div class="at-name">Satapäiväinen</div><div class="at-desc">100 eri päivänä pelannut</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127757;</span><div class="at-name">Neljän vuodenajan ahmatti</div><div class="at-desc">Pelannut kaikilla vuodenajoilla</div></div>
       </div>
     </div>
 
     <div class="guide-card" style="margin-bottom:10px;">
-      <div class="guide-card-title">🚀 Tasot</div>
+      <div class="guide-card-title">Tasot</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">🚀</span><div class="at-name">Taso 4!</div><div class="at-desc">Saavutti tason 4</div></div>
-        <div class="ach-tile"><span class="at-icon">🌟</span><div class="at-name">Tason 10 Mestari</div><div class="at-desc">Saavutti tason 10</div></div>
-        <div class="ach-tile"><span class="at-icon">🔥</span><div class="at-name">Tason 20 Sankari</div><div class="at-desc">Saavutti tason 20</div></div>
-        <div class="ach-tile"><span class="at-icon">⚡</span><div class="at-name">Tason 30 Legenda</div><div class="at-desc">Saavutti tason 30</div></div>
-        <div class="ach-tile"><span class="at-icon">🚀</span><div class="at-name">Tason 40 Tähti</div><div class="at-desc">Saavutti tason 40</div></div>
-        <div class="ach-tile" style="border-color:rgba(197,108,240,.3);background:rgba(197,108,240,.06);"><span class="at-icon">🎓</span><div class="at-name">GRAND MASTER</div><div class="at-desc">Maksimitaso 50 — saat tulostettavan diplomitodistuksen!</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128640;</span><div class="at-name">Taso 4!</div><div class="at-desc">Saavutti tason 4</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127775;</span><div class="at-name">Tason 10 Mestari</div><div class="at-desc">Saavutti tason 10</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128293;</span><div class="at-name">Tason 20 Sankari</div><div class="at-desc">Saavutti tason 20</div></div>
+        <div class="ach-tile"><span class="at-icon">&#9889;</span><div class="at-name">Tason 30 Legenda</div><div class="at-desc">Saavutti tason 30</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128640;</span><div class="at-name">Tason 40 Tähti</div><div class="at-desc">Saavutti tason 40</div></div>
+        <div class="ach-tile" style="border-color:rgba(180,136,255,.3);background:rgba(180,136,255,.06);"><span class="at-icon">&#127891;</span><div class="at-name">GRAND MASTER</div><div class="at-desc">Maksimitaso 50 — saat tulostettavan diplomitodistuksen!</div></div>
       </div>
     </div>
 
     <div class="guide-card">
-      <div class="guide-card-title">🌟 Erikois</div>
+      <div class="guide-card-title">Erikois</div>
       <div class="ach-grid">
-        <div class="ach-tile"><span class="at-icon">✖️</span><div class="at-name">Kertotaulumestari</div><div class="at-desc">Kaikki taulut 1–10 pelattu</div></div>
-        <div class="ach-tile"><span class="at-icon">🌈</span><div class="at-name">Monipuolinen</div><div class="at-desc">Kaikki 4 moodia pelattu</div></div>
-        <div class="ach-tile"><span class="at-icon">🥧</span><div class="at-name">Prosenttitietäjä</div><div class="at-desc">Ensimmäinen prosenttikierros</div></div>
-        <div class="ach-tile"><span class="at-icon">💯</span><div class="at-name">Sata prosenttia!</div><div class="at-desc">10/10 prosenttikierroksella</div></div>
-        <div class="ach-tile"><span class="at-icon">🔄</span><div class="at-name">Käänteisguru</div><div class="at-desc">5 täydellistä prosenttikierrosta</div></div>
-        <div class="ach-tile"><span class="at-icon">💨</span><div class="at-name">Salamanopea</div><div class="at-desc">Alle 90s + yli 80% oikein</div></div>
-        <div class="ach-tile"><span class="at-icon">⚡💎</span><div class="at-name">Salamatäydellinen</div><div class="at-desc">10/10 alle 60 sekunnissa</div></div>
-        <div class="ach-tile"><span class="at-icon">🌅</span><div class="at-name">Aamulintu</div><div class="at-desc">Pelasi ennen kello 8</div></div>
-        <div class="ach-tile"><span class="at-icon">🦉</span><div class="at-name">Yöpöllö</div><div class="at-desc">Pelasi kello 22 jälkeen</div></div>
-        <div class="ach-tile"><span class="at-icon">🏖️</span><div class="at-name">Viikonloppusankari</div><div class="at-desc">Pelannut la + su</div></div>
-        <div class="ach-tile"><span class="at-icon">🏫</span><div class="at-name">Luokkalainen</div><div class="at-desc">Liittyi opettajan luokkaan</div></div>
-        <div class="ach-tile"><span class="at-icon">✖️✖️</span><div class="at-name">Kertolaskun kuningas</div><div class="at-desc">10 täydellistä kertotaulukierrosta</div></div>
-        <div class="ach-tile"><span class="at-icon">🐐</span><div class="at-name">GOAT</div><div class="at-desc">Hall of Famen #1 sija</div></div>
+        <div class="ach-tile"><span class="at-icon">&#10006;&#65039;</span><div class="at-name">Kertotaulumestari</div><div class="at-desc">Kaikki taulut 1–10 pelattu</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127752;</span><div class="at-name">Monipuolinen</div><div class="at-desc">Kaikki 4 moodia pelattu</div></div>
+        <div class="ach-tile"><span class="at-icon">&#129383;</span><div class="at-name">Prosenttitietäjä</div><div class="at-desc">Ensimmäinen prosenttikierros</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128175;</span><div class="at-name">Sata prosenttia!</div><div class="at-desc">10/10 prosenttikierroksella</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128260;</span><div class="at-name">Käänteisguru</div><div class="at-desc">5 täydellistä prosenttikierrosta</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128168;</span><div class="at-name">Salamanopea</div><div class="at-desc">Alle 90s + yli 80% oikein</div></div>
+        <div class="ach-tile"><span class="at-icon">&#9889;&#128142;</span><div class="at-name">Salamatäydellinen</div><div class="at-desc">10/10 alle 60 sekunnissa</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127749;</span><div class="at-name">Aamulintu</div><div class="at-desc">Pelasi ennen kello 8</div></div>
+        <div class="ach-tile"><span class="at-icon">&#129417;</span><div class="at-name">Yöpöllö</div><div class="at-desc">Pelasi kello 22 jälkeen</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127958;&#65039;</span><div class="at-name">Viikonloppusankari</div><div class="at-desc">Pelannut la + su</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127979;</span><div class="at-name">Luokkalainen</div><div class="at-desc">Liittyi opettajan luokkaan</div></div>
+        <div class="ach-tile"><span class="at-icon">&#10006;&#65039;&#10006;&#65039;</span><div class="at-name">Kertolaskun kuningas</div><div class="at-desc">10 täydellistä kertotaulukierrosta</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128016;</span><div class="at-name">GOAT</div><div class="at-desc">Hall of Famen #1 sija</div></div>
       </div>
     </div>
   </div>
 
   <!-- XP-järjestelmä -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">⚡ XP-järjestelmä</h2>
+    <h2 class="guide-section-title">XP-järjestelmä</h2>
     <div class="guide-card">
       <div class="guide-card-title">Mitä XP tarkoittaa?</div>
-      <p>Pelissä näkyy streak-mittareiden alla <strong style="color:var(--accent4)">⚡ Edistyminen tasolle</strong> -palkki, jossa on viisi pistettä. Jokainen pelattu kierros antaa yhden XP:n — kun palkki täyttyy (5 XP), olet ansainnut seuraavan tason!</p>
-      <p style="margin-top:10px;">Jos taso laskee tai nousee kesken matkan, XP-palkki nollautuu ja alkaa alusta. Tasolla 50 palkki piiloutuu — olet jo huipulla! 🏆</p>
+      <p>Pelissä näkyy streak-mittareiden alla <strong style="color:var(--sky)">Edistyminen tasolle</strong> -palkki, jossa on viisi pistettä. Jokainen pelattu kierros antaa yhden XP:n — kun palkki täyttyy (5 XP), olet ansainnut seuraavan tason!</p>
+      <p style="margin-top:10px;">Jos taso laskee tai nousee kesken matkan, XP-palkki nollautuu ja alkaa alusta. Tasolla 50 palkki piiloutuu — olet jo huipulla!</p>
     </div>
   </div>
 
   <!-- Tasokartta -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">🗺️ Tasokartta</h2>
+    <h2 class="guide-section-title">Tasokartta</h2>
     <div class="guide-card" style="margin-bottom:14px;">
       <div class="guide-card-title">Missä se on?</div>
-      <p>Kierroksen jälkeen tulosruudussa on kolme välilehteä: <strong style="color:var(--text)">Hall of Fame</strong>, <strong style="color:var(--text)">Saavutukset</strong> ja <strong style="color:var(--text)">🗺️ Tasokartta</strong>. Kartta näyttää koko matkasi tasolta 1 tasolle 50.</p>
+      <p>Kierroksen jälkeen tulosruudussa on kolme välilehteä: <strong style="color:var(--text)">Hall of Fame</strong>, <strong style="color:var(--text)">Saavutukset</strong> ja <strong style="color:var(--text)">Tasokartta</strong>. Kartta näyttää koko matkasi tasolta 1 tasolle 50.</p>
     </div>
     <div class="guide-card">
       <div class="guide-card-title">Viisi vyöhykettä</div>
       <div class="ach-tiles" style="margin-top:10px;">
-        <div class="ach-tile"><span class="at-icon">🌱</span><div class="at-name">Aloittelija</div><div class="at-desc">Tasot 1–10</div></div>
-        <div class="ach-tile"><span class="at-icon">⚡</span><div class="at-name">Harjoittelija</div><div class="at-desc">Tasot 11–20</div></div>
-        <div class="ach-tile"><span class="at-icon">🔥</span><div class="at-name">Mestari</div><div class="at-desc">Tasot 21–30</div></div>
-        <div class="ach-tile"><span class="at-icon">💎</span><div class="at-name">Legenda</div><div class="at-desc">Tasot 31–40</div></div>
-        <div class="ach-tile" style="border-color:rgba(197,108,240,.3);background:rgba(197,108,240,.06);"><span class="at-icon">👑</span><div class="at-name">Grand Master</div><div class="at-desc">Tasot 41–50</div></div>
+        <div class="ach-tile"><span class="at-icon">&#127793;</span><div class="at-name">Aloittelija</div><div class="at-desc">Tasot 1–10</div></div>
+        <div class="ach-tile"><span class="at-icon">&#9889;</span><div class="at-name">Harjoittelija</div><div class="at-desc">Tasot 11–20</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128293;</span><div class="at-name">Mestari</div><div class="at-desc">Tasot 21–30</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128142;</span><div class="at-name">Legenda</div><div class="at-desc">Tasot 31–40</div></div>
+        <div class="ach-tile" style="border-color:rgba(180,136,255,.3);background:rgba(180,136,255,.06);"><span class="at-icon">&#128081;</span><div class="at-name">Grand Master</div><div class="at-desc">Tasot 41–50</div></div>
       </div>
       <p style="margin-top:12px;">Klikkaamalla yksittäistä tasoa näet mitä siinä odottaa — mitä lukualuetta ja moodeja käytetään.</p>
     </div>
@@ -380,7 +423,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- Mörkö-skinit -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">🎨 Mörkö-skinit</h2>
+    <h2 class="guide-section-title">Mörkö-skinit</h2>
     <div class="guide-card" style="margin-bottom:14px;">
       <div class="guide-card-title">Vaihda mörkön ulkonäkö</div>
       <p>Klikkaa mörkön päällä pelissä — skini-modal aukeaa ja voit valita eri ulkonäön. Skinit avautuvat edistymällä pelissä!</p>
@@ -388,60 +431,60 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
     <div class="guide-card">
       <div class="guide-card-title">Avattavat skinit</div>
       <div class="ach-tiles" style="margin-top:10px;">
-        <div class="ach-tile"><span class="at-icon">🟢</span><div class="at-name">Vihreä mörkö</div><div class="at-desc">Oletuksena kaikilla</div></div>
-        <div class="ach-tile"><span class="at-icon">🔥</span><div class="at-name">Tulimörkö</div><div class="at-desc">Putki 20+ peräkkäin</div></div>
-        <div class="ach-tile"><span class="at-icon">❄️</span><div class="at-name">Jäämörkö</div><div class="at-desc">Taso 10 saavutettu</div></div>
-        <div class="ach-tile"><span class="at-icon">✨</span><div class="at-name">Kultamörkö</div><div class="at-desc">Taso 30 saavutettu</div></div>
-        <div class="ach-tile"><span class="at-icon">🤖</span><div class="at-name">Robottimörkö</div><div class="at-desc">100 kierrosta pelattu</div></div>
-        <div class="ach-tile" style="border-color:rgba(197,108,240,.3);background:rgba(197,108,240,.06);"><span class="at-icon">👑</span><div class="at-name">Grand Master</div><div class="at-desc">Taso 50 — Grand Master</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128994;</span><div class="at-name">Vihreä mörkö</div><div class="at-desc">Oletuksena kaikilla</div></div>
+        <div class="ach-tile"><span class="at-icon">&#128293;</span><div class="at-name">Tulimörkö</div><div class="at-desc">Putki 20+ peräkkäin</div></div>
+        <div class="ach-tile"><span class="at-icon">&#10052;&#65039;</span><div class="at-name">Jäämörkö</div><div class="at-desc">Taso 10 saavutettu</div></div>
+        <div class="ach-tile"><span class="at-icon">&#10024;</span><div class="at-name">Kultamörkö</div><div class="at-desc">Taso 30 saavutettu</div></div>
+        <div class="ach-tile"><span class="at-icon">&#129302;</span><div class="at-name">Robottimörkö</div><div class="at-desc">100 kierrosta pelattu</div></div>
+        <div class="ach-tile" style="border-color:rgba(180,136,255,.3);background:rgba(180,136,255,.06);"><span class="at-icon">&#128081;</span><div class="at-name">Grand Master</div><div class="at-desc">Taso 50 — Grand Master</div></div>
       </div>
     </div>
   </div>
 
   <!-- Vinkit -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">💡 Vinkit pelaajille</h2>
+    <h2 class="guide-section-title">Vinkit pelaajille</h2>
     <div class="tip-list">
-      <div class="tip"><strong>Taso nousee → pisteet tallentuvat</strong> — edistyminen on pelin ydin. Saman tason toistaminen ei kasvata pistesaldoa, mutta tason nouseminen kyllä!</div>
+      <div class="tip"><strong>Taso nousee &#8594; pisteet tallentuvat</strong> — edistyminen on pelin ydin. Saman tason toistaminen ei kasvata pistesaldoa, mutta tason nouseminen kyllä!</div>
       <div class="tip"><strong>Älä kiirehdi</strong> — oikein on tärkeämpää kuin nopeasti. Väärät vastaukset tulevat uudelleen saman kierroksen lopussa.</div>
       <div class="tip"><strong>Pelaa päivittäin</strong> — 10 minuuttia päivässä on parempi kuin tunti kerran viikossa. Päiväputkisaavutukset palkitsevat säännöllisyydestä!</div>
       <div class="tip"><strong>Taso laskee jos menee huonosti</strong> — se ei ole huono asia. Peli varmistaa että opitaan kunnolla ennen etenemistä.</div>
-      <div class="tip"><strong>Kertotaulut</strong> — valitse yläpalkista mikä taulu harjoittelussa (1× – 10×). Kertotaulut avautuvat tasolla 8.</div>
-      <div class="tip" style="border-left-color:rgba(255,107,53,.6);"><strong>💯 Prosentit</strong> — avautuu tasolla 8. Harjoittele ensin peruslaskut, sitten laajenna prosenttilaskuihin. Käänteislasku ja muutosprosentti ovat edistyneitä tasoja!</div>
+      <div class="tip"><strong>Kertotaulut</strong> — valitse yläpalkista mikä taulu harjoittelussa (1&#215; – 10&#215;). Kertotaulut avautuvat tasolla 8.</div>
+      <div class="tip" style="border-left-color:var(--peach);"><strong>Prosentit</strong> — avautuu tasolla 8. Harjoittele ensin peruslaskut, sitten laajenna prosenttilaskuihin. Käänteislasku ja muutosprosentti ovat edistyneitä tasoja!</div>
       <div class="tip"><strong>PIN-koodi unohtui?</strong> — pyydä vanhempaa tai opettajaa syöttämään admin-koodi, niin voit luoda uuden.</div>
       <div class="tip"><strong>Kokeile kaikkia moodeja</strong> — jokaisessa moodissa on oma saavutus, ja Monipuolinen-saavutus vaatii kaikkien neljän pelaamista!</div>
       <div class="tip"><strong>Klikkaa mörkön päältä</strong> — voit vaihtaa mörkön ulkonäköä! Skinit avautuvat kun edistyt: taso 10 avaa Jäämörön, taso 30 Kultamörön, 20 putken jälkeen Tulimörön ja 100 kierroksen jälkeen Robottimörön.</div>
-      <div class="tip"><strong>Seuraa edistymistä tasokarttalta</strong> — kierroksen jälkeen tulosruudussa 🗺️ Tasokartta-välilehdellä näet koko matkasi. Nykyinen taso vilkkuu kultaisena!</div>
-      <div class="tip" style="border-left-color:var(--purple);"><strong>🎓 Tavoittele Grand Master -diplomia</strong> — taso 50 vaatii laskemista oikein luvuilla 1–1000 kaikissa moodeissa. Sopii tavoitteeksi niin luokalle kuin yksittäiselle pelaajalle!</div>
+      <div class="tip"><strong>Seuraa edistymistä tasokarttalta</strong> — kierroksen jälkeen tulosruudussa Tasokartta-välilehdellä näet koko matkasi. Nykyinen taso vilkkuu kultaisena!</div>
+      <div class="tip" style="border-left-color:var(--violet);"><strong>Tavoittele Grand Master -diplomia</strong> — taso 50 vaatii laskemista oikein luvuilla 1–1000 kaikissa moodeissa. Sopii tavoitteeksi niin luokalle kuin yksittäiselle pelaajalle!</div>
     </div>
   </div>
 
   <!-- Opettajille -->
   <div class="guide-section reveal">
-    <h2 class="guide-section-title">👩‍🏫 Opettajille</h2>
+    <h2 class="guide-section-title">Opettajille</h2>
     <div class="guide-card">
       <div class="guide-card-title">Luokkakoodi</div>
       <p>Opettaja voi luoda luokan <strong style="color:var(--text)">opettajapaneelissa</strong> ja jakaa luokkakoodin oppilaille. Oppilas liittyy luokkaan seuraavasti:</p>
       <ol style="margin-top:10px;padding-left:20px;color:var(--muted);font-weight:700;font-size:.9rem;line-height:2;">
         <li>Kirjaudu peliin normaalisti</li>
-        <li>Paina oikeassa yläkulmassa ⚙️-kuvaketta</li>
-        <li>Valitse <strong style="color:var(--text)">🏫 Luokka</strong></li>
-        <li>Syötä opettajalta saatu luokkakoodi ja paina <strong style="color:var(--accent3)">Liity</strong></li>
+        <li>Paina oikeassa yläkulmassa asetuskuvaketta</li>
+        <li>Valitse <strong style="color:var(--text)">Luokka</strong></li>
+        <li>Syötä opettajalta saatu luokkakoodi ja paina <strong style="color:var(--mint)">Liity</strong></li>
       </ol>
       <p style="margin-top:10px;">Tämän jälkeen opettaja näkee oppilaan edistymisen paneelissaan.</p>
     </div>
     <div class="guide-card">
       <div class="guide-card-title">Opettajatunnukset</div>
-      <p>Opettajatunnuksia voi hakea <a href="opettaja.html" style="color:var(--accent4);font-weight:800;">opettajapaneelista</a>. Anomus käsitellään ja kutsukoodi lähetetään sähköpostiin.</p>
+      <p>Opettajatunnuksia voi hakea <a href="opettaja.html" style="color:var(--sky);font-weight:800;">opettajapaneelista</a>. Anomus käsitellään ja kutsukoodi lähetetään sähköpostiin.</p>
       <p style="margin-top:10px;">
         <a href="matikka-ahmatti-opettajan-opas.pdf" download
-          style="display:inline-flex;align-items:center;gap:6px;color:var(--accent4);font-weight:800;text-decoration:none;font-size:.9rem;">
-          📄 Lataa opettajan opas PDF-muodossa →
+          style="display:inline-flex;align-items:center;gap:6px;color:var(--sky);font-weight:800;text-decoration:none;font-size:.9rem;">
+          Lataa opettajan opas PDF-muodossa &#8594;
         </a>
       </p>
     </div>
-    <div class="guide-card" style="border-color:rgba(197,108,240,.25);background:rgba(197,108,240,.04);">
-      <div class="guide-card-title" style="color:var(--purple);">🎓 Grand Master -diplomi — pedagoginen tavoite</div>
+    <div class="guide-card" style="border-color:rgba(180,136,255,.25);background:rgba(180,136,255,.04);">
+      <div class="guide-card-title" style="color:var(--violet);">Grand Master -diplomi — pedagoginen tavoite</div>
       <p>Taso 50 on konkreettinen oppimisen mittari jota voi käyttää koko lukuvuoden tavoitteena. Diplomi vaatii aitoa laskutaitoa luvuilla 1–1000 kaikissa neljässä moodissa — pisteet kertyvät vain tason noustessa, joten edistyminen on aitoa.</p>
       <p style="margin-top:10px;"><strong style="color:var(--text);">Ehdotus:</strong> Aseta Grand Master -diplomi tavoitteeksi koko luokalle tai yksittäiselle oppilaalle. Tason saavuttanut saa tulostettavan diplomitodistuksen — konkreettinen palkinto oikeasta osaamisesta!</p>
     </div>
@@ -449,16 +492,29 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
   <!-- CTA -->
   <div class="cta-bar reveal">
-    <h3>Valmis pelaamaan? 🚀</h3>
+    <h3>Valmis pelaamaan?</h3>
     <p>Ohjeet luettu — nyt vain pelaamaan!</p>
-    <a href="game.html" class="btn-play">🎮 Aloita peli</a>
+    <a href="game.html" class="btn-play">Aloita peli &#8594;</a>
   </div>
 
 </div>
 
+<footer style="border-top:1px solid rgba(255,255,255,.04);padding:clamp(28px,4vw,48px) clamp(20px,5vw,80px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin:0 auto;">
+  <div style="font-weight:800;font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:10px;">Matikka-Ahmatti</div>
+  <div style="display:flex;gap:clamp(14px,2vw,28px);flex-wrap:wrap;">
+    <a href="game.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Pelaa</a>
+    <a href="ohjeet.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Ohjeet</a>
+    <a href="vanhempi.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Vanhemmille</a>
+    <a href="opettaja.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Opettajille</a>
+    <a href="contact.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Yhteystiedot</a>
+    <a href="tietosuoja.html" style="color:var(--muted);font-size:.78rem;font-weight:600;text-decoration:none;">Tietosuoja</a>
+  </div>
+  <div style="width:100%;text-align:center;margin-top:12px;color:var(--muted);font-size:.72rem;font-weight:500;opacity:.6;">&copy; 2026 Matikka-Ahmatti &middot; Tehty Suomessa</div>
+</footer>
+
 <script>
-const S=['1','2','3','4','5','6','7','8','9','0','+','−','×','='];
-const C=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,'];
+const S=['1','2','3','4','5','6','7','8','9','0','+','\u2212','\u00d7','='];
+const C=['rgba(204,255,0,','rgba(0,255,170,','rgba(92,184,255,'];
 (function(){
   const bg=document.getElementById('floatBg');
   for(let i=0;i<30;i++){
@@ -476,18 +532,18 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 
 <!-- ═══ EVÄSTEBANNERI ═══ -->
-<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--surface,#161330);border-top:1px solid rgba(255,255,255,.06);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Bricolage Grotesque',system-ui,sans-serif;">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
-      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+      <div style="font-weight:800;font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--text);margin-bottom:5px;">Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:var(--muted);font-weight:700;line-height:1.5;">
         Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
-        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+        <a href="tietosuoja.html" style="color:var(--sky);text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
-      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:12px;border:1.5px solid rgba(255,255,255,.08);background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:12px;border:none;background:var(--lime);color:var(--bg);font-weight:800;font-size:.82rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki</button>
     </div>
   </div>
 </div>

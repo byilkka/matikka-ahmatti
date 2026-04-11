@@ -80,23 +80,32 @@
 }
 </script>
 
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════════
    DESIGN TOKENS — scale everything from one place
 ══════════════════════════════════════════════════ */
 :root {
-  --bg: #0b1520;
-  --card: #162030;
-  --card2: #1a2840;
-  --accent: #f7c948;
-  --accent2: #ff6b6b;
-  --accent3: #5de8b5;
-  --accent4: #7b9fff;
-  --pink: #ff8ed4;
-  --purple: #c56cf0;
-  --text: #eef3ff;
-  --muted: #6a82a0;
+  --bg: #0C0A1A;
+  --surface: #161330;
+  --surface2: #1E1A40;
+  --lime: #CCFF00;
+  --coral: #FF5C5C;
+  --mint: #00FFAA;
+  --sky: #5CB8FF;
+  --peach: #FFB088;
+  --violet: #B488FF;
+  --text: #F0EEF6;
+  --muted: #8A84A0;
+  /* backward-compat aliases for inline styles & JS */
+  --card: var(--surface);
+  --card2: var(--surface2);
+  --accent: var(--lime);
+  --accent2: var(--coral);
+  --accent3: var(--mint);
+  --accent4: var(--sky);
+  --pink: var(--peach);
+  --purple: var(--violet);
 
   /* ── MOBILE (default, max ~480px) ── */
   --monster-size: 120px;
@@ -181,8 +190,8 @@
 /* ══ VAALEA TEEMA ══ */
 [data-theme="light"] {
   --bg: #f0f4f8;
-  --card: #ffffff;
-  --card2: #e8eef5;
+  --surface: #ffffff;
+  --surface2: #e8eef5;
   --text: #1a2840;
   --muted: #5a6e88;
 }
@@ -489,11 +498,12 @@
 }
 ══════════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px;opacity:.4;}
 
 /* Floating numbers bg */
 #floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.fn{position:absolute;font-family:'Fredoka One',cursive;opacity:0;animation:floatUp linear infinite;user-select:none;will-change:transform,opacity;text-shadow:0 0 18px currentColor;}
+.fn{position:absolute;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;opacity:0;animation:floatUp linear infinite;user-select:none;will-change:transform,opacity;text-shadow:0 0 18px currentColor;}
 @keyframes floatUp{
   0%  {transform:translateY(0) rotate(var(--r0)) scale(0.8);opacity:0;}
   6%  {opacity:var(--maxOp);}
@@ -515,69 +525,68 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .monster-wrap{display:inline-block;position:relative;margin-bottom:12px;}
 .monster-svg{
   width:var(--monster-size);height:var(--monster-size);
-  filter:drop-shadow(0 8px 32px rgba(93,232,181,.45));
+  filter:drop-shadow(0 8px 32px rgba(0,255,170,.45));
   animation:mFloat 3s ease-in-out infinite;
   transition:width .3s, height .3s;
 }
 @keyframes mFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-14px) rotate(2deg);}}
 .login-title{
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:var(--login-title);
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 55%,var(--accent3) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  color:var(--lime);
   line-height:1.1;transition:font-size .3s;
 }
 .login-sub{color:var(--muted);font-size:clamp(.75rem,1.5vw,.95rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-top:6px;}
 
 .login-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:clamp(20px,2vw,32px);
+  background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:clamp(20px,2vw,32px);
   padding:var(--login-card-pad);width:100%;max-width:var(--login-card-w);
   box-shadow:0 24px 64px rgba(0,0,0,.55);animation:fadeUp .6s .25s both;
   transition:max-width .3s,padding .3s;
 }
 .step{display:none;}.step.active{display:block;}
-.step-title{font-family:'Fredoka One',cursive;font-size:var(--step-title);margin-bottom:6px;transition:font-size .3s;}
+.step-title{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--step-title);margin-bottom:6px;transition:font-size .3s;}
 .step-sub{color:var(--muted);font-size:clamp(.75rem,1.5vw,.9rem);font-weight:600;margin-bottom:20px;}
 
 .name-input{
-  width:100%;box-sizing:border-box;background:var(--card2);border:2px solid rgba(255,255,255,.1);
+  width:100%;box-sizing:border-box;background:var(--surface2);border:2px solid rgba(255,255,255,.1);
   border-radius:clamp(10px,1.5vw,16px);padding:clamp(11px,1.5vw,16px) clamp(14px,2vw,22px);
-  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--text);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:1rem;font-weight:700;color:var(--text);
   outline:none;transition:all .2s;margin-bottom:14px;display:block;
 }
 .name-input::placeholder{color:var(--muted);font-weight:600;}
-.name-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(247,201,72,.13);}
+.name-input:focus{border-color:var(--lime);box-shadow:0 0 0 4px rgba(204,255,0,.13);}
 
 .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,18px);margin-bottom:20px;}
 .char-card{
-  background:var(--card2);border:2px solid rgba(255,255,255,.08);
+  background:var(--surface2);border:2px solid rgba(255,255,255,.08);
   border-radius:clamp(14px,2vw,22px);padding:clamp(18px,2.5vw,30px) clamp(8px,1.5vw,16px);
   text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
 }
 .char-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;border-radius:inherit;}
-.char-card.boy::before{background:radial-gradient(circle at 50% 0%,rgba(123,159,255,.22),transparent 70%);}
-.char-card.girl::before{background:radial-gradient(circle at 50% 0%,rgba(255,142,212,.22),transparent 70%);}
+.char-card.boy::before{background:radial-gradient(circle at 50% 0%,rgba(92,184,255,.22),transparent 70%);}
+.char-card.girl::before{background:radial-gradient(circle at 50% 0%,rgba(255,176,136,.22),transparent 70%);}
 .char-card:hover::before,.char-card.selected::before{opacity:1;}
-.char-card.selected.boy{border-color:var(--accent4);box-shadow:0 0 0 4px rgba(123,159,255,.18);}
-.char-card.selected.girl{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,142,212,.18);}
+.char-card.selected.boy{border-color:var(--sky);box-shadow:0 0 0 4px rgba(92,184,255,.18);}
+.char-card.selected.girl{border-color:var(--peach);box-shadow:0 0 0 4px rgba(255,176,136,.18);}
 .char-card:hover{transform:translateY(-4px);}
 .char-avatar{font-size:var(--char-avatar);display:block;margin-bottom:8px;line-height:1;transition:font-size .3s;}
-.char-name{font-family:'Fredoka One',cursive;font-size:clamp(.9rem,2vw,1.2rem);}
+.char-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(.9rem,2vw,1.2rem);}
 .char-badge{font-size:clamp(.6rem,1.2vw,.8rem);font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-top:6px;display:inline-block;}
-.char-card.boy .char-badge{background:rgba(123,159,255,.18);color:var(--accent4);}
-.char-card.girl .char-badge{background:rgba(255,142,212,.18);color:var(--pink);}
+.char-card.boy .char-badge{background:rgba(92,184,255,.18);color:var(--sky);}
+.char-card.girl .char-badge{background:rgba(255,176,136,.18);color:var(--peach);}
 .check-mark{position:absolute;top:10px;right:10px;width:clamp(20px,2.5vw,30px);height:clamp(20px,2.5vw,30px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(.7rem,1.5vw,1rem);opacity:0;transform:scale(0);transition:all .2s cubic-bezier(.34,1.56,.64,1);}
-.char-card.selected.boy .check-mark{background:var(--accent4);opacity:1;transform:scale(1);}
-.char-card.selected.girl .check-mark{background:var(--pink);opacity:1;transform:scale(1);}
+.char-card.selected.boy .check-mark{background:var(--sky);opacity:1;transform:scale(1);}
+.char-card.selected.girl .check-mark{background:var(--peach);opacity:1;transform:scale(1);}
 
 .cta-btn{
   width:100%;padding:var(--cta-pad);border:none;border-radius:clamp(10px,1.5vw,16px);
-  font-family:'Fredoka One',cursive;font-size:var(--cta-font);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--cta-font);
   cursor:pointer;transition:all .2s;touch-action:manipulation;
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;box-shadow:0 6px 22px rgba(247,201,72,.3);
+  background:var(--lime);
+  color:var(--bg);box-shadow:0 6px 22px rgba(204,255,0,.3);
 }
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(247,201,72,.42);}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(204,255,0,.42);}
 .cta-btn:active{transform:translateY(0);}
 .cta-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
 
@@ -591,11 +600,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   border-radius:50%;border:2.5px solid rgba(255,255,255,.2);
   background:transparent;transition:all .15s;
 }
-.pin-dot.filled{background:var(--accent);border-color:var(--accent);transform:scale(1.15);}
-.pin-dot.error{background:var(--accent2);border-color:var(--accent2);}
+.pin-dot.filled{background:var(--lime);border-color:var(--lime);transform:scale(1.15);}
+.pin-dot.error{background:var(--coral);border-color:var(--coral);}
 .pin-error{
   text-align:center;font-size:clamp(.75rem,1.4vw,.88rem);
-  font-weight:700;color:var(--accent2);min-height:22px;
+  font-weight:700;color:var(--coral);min-height:22px;
   margin-bottom:clamp(8px,1.2vw,14px);
   animation:shake .4s ease;
 }
@@ -608,21 +617,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   padding:clamp(14px,2.2vw,22px) 8px;
   border-radius:clamp(10px,1.5vw,16px);
   border:1.5px solid rgba(255,255,255,.1);
-  background:var(--card2);color:var(--text);
-  font-family:'Fredoka One',cursive;
+  background:var(--surface2);color:var(--text);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(1.2rem,2.5vw,1.8rem);
   cursor:pointer;transition:all .13s;touch-action:manipulation;
 }
 .pin-btn:hover{background:rgba(255,255,255,.1);}
 .pin-btn:active{transform:scale(.9);}
-.pin-clear{color:var(--accent2);border-color:rgba(255,107,107,.2);}
+.pin-clear{color:var(--coral);border-color:rgba(255,92,92,.2);}
 .pin-ok{
-  background:linear-gradient(135deg,var(--accent3),#36d7b7);
-  color:#0b1520;border-color:transparent;
-  box-shadow:0 4px 14px rgba(93,232,181,.28);
+  background:linear-gradient(135deg,var(--mint),#36d7b7);
+  color:#0C0A1A;border-color:transparent;
+  box-shadow:0 4px 14px rgba(0,255,170,.28);
 }
 .pin-ok:disabled{opacity:.3;cursor:not-allowed;}
-.pin-ok:not(:disabled):hover{box-shadow:0 6px 20px rgba(93,232,181,.4);}
+.pin-ok:not(:disabled):hover{box-shadow:0 6px 20px rgba(0,255,170,.4);}
 
 /* ══════════════════════════════════════════════════
    GAME SCREEN
@@ -639,38 +648,37 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .game-logo-mini{display:flex;align-items:center;gap:clamp(6px,1vw,12px);}
 .mini-svg{
   width:var(--logo-mini-size);height:var(--logo-mini-size);
-  filter:drop-shadow(0 2px 8px rgba(93,232,181,.4));
+  filter:drop-shadow(0 2px 8px rgba(0,255,170,.4));
   animation:mFloat 3s ease-in-out infinite;
   transition:width .3s,height .3s;
   flex-shrink:0;
 }
 .game-logo-text{
-  font-family:'Fredoka One',cursive;font-size:var(--logo-text);
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--logo-text);
+  color:var(--lime);
   transition:font-size .3s;
 }
 .header-right{display:flex;align-items:center;gap:clamp(6px,1vw,12px);}
 .player-badge{
   display:flex;align-items:center;gap:clamp(5px,0.8vw,9px);
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--badge-pad);cursor:pointer;transition:all .2s;
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:var(--badge-pad);cursor:pointer;transition:all .2s;
 }
 .player-badge:hover{border-color:rgba(255,255,255,.18);}
 .player-avatar-mini{font-size:var(--badge-avatar);line-height:1;transition:font-size .3s;}
 .player-name-mini{font-size:var(--badge-name);font-weight:800;transition:font-size .3s;}
 .score-nav-btn{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--top-btn-pad);
-  font-family:'Fredoka One',cursive;font-size:var(--top-btn-font);
-  color:var(--accent);cursor:pointer;transition:all .2s;
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:var(--top-btn-pad);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--top-btn-font);
+  color:var(--lime);cursor:pointer;transition:all .2s;
   display:flex;align-items:center;gap:5px;white-space:nowrap;
 }
-.score-nav-btn:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(247,201,72,.12);}
+.score-nav-btn:hover{border-color:var(--lime);box-shadow:0 0 0 3px rgba(204,255,0,.12);}
 
 .mute-btn{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--top-btn-pad);
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:var(--top-btn-pad);
   font-size:var(--top-btn-font);cursor:pointer;transition:all .2s;
   display:flex;align-items:center;line-height:1;
 }
@@ -680,31 +688,31 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Streak bar */
 .streak-bar{display:flex;gap:clamp(5px,1vw,10px);margin-bottom:clamp(16px,2.5vh,26px);flex-wrap:nowrap;}
 .si{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--si-pad);font-size:var(--si-font);
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:var(--si-pad);font-size:var(--si-font);
   font-weight:700;display:flex;align-items:center;gap:var(--si-gap);
   flex:1;justify-content:center;min-width:0;transition:padding .3s,font-size .3s;
 }
-.si .v{color:var(--accent);}
-.si .v.g{color:var(--accent3);}
-.si .v.b{color:var(--accent4);}
+.si .v{color:var(--lime);}
+.si .v.g{color:var(--mint);}
+.si .v.b{color:var(--sky);}
 
 /* ── XP-palkki ── */
 .xp-bar-wrap{
   margin-bottom:clamp(12px,2vh,20px);
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
   border-radius:12px;padding:8px 14px;
 }
 .xp-bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
 .xp-bar-label{font-size:clamp(.62rem,1vw,.72rem);font-weight:800;color:var(--muted);}
-.xp-bar-count{font-size:clamp(.62rem,1vw,.72rem);font-weight:800;color:var(--accent4);}
+.xp-bar-count{font-size:clamp(.62rem,1vw,.72rem);font-weight:800;color:var(--sky);}
 .xp-dots{display:flex;gap:4px;}
 .xp-dot{
   flex:1;height:6px;border-radius:40px;
   background:rgba(255,255,255,.08);
   transition:background .3s,transform .2s;
 }
-.xp-dot.filled{background:linear-gradient(90deg,var(--accent4),var(--accent3));}
+.xp-dot.filled{background:linear-gradient(90deg,var(--sky),var(--mint));}
 .xp-dot.pulse{animation:xpPulse .4s ease-out;}
 @keyframes xpPulse{0%{transform:scaleY(1);}50%{transform:scaleY(1.8);}100%{transform:scaleY(1);}}
 
@@ -712,28 +720,28 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .mode-selector{
   display:flex;gap:clamp(4px,0.8vw,8px);
   margin-bottom:clamp(16px,2.5vh,26px);
-  background:var(--card);border-radius:clamp(12px,1.5vw,20px);
+  background:var(--surface);border-radius:clamp(12px,1.5vw,20px);
   padding:var(--mode-pad);transition:padding .3s;
 }
 .mode-btn{
   flex:1;padding:var(--mode-btn-pad);border:none;
   border-radius:clamp(9px,1.2vw,15px);background:transparent;color:var(--muted);
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:var(--mode-label);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;font-size:var(--mode-label);
   cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:clamp(2px,0.4vw,5px);
   touch-action:manipulation;
 }
 .mode-btn .mi{font-size:var(--mode-icon);transition:font-size .3s;}
-.mode-btn.active{background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);color:#1a1a1a;box-shadow:0 4px 14px rgba(247,201,72,.28);}
+.mode-btn.active{background:var(--lime);color:var(--bg);box-shadow:0 4px 14px rgba(204,255,0,.28);}
 .mode-btn:hover:not(.active){background:rgba(255,255,255,.06);color:var(--text);}
 
 /* Main card */
 .main-card{
-  background:var(--card);border-radius:clamp(18px,2vw,28px);
+  background:var(--surface);border-radius:clamp(18px,2vw,28px);
   padding:var(--card-pad);border:1px solid rgba(255,255,255,.07);
   box-shadow:0 20px 56px rgba(0,0,0,.45);position:relative;overflow:hidden;
   transition:padding .3s;
 }
-.main-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;background:radial-gradient(circle,rgba(247,201,72,.06) 0%,transparent 70%);pointer-events:none;}
+.main-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;background:radial-gradient(circle,rgba(204,255,0,.06) 0%,transparent 70%);pointer-events:none;}
 
 .sec-label{
   font-size:var(--sec-label);text-transform:uppercase;letter-spacing:1.5px;
@@ -741,23 +749,23 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .range-pills{display:flex;gap:clamp(5px,0.8vw,8px);flex-wrap:wrap;margin-bottom:clamp(14px,2vh,22px);}
 .rp{
-  padding:var(--rp-pad);border-radius:40px;
+  padding:var(--rp-pad);border-radius:14px;
   border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:var(--rp-font);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;font-size:var(--rp-font);
   cursor:pointer;transition:all .17s;
 }
-.rp:hover{border-color:var(--accent);color:var(--accent);}
-.rp.active{background:rgba(247,201,72,.11);border-color:var(--accent);color:var(--accent);}
+.rp:hover{border-color:var(--lime);color:var(--lime);}
+.rp.active{background:rgba(204,255,0,.11);border-color:var(--lime);color:var(--lime);}
 
 .tables-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:clamp(4px,0.6vw,7px);margin-bottom:clamp(14px,2vh,22px);}
 .ti{
-  background:var(--card2);border:1.5px solid rgba(255,255,255,.06);
+  background:var(--surface2);border:1.5px solid rgba(255,255,255,.06);
   border-radius:clamp(7px,1vw,12px);padding:var(--ti-pad);
   text-align:center;cursor:pointer;transition:all .15s;
   font-weight:700;font-size:var(--ti-font);color:var(--muted);
 }
-.ti:hover{border-color:var(--accent4);color:var(--accent4);}
-.ti.active{background:rgba(123,159,255,.11);border-color:var(--accent4);color:var(--accent4);}
+.ti:hover{border-color:var(--sky);color:var(--sky);}
+.ti.active{background:rgba(92,184,255,.11);border-color:var(--sky);color:var(--sky);}
 
 /* Problem area */
 .problem-area{
@@ -767,21 +775,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .ph{font-size:var(--ph-font);color:var(--muted);font-weight:600;margin-bottom:clamp(6px,1vh,12px);transition:font-size .3s;}
 .pd{
-  font-family:'Fredoka One',cursive;font-size:var(--problem-font);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--problem-font);
   line-height:1;display:flex;align-items:center;gap:var(--problem-gap);
   flex-wrap:wrap;justify-content:center;transition:font-size .3s,gap .3s;
 }
-.po{color:var(--accent);}
+.po{color:var(--lime);}
 .pb{
-  min-width:var(--blank-w);border-bottom:var(--blank-bdr) solid var(--accent3);
-  color:var(--accent3);text-align:center;transition:all .2s;
+  min-width:var(--blank-w);border-bottom:var(--blank-bdr) solid var(--mint);
+  color:var(--mint);text-align:center;transition:all .2s;
 }
 .pe{color:var(--muted);}
-.pr{color:var(--accent4);}
+.pr{color:var(--sky);}
 /* Prosenttitehtävän teksti-layout */
 .pct-problem{
   display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.2vh,10px);
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
 }
 .pct-question{
   font-size:clamp(.95rem,2.2vw,1.2rem);color:var(--text);font-weight:700;
@@ -808,7 +816,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .monster-game-svg{
   width:clamp(80px,14vw,130px);
   height:clamp(80px,14vw,130px);
-  filter:drop-shadow(0 6px 20px rgba(93,232,181,.35));
+  filter:drop-shadow(0 6px 20px rgba(0,255,170,.35));
   transition:filter .3s;
   transform-origin:center bottom;
   animation:monsterIdle 3s ease-in-out infinite;
@@ -819,8 +827,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   position:absolute;
   right:0;
   top:-8px;
-  background:var(--card);
-  border:2px solid rgba(255,107,107,.5);
+  background:var(--surface);
+  border:2px solid rgba(255,92,92,.5);
   border-radius:16px;
   padding:clamp(10px,2vw,14px) clamp(12px,2.5vw,18px);
   max-width:clamp(160px,52vw,240px);
@@ -842,7 +850,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   bottom:20px;
   left:-11px;
   border:7px solid transparent;
-  border-right-color:rgba(255,107,107,.5);
+  border-right-color:rgba(255,92,92,.5);
 }
 .speech-bubble::after{
   content:'';
@@ -850,7 +858,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   bottom:21px;
   left:-8px;
   border:6px solid transparent;
-  border-right-color:var(--card);
+  border-right-color:var(--surface);
 }
 .bubble-main{color:var(--text);display:block;margin-bottom:4px;font-size:clamp(.92rem,2.2vw,1.05rem);}
 .bubble-hint{color:var(--muted);font-size:clamp(.78rem,1.7vw,.88rem);display:block;font-weight:700;}
@@ -862,12 +870,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Floating number that flies into mouth on correct answer */
 .eat-number{
   position:absolute;
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(1.2rem,3vw,2rem);
-  color:var(--accent);
+  color:var(--lime);
   pointer-events:none;
   animation:eatFly .55s cubic-bezier(.4,0,.2,1) forwards;
-  text-shadow:0 0 12px rgba(247,201,72,.6);
+  text-shadow:0 0 12px rgba(204,255,0,.6);
   top:10%;left:50%;transform:translateX(-50%);
 }
 @keyframes eatFly{
@@ -942,8 +950,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   text-align:center;height:var(--fb-h);display:flex;align-items:center;justify-content:center;
   font-size:var(--fb-font);font-weight:800;margin-bottom:clamp(2px,0.3vh,4px);transition:font-size .3s;
 }
-.feedback.ok{color:var(--accent3);}
-.feedback.no{color:var(--accent2);}
+.feedback.ok{color:var(--mint);}
+.feedback.no{color:var(--coral);}
 
 
 /* Numpad */
@@ -951,31 +959,31 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .nb{
   padding:var(--nb-pad);border-radius:var(--nb-radius);
   border:1.5px solid rgba(255,255,255,.08);
-  background:var(--card2);color:var(--text);
-  font-family:'Fredoka One',cursive;font-size:var(--nb-font);
+  background:var(--surface2);color:var(--text);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--nb-font);
   cursor:pointer;transition:all .12s;touch-action:manipulation;
 }
 .nb:hover{background:rgba(255,255,255,.09);}
 .nb:active{transform:scale(.92);}
-.nb.cl{color:var(--accent2);border-color:rgba(255,107,107,.2);}
+.nb.cl{color:var(--coral);border-color:rgba(255,92,92,.2);}
 .nb.en{
-  background:linear-gradient(135deg,var(--accent3) 0%,#36d7b7 100%);
-  color:#0b1520;border-color:transparent;grid-column:span 2;
-  font-size:var(--en-font);box-shadow:0 4px 14px rgba(93,232,181,.28);
+  background:linear-gradient(135deg,var(--mint) 0%,#36d7b7 100%);
+  color:#0C0A1A;border-color:transparent;grid-column:span 2;
+  font-size:var(--en-font);box-shadow:0 4px 14px rgba(0,255,170,.28);
 }
-.nb.en:hover{box-shadow:0 6px 20px rgba(93,232,181,.38);}
+.nb.en:hover{box-shadow:0 6px 20px rgba(0,255,170,.38);}
 
 /* Progress */
 .prog-section{margin-top:clamp(14px,2vh,22px);padding-top:clamp(12px,1.8vh,18px);border-top:1px solid rgba(255,255,255,.06);}
 .prog-label{display:flex;justify-content:space-between;font-size:var(--prog-font);color:var(--muted);font-weight:700;margin-bottom:clamp(4px,0.6vh,8px);}
-.prog-bg{background:var(--card2);border-radius:40px;height:var(--prog-h);overflow:hidden;}
-.prog-fill{height:100%;border-radius:40px;background:linear-gradient(90deg,var(--accent3) 0%,var(--accent4) 100%);transition:width .5s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(93,232,181,.32);}
+.prog-bg{background:var(--surface2);border-radius:14px;height:var(--prog-h);overflow:hidden;}
+.prog-fill{height:100%;border-radius:14px;background:linear-gradient(90deg,var(--mint) 0%,var(--sky) 100%);transition:width .5s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(0,255,170,.32);}
 
 /* Results */
 .results-panel{display:none;text-align:center;padding:clamp(14px,2vh,24px) 0 clamp(4px,0.6vh,8px);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
 .results-panel.show{display:block;}
 .re{font-size:var(--re-font);margin-bottom:clamp(6px,1vh,12px);display:block;animation:bounce .6s .2s both;transition:font-size .3s;}
-.rt{font-family:'Fredoka One',cursive;font-size:var(--rt-font);margin-bottom:8px;background:linear-gradient(135deg,var(--accent),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:font-size .3s;}
+.rt{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--rt-font);margin-bottom:8px;color:var(--lime);transition:font-size .3s;}
 .rs{font-size:var(--rs-font);color:var(--muted);margin-bottom:clamp(12px,2vh,20px);font-weight:700;}
 .rs span{color:var(--text);}
 
@@ -987,11 +995,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .result-stat span{color:var(--text);}
 .result-tag{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(.9rem,1.8vw,1.15rem);
   font-weight:700;
   padding:clamp(6px,1vw,10px) clamp(14px,2vw,22px);
-  border-radius:40px;
+  border-radius:14px;
   margin-bottom:clamp(8px,1.2vh,14px);
   animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
 }
@@ -1001,23 +1009,23 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   margin-bottom:4px;
   transition:color .3s;
 }
-.result-save--ok      { color:var(--accent3); }
-.result-save--offline { color:var(--accent); }
+.result-save--ok      { color:var(--mint); }
+.result-save--offline { color:var(--lime); }
 .results-btns{display:flex;gap:clamp(6px,1vw,12px);justify-content:center;flex-wrap:wrap;}
 .try-btn{
-  padding:var(--try-pad);border-radius:40px;border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:var(--try-font);
-  cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(247,201,72,.28);
+  padding:var(--try-pad);border-radius:14px;border:none;
+  background:var(--lime);
+  color:var(--bg);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--try-font);
+  cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(204,255,0,.28);
 }
 .try-btn:hover{transform:translateY(-2px) scale(1.03);}
 .score-btn{
-  padding:var(--try-pad);border-radius:40px;
+  padding:var(--try-pad);border-radius:14px;
   border:1.5px solid rgba(255,255,255,.12);background:transparent;
-  color:var(--text);font-family:'Fredoka One',cursive;font-size:var(--try-font);
+  color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--try-font);
   cursor:pointer;transition:all .2s;
 }
-.score-btn:hover{border-color:var(--accent4);color:var(--accent4);}
+.score-btn:hover{border-color:var(--sky);color:var(--sky);}
 
 /* ══════════════════════════════════════════════════
    SCORE SCREEN — sama layout kuin gameScreen
@@ -1040,15 +1048,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .score-header-left{flex:1;min-width:0;}
 .score-title{
-  font-family:'Fredoka One',cursive;font-size:var(--score-title-font);
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--score-title-font);
+  color:var(--lime);
   transition:font-size .3s;line-height:1.1;
 }
 .back-btn{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;padding:var(--back-pad);
-  font-family:'Fredoka One',cursive;font-size:var(--back-font);
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:var(--back-pad);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:var(--back-font);
   color:var(--text);cursor:pointer;transition:all .2s;
   display:flex;align-items:center;gap:6px;white-space:nowrap;
   flex-shrink:0;align-self:flex-start;margin-top:4px;
@@ -1070,13 +1077,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   .filter-tabs{margin-left:0;margin-right:0;padding-left:0;padding-right:0;}
 }
 .ftab{
-  padding:var(--ftab-pad);border-radius:40px;border:1.5px solid rgba(255,255,255,.1);
-  background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;
+  padding:var(--ftab-pad);border-radius:14px;border:1.5px solid rgba(255,255,255,.1);
+  background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;
   font-weight:700;font-size:var(--ftab-font);cursor:pointer;transition:all .17s;
   white-space:nowrap;flex-shrink:0;
 }
-.ftab:hover{border-color:var(--accent4);color:var(--accent4);}
-.ftab.active{background:rgba(123,159,255,.12);border-color:var(--accent4);color:var(--accent4);}
+.ftab:hover{border-color:var(--sky);color:var(--sky);}
+.ftab.active{background:rgba(92,184,255,.12);border-color:var(--sky);color:var(--sky);}
 
 /* ══ SCORE SCREEN SUB ══ */
 .score-screen-sub{font-size:clamp(.65rem,1.2vw,.82rem);color:var(--muted);font-weight:700;margin-top:4px;letter-spacing:.5px;}
@@ -1084,7 +1091,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* ══ MAIN TABS (Hall of Fame | Saavutukset | Tasokartta) ══ */
 .main-tabs{
   display:flex;gap:5px;margin-bottom:clamp(10px,1.8vh,16px);
-  background:var(--card);border-radius:14px;padding:4px;
+  background:var(--surface);border-radius:14px;padding:4px;
 }
 .mtab{
   flex:1;padding:clamp(8px,1.4vh,14px) 4px;border:none;
@@ -1093,35 +1100,39 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   cursor:pointer;transition:all .18s;
 }
 .mtab.active{
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  box-shadow:0 4px 14px rgba(247,201,72,.28);
+  background:var(--lime);
+  box-shadow:0 4px 14px rgba(204,255,0,.28);
 }
 .mtab:hover:not(.active){background:rgba(255,255,255,.06);}
 /* Ei tarvita enää mtab-icon/mtab-txt */
 .mtab-icon,.mtab-txt{display:none;}
 
-/* ══ HOF — Mobile-first leaderboard ══ */
+/* ══ Yhtenäinen sisältösäiliö kaikille paneeleille (HOF, Saavutukset, Tasokartta) ══ */
+.panel-content{
+  max-width:760px;
+  margin:0 auto;
+  width:100%;
+}
+
+/* ══ HOF — Unified leaderboard list ══ */
 .hof-grid{
   display:grid;
   grid-template-columns:1fr;
-  gap:8px;
+  gap:10px;
   padding-bottom:20px;
 }
-@media(min-width:640px){
-  .hof-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
-}
 
-/* ══ HOF — Mobiilioptimitu kortti ══ */
+/* ══ HOF — Kortti — full-width row, ei taittumista sarakkeisiin ══ */
 .hof-card{
-  background:var(--card);
+  background:var(--surface);
   border:1px solid rgba(255,255,255,.07);
-  border-radius:18px;
-  padding:14px 16px 14px 20px;
+  border-radius:16px;
+  padding:14px 18px 14px 22px;
   display:grid;
-  grid-template-columns:36px auto 1fr auto;
+  grid-template-columns:32px auto minmax(0,1fr) auto;
   align-items:center;
-  gap:0 10px;
-  transition:border-color .18s;
+  gap:0 12px;
+  transition:border-color .18s, transform .18s;
   position:relative;
   overflow:hidden;
 }
@@ -1133,16 +1144,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .hof-card.rank-1::before{background:linear-gradient(180deg,#ffd700,#ff9f43);}
 .hof-card.rank-2::before{background:linear-gradient(180deg,#c0c0c0,#a0a0a0);}
 .hof-card.rank-3::before{background:linear-gradient(180deg,#cd7f32,#a0522d);}
-.hof-card:hover{border-color:rgba(255,255,255,.15);}
+.hof-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-1px);}
 .hof-card.goat-card{
-  background:linear-gradient(135deg,rgba(255,215,0,.07),var(--card) 70%);
+  background:linear-gradient(135deg,rgba(255,215,0,.07),var(--surface) 70%);
   border:1.5px solid rgba(255,215,0,.28);
 }
-.hof-card.me-card{border-color:rgba(247,201,72,.32);background:rgba(247,201,72,.025);}
+.hof-card.me-card{border-color:rgba(204,255,0,.32);background:rgba(204,255,0,.025);}
 
 /* Kolumni 1: sijoitusnumero */
 .hof-rank{
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:1.05rem;line-height:1;
   color:var(--muted);text-align:center;
 }
@@ -1154,38 +1165,46 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .hof-avatar{font-size:1.5rem;line-height:1;text-align:center;}
 
 /* Kolumni 3: nimi + meta */
-.hof-info{min-width:0;}
+.hof-info{min-width:0;overflow:hidden;}
 .hof-name{
-  font-family:'Fredoka One',cursive;
+  display:flex;align-items:center;gap:6px;
+  line-height:1.2;
+  min-width:0;
+}
+.hof-name-text{
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(.95rem,3.5vw,1.05rem);
   color:var(--text);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  line-height:1.2;
-  display:flex;align-items:center;gap:5px;
+  min-width:0;
 }
 .hof-me-badge{
   font-size:.58rem;font-weight:700;
-  background:rgba(247,201,72,.15);color:var(--accent);
+  background:rgba(204,255,0,.15);color:var(--lime);
   padding:1px 6px;border-radius:20px;flex-shrink:0;
 }
 .hof-goat-badge{
   font-size:.6rem;font-weight:700;
   background:linear-gradient(135deg,#ffd700,#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  color:#1a1a1a;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   padding:1px 7px;border-radius:20px;flex-shrink:0;
 }
 .hof-meta{
-  display:flex;align-items:center;gap:5px;margin-top:2px;
+  display:flex;align-items:center;gap:6px;margin-top:3px;
+  flex-wrap:wrap;
 }
-.hof-correct{font-size:.7rem;font-weight:700;color:var(--accent3);}
-.hof-rounds{font-size:.66rem;color:var(--muted);font-weight:600;}
+.hof-correct{font-size:.7rem;font-weight:700;color:var(--mint);white-space:nowrap;}
+.hof-rounds{font-size:.66rem;color:var(--muted);font-weight:600;white-space:nowrap;}
 
 /* Kolumni 4: pisteet — isosti oikealla */
-.hof-right{text-align:right;flex-shrink:0;}
+.hof-right{
+  text-align:right;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:flex-end;
+}
 .hof-pts{
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(1.15rem,4.5vw,1.5rem);
-  color:var(--accent);line-height:1;
+  color:var(--lime);line-height:1;
   white-space:nowrap;
 }
 .hof-pts-label{
@@ -1208,7 +1227,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* Paneelin otsikko — näkyy ikonivälilehden alla */
 .panel-heading{
-  font-family:'Fredoka One',cursive;
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(1.1rem,2.5vw,1.4rem);
   color:var(--text);
   margin-bottom:clamp(10px,1.8vh,16px);
@@ -1217,45 +1236,45 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .ach-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(7px,1.2vw,14px);
   padding-bottom:20px;
 }
-@media(min-width:480px){
-  .ach-grid{grid-template-columns:repeat(4,1fr);}
+@media(min-width:520px){
+  .ach-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
 }
-@media(min-width:700px){
-  .ach-grid{grid-template-columns:repeat(5,1fr);}
+@media(min-width:800px){
+  .ach-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
 }
 .ach-card{
-  background:var(--card);border:1px solid rgba(255,255,255,.07);
+  background:var(--surface);border:1px solid rgba(255,255,255,.07);
   border-radius:clamp(14px,1.8vw,20px);
   padding:clamp(16px,2.2vw,24px) clamp(12px,1.5vw,18px);
   text-align:center;display:flex;flex-direction:column;
   align-items:center;gap:8px;transition:all .2s;position:relative;
 }
 .ach-card.locked{opacity:.4;filter:grayscale(1);}
-.ach-card.unlocked{border-color:rgba(247,201,72,.3);box-shadow:0 0 0 1px rgba(247,201,72,.1);}
+.ach-card.unlocked{border-color:rgba(204,255,0,.3);box-shadow:0 0 0 1px rgba(204,255,0,.1);}
 .ach-card.unlocked::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.08),transparent 70%);
+  background:radial-gradient(circle at 50% 0%,rgba(204,255,0,.08),transparent 70%);
 }
 .ach-icon{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
-.ach-name{font-family:'Fredoka One',cursive;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
+.ach-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
 .ach-desc{font-size:clamp(.62rem,1vw,.76rem);color:var(--muted);font-weight:600;line-height:1.3;}
-.ach-date{font-size:clamp(.58rem,.9vw,.68rem);color:var(--accent3);font-weight:700;margin-top:2px;}
+.ach-date{font-size:clamp(.58rem,.9vw,.68rem);color:var(--mint);font-weight:700;margin-top:2px;}
 .ach-lock-icon{font-size:1.2rem;color:var(--muted);margin-top:2px;}
 
 /* ══ TASOKARTTA ══ */
 .map-player-info{
   display:flex;align-items:center;gap:14px;
-  background:var(--card);border-radius:16px;padding:14px 18px;
+  background:var(--surface);border-radius:16px;padding:14px 18px;
   margin-bottom:14px;border:1px solid rgba(255,255,255,.07);
 }
 .map-hname{font-size:clamp(1.1rem,2.5vw,1.3rem);font-weight:900;color:var(--text);}
 .map-hsub{font-size:clamp(.72rem,1.5vw,.82rem);color:var(--muted);font-weight:700;margin-top:2px;}
 .map-hprog{margin-top:8px;height:7px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;width:clamp(120px,30vw,180px);}
-.map-hprog-fill{height:100%;border-radius:40px;background:var(--accent);}
+.map-hprog-fill{height:100%;border-radius:14px;background:var(--lime);}
 
 .map-zone{margin-bottom:20px;}
 .map-zone-label{
@@ -1266,19 +1285,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .map-zone-label .mznum{font-size:.72rem;opacity:.65;margin-left:auto;font-weight:700;}
 .map-zone-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(7px,1.2vw,14px);
-  background:var(--card);
+  background:var(--surface);
   border-radius:0 0 14px 14px;
   padding:clamp(10px,1.8vw,16px);
   border:1px solid rgba(255,255,255,.07);border-top:none;
 }
-@media(min-width:480px){.map-zone-grid{grid-template-columns:repeat(4,1fr);}}
-@media(min-width:700px){.map-zone-grid{grid-template-columns:repeat(5,1fr);}}
+@media(min-width:520px){.map-zone-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+@media(min-width:800px){.map-zone-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
 
 /* Tasokortti — sama tyyli kuin .ach-card */
 .map-lvl{
-  background:var(--card);
+  background:var(--surface);
   border:1px solid rgba(255,255,255,.07);
   border-radius:clamp(14px,1.8vw,20px);
   padding:clamp(16px,2.2vw,24px) clamp(12px,1.5vw,18px);
@@ -1288,61 +1307,61 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .map-lvl:hover{transform:scale(1.04);box-shadow:0 4px 18px rgba(0,0,0,.3);}
 .map-lvl .mlv-icon{font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
-.map-lvl .mlv-name{font-family:'Fredoka One',cursive;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
+.map-lvl .mlv-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(.82rem,1.4vw,1rem);color:var(--text);}
 .map-lvl .mlv-num{font-size:clamp(.62rem,1vw,.76rem);color:var(--muted);font-weight:700;}
 .map-lvl .mlv-check{position:absolute;top:6px;right:8px;font-size:12px;font-weight:900;}
 .map-lvl .mlv-unlock{font-size:clamp(.58rem,.9vw,.68rem);color:var(--muted);font-weight:600;}
 
 /* Tilat — sama logiikka kuin ach-card */
 .map-lvl.mlv-done{
-  border-color:rgba(93,232,181,.25);
-  box-shadow:0 0 0 1px rgba(93,232,181,.08);
+  border-color:rgba(0,255,170,.25);
+  box-shadow:0 0 0 1px rgba(0,255,170,.08);
 }
 .map-lvl.mlv-done::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 50% 0%,rgba(93,232,181,.07),transparent 70%);
+  background:radial-gradient(circle at 50% 0%,rgba(0,255,170,.07),transparent 70%);
 }
-.map-lvl.mlv-done .mlv-num{color:#5de8b5;}
-.map-lvl.mlv-done .mlv-check{color:#5de8b5;}
+.map-lvl.mlv-done .mlv-num{color:#00FFAA;}
+.map-lvl.mlv-done .mlv-check{color:#00FFAA;}
 
 .map-lvl.mlv-curr{
-  border-color:rgba(247,201,72,.4);
-  box-shadow:0 0 0 1px rgba(247,201,72,.15);
+  border-color:rgba(204,255,0,.4);
+  box-shadow:0 0 0 1px rgba(204,255,0,.15);
   animation:mlvPulse 2s ease-in-out infinite;
 }
 .map-lvl.mlv-curr::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.1),transparent 70%);
+  background:radial-gradient(circle at 50% 0%,rgba(204,255,0,.1),transparent 70%);
 }
-.map-lvl.mlv-curr .mlv-num{color:var(--accent);}
-.map-lvl.mlv-curr .mlv-name{color:var(--accent);}
-@keyframes mlvPulse{0%,100%{box-shadow:0 0 0 1px rgba(247,201,72,.15),0 0 0 0 rgba(247,201,72,.4);}50%{box-shadow:0 0 0 1px rgba(247,201,72,.15),0 0 0 10px rgba(247,201,72,.0);}}
+.map-lvl.mlv-curr .mlv-num{color:var(--lime);}
+.map-lvl.mlv-curr .mlv-name{color:var(--lime);}
+@keyframes mlvPulse{0%,100%{box-shadow:0 0 0 1px rgba(204,255,0,.15),0 0 0 0 rgba(204,255,0,.4);}50%{box-shadow:0 0 0 1px rgba(204,255,0,.15),0 0 0 10px rgba(204,255,0,.0);}}
 
 .map-lvl.mlv-lock{opacity:.38;filter:grayscale(1);}
 
 /* Vyöhykekohtaiset done-värit */
-.mz1 .map-zone-label{background:rgba(93,232,181,.12);color:#5de8b5;}
-.mz2 .map-zone-label{background:rgba(123,159,255,.12);color:#7b9fff;}
-.mz3 .map-zone-label{background:rgba(247,201,72,.12);color:#f7c948;}
-.mz4 .map-zone-label{background:rgba(255,142,212,.12);color:#ff8ed4;}
-.mz5 .map-zone-label{background:rgba(197,108,240,.12);color:#c56cf0;}
+.mz1 .map-zone-label{background:rgba(0,255,170,.12);color:#00FFAA;}
+.mz2 .map-zone-label{background:rgba(92,184,255,.12);color:#5CB8FF;}
+.mz3 .map-zone-label{background:rgba(204,255,0,.12);color:#CCFF00;}
+.mz4 .map-zone-label{background:rgba(255,176,136,.12);color:#FFB088;}
+.mz5 .map-zone-label{background:rgba(180,136,255,.12);color:#B488FF;}
 
-.mz2 .map-lvl.mlv-done{border-color:rgba(123,159,255,.25);box-shadow:0 0 0 1px rgba(123,159,255,.08);}
-.mz2 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(123,159,255,.07),transparent 70%);}
-.mz2 .map-lvl.mlv-done .mlv-num,.mz2 .map-lvl.mlv-done .mlv-check{color:#7b9fff;}
-.mz3 .map-lvl.mlv-done{border-color:rgba(247,201,72,.25);box-shadow:0 0 0 1px rgba(247,201,72,.08);}
-.mz3 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.07),transparent 70%);}
-.mz3 .map-lvl.mlv-done .mlv-num,.mz3 .map-lvl.mlv-done .mlv-check{color:#f7c948;}
-.mz4 .map-lvl.mlv-done{border-color:rgba(255,142,212,.25);box-shadow:0 0 0 1px rgba(255,142,212,.08);}
-.mz4 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(255,142,212,.07),transparent 70%);}
-.mz4 .map-lvl.mlv-done .mlv-num,.mz4 .map-lvl.mlv-done .mlv-check{color:#ff8ed4;}
-.mz5 .map-lvl.mlv-done{border-color:rgba(197,108,240,.25);box-shadow:0 0 0 1px rgba(197,108,240,.08);}
-.mz5 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(197,108,240,.07),transparent 70%);}
-.mz5 .map-lvl.mlv-done .mlv-num,.mz5 .map-lvl.mlv-done .mlv-check{color:#c56cf0;}
+.mz2 .map-lvl.mlv-done{border-color:rgba(92,184,255,.25);box-shadow:0 0 0 1px rgba(92,184,255,.08);}
+.mz2 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(92,184,255,.07),transparent 70%);}
+.mz2 .map-lvl.mlv-done .mlv-num,.mz2 .map-lvl.mlv-done .mlv-check{color:#5CB8FF;}
+.mz3 .map-lvl.mlv-done{border-color:rgba(204,255,0,.25);box-shadow:0 0 0 1px rgba(204,255,0,.08);}
+.mz3 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(204,255,0,.07),transparent 70%);}
+.mz3 .map-lvl.mlv-done .mlv-num,.mz3 .map-lvl.mlv-done .mlv-check{color:#CCFF00;}
+.mz4 .map-lvl.mlv-done{border-color:rgba(255,176,136,.25);box-shadow:0 0 0 1px rgba(255,176,136,.08);}
+.mz4 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(255,176,136,.07),transparent 70%);}
+.mz4 .map-lvl.mlv-done .mlv-num,.mz4 .map-lvl.mlv-done .mlv-check{color:#FFB088;}
+.mz5 .map-lvl.mlv-done{border-color:rgba(180,136,255,.25);box-shadow:0 0 0 1px rgba(180,136,255,.08);}
+.mz5 .map-lvl.mlv-done::before{background:radial-gradient(circle at 50% 0%,rgba(180,136,255,.07),transparent 70%);}
+.mz5 .map-lvl.mlv-done .mlv-num,.mz5 .map-lvl.mlv-done .mlv-check{color:#B488FF;}
 
 /* Tooltip */
 .lmap-tooltip{
-  position:fixed;background:var(--card);border:1px solid rgba(255,255,255,.16);
+  position:fixed;background:var(--surface);border:1px solid rgba(255,255,255,.16);
   border-radius:12px;padding:10px 14px;font-size:.78rem;font-weight:700;
   pointer-events:none;z-index:200;max-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.5);
   display:none;line-height:1.6;
@@ -1368,11 +1387,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   padding-bottom:env(safe-area-inset-bottom,0);
 }
 .skin-modal{
-  background:var(--card);border-radius:28px 28px 0 0;
+  background:var(--surface);border-radius:28px 28px 0 0;
   width:100%;max-width:480px;padding:24px 20px 32px;
   border-top:1px solid rgba(255,255,255,.1);
 }
-.skin-modal-title{font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:4px;text-align:center;}
+.skin-modal-title{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:4px;text-align:center;}
 .skin-modal-sub{font-size:.75rem;color:var(--muted);font-weight:700;text-align:center;margin-bottom:18px;}
 .skin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 @media(min-width:400px){.skin-grid{grid-template-columns:repeat(5,1fr);}}
@@ -1380,16 +1399,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   border-radius:14px;padding:12px 6px 10px;
   display:flex;flex-direction:column;align-items:center;gap:6px;
   cursor:pointer;border:2px solid rgba(255,255,255,.08);
-  background:var(--card2);transition:all .18s;position:relative;
+  background:var(--surface2);transition:all .18s;position:relative;
 }
 .skin-card:hover{border-color:rgba(255,255,255,.2);transform:scale(1.04);}
-.skin-card.active{border-color:var(--accent);background:rgba(247,201,72,.08);}
+.skin-card.active{border-color:var(--lime);background:rgba(204,255,0,.08);}
 .skin-card.locked{opacity:.4;cursor:not-allowed;}
 .skin-card svg{width:52px;height:52px;}
 .skin-name{font-size:.68rem;font-weight:800;color:var(--text);text-align:center;line-height:1.2;}
 .skin-lock{font-size:.6rem;color:var(--muted);font-weight:700;text-align:center;line-height:1.3;margin-top:1px;}
-.skin-active-dot{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);}
-.skin-close{width:100%;padding:12px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;}
+.skin-active-dot{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--lime);}
+.skin-close{width:100%;padding:12px;border-radius:14px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;}
 .skin-close:hover{color:var(--text);}
 
 /* Mörkö klikattavaksi pelissä */
@@ -1398,18 +1417,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* ══ ACHIEVEMENT TOAST ══ */
 .ach-toast{
   position:fixed;bottom:-120px;left:50%;transform:translateX(-50%);
-  background:var(--card);border:1.5px solid var(--accent);
+  background:var(--surface);border:1.5px solid var(--lime);
   border-radius:20px;padding:14px 20px;
   display:flex;align-items:center;gap:12px;
-  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(247,201,72,.15);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(204,255,0,.15);
   z-index:998;transition:bottom .4s cubic-bezier(.34,1.56,.64,1);
   min-width:260px;max-width:90vw;
 }
 .ach-toast.show{bottom:calc(clamp(16px,3vh,32px) + env(safe-area-inset-bottom, 0px));}
 .ach-toast-icon{font-size:2.2rem;line-height:1;flex-shrink:0;}
 .ach-toast-text{flex:1;}
-.ach-toast-title{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
-.ach-toast-name{font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.2rem);color:var(--text);}
+.ach-toast-title{font-size:.72rem;font-weight:800;color:var(--lime);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;}
+.ach-toast-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(1rem,2vw,1.2rem);color:var(--text);}
 
 /* No scores */
 .no-scores{text-align:center;padding:clamp(28px,5vh,55px) 20px;color:var(--muted);font-size:clamp(.9rem,1.8vw,1.1rem);font-weight:600;grid-column:1/-1;}
@@ -1417,7 +1436,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* GOAT card — #1 only */
 .sc-card.goat-card{
-  background:linear-gradient(135deg,rgba(255,215,0,.13) 0%,rgba(255,159,67,.09) 50%,rgba(22,32,48,1) 100%);
+  background:linear-gradient(135deg,rgba(255,215,0,.13) 0%,rgba(255,159,67,.09) 50%,rgba(22,19,48,1) 100%);
   border:1.5px solid rgba(255,215,0,.45);
   box-shadow:0 0 0 1px rgba(255,215,0,.12), 0 8px 40px rgba(255,180,0,.18);
   padding:calc(var(--sc-card-pad-v, 18px) + clamp(10px,1.5vw,20px)) var(--sc-card-pad-h, 22px);
@@ -1439,10 +1458,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .goat-badge{
   display:inline-flex;align-items:center;gap:5px;
   background:linear-gradient(135deg,#ffd700,#ff9f43);
-  color:#1a1a1a;font-family:'Fredoka One',cursive;
+  color:#1a1a1a;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
   font-size:clamp(.72rem,1.3vw,.95rem);
   padding:clamp(3px,0.5vw,6px) clamp(10px,1.2vw,16px);
-  border-radius:40px;margin-top:clamp(4px,0.5vw,7px);
+  border-radius:14px;margin-top:clamp(4px,0.5vw,7px);
   box-shadow:0 2px 12px rgba(255,180,0,.4);
   white-space:nowrap;
 }
@@ -1452,13 +1471,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
    SWITCH PLAYER MODAL
 ══════════════════════════════════════════════════ */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(7,12,22,.85);
+  position:fixed;inset:0;background:rgba(12,10,26,.85);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   z-index:500;display:none;align-items:center;justify-content:center;padding:20px;
 }
 .modal-overlay.open{display:flex;}
 .modal-box{
-  background:var(--card);border:1px solid rgba(255,255,255,.1);
+  background:var(--surface);border:1px solid rgba(255,255,255,.1);
   border-radius:clamp(20px,2.5vw,32px);
   padding:clamp(28px,4vw,48px) clamp(24px,3.5vw,44px);
   width:100%;max-width:clamp(340px,55vw,520px);
@@ -1476,7 +1495,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 }
 .modal-close:hover{background:rgba(255,255,255,.12);color:var(--text);}
 .modal-title{
-  font-family:'Fredoka One',cursive;font-size:clamp(1.3rem,2.5vw,1.9rem);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(1.3rem,2.5vw,1.9rem);
   margin-bottom:5px;
 }
 .modal-sub{color:var(--muted);font-size:clamp(.75rem,1.4vw,.92rem);font-weight:600;margin-bottom:clamp(18px,2.5vw,28px);}
@@ -1484,7 +1503,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 /* Current player preview inside modal */
 .curr-player{
   display:flex;align-items:center;gap:12px;
-  background:var(--card2);border-radius:clamp(12px,1.5vw,18px);
+  background:var(--surface2);border-radius:clamp(12px,1.5vw,18px);
   padding:clamp(12px,1.5vw,18px) clamp(14px,2vw,22px);
   margin-bottom:clamp(18px,2.5vw,26px);
   border:1px solid rgba(255,255,255,.06);
@@ -1492,7 +1511,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .curr-player-av{font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1;}
 .curr-player-info{flex:1;}
 .curr-player-label{font-size:clamp(.62rem,1.1vw,.75rem);text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:2px;}
-.curr-player-name{font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,2vw,1.5rem);color:var(--text);}
+.curr-player-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(1.1rem,2vw,1.5rem);color:var(--text);}
 
 .modal-divider{display:flex;align-items:center;gap:10px;margin-bottom:clamp(18px,2.5vw,26px);}
 .modal-divider::before,.modal-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
@@ -1508,6 +1527,105 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
 @keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+/* ══════════════════════════════════════════════════
+   MAT-73 — MINI-OPPITUNTI MODAL
+══════════════════════════════════════════════════ */
+.ml-card{
+  background:var(--surface);
+  border:1.5px solid rgba(204,255,0,.25);
+  border-radius:24px;
+  padding:clamp(28px,4vw,44px) clamp(24px,3.5vw,40px);
+  max-width:440px;width:100%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(204,255,0,.1);
+  position:relative;
+  animation:bounceIn .5s cubic-bezier(.34,1.56,.64,1);
+  max-height:90vh;overflow-y:auto;
+}
+.ml-badge{
+  display:inline-block;
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;font-weight:700;
+  color:var(--lime);letter-spacing:2.5px;
+  text-transform:uppercase;
+  background:rgba(204,255,0,.08);
+  border:1px solid rgba(204,255,0,.25);
+  border-radius:40px;
+  padding:6px 16px;
+  margin-bottom:16px;
+}
+.ml-title{
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+  font-weight:800;
+  font-size:clamp(1.4rem,3vw,1.8rem);
+  color:var(--text);
+  letter-spacing:-.5px;
+  margin-bottom:8px;
+  line-height:1.15;
+}
+.ml-sub{
+  color:var(--muted);
+  font-size:clamp(.85rem,1.5vw,.95rem);
+  font-weight:600;
+  line-height:1.5;
+  margin-bottom:24px;
+  max-width:320px;margin-left:auto;margin-right:auto;
+}
+.ml-vis-wrap{
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:18px;
+  padding:clamp(14px,2vw,20px);
+  margin-bottom:20px;
+  display:flex;align-items:center;justify-content:center;
+  min-height:140px;
+}
+#mlVis svg{display:block;max-width:100%;height:auto;}
+.ml-equation{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(8px,1.5vw,14px);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+  font-weight:800;
+  font-size:clamp(1.6rem,4vw,2.2rem);
+  margin-bottom:14px;
+  letter-spacing:-1px;
+}
+.ml-num{color:var(--text);}
+.ml-op{color:var(--muted);font-size:.85em;}
+.ml-eq{color:var(--muted);font-size:.85em;}
+.ml-result{
+  color:var(--lime);
+  background:rgba(204,255,0,.1);
+  padding:4px 14px;
+  border-radius:14px;
+  border:1.5px solid rgba(204,255,0,.3);
+}
+.ml-explain{
+  color:var(--muted);
+  font-size:clamp(.82rem,1.4vw,.92rem);
+  font-weight:600;
+  line-height:1.55;
+  margin-bottom:24px;
+  max-width:320px;margin-left:auto;margin-right:auto;
+}
+.ml-btn{
+  width:100%;
+  padding:clamp(14px,2vw,18px);
+  border:none;
+  border-radius:16px;
+  background:var(--lime);
+  color:var(--bg);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+  font-weight:800;
+  font-size:clamp(1rem,1.8vw,1.15rem);
+  cursor:pointer;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 8px 28px rgba(204,255,0,.25);
+  letter-spacing:-.2px;
+}
+.ml-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 36px rgba(204,255,0,.35);}
+.ml-btn:active{transform:translateY(0) scale(.99);}
 </style>
 </head>
 <body>
@@ -1744,7 +1862,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <!-- ═══ LATAUSINDIKAAT TORI (näkyy vain uudella laitteella) ═══ -->
       <div id="loadingOverlay" style="display:none;text-align:center;padding:clamp(20px,4vh,40px) 0;">
         <div style="font-size:clamp(2rem,6vw,3rem);margin-bottom:12px;animation:monsterIdle 1.2s ease-in-out infinite;">🐾</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,2vw,1.2rem);color:var(--accent3);margin-bottom:8px;">Ladataan edistymistä...</div>
+        <div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(.95rem,2vw,1.2rem);color:var(--accent3);margin-bottom:8px;">Ladataan edistymistä...</div>
         <div style="font-size:clamp(.72rem,1.3vw,.85rem);color:var(--muted);font-weight:700;" id="loadingStatus">Haetaan pilvestä ☁️</div>
       </div>
       <div class="monster-game-wrap" id="monsterWrap">
@@ -1925,7 +2043,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div style="text-align:center;margin:clamp(2px,0.4vh,6px) 0;">
         <button id="hintBtn" onclick="useHint()"
           style="background:none;border:1px solid rgba(255,255,255,.12);border-radius:40px;
-                 padding:5px 16px;color:var(--muted);font-family:'Fredoka One',cursive;
+                 padding:5px 16px;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;
                  font-size:clamp(.72rem,1.4vw,.82rem);cursor:pointer;transition:all .2s;
                  display:inline-flex;align-items:center;gap:6px;"
           onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='var(--text)'"
@@ -1973,8 +2091,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <div class="screen" id="scoreScreen">
   <div class="score-header">
     <div class="score-header-left">
-      <div class="score-title" id="scoreScreenTitle">🐐 Hall of Fame</div>
-      <div class="score-screen-sub" id="scoreScreenSub">Kaikkien aikojen parhaat matikka-ahmatit</div>
+      <div class="score-title" id="scoreScreenTitle">🐐 Hall of Fame <span style="font-size:.55em;opacity:.7;font-weight:700;letter-spacing:1px;">TOP 50</span></div>
+      <div class="score-screen-sub" id="scoreScreenSub">TOP 50 kaikkien aikojen parhaat matikka-ahmatit</div>
     </div>
     <button class="back-btn" onclick="backToGame()">← Takaisin</button>
   </div>
@@ -1988,51 +2106,78 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
   <!-- Hall of Fame panel -->
   <div id="hofPanel">
-    <div class="panel-heading">🐐 Hall of Fame</div>
-    <!-- Pelaajan info — sama rakenne kuin tasokartalla -->
-    <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
-      <span id="hofPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
-      <div>
-        <div class="map-hname" id="hofPlayerName">—</div>
-        <div class="map-hsub" id="hofPlayerSub"></div>
+    <div class="panel-content">
+      <div class="panel-heading">🐐 Hall of Fame <span style="font-size:.72em;color:var(--lime);margin-left:6px;letter-spacing:.5px;">TOP 50</span></div>
+      <!-- Pelaajan info — sama rakenne kuin tasokartalla -->
+      <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
+        <span id="hofPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+        <div>
+          <div class="map-hname" id="hofPlayerName">—</div>
+          <div class="map-hsub" id="hofPlayerSub"></div>
+        </div>
       </div>
+      <div class="filter-tabs">
+        <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
+        <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
+        <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
+        <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
+        <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
+        <button class="ftab" onclick="filterScores('p',this)">💯 Prosentit</button>
+      </div>
+      <div class="hof-grid" id="scoreList"></div>
     </div>
-    <div class="filter-tabs">
-      <button class="ftab active" onclick="filterScores('all',this)">🌍 Kaikki</button>
-      <button class="ftab" onclick="filterScores('h',this)">🔢 Hajotelmat</button>
-      <button class="ftab" onclick="filterScores('a',this)">➕ Yhteenlasku</button>
-      <button class="ftab" onclick="filterScores('s',this)">➖ Vähennys</button>
-      <button class="ftab" onclick="filterScores('m',this)">✖️ Kertotaulu</button>
-      <button class="ftab" onclick="filterScores('p',this)">💯 Prosentit</button>
-    </div>
-    <div class="hof-grid" id="scoreList"></div>
   </div>
 
   <!-- Saavutukset panel — sama player-info rakenne -->
   <div id="achPanel" style="display:none">
-    <div class="panel-heading">🏅 Saavutukset</div>
-    <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
-      <span id="achPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
-      <div>
-        <div class="map-hname" id="achPlayerName">—</div>
-        <div class="map-hsub" id="achCount"></div>
+    <div class="panel-content">
+      <div class="panel-heading">🏅 Saavutukset</div>
+      <div class="map-player-info" style="margin-bottom:clamp(12px,2vh,18px);">
+        <span id="achPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+        <div>
+          <div class="map-hname" id="achPlayerName">—</div>
+          <div class="map-hsub" id="achCount"></div>
+        </div>
       </div>
+      <div class="ach-grid" id="achList"></div>
     </div>
-    <div class="ach-grid" id="achList"></div>
   </div>
 
   <!-- Tasokartta-paneeli -->
   <div id="mapPanel" style="display:none">
-    <div class="panel-heading">🗺️ Tasokartta</div>
-    <div class="map-player-info">
-      <span id="mapPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
-      <div>
-        <div class="map-hname" id="mapPlayerName">—</div>
-        <div class="map-hsub" id="mapLevelInfo"></div>
-        <div class="map-hprog"><div class="map-hprog-fill" id="mapProgFill" style="width:0%"></div></div>
+    <div class="panel-content">
+      <div class="panel-heading">🗺️ Tasokartta</div>
+      <div class="map-player-info">
+        <span id="mapPlayerAv" style="font-size:clamp(1.8rem,5vw,2.4rem);line-height:1;">🤴</span>
+        <div>
+          <div class="map-hname" id="mapPlayerName">—</div>
+          <div class="map-hsub" id="mapLevelInfo"></div>
+          <div class="map-hprog"><div class="map-hprog-fill" id="mapProgFill" style="width:0%"></div></div>
+        </div>
       </div>
+      <div id="levelMap"></div>
     </div>
-    <div id="levelMap"></div>
+  </div>
+</div>
+
+<!-- ════════ MINI-OPPITUNTI MODAL (MAT-73) ════════ -->
+<div id="miniLessonModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div class="ml-card">
+    <div class="ml-badge">Mini-oppitunti</div>
+    <h2 class="ml-title">Katsotaan tämä yhdessä!</h2>
+    <p class="ml-sub">Tämä lasku tuli väärin pari kertaa. Katso kuvaa, niin se selkeytyy.</p>
+    <div class="ml-vis-wrap">
+      <div id="mlVis"></div>
+    </div>
+    <div class="ml-equation">
+      <span class="ml-num" id="mlNumA">3</span>
+      <span class="ml-op">×</span>
+      <span class="ml-num" id="mlNumB">4</span>
+      <span class="ml-eq">=</span>
+      <span class="ml-result" id="mlResult">12</span>
+    </div>
+    <p class="ml-explain" id="mlExplain">3 riviä × 4 palloa = 12 palloa yhteensä</p>
+    <button class="ml-btn" onclick="closeMiniLesson()">Ymmärsin! ✨</button>
   </div>
 </div>
 
@@ -2041,7 +2186,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <div id="settingsModal" style="display:none;position:fixed;inset:0;z-index:8500;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px;" onclick="handleSettingsOverlay(event)">
   <div style="background:var(--card);border-radius:20px;padding:28px 24px;max-width:380px;width:100%;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--text);">⚙️ Asetukset</div>
+      <div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1.3rem;color:var(--text);">⚙️ Asetukset</div>
       <button onclick="closeSettings()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px 8px;border-radius:8px;transition:color .2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">✕</button>
     </div>
 
@@ -2049,7 +2194,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div style="background:var(--card2);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
       <span id="settingsAvatar" style="font-size:1.8rem;">🤴</span>
       <div>
-        <div id="settingsName" style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--text);">Pelaaja</div>
+        <div id="settingsName" style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;color:var(--text);">Pelaaja</div>
         <div id="settingsLevel" style="font-size:.75rem;color:var(--muted);font-weight:700;">Taso 1</div>
       </div>
     </div>
@@ -2063,43 +2208,43 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
         <div style="display:flex;gap:8px;">
           <input id="settingsClassInput" type="text" placeholder="Luokkakoodi" maxlength="12"
             autocomplete="off" autocapitalize="characters"
-            style="flex:1;background:var(--bg);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;outline:none;transition:border-color .2s;"
+            style="flex:1;background:var(--bg);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;outline:none;transition:border-color .2s;"
             onfocus="this.style.borderColor='var(--accent3)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'"/>
-          <button onclick="saveSettingsClass()" style="padding:10px 16px;border-radius:10px;border:none;background:var(--accent3);color:#0b1520;font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Liity</button>
+          <button onclick="saveSettingsClass()" style="padding:10px 16px;border-radius:10px;border:none;background:var(--accent3);color:#0b1520;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Liity</button>
         </div>
         <div id="settingsClassError" style="color:var(--accent2);font-size:.75rem;font-weight:700;min-height:16px;margin-top:4px;"></div>
       </div>
       <!-- Tila: luokassa -->
       <div id="settingsInClass" style="display:none;">
         <div id="settingsClassInfo" style="font-size:.88rem;color:var(--accent3);font-weight:700;margin-bottom:8px;"></div>
-        <button onclick="leaveClass()" style="width:100%;padding:9px;border-radius:10px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;">Poistu luokasta</button>
+        <button onclick="leaveClass()" style="width:100%;padding:9px;border-radius:10px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.07);color:var(--accent2);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .2s;">Poistu luokasta</button>
       </div>
     </div>
 
     <!-- Ääniasetus -->
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🔊 Äänet</div>
-      <button id="settingsMuteBtn" onclick="toggleMuteFromSettings()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
+      <button id="settingsMuteBtn" onclick="toggleMuteFromSettings()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
     </div>
 
     <!-- Teema -->
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Teema</div>
-      <button id="settingsThemeBtn" onclick="toggleTheme()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
+      <button id="settingsThemeBtn" onclick="toggleTheme()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
     </div>
 
     <!-- Evästeasetukset -->
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🍪 Evästeet</div>
-      <button onclick="openCookieSettings();closeSettings();" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:left;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Muuta evästeasetuksia →</button>
+      <button onclick="openCookieSettings();closeSettings();" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:all .2s;text-align:left;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Muuta evästeasetuksia →</button>
     </div>
 
     <!-- Uloskirjautuminen -->
     <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-top:4px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🚪 Kirjautuminen</div>
       <div style="display:flex;gap:8px;">
-        <button onclick="logout('login')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,.25)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,.1)'">🔄 Vaihda pelaajaa</button>
-        <button onclick="logout('home')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,107,107,.2);background:rgba(255,107,107,.06);color:var(--accent2);font-family:'Fredoka One',cursive;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,107,107,.12)'" onmouseout="this.style.background='rgba(255,107,107,.06)'">🏠 Etusivulle</button>
+        <button onclick="logout('login')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.color='var(--text)';this.style.borderColor='rgba(255,255,255,.25)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='rgba(255,255,255,.1)'">🔄 Vaihda pelaajaa</button>
+        <button onclick="logout('home')" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(255,107,107,.2);background:rgba(255,107,107,.06);color:var(--accent2);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,107,107,.12)'" onmouseout="this.style.background='rgba(255,107,107,.06)'">🏠 Etusivulle</button>
       </div>
     </div>
   </div>
@@ -2164,8 +2309,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
     <!-- Toimintanapit -->
     <div style="padding:16px 24px 20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;background:#fdf8ef;border-radius:0 0 12px 12px;">
-      <button onclick="printDiploma()" style="padding:11px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#c9a84c,#f7c948);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">🖨️ Tulosta / Tallenna PDF</button>
-      <button onclick="closeDiploma()" style="padding:11px 24px;border-radius:40px;border:1.5px solid rgba(0,0,0,.15);background:transparent;color:#5a4030;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;">Sulje</button>
+      <button onclick="printDiploma()" style="padding:11px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#c9a84c,#f7c948);color:#1a1a1a;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">🖨️ Tulosta / Tallenna PDF</button>
+      <button onclick="closeDiploma()" style="padding:11px 24px;border-radius:40px;border:1.5px solid rgba(0,0,0,.15);background:transparent;color:#5a4030;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Sulje</button>
     </div>
   </div>
 </div>
@@ -2214,7 +2359,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
         </div>
       </div>
       <!-- Näytetään tutulla pelaajalla -->
-      <div id="swCharHint" style="display:none;text-align:center;font-family:'Fredoka One',cursive;font-size:1rem;color:var(--accent3);padding:10px;background:rgba(93,232,181,.08);border-radius:12px;border:1px solid rgba(93,232,181,.2);"></div>
+      <div id="swCharHint" style="display:none;text-align:center;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;color:var(--accent3);padding:10px;background:rgba(93,232,181,.08);border-radius:12px;border:1px solid rgba(93,232,181,.2);"></div>
     </div>
 
     <button class="cta-btn" id="swConfirmBtn" onclick="confirmSwitch()" disabled>Vaihda pelaaja ✓</button>
@@ -2222,7 +2367,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <!-- Kirjaudu ulos -->
     <button onclick="logout('home')" style="width:100%;margin-top:10px;padding:12px;border-radius:40px;
       border:1.5px solid rgba(255,107,107,.2);background:rgba(255,107,107,.06);
-      color:var(--accent2);font-family:'Fredoka One',cursive;font-size:1rem;
+      color:var(--accent2);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;
       cursor:pointer;transition:all .2s;"
       onmouseover="this.style.background='rgba(255,107,107,.12)'"
       onmouseout="this.style.background='rgba(255,107,107,.06)'">
@@ -2567,6 +2712,30 @@ function pinClear() {
   pinUpdateDots();
 }
 
+// MAT-86: Näppäimistösyöttö PIN-padiin — tietoturvaparannus desktopkäyttäjille
+// Aktivoituu vain kun login-ruutu on näkyvissä, PIN-vaihe (step3) on aktiivinen,
+// eikä tavallinen tekstikenttä ole fokuksessa.
+document.addEventListener('keydown', function(e){
+  const loginEl = document.getElementById('loginScreen');
+  if(!loginEl || !loginEl.classList.contains('active')) return;
+  const step3 = document.getElementById('step3');
+  if(!step3 || !step3.classList.contains('active')) return;
+  // Älä varasta näppäintä tavallisista input-kentistä
+  const ae = document.activeElement;
+  if(ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) return;
+
+  if(/^[0-9]$/.test(e.key)){
+    e.preventDefault();
+    pinPress(parseInt(e.key, 10));
+  } else if(e.key === 'Backspace'){
+    e.preventDefault();
+    pinClear();
+  } else if(e.key === 'Enter'){
+    e.preventDefault();
+    pinConfirm();
+  }
+});
+
 async function pinConfirm() {
   if (pinBuffer.length < 4) return;
   const pin = pinBuffer;
@@ -2708,7 +2877,7 @@ function showExistingPlayerWarning(name, char) {
     <div style="background:var(--card2);border-radius:14px;padding:16px;margin:14px 0;display:flex;align-items:center;gap:12px;">
       <span style="font-size:2rem;">${av}</span>
       <div>
-        <div style="font-family:'Fredoka One',cursive;font-size:1rem;">${escHtml(name)}</div>
+        <div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;">${escHtml(name)}</div>
         <div style="font-size:.75rem;color:var(--muted);font-weight:700;">${charLabel}</div>
       </div>
     </div>
@@ -2899,6 +3068,9 @@ async function showScores(){
   document.getElementById('hofPanel').style.display='block';
   document.getElementById('achPanel').style.display='none';
   document.getElementById('mapPanel').style.display='none';
+  // Resetoi score-title ja sub HOF-tilaan
+  document.getElementById('scoreScreenTitle').innerHTML = '🐐 Hall of Fame <span style="font-size:.55em;opacity:.7;font-weight:700;letter-spacing:1px;">TOP 50</span>';
+  document.getElementById('scoreScreenSub').textContent = 'TOP 50 kaikkien aikojen parhaat matikka-ahmatit';
   // Päivitä HOF player-info
   const av = pChar==='boy'?'🤴':'👸';
   const el1 = document.getElementById('hofPlayerAv');
@@ -3946,11 +4118,101 @@ function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
 function npa(){if(busy)return;ans='';updB();}
 function updB(){const b=document.getElementById('bS');if(b)b.textContent=ans||'?';}
 
+// ══════════════════════════════════════════════════
+// MAT-73 — MINI-OPPITUNNIT (MVP: vain kertotaulu)
+// 3 peräkkäistä virhettä samasta tehtävästä → mini-oppitunti
+// ══════════════════════════════════════════════════
+function mlKey(p){
+  // Kanonisoi a×b ja b×a samaan avaimeen
+  const a = Math.min(p.t, p.m);
+  const b = Math.max(p.t, p.m);
+  return `m:${a}x${b}`;
+}
+function mlRecordMistake(p){
+  if(p.type !== 'm') return; // MVP: vain kertotaulu
+  if(!srData.mistakeCounts) srData.mistakeCounts = {};
+  const key = mlKey(p);
+  srData.mistakeCounts[key] = (srData.mistakeCounts[key] || 0) + 1;
+}
+function mlClearMistake(p){
+  if(p.type !== 'm') return;
+  if(!srData.mistakeCounts) return;
+  delete srData.mistakeCounts[mlKey(p)];
+}
+function mlShouldShow(p){
+  if(p.type !== 'm') return false;
+  if(!srData.mistakeCounts) return false;
+  return (srData.mistakeCounts[mlKey(p)] || 0) >= 3;
+}
+function mlBuildVis(rows, cols){
+  // SVG-ruudukko: 'rows' riviä × 'cols' palloa, animoituvat sisään yksi kerrallaan
+  const cell = 30, gap = 6, pad = 12;
+  const w = cols * cell + (cols - 1) * gap + pad * 2;
+  const h = rows * cell + (rows - 1) * gap + pad * 2;
+  let svg = `<svg viewBox="0 0 ${w} ${h}" width="${Math.min(w,300)}" xmlns="http://www.w3.org/2000/svg">`;
+  for(let r = 0; r < rows; r++){
+    for(let c = 0; c < cols; c++){
+      const cx = pad + c * (cell + gap) + cell/2;
+      const cy = pad + r * (cell + gap) + cell/2;
+      const delay = (r * cols + c) * 50;
+      svg += `<circle cx="${cx}" cy="${cy}" r="${cell/2 - 2}" fill="#CCFF00" opacity="0">`;
+      svg += `<animate attributeName="opacity" from="0" to="1" begin="${delay}ms" dur="0.25s" fill="freeze"/>`;
+      svg += `<animate attributeName="r" from="${cell/2 - 6}" to="${cell/2 - 2}" begin="${delay}ms" dur="0.3s" fill="freeze"/>`;
+      svg += `</circle>`;
+    }
+  }
+  svg += `</svg>`;
+  return svg;
+}
+function mlShow(p, onClose){
+  // Käytä kanonisoitua järjestystä jotta visualisointi näyttää aina ymmärrettävältä
+  const a = Math.min(p.t, p.m);
+  const b = Math.max(p.t, p.m);
+  const result = a * b;
+
+  document.getElementById('mlVis').innerHTML = mlBuildVis(a, b);
+  document.getElementById('mlNumA').textContent = a;
+  document.getElementById('mlNumB').textContent = b;
+  document.getElementById('mlResult').textContent = result;
+  document.getElementById('mlExplain').textContent =
+    `${a} riviä × ${b} ${b === 1 ? 'pallo' : 'palloa'} = ${result} ${result === 1 ? 'pallo' : 'palloa'} yhteensä`;
+
+  // Nollaa laskuri ja tallenna
+  mlClearMistake(p);
+  srSave(srData);
+
+  // Avaa modal
+  const modal = document.getElementById('miniLessonModal');
+  modal.style.display = 'flex';
+  modal._mlOnClose = onClose;
+}
+function closeMiniLesson(){
+  const modal = document.getElementById('miniLessonModal');
+  modal.style.display = 'none';
+  if(modal._mlOnClose){
+    const cb = modal._mlOnClose;
+    modal._mlOnClose = null;
+    cb();
+  }
+}
+
+// MAT-73 — debug-apuri testaukseen.
+// Avaa konsoli ja kirjoita: testMiniLesson(7, 8)  → näyttää 7×8 mini-oppitunnin
+// Tai:                      testMiniLesson()       → satunnainen esimerkki
+window.testMiniLesson = function(t, m){
+  if(t == null) t = 1 + Math.floor(Math.random() * 10);
+  if(m == null) m = 1 + Math.floor(Math.random() * 10);
+  mlShow({ type:'m', t:t, m:m }, ()=>console.log('[MAT-73] mini-oppitunti suljettu'));
+};
+
 function ck(){
   if(!ans||busy)return;
   const u=parseInt(ans),ok=u===prob.answer;busy=true;
   const fb=document.getElementById('fb'),bs=document.getElementById('bS');
   srRecord(prob, ok);
+  // MAT-73: Kasvata virhelaskuri kun väärin. Laskuri on kumulatiivinen
+  // ja nollataan vain kun mini-oppitunti näytetään.
+  if(!ok) mlRecordMistake(prob);
   if(ok){
     streak++;corr++;
     // Globaali putki — kasvaa oikeista vastauksista ja säilyy kirjautumisten välillä
@@ -3986,14 +4248,28 @@ function ck(){
     sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
     explainWrong(prob);
     updStats();rDone++;updProg();
+    // MAT-73: Tarkista pitäisikö avata mini-oppitunti (3 peräkkäistä virhettä samasta tehtävästä)
+    const showLesson = mlShouldShow(prob);
     // BUG FIX (MAT-41): Tarkista onko kierros päättynyt myös väärän vastauksen jälkeen
     if (rDone >= rTotal) {
-      setTimeout(()=>{ busy=false; showResults(); }, 1800);
+      setTimeout(()=>{
+        if(showLesson){
+          mlShow(prob, ()=>{ busy=false; showResults(); });
+        } else {
+          busy=false; showResults();
+        }
+      }, 1800);
     } else {
       // BUG-2 FIX: Ladataan uusi tehtävä — ei anneta yrittää samaa tehtävää uudelleen
       // (aiempi toteutus: busy=false + ans='' → käyttäjä saattoi yrittää samaa uudelleen,
       //  rDone++ tapahtui jokaisella yrityksellä → kierros saattoi ylittyä 10:stä)
-      setTimeout(()=>{ newProblem(); }, 1400);
+      setTimeout(()=>{
+        if(showLesson){
+          mlShow(prob, ()=>newProblem());
+        } else {
+          newProblem();
+        }
+      }, 1400);
     }
     return;
   }
@@ -4252,6 +4528,19 @@ function switchMainTab(tab, el) {
   document.getElementById('hofPanel').style.display = tab==='hof' ? 'block' : 'none';
   document.getElementById('achPanel').style.display = tab==='ach' ? 'block' : 'none';
   document.getElementById('mapPanel').style.display = tab==='map' ? 'block' : 'none';
+
+  // Päivitä score-title ja sub aktiivisen välilehden mukaan
+  const titles = {
+    hof: { title:'🐐 Hall of Fame <span style="font-size:.55em;opacity:.7;font-weight:700;letter-spacing:1px;">TOP 50</span>', sub:'TOP 50 kaikkien aikojen parhaat matikka-ahmatit' },
+    ach: { title:'🏅 Saavutukset', sub:'Kerätyt palkinnot ja avaamattomat haasteet' },
+    map: { title:'🗺️ Tasokartta', sub:'Etene tasosta toiseen ja avaa koko seikkailureitti' }
+  };
+  const t = titles[tab];
+  if (t) {
+    document.getElementById('scoreScreenTitle').innerHTML = t.title;
+    document.getElementById('scoreScreenSub').textContent = t.sub;
+  }
+
   if (tab==='ach') renderAchievements();
   if (tab==='map') renderLevelMap();
 }
@@ -4429,10 +4718,10 @@ async function renderScores(f) {
     }
   });
 
-  // Järjestä kumulatiivisten pisteiden mukaan
+  // Järjestä kumulatiivisten pisteiden mukaan — näytä TOP 50
   let players = Array.from(playerMap.values())
     .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound)
-    .slice(0, 200);
+    .slice(0, 50);
 
   // FARM-004 FIX: Yhdistä saman nimen eri hahmot (boy/girl)
   // Estää HOF:n täyttämisen useilla nimimerkeillä
@@ -4475,7 +4764,7 @@ async function renderScores(f) {
         <div class="hof-avatar">${av}</div>
       </div>
       <div class="hof-info">
-        <div class="hof-name">${escHtml(s.name)}${nameBadges}</div>
+        <div class="hof-name"><span class="hof-name-text">${escHtml(s.name)}</span>${nameBadges}</div>
         <div class="hof-meta">
           <span class="hof-correct">${acc}% tarkkuus</span>
           <span class="hof-rounds">· ${s.rounds} kierr.</span>
@@ -5318,18 +5607,18 @@ document.addEventListener('keydown',e=>{
 </script>
 
 <!-- ═══ EVÄSTEBANNERI ═══ -->
-<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Bricolage Grotesque',system-ui,sans-serif;">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
       <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
         Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
         <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
-      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
     </div>
   </div>
 </div>

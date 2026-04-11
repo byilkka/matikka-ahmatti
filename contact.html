@@ -9,35 +9,32 @@
 <link rel="canonical" href="https://www.matikka-ahmatti.fi/contact.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 
 :root{
-  --bg:    #0b1520;
-  --card:  #162030;
-  --card2: #1a2840;
-  --accent:  #f7c948;
-  --accent2: #ff6b6b;
-  --accent3: #5de8b5;
-  --accent4: #7b9fff;
-  --pink:    #ff8ed4;
-  --text:  #eef3ff;
-  --muted: #6a82a0;
+  --bg: #0C0A1A; --surface: #161330; --surface2: #1E1A40;
+  --lime: #CCFF00; --mint: #00FFAA; --coral: #FF5C5C;
+  --sky: #5CB8FF; --peach: #FFB088; --violet: #B488FF;
+  --text: #F0EEF6; --muted: #8A84A0; --radius: 24px;
 }
 
 body{
-  font-family:'Nunito',sans-serif;
+  font-family:'Bricolage Grotesque', system-ui, sans-serif;
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
   overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
+
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px;opacity:.4;}
 
 /* ── Floating background numbers ── */
 #floatBg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .fn{
-  position:absolute;font-family:'Fredoka One',cursive;
+  position:absolute;font-weight:800;
   animation:mFloat var(--dur,14s) ease-in-out infinite var(--delay,0s);
   opacity:0;
 }
@@ -48,42 +45,63 @@ body{
   100%{transform:translateY(-100vh) rotate(var(--r1,10deg));opacity:0;}
 }
 
-/* ── Page layout ── */
+/* ── Page layout — Split-screen on desktop ── */
 .page{
   position:relative;z-index:1;
   min-height:100vh;
-  display:flex;flex-direction:column;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:clamp(32px,5vw,56px);
+  max-width:1400px;margin:0 auto;
+  padding:clamp(24px,5vw,60px) clamp(16px,4vw,48px);
+  padding-top:calc(68px + clamp(24px,4vw,48px));
   align-items:center;
-  padding:clamp(24px,5vw,60px) clamp(16px,4vw,40px);
+}
+@media(min-width:900px){
+  .page{
+    grid-template-columns:1.05fr 1fr;
+    gap:clamp(40px,6vw,96px);
+    min-height:100vh;
+    padding-top:calc(68px + clamp(20px,3vw,40px));
+    padding-bottom:clamp(20px,3vw,40px);
+  }
 }
 
-/* ── Back link ── */
-.back-link{
-  align-self:flex-start;
-  display:inline-flex;align-items:center;gap:8px;
-  color:var(--muted);font-weight:700;font-size:.88rem;
-  text-decoration:none;
-  padding:8px 16px;
-  border-radius:40px;
-  border:1px solid rgba(255,255,255,.07);
-  background:var(--card);
-  transition:all .2s;
-  margin-bottom:clamp(24px,4vw,48px);
-}
-.back-link:hover{color:var(--accent);border-color:rgba(247,201,72,.3);}
-
-/* ── Hero ── */
+/* ── Hero (left side on desktop) ── */
 .hero{
   text-align:center;
-  margin-bottom:clamp(32px,5vw,56px);
+  position:relative;
+}
+@media(min-width:900px){
+  .hero{text-align:left;}
+}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Space Mono',monospace;
+  font-size:.72rem;
+  color:var(--lime);
+  text-transform:uppercase;
+  letter-spacing:3px;
+  margin-bottom:clamp(16px,2.5vw,24px);
+  padding:6px 14px;
+  background:rgba(204,255,0,.06);
+  border:1px solid rgba(204,255,0,.2);
+  border-radius:40px;
 }
 
 .monster-wrap{
-  width:clamp(100px,18vw,160px);
-  height:clamp(100px,18vw,160px);
-  margin:0 auto clamp(16px,2.5vw,28px);
-  filter:drop-shadow(0 8px 24px rgba(93,232,181,.35));
+  width:clamp(100px,14vw,150px);
+  height:clamp(100px,14vw,150px);
+  margin:0 auto clamp(16px,2vw,24px);
+  filter:drop-shadow(0 8px 24px rgba(0,255,170,.25));
   animation:mFloat2 3.5s ease-in-out infinite;
+  position:relative;
+}
+@media(min-width:900px){
+  .monster-wrap{
+    margin:0 0 clamp(20px,2.5vw,32px) 0;
+  }
 }
 @keyframes mFloat2{
   0%,100%{transform:translateY(0) rotate(-1.5deg);}
@@ -91,31 +109,85 @@ body{
 }
 
 .hero-title{
-  font-family:'Fredoka One',cursive;
-  font-size:clamp(2rem,6vw,3.5rem);
-  background:linear-gradient(135deg,var(--accent),#ff9f43);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  line-height:1.1;
-  margin-bottom:12px;
+  font-weight:800;
+  font-size:clamp(2.4rem,6vw,4.5rem);
+  color:var(--text);
+  line-height:.95;
+  letter-spacing:-1.5px;
+  margin-bottom:clamp(14px,2vw,22px);
+}
+.hero-title .highlight{
+  color:var(--lime);
+  display:inline-block;
 }
 .hero-sub{
   color:var(--muted);
-  font-size:clamp(.9rem,2vw,1.1rem);
-  font-weight:700;
-  max-width:480px;
+  font-size:clamp(.95rem,1.6vw,1.15rem);
+  font-weight:600;
+  max-width:520px;
   margin:0 auto;
-  line-height:1.5;
+  line-height:1.6;
+}
+@media(min-width:900px){
+  .hero-sub{margin:0;}
 }
 
-/* ── Contact card ── */
-.contact-card{
-  background:var(--card);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:clamp(20px,3vw,32px);
-  padding:clamp(28px,5vw,52px) clamp(24px,4vw,48px);
+/* ── Info cards list ── */
+.info-list{
+  display:flex;flex-direction:column;
+  gap:12px;
+  margin-top:clamp(24px,3vw,36px);
+  max-width:480px;
+  margin-left:auto;margin-right:auto;
+}
+@media(min-width:900px){
+  .info-list{margin-left:0;margin-right:0;}
+}
+.info-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:16px;
+  text-align:left;
+  transition:all .2s;
+}
+.info-item:hover{
+  border-color:rgba(255,255,255,.1);
+  transform:translateX(4px);
+}
+.info-item-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.info-item-icon svg{width:18px;height:18px;}
+.info-item-text{flex:1;}
+.info-item-title{
+  font-weight:800;font-size:.88rem;color:var(--text);
+  line-height:1.2;margin-bottom:2px;
+}
+.info-item-desc{
+  font-size:.74rem;font-weight:600;color:var(--muted);
+  line-height:1.4;
+}
+
+/* ── Contact card (right side on desktop) ── */
+.contact-card-wrap{
+  position:relative;
   width:100%;
   max-width:560px;
+  margin:0 auto;
+}
+@media(min-width:900px){
+  .contact-card-wrap{margin-right:0;}
+}
+.contact-card{
+  background:var(--surface);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--radius);
+  padding:clamp(28px,3.5vw,44px) clamp(24px,3vw,40px);
+  width:100%;
   box-shadow:0 24px 60px rgba(0,0,0,.4);
   position:relative;
   overflow:hidden;
@@ -123,13 +195,28 @@ body{
 .contact-card::before{
   content:'';
   position:absolute;inset:0;border-radius:inherit;
-  background:radial-gradient(circle at 50% 0%,rgba(247,201,72,.06),transparent 60%);
+  background:radial-gradient(circle at 50% 0%,rgba(204,255,0,.05),transparent 60%);
   pointer-events:none;
 }
+.contact-card-header{
+  margin-bottom:clamp(20px,3vw,28px);
+  padding-bottom:clamp(16px,2vw,22px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.contact-card-title{
+  font-weight:800;
+  font-size:clamp(1.1rem,2vw,1.35rem);
+  color:var(--text);
+  margin-bottom:4px;letter-spacing:-.3px;
+}
+.contact-card-sub{
+  color:var(--muted);font-size:.82rem;font-weight:600;
+}
+.contact-card-sub span{color:var(--coral);font-weight:800;}
 
 /* ── Form ── */
 .form-group{
-  margin-bottom:clamp(16px,2.5vw,24px);
+  margin-bottom:clamp(14px,1.8vw,18px);
 }
 .form-label{
   display:block;
@@ -144,12 +231,12 @@ body{
 .form-select,
 .form-textarea{
   width:100%;
-  background:var(--card2);
+  background:var(--surface2);
   border:1.5px solid rgba(255,255,255,.08);
   border-radius:14px;
   padding:clamp(12px,1.8vw,16px) clamp(14px,2vw,20px);
   color:var(--text);
-  font-family:'Nunito',sans-serif;
+  font-family:'Bricolage Grotesque', system-ui, sans-serif;
   font-size:clamp(.9rem,1.6vw,1rem);
   font-weight:700;
   transition:all .18s;
@@ -159,9 +246,9 @@ body{
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus{
-  border-color:var(--accent4);
-  box-shadow:0 0 0 3px rgba(123,159,255,.15);
-  background:rgba(26,40,64,.9);
+  border-color:var(--lime);
+  box-shadow:0 0 0 3px rgba(204,255,0,.12);
+  background:rgba(30,26,64,.9);
 }
 .form-input::placeholder,
 .form-textarea::placeholder{
@@ -170,15 +257,15 @@ body{
 }
 .form-select{
   cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a82a0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A84A0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
   background-position:right 16px center;
   padding-right:44px;
 }
-.form-select option{background:var(--card2);color:var(--text);}
+.form-select option{background:var(--surface2);color:var(--text);}
 .form-textarea{
   resize:vertical;
-  min-height:clamp(100px,15vw,150px);
+  min-height:clamp(90px,10vw,120px);
   line-height:1.6;
 }
 
@@ -187,18 +274,19 @@ body{
   width:100%;
   padding:clamp(14px,2.2vw,20px);
   border:none;
-  border-radius:40px;
-  background:linear-gradient(135deg,var(--accent) 0%,#ff9f43 100%);
-  color:#1a1a1a;
-  font-family:'Fredoka One',cursive;
+  border-radius:16px;
+  background:var(--lime);
+  color:var(--bg);
+  font-family:'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight:800;
   font-size:clamp(1.1rem,2.2vw,1.4rem);
   cursor:pointer;
   transition:all .2s;
-  box-shadow:0 6px 22px rgba(247,201,72,.32);
+  box-shadow:0 6px 22px rgba(204,255,0,.2);
   display:flex;align-items:center;justify-content:center;gap:10px;
   margin-top:clamp(8px,1.5vw,16px);
 }
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(247,201,72,.45);}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(204,255,0,.3);}
 .submit-btn:active{transform:translateY(0);}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 
@@ -216,11 +304,9 @@ body{
   animation:bounce .6s .2s both;
 }
 .form-success .success-title{
-  font-family:'Fredoka One',cursive;
+  font-weight:800;
   font-size:clamp(1.4rem,3vw,2rem);
-  background:linear-gradient(135deg,var(--accent3),#36d7b7);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+  color:var(--mint);
   margin-bottom:10px;
 }
 .form-success .success-sub{
@@ -228,30 +314,19 @@ body{
   font-size:clamp(.85rem,1.6vw,1rem);
 }
 .field-error{
-  color:var(--accent2);
+  color:var(--coral);
   font-size:.75rem;
   font-weight:700;
   margin-top:6px;
   display:none;
 }
 .form-input.invalid,
-.form-textarea.invalid{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(255,107,107,.12);}
+.form-textarea.invalid{border-color:var(--coral);box-shadow:0 0 0 3px rgba(255,92,92,.12);}
 
-/* ── Info pills ── */
-.info-pills{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
-  margin-top:clamp(24px,3.5vw,36px);
-  max-width:560px;
+/* ── Mobile nav ── */
+@media(max-width:700px){
+  nav > div:last-child{display:none!important;}
 }
-.pill{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--card);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:40px;
-  padding:8px 16px;
-  font-size:.78rem;font-weight:700;color:var(--muted);
-}
-.pill span{font-size:1rem;}
 
 @keyframes popIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
 @keyframes bounce{0%,100%{transform:translateY(0);}40%{transform:translateY(-16px);}70%{transform:translateY(-8px);}}
@@ -259,26 +334,41 @@ body{
 </head>
 <body>
 
+<!-- ── Nav ── -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(20px,4vw,48px);background:rgba(12,10,26,.7);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid rgba(255,255,255,.04);">
+  <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+    <svg viewBox="0 0 200 200" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="ng" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient></defs><ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#ng)"/><ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/><ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/><circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/><circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/><ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#ng)"/><ellipse cx="78" cy="76" rx="14" ry="16" fill="white"/><ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/><circle cx="81" cy="77" r="8" fill="#0f1923"/><circle cx="125" cy="77" r="8" fill="#0f1923"/><circle cx="84" cy="73" r="3.5" fill="white" opacity=".9"/><circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/><path d="M62 104 Q100 140 138 104" fill="#0f1923"/><path d="M62 104 Q100 120 138 104" fill="#c0334d" opacity=".85"/><rect x="66" y="104" width="12" height="11" rx="3" fill="white"/><rect x="82" y="104" width="12" height="11" rx="3" fill="white"/><rect x="98" y="104" width="12" height="11" rx="3" fill="white"/><rect x="114" y="104" width="11" height="11" rx="3" fill="white"/><path d="M44 120 Q20 106 26 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="24" cy="87" rx="10" ry="9" fill="#1a9068"/><circle cx="15" cy="82" r="5.5" fill="#1a9068"/><circle cx="26" cy="78" r="5.5" fill="#1a9068"/><circle cx="34" cy="84" r="5.5" fill="#1a9068"/><path d="M156 120 Q180 106 174 90" stroke="#1a9068" stroke-width="13" fill="none" stroke-linecap="round"/><ellipse cx="176" cy="87" rx="10" ry="9" fill="#1a9068"/><circle cx="185" cy="82" r="5.5" fill="#1a9068"/><circle cx="174" cy="78" r="5.5" fill="#1a9068"/><circle cx="166" cy="84" r="5.5" fill="#1a9068"/><ellipse cx="80" cy="184" rx="19" ry="9" fill="#1a9068"/><ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/></svg>
+    <span style="font-weight:800;font-size:1.15rem;color:#F0EEF6;letter-spacing:-.5px;">Matikka-Ahmatti</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <a href="ohjeet.html" style="color:#8A84A0;font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;">Ohjeet</a>
+    <a href="vanhempi.html" style="color:#8A84A0;font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;">Vanhemmille</a>
+    <a href="opettaja.html" style="color:#8A84A0;font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;">Opettajille</a>
+    <a href="contact.html" style="color:#8A84A0;font-weight:600;font-size:.82rem;text-decoration:none;padding:8px 14px;border-radius:12px;">Yhteystiedot</a>
+    <a href="game.html" style="background:#CCFF00;color:#0C0A1A;font-weight:800;font-size:.82rem;padding:10px 22px;border-radius:12px;text-decoration:none;">Pelaa nyt &rarr;</a>
+  </div>
+</nav>
+
 <div id="floatBg"></div>
 
 <div class="page">
 
-  <a href="index.html" class="back-link">← Takaisin peliin</a>
-
-  <!-- Hero -->
+  <!-- Hero (left column on desktop) -->
   <div class="hero">
+    <div class="hero-tag">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Yhteystiedot
+    </div>
     <div class="monster-wrap">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="cgbG" cx="50%" cy="38%" r="56%"><stop offset="0%" stop-color="#7cffd4"/><stop offset="100%" stop-color="#1fa876"/></radialGradient>
-          <filter id="cgGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
-        <ellipse cx="100" cy="194" rx="40" ry="7" fill="rgba(0,0,0,.18)"/>
         <ellipse cx="100" cy="128" rx="54" ry="58" fill="url(#cgbG)"/>
         <ellipse cx="54" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(-18 54 68)"/>
         <ellipse cx="146" cy="68" rx="12" ry="20" fill="#1a9068" transform="rotate(18 146 68)"/>
-        <circle cx="46" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#cgGlow)"/>
-        <circle cx="154" cy="50" r="4" fill="#f7c948" opacity=".9" filter="url(#cgGlow)"/>
+        <circle cx="46" cy="50" r="5" fill="#f7c948" opacity=".95"/>
+        <circle cx="154" cy="50" r="5" fill="#f7c948" opacity=".95"/>
         <ellipse cx="100" cy="84" rx="50" ry="46" fill="url(#cgbG)"/>
         <ellipse cx="78"  cy="76" rx="14" ry="16" fill="white"/>
         <ellipse cx="122" cy="76" rx="14" ry="16" fill="white"/>
@@ -286,8 +376,8 @@ body{
         <circle cx="125" cy="77" r="8" fill="#0f1923"/>
         <circle cx="84"  cy="73" r="3.5" fill="white" opacity=".9"/>
         <circle cx="128" cy="73" r="3.5" fill="white" opacity=".9"/>
-        <text x="81"  y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">♥</text>
-        <text x="125" y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">♥</text>
+        <text x="81"  y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">&#x2665;</text>
+        <text x="125" y="80" font-size="8" text-anchor="middle" fill="#f7c948" font-family="Arial">&#x2665;</text>
         <path d="M66 104 Q100 136 134 104" fill="#0f1923"/>
         <path d="M66 104 Q100 118 134 104" fill="#c0334d" opacity=".85"/>
         <rect x="70"  y="104" width="11" height="10" rx="3" fill="white"/>
@@ -305,12 +395,48 @@ body{
         <ellipse cx="120" cy="184" rx="19" ry="9" fill="#1a9068"/>
       </svg>
     </div>
-    <h1 class="hero-title">Ota yhteyttä! 👋</h1>
-    <p class="hero-sub">Palaute, ideat, yhteistyöehdotukset tai bugi-ilmoitukset — kaikki viestit luetaan!</p>
+    <h1 class="hero-title">Ota<br><span class="highlight">yhteyttä!</span></h1>
+    <p class="hero-sub">Palaute, ideat, yhteistyöehdotukset tai bugi-ilmoitukset — kaikki viestit luetaan huolella.</p>
+
+    <div class="info-list">
+      <div class="info-item">
+        <div class="info-item-icon" style="background:rgba(204,255,0,.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="info-item-text">
+          <div class="info-item-title">Vastaamme nopeasti</div>
+          <div class="info-item-desc">Yleensä 1–2 päivän kuluessa</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-icon" style="background:rgba(0,255,170,.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="info-item-text">
+          <div class="info-item-title">Tietosi pysyvät turvassa</div>
+          <div class="info-item-desc">Emme jaa tietoja kolmansille</div>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-icon" style="background:rgba(92,184,255,.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </div>
+        <div class="info-item-text">
+          <div class="info-item-title">Peli on ja pysyy ilmaisena</div>
+          <div class="info-item-desc">Ei mainoksia, ei tilauksia</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Contact form card -->
+  <!-- Contact form card (right column on desktop) -->
+  <div class="contact-card-wrap">
   <div class="contact-card">
+
+    <div class="contact-card-header">
+      <div class="contact-card-title">Lähetä viesti</div>
+      <div class="contact-card-sub">Kentät merkitty <span>*</span>-merkillä ovat pakollisia</div>
+    </div>
 
     <!-- Success state (hidden by default) -->
     <div class="form-success" id="formSuccess">
@@ -363,12 +489,6 @@ body{
 
     </form>
   </div>
-
-  <!-- Info pills -->
-  <div class="info-pills">
-    <div class="pill"><span>⚡</span> Vastaamme nopeasti</div>
-    <div class="pill"><span>🔒</span> Tietosi pysyvät turvassa</div>
-    <div class="pill"><span>🆓</span> Peli on ilmainen</div>
   </div>
 
 </div>
@@ -376,7 +496,7 @@ body{
 <script>
 // ── Floating background ──
 const SYMS=['1','2','3','4','5','6','7','8','9','0','+','−','×','=','÷','7+3','2×4','5−1','9+6'];
-const COLS=['rgba(247,201,72,','rgba(93,232,181,','rgba(123,159,255,','rgba(255,142,212,','rgba(255,107,107,'];
+const COLS=['rgba(204,255,0,','rgba(0,255,170,','rgba(92,184,255,','rgba(180,136,255,','rgba(255,92,92,'];
 (function(){
   const bg=document.getElementById('floatBg');
   for(let i=0;i<35;i++){
@@ -459,18 +579,18 @@ form.addEventListener('submit', async (e) => {
 </script>
 
 <!-- ═══ EVÄSTEBANNERI ═══ -->
-<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card,#162030);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Nunito',sans-serif;">
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--surface,#161330);border-top:1px solid rgba(255,255,255,.1);padding:clamp(14px,2vw,20px) clamp(16px,3vw,28px);font-family:'Bricolage Grotesque',system-ui,sans-serif;">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-family:'Fredoka One',cursive;font-size:clamp(.95rem,1.8vw,1.1rem);color:#eef3ff;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
-      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#6a82a0;font-weight:700;line-height:1.5;">
+      <div style="font-weight:800;font-size:clamp(.95rem,1.8vw,1.1rem);color:#F0EEF6;margin-bottom:5px;">🍪 Käytämme evästeitä</div>
+      <div style="font-size:clamp(.72rem,1.2vw,.82rem);color:#8A84A0;font-weight:700;line-height:1.5;">
         Käytämme Google Analytics -evästeitä palvelun kehittämiseksi. Pelitoiminnot toimivat ilman analytiikkaevästeitäkin.
-        <a href="tietosuoja.html" style="color:#7b9fff;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
+        <a href="tietosuoja.html" style="color:#5CB8FF;text-decoration:none;font-weight:800;">Tietosuojaseloste</a>
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#6a82a0;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
-      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:40px;border:none;background:linear-gradient(135deg,#f7c948,#ff9f43);color:#1a1a1a;font-family:'Fredoka One',cursive;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
+      <button onclick="cookieDecline()" style="padding:9px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:#8A84A0;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:.8rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;">Vain välttämättömät</button>
+      <button onclick="cookieAccept()" style="padding:9px 18px;border-radius:14px;border:none;background:#CCFF00;color:#0C0A1A;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;transition:all .18s;white-space:nowrap;">Hyväksy kaikki ✓</button>
     </div>
   </div>
 </div>
