@@ -697,12 +697,11 @@ footer{
   .diploma-inner{grid-template-columns:1fr;}
   .hero-monster{
     position:relative;right:auto;top:auto;transform:none;
-    width:clamp(140px,36vw,220px);margin:-12px auto 20px;
-    z-index:0; /* hero-content (z-index:1) pysyy päällä */
+    width:clamp(120px,30vw,180px);margin:16px auto 12px;
   }
-  .hero{grid-template-rows:auto auto 1fr auto;}
-  .hero-content{text-align:center;z-index:2;}
-  .hero-actions{justify-content:center;position:relative;z-index:2;}
+  .hero{grid-template-rows:auto auto 1fr auto;gap:0;}
+  .hero-content{text-align:center;}
+  .hero-actions{justify-content:center;}
   .hero-stats{justify-content:center;}
 }
 @media(max-width:600px){
