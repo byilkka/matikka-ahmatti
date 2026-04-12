@@ -716,6 +716,40 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
 .xp-dot.pulse{animation:xpPulse .4s ease-out;}
 @keyframes xpPulse{0%{transform:scaleY(1);}50%{transform:scaleY(1.8);}100%{transform:scaleY(1);}}
 
+/* MAT-89: Nearest diploma banner */
+.nearest-diploma{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(247,201,72,.08),rgba(197,108,240,.08));
+  border:1.5px solid rgba(247,201,72,.25);border-radius:14px;
+  padding:10px 14px;margin-bottom:clamp(10px,1.5vh,16px);
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:700;
+  font-size:clamp(.78rem,1.4vw,.92rem);color:var(--text);
+  position:relative;overflow:hidden;
+}
+.nearest-diploma .nd-icon{font-size:1.2rem;}
+.nearest-diploma .nd-text{flex:1;min-width:160px;color:var(--muted);}
+.nearest-diploma .nd-text strong{color:var(--accent,#f7c948);font-weight:800;}
+.nearest-diploma .nd-bar{flex-basis:100%;height:5px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;margin-top:4px;}
+.nearest-diploma .nd-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#f7c948,#c56cf0);border-radius:40px;transition:width .6s ease;}
+
+/* MAT-89: Diplomit-osio tasokartassa */
+.diplomas-section{margin-bottom:clamp(14px,2vw,22px);padding:14px;background:var(--surface);border-radius:14px;border:1px solid rgba(255,255,255,.08);}
+.diplomas-section h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1rem;color:var(--text);margin:0 0 10px 0;}
+.diploma-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.diploma-card{padding:12px 10px;border-radius:12px;background:var(--card2,rgba(255,255,255,.03));border:1.5px solid rgba(255,255,255,.08);text-align:center;cursor:pointer;transition:all .18s;}
+.diploma-card:hover{transform:translateY(-2px);}
+.diploma-card.earned{border-color:var(--d-color,#f7c948);background:rgba(247,201,72,.08);}
+.diploma-card.locked{opacity:.55;}
+.diploma-card .d-icon{font-size:1.6rem;margin-bottom:4px;}
+.diploma-card .d-name{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.8rem;color:var(--text);margin-bottom:4px;}
+.diploma-card .d-bar{height:4px;background:rgba(255,255,255,.08);border-radius:40px;overflow:hidden;margin:6px 0 4px;}
+.diploma-card .d-bar-fill{height:100%;background:var(--d-color,#f7c948);transition:width .4s;}
+.diploma-card .d-state{font-size:.7rem;color:var(--muted);font-weight:700;}
+.diploma-card.earned .d-state{color:var(--d-color,#f7c948);}
+.map-mode-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.map-mode-tab{padding:7px 12px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:var(--card2,rgba(255,255,255,.03));color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:all .15s;}
+.map-mode-tab.active{background:var(--lime,#ccff00);color:var(--bg,#0b1520);border-color:var(--lime,#ccff00);}
+
 /* Mode selector */
 .mode-selector{
   display:flex;gap:clamp(4px,0.8vw,8px);
@@ -1862,6 +1896,16 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
     </div>
   </div>
 
+  <!-- MAT-89: Lähin diplomi -banneri -->
+  <div id="nearestDiplomaBanner" class="nearest-diploma" style="display:none;">
+    <span class="nd-icon" id="ndIcon">🎯</span>
+    <span class="nd-text">
+      Lähin diplomi: <strong id="ndName">—</strong>
+      — <span id="ndProgress">—</span>
+    </span>
+    <div class="nd-bar"><div class="nd-bar-fill" id="ndBarFill"></div></div>
+  </div>
+
   <div class="mode-selector">
     <button class="mode-btn active" onclick="setMode('h')" id="btn-h"><span class="mi">🔢</span>Hajotelmat</button>
     <button class="mode-btn" onclick="setMode('a')" id="btn-a"><span class="mi">➕</span>Yhteenlasku</button>
@@ -2116,7 +2160,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
       <div class="results-btns">
         <button class="try-btn" onclick="restartRound()">Uusi kierros 🚀</button>
         <button class="score-btn" onclick="showScores()">🐐 Hall of Fame</button>
-        <button class="score-btn" id="diplomaBtn" style="display:none" onclick="openDiploma()">🎓 Diplomi</button>
+        <button class="score-btn" id="diplomaBtn" style="display:none">🎓 Diplomit</button>
       </div>
     </div>
   </div>
@@ -2282,6 +2326,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
       <button id="settingsMuteBtn" onclick="toggleMuteFromSettings()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
     </div>
 
+    <!-- MAT-90: Tunne-mörkö -->
+    <div style="margin-bottom:16px;">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🥺 Tunne-mörkö</div>
+      <button id="settingsTunneMorkoBtn" onclick="toggleTunneMorko()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:var(--card2);color:var(--text);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .2s;text-align:left;"></button>
+      <div style="font-size:.7rem;color:var(--muted);font-weight:700;margin-top:6px;line-height:1.4;">Mörkö reagoi tunteisiisi lempeillä viesteillä.</div>
+    </div>
+
     <!-- Teema -->
     <div style="margin-bottom:16px;">
       <div style="font-size:.75rem;color:var(--muted);font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Teema</div>
@@ -2330,7 +2381,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
 
           <!-- Otsikkorivi -->
           <div style="text-align:center;margin-bottom:20px;">
-            <div style="font-size:2.2rem;line-height:1;margin-bottom:10px;">🐐</div>
+            <div id="diplomaTopIcon" style="font-size:2.2rem;line-height:1;margin-bottom:10px;">🐐</div>
             <div style="font-size:11px;letter-spacing:5px;color:#8a6a1a;text-transform:uppercase;margin-bottom:12px;">Matikka-Ahmatti</div>
             <div style="font-size:28px;font-weight:700;letter-spacing:2px;color:#2c1a0e;margin-bottom:6px;">Diplomitodistus</div>
             <div style="height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:0 40px;"></div>
@@ -2342,8 +2393,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
             <div id="diplomaName" style="font-size:34px;font-style:italic;font-weight:700;color:#1a3a6e;margin-bottom:4px;">—</div>
             <div style="height:1px;background:rgba(26,58,110,.2);margin:0 60px 16px;"></div>
             <div style="font-size:13px;color:#5a4030;margin-bottom:10px;">on saavuttanut</div>
-            <div style="font-size:20px;font-weight:700;color:#8a1a1a;letter-spacing:1px;margin-bottom:6px;">GRAND MASTER — Taso 50</div>
-            <div style="font-size:12px;color:#5a4030;">Matikka-Ahmatti -matematiikkaharjoittelussa</div>
+            <div id="diplomaTitleText" style="font-size:20px;font-weight:700;color:#8a1a1a;letter-spacing:1px;margin-bottom:6px;">GRAND MASTER — Taso 50</div>
+            <div id="diplomaSubtitle" style="font-size:12px;color:#5a4030;">Matikka-Ahmatti -matematiikkaharjoittelussa</div>
           </div>
 
           <!-- Tilastot -->
@@ -3020,6 +3071,7 @@ async function startGame(){
   rDone=0; ans=''; busy=false; corr=0; streak=0; pts=0; maxStreakThisRound=0;
   retryQueue=[]; roundHistory=[]; roundUsedKeys=new Set();
   hintUsedThisProblem=false; hintsUsedThisRound=0;
+  wrongStreak=0; // MAT-90: frustraatio-laskuri nollaan startGame:ssa
   document.getElementById('resultsPanel').classList.remove('show');
   document.getElementById('exerciseView').style.display='block';
   hideExplain();
@@ -3056,8 +3108,11 @@ async function startGame(){
         new Promise(r => setTimeout(() => r(null), 5000)) // 5s timeout
       ]);
       if (remote) {
-        srData = remote;
-        srLocalSave(pName, pChar, mode, remote);
+        // MAT-89 fix: Merge remote into srData säilyttäen lokaalit kentät kuten
+        // diplomas, streakShields, dailyQuests, globalStreak, xp jotka eivät vielä
+        // synkronoidu remotee n. Korvaaminen kokonaan hävittäisi nämä.
+        Object.assign(srData, remote);
+        srLocalSave(pName, pChar, mode, srData);
         updDiffLabel();
       }
     } catch {}
@@ -3074,9 +3129,12 @@ async function startGame(){
         // Päivitä vain jos kierros EI ole käynnissä (rDone === 0)
         // tai kierros on juuri alkanut
         if (rDone === 0) {
-          srData = remote;
-          srLocalSave(pName, pChar, mode, remote);
+          // MAT-89 fix: Object.assign säilyttääkseen lokaalit kentät (diplomas, streakShields, dailyQuests jne.)
+          Object.assign(srData, remote);
+          srLocalSave(pName, pChar, mode, srData);
           updDiffLabel();
+          // MAT-89: Tarkista diplomit jos remote-merge nosti tasoa toiselle laitteelle saavutetun tason myötä
+          if (typeof checkDiplomas === 'function') checkDiplomas();
         }
         // Muussa tapauksessa tallenna muistiin ja sovella ensi kierroksella
         else {
@@ -3088,14 +3146,24 @@ async function startGame(){
 
   retryQueue=[]; roundHistory=[];
   launchConfetti(); buildTablesGrid(); newProblem();
+  // MAT-89: Retroaktiivinen diplomimyöntö — jos pelaajalla on jo diffLevels[mode] >= 50
+  if (typeof checkDiplomas === 'function') checkDiplomas();
   updateDiplomaBtn();
+  if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
 
   // Odota saavutukset ladatuksi ennen tarkistuksia
   // Tämä korjaa tilanteen jossa taso-saavutukset puuttuvat uudella laitteella
   await achInit();
   achCheck('first_login');
+  // MAT-90: Talteen edellinen pelipäivä ENNEN checkDailyStreak:n päivitystä,
+  // jotta checkSituationalReactions voi havaita tauon (comeback-reaktio).
+  const _prevLastPlayed = (pName && pChar)
+    ? (localStorage.getItem(`matikka_daily_${pName}:${pChar}`) || '')
+    : '';
   // MAT-18: Päiväputki-seuranta
   checkDailyStreak();
+  // MAT-90: Tilannekohtaiset reaktiot (aamu/ilta, comeback, vuosipäivä, streak-virstat)
+  try { checkSituationalReactions(_prevLastPlayed); } catch (e) { console.warn('MAT-90 reactions:', e); }
   // MAT-88: Päivitä yläpalkin tilastot heti, jotta shield-badge näkyy loginin jälkeen
   if (typeof updStats === 'function') updStats();
   // MAT-87: Päivän haaste -laatikko
@@ -3113,10 +3181,12 @@ async function startGame(){
         .catch(()=>{});
     }
   } catch {}
-  // Tarkista tasosaavutukset heti pelin alkaessa — korjaa Troy-tapauksen
-  // jossa pelaaja on jo tasolla 50 mutta saavutus ei ole rekisteröitynyt
+  // MAT-89: Tasosaavutukset käyttävät maxModeLevel() — riittää että yksikin moodi
+  // on tasolla 50 jotta "GRAND MASTER"-saavutus avautuu. Varsinainen Grand Master
+  // -diplomi vaatii kaikkia viittä moodi-diplomia (ks. checkDiplomas).
+  const maxLvl = maxModeLevel();
   [10,20,30,40,50].forEach(l => {
-    if (srData.diffLevel >= l) checkLevelAchievement(l);
+    if (maxLvl >= l) checkLevelAchievement(l);
   });
 }
 
@@ -3149,7 +3219,7 @@ function logout(dest) {
   pName = ''; pChar = '';
   // Nollaa pelitila
   corr = 0; streak = 0; pts = 0; rDone = 0; ans = '';
-  srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:new Date().toISOString().slice(0,10), pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 };
+  srData = { weights:{}, roundsPlayed:0, diffLevel:1, diffLevels:{h:1,a:1,s:1,m:1,p:1}, diplomas:defaultDiplomas(), globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:new Date().toISOString().slice(0,10), pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0, tunneMorkoEnabled:true, firstPlayedAt:null, reactCooldowns:{}, lastReactDay:null };
   closeSettings();
   if (dest === 'home') {
     window.location.href = 'index.html';
@@ -3174,6 +3244,72 @@ let maxStreakThisRound = 0; // BUG-002 fix: seuraa kierroksen parasta putkea
 
 const SR_KEY = 'matikka_sr_v1'; // localStorage avain
 
+// ══ MAT-89: DIPLOMIT ══════════════════════════════
+// Viisi moodi-kohtaista mestaridiplomia + Grand Master joka aukeaa kun kaikki 5 on saavutettu.
+// Kriteeri: pelaajan taso kyseisessä moodissa on >= 50.
+const DIPLOMAS = [
+  { id:'h',  mode:'h', icon:'🔢', color:'#f7c948', name:'Hajotelma-mestari',   title:'HAJOTELMA-MESTARI',   subtitle:'Taso 50 hajotelmissa',       criterion: () => (srData.diffLevels?.h||1) >= 50 },
+  { id:'a',  mode:'a', icon:'➕', color:'#5de8b5', name:'Yhteenlasku-mestari', title:'YHTEENLASKU-MESTARI', subtitle:'Taso 50 yhteenlaskussa',     criterion: () => (srData.diffLevels?.a||1) >= 50 },
+  { id:'s',  mode:'s', icon:'➖', color:'#ff6b6b', name:'Vähennys-mestari',    title:'VÄHENNYS-MESTARI',    subtitle:'Taso 50 vähennyslaskussa',   criterion: () => (srData.diffLevels?.s||1) >= 50 },
+  { id:'m',  mode:'m', icon:'✖️', color:'#7b9fff', name:'Kertotaulu-mestari',  title:'KERTOTAULU-MESTARI',  subtitle:'Taso 50 kertotaulussa',      criterion: () => (srData.diffLevels?.m||1) >= 50 },
+  { id:'p',  mode:'p', icon:'💯', color:'#c56cf0', name:'Prosentti-mestari',   title:'PROSENTTI-MESTARI',   subtitle:'Taso 50 prosenttilaskussa',  criterion: () => (srData.diffLevels?.p||1) >= 50 },
+  { id:'gm', mode:null,icon:'👑', color:'#c9a84c', name:'Grand Master',        title:'GRAND MASTER',        subtitle:'Kaikki 5 mestaridiplomia',   criterion: () => ['h','a','s','m','p'].every(k => srData.diplomas?.[k]?.earned) }
+];
+function defaultDiplomas() {
+  const o = {};
+  for (const d of DIPLOMAS) o[d.id] = { earned:false, earnedAt:null, printedCount:0 };
+  return o;
+}
+function maxModeLevel() {
+  if (!srData || !srData.diffLevels) return srData?.diffLevel || 1;
+  return Math.max(1, ...Object.values(srData.diffLevels));
+}
+// Queue moduli — jos useampi diplomi avautuu yhtä aikaa, modaalit näytetään peräkkäin
+let diplomaQueue = [];
+let diplomaQueueRunning = false;
+function enqueueDiploma(id) {
+  diplomaQueue.push(id);
+  if (!diplomaQueueRunning) runDiplomaQueue();
+}
+function runDiplomaQueue() {
+  if (!diplomaQueue.length) { diplomaQueueRunning = false; return; }
+  diplomaQueueRunning = true;
+  const next = diplomaQueue.shift();
+  setTimeout(() => {
+    openDiploma(next);
+    // Kun modaali suljetaan, queue jatkuu — closeDiploma tarkistaa jonon
+  }, 500);
+}
+function checkDiplomas() {
+  if (!srData) return [];
+  if (!srData.diplomas) srData.diplomas = defaultDiplomas();
+  const newly = [];
+  // Ensin moodi-diplomat, sitten GM (jotta GM näkee uudet mestarit)
+  for (const d of DIPLOMAS) {
+    if (d.id === 'gm') continue;
+    if (!srData.diplomas[d.id]?.earned && d.criterion()) {
+      srData.diplomas[d.id] = { earned:true, earnedAt:Date.now(), printedCount:0 };
+      newly.push(d);
+    }
+  }
+  // Grand Master viimeisenä
+  const gmDef = DIPLOMAS.find(x => x.id === 'gm');
+  if (gmDef && !srData.diplomas.gm?.earned && gmDef.criterion()) {
+    srData.diplomas.gm = { earned:true, earnedAt:Date.now(), printedCount:0, adminNotified:false };
+    newly.push(gmDef);
+    // MAT-89: Admin-ilmoitus vain kun GM saadaan
+    if (typeof notifyAdminGrandMaster === 'function') notifyAdminGrandMaster();
+  }
+  if (newly.length) {
+    srSave(srData);
+    // Queueta modaalit — näytetään peräkkäin
+    for (const d of newly) enqueueDiploma(d.id);
+    if (typeof updateDiplomaBtn === 'function') updateDiplomaBtn();
+    if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
+  }
+  return newly;
+}
+
 // ── localStorage apufunktiot ──────────────────────
 // Huom: avain on pelaaja-kohtainen (ei moodi-kohtainen)
 // Taso on yhteinen kaikille moodeille — vain weights ovat moodi-kohtaisia
@@ -3182,10 +3318,28 @@ function srLocalLoad(name, char, md) {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
     const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0, xp:0 };
+    // MAT-89: per-mode diff levels. Jos diffLevels puuttuu, migraatio vanhasta
+    // yhteisestä diffLevel-arvosta kaikkiin moodeihin.
+    let diffLevels = playerData.diffLevels;
+    if (!diffLevels || typeof diffLevels !== 'object') {
+      const legacy = playerData.diffLevel || 1;
+      diffLevels = { h:legacy, a:legacy, s:legacy, m:legacy, p:legacy };
+    } else {
+      // Varmista että kaikki moodit löytyvät
+      for (const k of ['h','a','s','m','p']) if (!diffLevels[k]) diffLevels[k] = 1;
+    }
+    const curLevel = diffLevels[md] || 1;
+    // MAT-89: Diplomat — alusta default jos puuttuu
+    const diplomas = playerData.diplomas && typeof playerData.diplomas === 'object'
+      ? playerData.diplomas : defaultDiplomas();
+    // Varmista että kaikki DIPLOMAS-id:t löytyvät
+    for (const d of DIPLOMAS) if (!diplomas[d.id]) diplomas[d.id] = { earned:false, earnedAt:null, printedCount:0 };
     return {
       weights:                    playerData.modeWeights?.[md] || {},
       roundsPlayed:               playerData.roundsPlayed       || 0,
-      diffLevel:                  playerData.diffLevel           || 1,
+      diffLevel:                  curLevel,
+      diffLevels:                 diffLevels,
+      diplomas:                   diplomas,
       globalStreak:               playerData.globalStreak        || 0,
       levelDropCooldown:          playerData.levelDropCooldown   || 0,
       xp:                         playerData.xp                  || 0,
@@ -3198,8 +3352,13 @@ function srLocalLoad(name, char, md) {
       dailyQuests:                playerData.dailyQuests        || {},
       dailyQuestProgress:         playerData.dailyQuestProgress || null,
       dailyBonusPts:              playerData.dailyBonusPts      || 0,
+      // MAT-90 Tunne-mörkö -kentät
+      tunneMorkoEnabled:          playerData.tunneMorkoEnabled ?? true,
+      firstPlayedAt:              playerData.firstPlayedAt      || null,
+      reactCooldowns:             playerData.reactCooldowns     || {},
+      lastReactDay:               playerData.lastReactDay       || null,
     };
-  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, streakShields:null, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 }; }
+  } catch { return { weights:{}, roundsPlayed:0, diffLevel:1, diffLevels:{h:1,a:1,s:1,m:1,p:1}, diplomas:defaultDiplomas(), globalStreak:0, levelDropCooldown:0, xp:0, streakShields:null, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0, tunneMorkoEnabled:true, firstPlayedAt:null, reactCooldowns:{}, lastReactDay:null }; }
 }
 
 function srLocalSave(name, char, md, data) {
@@ -3207,7 +3366,16 @@ function srLocalSave(name, char, md, data) {
     const all = JSON.parse(localStorage.getItem(SR_KEY) || '{}');
     const playerKey = `${name}:${char}`;
     const playerData = all[playerKey] || { roundsPlayed:0, diffLevel:1, modeWeights:{}, globalStreak:0, levelDropCooldown:0, xp:0 };
-    playerData.diffLevel          = data.diffLevel;
+    // MAT-89: Synkronoi nykyinen diffLevel takaisin diffLevels[md]:een
+    const diffLevels = (data.diffLevels && typeof data.diffLevels === 'object')
+      ? { ...data.diffLevels } : { h:1, a:1, s:1, m:1, p:1 };
+    if (md) diffLevels[md] = data.diffLevel;
+    playerData.diffLevels         = diffLevels;
+    // Legacy diffLevel = max kaikista moodeista → taaksepäinyhteensopivuus vanhalle koodille
+    playerData.diffLevel          = Math.max(1, ...Object.values(diffLevels));
+    // MAT-89: Diplomat — tallennetaan vain localStorageen toistaiseksi
+    // TODO MAT-89: Supabase-jsonb-sarake diplomas-kentälle (player_progress-taulu)
+    if (data.diplomas !== undefined) playerData.diplomas = data.diplomas;
     playerData.roundsPlayed       = data.roundsPlayed;
     playerData.globalStreak       = data.globalStreak       || 0;
     playerData.levelDropCooldown  = data.levelDropCooldown  || 0;
@@ -3222,6 +3390,11 @@ function srLocalSave(name, char, md, data) {
     if (data.dailyQuests        !== undefined) playerData.dailyQuests        = data.dailyQuests;
     if (data.dailyQuestProgress !== undefined) playerData.dailyQuestProgress = data.dailyQuestProgress;
     if (data.dailyBonusPts      !== undefined) playerData.dailyBonusPts      = data.dailyBonusPts;
+    // MAT-90 Tunne-mörkö -kentät
+    if (data.tunneMorkoEnabled  !== undefined) playerData.tunneMorkoEnabled  = data.tunneMorkoEnabled;
+    if (data.firstPlayedAt      !== undefined) playerData.firstPlayedAt      = data.firstPlayedAt;
+    if (data.reactCooldowns     !== undefined) playerData.reactCooldowns     = data.reactCooldowns;
+    if (data.lastReactDay       !== undefined) playerData.lastReactDay       = data.lastReactDay;
     if (!playerData.modeWeights) playerData.modeWeights = {};
     playerData.modeWeights[md] = data.weights;
     all[playerKey] = playerData;
@@ -3232,15 +3405,20 @@ function srLocalSave(name, char, md, data) {
 // ── Supabase SR: lataa pelaajan edistyminen ───────
 async function srRemoteLoad(name, char, md) {
   try {
-    // Hae kaikki moodit tälle pelaajalle — otetaan korkein diffLevel
+    // MAT-89: Per-mode diff levels — palauta kaikkien moodien tasot
     const url = `${SB_URL}/rest/v1/player_progress?player_name=eq.${encodeURIComponent(name)}&player_char=eq.${encodeURIComponent(char)}&select=*`;
     const res = await fetch(url, { headers: SB_HEADERS });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const rows = await res.json();
     if (!rows.length) return null;
 
-    // Korkein taso kaikista moodeista = pelaajan oikea taso
-    const maxLevel    = Math.max(...rows.map(r => r.diff_level || 1));
+    // Rakenna diffLevels-objekti moodi-riveistä
+    const diffLevels = { h:1, a:1, s:1, m:1, p:1 };
+    for (const r of rows) {
+      if (r.mode && diffLevels.hasOwnProperty(r.mode)) {
+        diffLevels[r.mode] = r.diff_level || 1;
+      }
+    }
     const totalRounds = rows.reduce((s, r) => s + (r.rounds_played || 0), 0);
     // Moodi-kohtaiset painot nykyiselle moodille
     const modeRow = rows.find(r => r.mode === md);
@@ -3248,7 +3426,8 @@ async function srRemoteLoad(name, char, md) {
     return {
       weights:      modeRow?.weights       || {},
       roundsPlayed: totalRounds,
-      diffLevel:    maxLevel
+      diffLevel:    diffLevels[md] || 1,
+      diffLevels:   diffLevels
     };
   } catch (err) {
     console.warn('SR remote load failed:', err.message);
@@ -3268,7 +3447,8 @@ async function srRemoteLoad(name, char, md) {
 // myös ilman migraatiota — tila vain ei synkronoidu laitteiden välillä.
 async function srRemoteSave(name, char, md, data) {
   try {
-    // Tallenna moodi-kohtainen rivi mutta käytä yhteistä diffLevel:ä
+    // MAT-89: Per-mode save — tallennetaan VAIN nykyinen moodi ja sen oma taso.
+    // Muiden moodien tasoja ei enää ylikirjoiteta tämän moodin tasolla.
     const res = await fetch(`${SB_URL}/rest/v1/player_progress`, {
       method: 'POST',
       headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
@@ -3283,26 +3463,6 @@ async function srRemoteSave(name, char, md, data) {
       })
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    // Synkronoi taso kaikkiin moodeihin upsertilla
-    // merge-duplicates päivittää vain diff_level jos rivi on olemassa,
-    // tai luo uuden rivin jos ei ole — rounds_played ei nollaudu
-    const otherModes = ['h','a','s','m'].filter(m => m !== md);
-    await Promise.all(otherModes.map(otherMode =>
-      fetch(`${SB_URL}/rest/v1/player_progress`, {
-        method: 'POST',
-        headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
-        body: JSON.stringify({
-          player_name:   name,
-          player_char:   char,
-          mode:          otherMode,
-          weights:       {},
-          diff_level:    data.diffLevel,
-          rounds_played: 0,
-          updated_at:    new Date().toISOString()
-        })
-      }).catch(()=>{})
-    ));
   } catch (err) {
     console.warn('SR remote save failed:', err.message);
   }
@@ -3504,7 +3664,7 @@ function startDailyQuestCountdown(){
 }
 
 // Adaptiivinen tila per kierros
-let srData = { weights:{}, roundsPlayed:0, diffLevel:1, globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0 };
+let srData = { weights:{}, roundsPlayed:0, diffLevel:1, diffLevels:{h:1,a:1,s:1,m:1,p:1}, diplomas:defaultDiplomas(), globalStreak:0, levelDropCooldown:0, xp:0, consecutiveGoodRounds:0, streakShields:1, lastShieldGivenAt:null, pendingShieldNotice:null, dailyQuests:{}, dailyQuestProgress:null, dailyBonusPts:0, tunneMorkoEnabled:true, firstPlayedAt:null, reactCooldowns:{}, lastReactDay:null };
 let retryQueue   = [];
 let roundHistory = [];
 let roundUsedKeys = new Set(); // MAT-57: estää saman tehtävän toistumisen kierroksen sisällä
@@ -3532,7 +3692,7 @@ const SKINS = [
     name: 'Jäämörkö',
     emoji: '❄️',
     unlock: '❄️ Taso 10 saavutettu',
-    req: () => srData.diffLevel >= 10,
+    req: () => maxModeLevel() >= 10,
     vars: { '--mk-body':'#2980b9','--mk-body2':'#3498db','--mk-light':'#aed6f1','--mk-light2':'#d6eaf8','--mk-light3':'#85c1e9','--mk-dark':'#1a5276' }
   },
   {
@@ -3540,7 +3700,7 @@ const SKINS = [
     name: 'Kultamörkö',
     emoji: '✨',
     unlock: '✨ Taso 30 saavutettu',
-    req: () => srData.diffLevel >= 30,
+    req: () => maxModeLevel() >= 30,
     vars: { '--mk-body':'#d4ac0d','--mk-body2':'#f1c40f','--mk-light':'#fdebd0','--mk-light2':'#fef9e7','--mk-light3':'#f9e79f','--mk-dark':'#9a7d0a' }
   },
   {
@@ -3556,7 +3716,7 @@ const SKINS = [
     name: 'Grand Master',
     emoji: '👑',
     unlock: '👑 Taso 50 — Grand Master',
-    req: () => srData.diffLevel >= 50,
+    req: () => maxModeLevel() >= 50,
     vars: { '--mk-body':'#6c3483','--mk-body2':'#8e44ad','--mk-light':'#d7bde2','--mk-light2':'#f4ecf7','--mk-light3':'#c39bd3','--mk-dark':'#4a235a' }
   },
 ];
@@ -3666,7 +3826,37 @@ function updDiffLabel() {
   updAccessories();
   // Prosenttimoodi avautuu tasolla 8+
   const pBtn = document.getElementById('btn-p');
-  if (pBtn) pBtn.style.display = srData.diffLevel >= 8 ? '' : 'none';
+  // MAT-89: Prosenttimoodi aukeaa kun MIKÄ TAHANSA moodi on tasolla 8+
+  if (pBtn) pBtn.style.display = maxModeLevel() >= 8 ? '' : 'none';
+  // MAT-89: Päivitä lähin diplomi -banneri
+  if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
+}
+
+// MAT-89: Näyttää etusivulla "lähimmän" diplomin (suurin progress% ansaitsemattomista)
+function updateNearestDiplomaBanner() {
+  const banner = document.getElementById('nearestDiplomaBanner');
+  if (!banner) return;
+  if (!srData?.diffLevels) { banner.style.display = 'none'; return; }
+  // Laske progress-%% jokaiselle ansaitsemattomalle moodi-diplomille
+  // Grand Master jätetään pois — se on johdannainen
+  const unearned = DIPLOMAS.filter(d => d.mode && !srData.diplomas?.[d.id]?.earned);
+  if (!unearned.length) { banner.style.display = 'none'; return; }
+  let best = null;
+  for (const d of unearned) {
+    const lvl = srData.diffLevels[d.mode] || 1;
+    const prog = Math.min(100, Math.round((lvl / 50) * 100));
+    if (!best || prog > best.prog) best = { d, lvl, prog };
+  }
+  if (!best) { banner.style.display = 'none'; return; }
+  banner.style.display = 'flex';
+  const ndIcon = document.getElementById('ndIcon');
+  const ndName = document.getElementById('ndName');
+  const ndProgress = document.getElementById('ndProgress');
+  const ndFill = document.getElementById('ndBarFill');
+  if (ndIcon) ndIcon.textContent = best.d.icon;
+  if (ndName) { ndName.textContent = best.d.name; ndName.style.color = best.d.color; }
+  if (ndProgress) ndProgress.textContent = `Taso ${best.lvl}/50 (${best.prog}%)`;
+  if (ndFill) ndFill.style.width = best.prog + '%';
 }
 
 // Päivitä mörkön varusteet tason mukaan
@@ -3804,6 +3994,17 @@ function srRecord(p, correct) {
 // playedRange = käyttäjän valitsema lukualue tällä kierroksella
 // Taso nousee VAIN jos pelaaja pelasi tason sallimalla täydellä lukualueella
 function srEvaluateRound(pct, playedRange) {
+  // MAT-90: Rauhoittava kierros — palauta edellinen taso, ei tasoarviointia
+  if (srData._calmingMode) {
+    srData.diffLevel = srData._calmingPrevLevel || srData.diffLevel;
+    if (srData.diffLevels) srData.diffLevels[mode] = srData.diffLevel;
+    delete srData._calmingMode;
+    delete srData._calmingPrevLevel;
+    srData.roundsPlayed++;
+    updDiffLabel();
+    srSave(srData);
+    return { changed: false, newLevel: srData.diffLevel, calming: true };
+  }
   srData.roundsPlayed++;
 
   // XP: jokainen kierros antaa 1 XP (max 5)
@@ -3853,18 +4054,26 @@ function srEvaluateRound(pct, playedRange) {
     }
     srData.consecutiveGoodRounds = 0;
     srData.diffLevel++;
+    // MAT-89: Kirjoita uusi taso takaisin diffLevels[mode]
+    if (srData.diffLevels) srData.diffLevels[mode] = srData.diffLevel;
     srData.xp = 0;
     updDiffLabel();
     srSave(srData);
     if (srData.diffLevel % 10 === 0) checkLevelAchievement(srData.diffLevel);
+    // MAT-89: Tarkista diplomit tasonnousun jälkeen
+    if (typeof checkDiplomas === 'function') checkDiplomas();
+    if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
     return { changed: true, up: true, newLevel: srData.diffLevel };
   } else if (pct < 50 && srData.diffLevel > 1) {
     srData.consecutiveGoodRounds = 0; // nollaa putki
     srData.diffLevel--;
+    // MAT-89: Kirjoita uusi taso takaisin diffLevels[mode]
+    if (srData.diffLevels) srData.diffLevels[mode] = srData.diffLevel;
     srData.xp = 0;
     srData.levelDropCooldown = 3;
     updDiffLabel();
     srSave(srData);
+    if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
     return { changed: true, up: false, newLevel: srData.diffLevel };
   } else {
     // Keskinkertainen kierros nollaa peräkkäisten hyvien kierrosten putken
@@ -3980,8 +4189,9 @@ function checkLevelAchievement(level) {
   const id = ids[level];
   if (id) {
     achCheck(id);
-    // Grand Master -ilmoitus adminille
-    if (level === 50) notifyAdminGrandMaster();
+    // MAT-89: notifyAdminGrandMaster kutsutaan nyt vain kun gm-diplomi aukeaa
+    // (ks. checkDiplomas). Pelaajan ei tarvitse saavuttaa tasoa 50 kaikissa
+    // moodeissa — riittää että yhdessä moodissa taso on 50 → level_50-saavutus.
   }
 }
 
@@ -4153,35 +4363,66 @@ function buildTablesGrid(){
   for(let i=1;i<=10;i++){const el=document.createElement('div');el.className='ti'+(i===selTable?' active':'');el.textContent=i+'×';el.onclick=()=>{selTable=i;document.querySelectorAll('.ti').forEach((x,j)=>x.className='ti'+(j+1===i?' active':''));restartRound();};g.appendChild(el);}
 }
 function setMode(m){
+  const prevMode = mode;
+  // MAT-89: Ennen moodin vaihtoa, varmista että vanhan moodin taso on tallennettu
+  // diffLevels-objektiin (se on saattanut muuttua kierroksen aikana)
+  if (srData && srData.diffLevels && prevMode) {
+    srData.diffLevels[prevMode] = srData.diffLevel;
+    // Tallenna vanhan moodin tila ennen uuden latausta
+    srLocalSave(pName, pChar, prevMode, srData);
+  }
   mode=m;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('btn-'+m).classList.add('active');
   // Prosenttimoodi: piilota sekä lukualue että kertotaulu-valitsin
   document.getElementById('rangeSection').style.display = (m==='m'||m==='p') ? 'none' : 'block';
   document.getElementById('tableSection').style.display  = m==='m' ? 'block' : 'none';
-  // Lataa moodi-kohtaiset painot mutta säilytä yhteinen taso
-  const currentLevel = srData.diffLevel;
+  // MAT-89: Lataa moodi-kohtaiset painot + uuden moodin oma taso.
+  // Roundsplayed ja daily quest -kentät säilytetään pelaajakohtaisina.
   const currentRounds = srData.roundsPlayed;
-  // MAT-87: Säilytä myös päivän haaste -kentät jotka eivät kuulu moodi-kohtaiseen tilaan
   const currentDailyQuests = srData.dailyQuests;
   const currentDailyQuestProgress = srData.dailyQuestProgress;
   const currentDailyBonusPts = srData.dailyBonusPts;
+  const currentDiplomas = srData.diplomas;
+  const currentDiffLevels = srData.diffLevels;
   srData = srLocalLoad(pName, pChar, m);
-  srData.diffLevel = currentLevel;
+  // Uuden moodin taso tulee diffLevels[m]:stä
+  if (currentDiffLevels) srData.diffLevels = currentDiffLevels;
+  srData.diffLevel = (srData.diffLevels && srData.diffLevels[m]) || srData.diffLevel || 1;
   srData.roundsPlayed = currentRounds;
   srData.dailyQuests = currentDailyQuests;
   srData.dailyQuestProgress = currentDailyQuestProgress;
   srData.dailyBonusPts = currentDailyBonusPts;
+  if (currentDiplomas) srData.diplomas = currentDiplomas;
   updDiffLabel();
   srRemoteLoad(pName, pChar, m).then(remote => {
     if (remote) {
       srData.weights = remote.weights;
+      // MAT-89: Jos remote-tieto sisältää tasomatseja, päivitä ne
+      if (remote.diffLevels) {
+        let levelChanged = false;
+        for (const k of Object.keys(remote.diffLevels)) {
+          if ((remote.diffLevels[k] || 1) > (srData.diffLevels[k] || 1)) {
+            srData.diffLevels[k] = remote.diffLevels[k];
+            levelChanged = true;
+          }
+        }
+        srData.diffLevel = srData.diffLevels[m] || 1;
+        updDiffLabel();
+        // MAT-89 fix: Cross-device level-up → tarkista diplomit
+        if (levelChanged && typeof checkDiplomas === 'function') {
+          checkDiplomas();
+          if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
+        }
+      }
       srLocalSave(pName, pChar, m, srData);
     }
   }).catch(()=>{});
   restartRound();
   // MAT-87: Päivitä päivän haaste -laatikko moodin vaihdon yhteydessä
   if (typeof renderDailyQuestBox === 'function') renderDailyQuestBox();
+  // MAT-89: Päivitä lähin diplomi -banneri
+  if (typeof updateNearestDiplomaBanner === 'function') updateNearestDiplomaBanner();
 }
 function setRange(r,el){
   range=r;
@@ -4232,6 +4473,8 @@ function restartRound(){
     // Päivitä vain tason lasku jos menee todella huonosti — ei tason nousua osittaisesta
     if (partialPct < 50 && srData.diffLevel > 1) {
       srData.diffLevel--;
+      // MAT-89: Kirjoita uusi taso takaisin diffLevels[mode]
+      if (srData.diffLevels) srData.diffLevels[mode] = srData.diffLevel;
       srData.levelDropCooldown = 3;
       updDiffLabel();
       srSave(srData);
@@ -4240,6 +4483,7 @@ function restartRound(){
   rDone=0;ans='';busy=false;corr=0;streak=0;pts=0;maxStreakThisRound=0;
   retryQueue=[];roundHistory=[];roundUsedKeys=new Set();roundStartTime=Date.now();
   hintUsedThisProblem=false;hintsUsedThisRound=0;
+  wrongStreak=0; // MAT-90: frustraatio-laskuri nollaan uuden kierroksen alussa
   document.getElementById('resultsPanel').classList.remove('show');
   document.getElementById('exerciseView').style.display='block';
   monsterFace('normal');updProg();updStats();newProblem();
@@ -4413,6 +4657,150 @@ function monsterEatNumber(numText) {
   wrap.appendChild(el);
   setTimeout(() => el.remove(), 600);
 }
+
+// ══ MAT-90: TUNNE-MÖRKÖ — EMPATIA JA SEL-TAIDOT ═══════════════════
+// Mörkö reagoi pelaajan tunnetilaan hienovaraisilla puhekuplilla.
+// Käyttää olemassa olevaa #speechBubble-kuplaa (jaettu MAT-29:n kanssa).
+const MORKO_REACTIONS = {
+  frustration:        { main:'Hei, otetaan tauko! 🌬️', hint:'Hengitellään syvään yhdessä...', face:'sad', anim:'sad', cooldownMin:8, holdMs:4500 },
+  highFive:           { mains:['Wau, sinä rokkaat tänään! 🌟','Uskomatonta! ⭐','Olet tulessa! 🔥'], hint:'Jatka samaan malliin!', face:'happy', anim:'dance', cooldownMin:2, holdMs:3500 },
+  morning:            { main:'Hyvää huomenta! ☀️', hint:'Oletko valmis matikkaan?', face:'happy', anim:'jump', cooldownMin:600, holdMs:4000 },
+  evening:            { main:'Hyvät illansi!', hint:'Älä syö liikaa numeroita unissasi 😴', face:'happy', cooldownMin:600, holdMs:4000 },
+  comeback:           { main:'Olen ikävöinyt sinua! 🥺', hint:'Kiva että palasit!', face:'sad', cooldownMin:1440, holdMs:4500 },
+  badDay:             { main:'Ei haittaa, huominen on uusi päivä.', hint:'Olit silti rohkea kun yritit! ❤️', face:'normal', cooldownMin:30, holdMs:5000 },
+  perfectRound:       { main:'Täydellinen kierros! 💎', hint:'Sinä olet matikka-ahmatti!', face:'happy', anim:'dance', cooldownMin:1, holdMs:4000 },
+  anniversary:        { main:'Tänään on erityinen päivä! 🎂', hint:'Olemme pelanneet yhdessä jo vuoden!', face:'happy', anim:'jump', cooldownMin:10080, holdMs:6000 },
+  streakMilestone10:  { main:'10 päivän putki! 🔥', hint:'Olet uskomaton!', face:'happy', anim:'dance', cooldownMin:10080, holdMs:5000 },
+  streakMilestone30:  { main:'30 päivää peräkkäin! 🏆', hint:'Kuukausi matikkaa — upeaa!', face:'happy', anim:'dance', cooldownMin:10080, holdMs:5500 },
+  streakMilestone100: { main:'100 PÄIVÄÄ! 🌟🌟🌟', hint:'Olet LEGENDA!', face:'happy', anim:'dance', cooldownMin:43200, holdMs:7000 }
+};
+
+function monsterReact(situation, options) {
+  // Toggle pois → ei reaktioita
+  if (srData.tunneMorkoEnabled === false) return false;
+  const def = MORKO_REACTIONS[situation];
+  if (!def) return false;
+
+  // Cooldown-tarkistus
+  if (!srData.reactCooldowns) srData.reactCooldowns = {};
+  const cdMs = (def.cooldownMin || 0) * 60 * 1000;
+  const last = srData.reactCooldowns[situation] || 0;
+  if (cdMs > 0 && (Date.now() - last) < cdMs) return false;
+
+  const bubble = document.getElementById('speechBubble');
+  const mainEl = document.getElementById('bubbleMain');
+  const hintEl = document.getElementById('bubbleHint');
+  if (!bubble || !mainEl || !hintEl) return false;
+
+  // Piilota mahdollinen MAT-29 kupla ensin
+  hideExplain();
+
+  // Valitse main-teksti (mains[random] tai main)
+  const mainTxt = Array.isArray(def.mains)
+    ? def.mains[Math.floor(Math.random() * def.mains.length)]
+    : def.main;
+  mainEl.textContent = mainTxt || '';
+  hintEl.textContent = def.hint || '';
+
+  // Owner-merkki estää MAT-29:n tekstien korvaamisen holdMs:n aikana
+  bubble.dataset.owner = 'mat90';
+  bubble.classList.add('visible');
+
+  // Mörön ilme + animaatio
+  if (def.face && typeof monsterFace === 'function') monsterFace(def.face);
+  if (def.anim && typeof monsterAnimate === 'function') monsterAnimate(def.anim, 900);
+
+  const holdMs = def.holdMs || 4000;
+  setTimeout(() => {
+    // Jos joku toinen systeemi on jo ottanut kuplan haltuun, älä koske
+    if (bubble.dataset && bubble.dataset.owner === 'mat90') {
+      bubble.classList.remove('visible');
+      delete bubble.dataset.owner;
+    }
+  }, holdMs);
+
+  // Tallenna cooldown
+  srData.reactCooldowns[situation] = Date.now();
+  const today = new Date().toISOString().slice(0, 10);
+  srData.lastReactDay = today;
+  srSave(srData);
+  return true;
+}
+
+// Frustraatio: jos 3 peräkkäistä väärin, tai viimeisestä 5:stä >60% väärin
+function shouldTriggerFrustration() {
+  if (wrongStreak >= 3) return true;
+  if (roundHistory.length >= 5) {
+    const last5 = roundHistory.slice(-5);
+    const wrongs = last5.filter(h => !h.correct).length;
+    if (wrongs / 5 > 0.6) return true;
+  }
+  return false;
+}
+
+// Tarkistaa tilannekohtaiset reaktiot startGame:n lopussa
+// (kutsutaan checkDailyStreak:n jälkeen jotta srData.dayStreak on ajan tasalla).
+// prevLastPlayed = matikka_daily_... -avaimen arvo ENNEN checkDailyStreak:n päivitystä.
+function checkSituationalReactions(prevLastPlayed) {
+  if (srData.tunneMorkoEnabled === false) return;
+  if (!pName || !pChar) return;
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Lazy init: ensimmäinen pelipäivä talteen
+  if (!srData.firstPlayedAt) {
+    srData.firstPlayedAt = today;
+    srSave(srData);
+  }
+
+  // 1) Comeback — jos yli 3 päivää taukoa
+  if (prevLastPlayed) {
+    try {
+      const last = new Date(prevLastPlayed + 'T00:00:00');
+      const now  = new Date(today + 'T00:00:00');
+      const daysAway = Math.round((now - last) / 86400000);
+      if (daysAway > 3) {
+        setTimeout(() => monsterReact('comeback'), 900);
+        return;
+      }
+    } catch {}
+  }
+
+  // 2) Anniversary — sama kk+pv ja firstPlayedAt vähintään vuoden vanha
+  try {
+    const firstStr = srData.firstPlayedAt;
+    if (firstStr && firstStr !== today) {
+      const first = new Date(firstStr + 'T00:00:00');
+      const now   = new Date(today + 'T00:00:00');
+      const sameMonthDay = first.getMonth() === now.getMonth() && first.getDate() === now.getDate();
+      const yearsDiff    = now.getFullYear() - first.getFullYear();
+      if (sameMonthDay && yearsDiff >= 1) {
+        setTimeout(() => monsterReact('anniversary'), 900);
+      }
+    }
+  } catch {}
+
+  // 3) Streak-virstanpylväät
+  const dayStreak = srData.dayStreak || 0;
+  if (dayStreak === 100) {
+    setTimeout(() => monsterReact('streakMilestone100'), 1200);
+  } else if (dayStreak === 30) {
+    setTimeout(() => monsterReact('streakMilestone30'), 1200);
+  } else if (dayStreak === 10) {
+    setTimeout(() => monsterReact('streakMilestone10'), 1200);
+  }
+
+  // 4) Aamu/ilta — vain kerran päivässä
+  if (srData.lastReactDay !== today) {
+    const hour = new Date().getHours();
+    if (hour >= 6 && hour <= 9) {
+      setTimeout(() => monsterReact('morning'), 1500);
+    } else if (hour >= 18 && hour <= 21) {
+      setTimeout(() => monsterReact('evening'), 1500);
+    }
+  }
+}
+
 function np(n){if(busy||ans.length>=4)return;primeAudio();hideExplain();ans+=n;updB();}
 function npc(){if(busy)return;ans=ans.slice(0,-1);updB();}
 function npa(){if(busy)return;ans='';updB();}
@@ -4505,6 +4893,9 @@ window.testMiniLesson = function(t, m){
   mlShow({ type:'m', t:t, m:m }, ()=>console.log('[MAT-73] mini-oppitunti suljettu'));
 };
 
+// MAT-90: Frustration-tracking — peräkkäisten väärien määrä tällä kierroksella
+let wrongStreak = 0;
+
 function ck(){
   if(!ans||busy)return;
   const u=parseInt(ans),ok=u===prob.answer;busy=true;
@@ -4515,6 +4906,12 @@ function ck(){
   if(!ok) mlRecordMistake(prob);
   if(ok){
     streak++;corr++;
+    // MAT-90: Nollaa frustraatio-laskuri oikeasta vastauksesta
+    wrongStreak = 0;
+    // MAT-90: Korkea viitonen tietyissä putkissa
+    if (streak === 5 || streak === 10 || streak === 15 || streak === 20) {
+      setTimeout(() => monsterReact('highFive'), 800);
+    }
     // Globaali putki — kasvaa oikeista vastauksista ja säilyy kirjautumisten välillä
     srData.globalStreak = (srData.globalStreak || 0) + 1;
     if(streak > maxStreakThisRound) maxStreakThisRound = streak;
@@ -4543,6 +4940,8 @@ function ck(){
     if(streak>0&&streak%5===0)launchConfetti();
   }else{
     streak=0;
+    // MAT-90: Kasvata frustraatio-laskuria
+    wrongStreak++;
     srData.globalStreak = 0;
     srSave(srData);
     // MAT-87: Päivän haaste -seuranta väärästä vastauksesta
@@ -4553,6 +4952,10 @@ function ck(){
     if(bs){bs.style.color='var(--accent2)';bs.textContent=prob.answer;}
     sfxWrong(); monsterFace('wrong'); monsterAnimate('shake',550);
     explainWrong(prob);
+    // MAT-90: Jos frustraatio-kynnys ylittyy, ehdota taukoa hieman selityksen jälkeen
+    if (shouldTriggerFrustration()) {
+      setTimeout(() => monsterReact('frustration'), 2400);
+    }
     updStats();rDone++;updProg();
     // MAT-73: Tarkista pitäisikö avata mini-oppitunti (3 peräkkäistä virhettä samasta tehtävästä)
     const showLesson = mlShouldShow(prob);
@@ -4587,6 +4990,8 @@ function okMsg(){return['Oikein! 🎉','Mahtavaa! ⭐','Täsmälleen! ✨','Lois
 // Selitys väärästä vastauksesta — puhekuplana mörkön vieressä
 function explainWrong(p) {
   const bubble = document.getElementById('speechBubble');
+  // MAT-90: Jos Tunne-mörkö on juuri parhaillaan näyttämässä empatia-kuplaa, älä korvaa
+  if (bubble?.dataset?.owner === 'mat90') return;
   const main   = document.getElementById('bubbleMain');
   const hint   = document.getElementById('bubbleHint');
   if (!bubble) return;
@@ -4718,7 +5123,12 @@ function renderErrorAnalysis() {
 
 function hideExplain() {
   const bubble = document.getElementById('speechBubble');
-  if (bubble) bubble.classList.remove('visible');
+  if (bubble) {
+    bubble.classList.remove('visible');
+    // MAT-90 fix: vapauta omistus jotta MAT-29 explainWrong voi käyttää
+    // kuplaa seuraavalla virheellä eikä blokattua MAT-90:n holdMs-aikaikkunalla
+    delete bubble.dataset.owner;
+  }
 }
 function updStats(){
   const global = srData.globalStreak || 0;
@@ -4816,6 +5226,15 @@ async function showResults(){
   `;
   if(p>=70){ launchConfetti(); monsterFace('happy'); monsterAnimate('dance',1300); }
   else      { monsterFace('sad'); monsterAnimate('sad',1500); }
+  // MAT-90: Täydellinen kierros tai huono päivä — empaattinen reaktio
+  setTimeout(() => {
+    if (corr === rTotal) {
+      monsterReact('perfectRound');
+    } else if (p < 30) {
+      monsterReact('badDay');
+      if (typeof offerCalmingRound === 'function') offerCalmingRound();
+    }
+  }, 2200);
   sfxRoundEnd(p);
   checkAllAchievements(p, mode, levelRosedThisRound, atMaxLevel);
   renderErrorAnalysis(); // MAT-28
@@ -4868,21 +5287,64 @@ function switchMainTab(tab, el) {
   }
 
   if (tab==='ach') renderAchievements();
-  if (tab==='map') renderLevelMap();
+  if (tab==='map') { selectedMapMode = mode; renderLevelMap(); }
 }
 
+let selectedMapMode = null; // MAT-89: valittu moodi tasokartassa — null = nykyinen
 function renderLevelMap() {
   const container = document.getElementById('levelMap');
   if (!container) return;
 
-  const cur = srData.diffLevel;
+  // MAT-89: Jos moodi ei ole asetettu, oletuksena nykyinen moodi
+  if (!selectedMapMode) selectedMapMode = mode;
+  const showMode = selectedMapMode;
+  const cur = (srData.diffLevels?.[showMode]) || 1;
   const av  = pChar === 'boy' ? '🤴' : '👸';
   const pct = Math.round((Math.min(cur, 50) / 50) * 100);
 
+  const modeNames = { h:'Hajotelmat', a:'Yhteenlasku', s:'Vähennys', m:'Kertotaulu', p:'Prosentit' };
   document.getElementById('mapPlayerAv').textContent  = av;
   document.getElementById('mapPlayerName').textContent = pName;
-  document.getElementById('mapLevelInfo').textContent  = `Taso ${cur} / 50 · ${pct}% suoritettu`;
+  document.getElementById('mapLevelInfo').textContent  = `${modeNames[showMode] || ''} — Taso ${cur} / 50 · ${pct}% suoritettu`;
   document.getElementById('mapProgFill').style.width   = pct + '%';
+
+  // MAT-89: Diplomit-osio — 6 korttia (5 mestaria + GM)
+  const earnedCount = DIPLOMAS.filter(d => srData?.diplomas?.[d.id]?.earned).length;
+  const diplomasHtml = `
+    <div class="diplomas-section">
+      <h3>🎓 Diplomit (${earnedCount}/6)</h3>
+      <div class="diploma-grid">
+        ${DIPLOMAS.map(d => {
+          const earned = srData?.diplomas?.[d.id]?.earned;
+          let progress = 0;
+          let stateTxt = '';
+          if (d.id === 'gm') {
+            const n = DIPLOMAS.filter(x => x.mode && srData?.diplomas?.[x.id]?.earned).length;
+            progress = Math.round((n / 5) * 100);
+            stateTxt = earned ? '👑 Avattu!' : `${n}/5 mestaria`;
+          } else {
+            const lvl = srData?.diffLevels?.[d.mode] || 1;
+            progress = Math.min(100, Math.round((lvl / 50) * 100));
+            stateTxt = earned ? '✅ Avattu!' : `Taso ${lvl}/50`;
+          }
+          return `<div class="diploma-card ${earned ? 'earned' : 'locked'}" style="--d-color:${d.color};"
+            ${earned ? `onclick="openDiploma('${d.id}')"` : ''}>
+            <div class="d-icon">${d.icon}</div>
+            <div class="d-name">${d.name}</div>
+            <div class="d-bar"><div class="d-bar-fill" style="width:${progress}%"></div></div>
+            <div class="d-state">${stateTxt}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="map-mode-tabs">
+      ${['h','a','s','m','p'].map(mk => {
+        const active = showMode === mk ? 'active' : '';
+        const icons = { h:'🔢', a:'➕', s:'➖', m:'✖️', p:'💯' };
+        return `<button class="map-mode-tab ${active}" onclick="selectMapMode('${mk}')">${icons[mk]} ${modeNames[mk]}</button>`;
+      }).join('')}
+    </div>
+  `;
 
   // Jokaiselle tasolle uniikki kuvake + lyhyt nimi
   const LEVEL_DATA = [
@@ -4926,7 +5388,7 @@ function renderLevelMap() {
     return `1–${info.range}`;
   }
 
-  let html = '';
+  let html = diplomasHtml;
   zones.forEach(z => {
     html += `<div class="map-zone ${z.cls}">
       <div class="map-zone-label">
@@ -4965,6 +5427,12 @@ function renderLevelMap() {
   container.innerHTML = html;
 }
 
+// MAT-89: Vaihda tasokartan näyttämä moodi
+function selectMapMode(m) {
+  selectedMapMode = m;
+  renderLevelMap();
+}
+
 let mapTooltipEl = null;
 function showMapTooltip(e, lvl, pin=false) {
   if (!mapTooltipEl) {
@@ -4974,7 +5442,9 @@ function showMapTooltip(e, lvl, pin=false) {
   }
   const info  = DIFF_LEVELS[Math.min(lvl - 1, DIFF_LEVELS.length - 1)];
   const types = info.types.map(t => ({h:'Hajotelmat',a:'Yhteenlasku',s:'Vähennys',m:'Kertotaulu'}[t])).join(' · ');
-  const state = lvl < srData.diffLevel ? '✅ Suoritettu' : lvl === srData.diffLevel ? '🎯 Nykyinen' : '🔒 Lukittu';
+  // MAT-89: Käytä selectedMapMode:n tasoa
+  const mapLvl = (srData.diffLevels?.[selectedMapMode]) || srData.diffLevel || 1;
+  const state = lvl < mapLvl ? '✅ Suoritettu' : lvl === mapLvl ? '🎯 Nykyinen' : '🔒 Lukittu';
   mapTooltipEl.innerHTML = `
     <div style="font-weight:900;font-size:.88rem;color:var(--text);margin-bottom:4px;">Taso ${lvl}</div>
     <div style="color:var(--accent3);margin-bottom:3px;">${state}</div>
@@ -5294,10 +5764,11 @@ async function checkAllAchievements(roundPct, currentMode, levelRosedThisRound, 
   if (srData.globalStreak >= 5)  achCheck('streak_5');
   if (srData.globalStreak >= 10) achCheck('streak_10');
 
-  // Taso 4+ (vanha saavutus yhteensopivuuden vuoksi)
-  if (srData.diffLevel >= 4) achCheck('level_4');
-  // Tasosaavutukset joka 10. tasolla — nämä vaativat tason nousua luonnostaan
-  [10,20,30,40,50].forEach(l => { if (srData.diffLevel >= l) checkLevelAchievement(l); });
+  // MAT-89: Taso 4+ käyttää maxModeLevel():ia (feature unlock, ei aktiivinen taso)
+  if (maxModeLevel() >= 4) achCheck('level_4');
+  // Tasosaavutukset joka 10. tasolla — MAT-89: riittää että yksikin moodi saavuttaa
+  const _maxLvl = maxModeLevel();
+  [10,20,30,40,50].forEach(l => { if (_maxLvl >= l) checkLevelAchievement(l); });
 
   // ── Saavutukset jotka vaativat tason nousua ──────────────────────
 
@@ -5701,17 +6172,50 @@ function launchConfetti(){
 }
 
 // ══ DIPLOMITODISTUS ══════════════════════════════
-function openDiploma() {
+// MAT-89: Parametrisoi — id voi olla 'h','a','s','m','p','gm'
+let currentOpenDiplomaId = 'gm';
+function openDiploma(id) {
+  if (!id) {
+    // Oletus: GM jos ansaittu, muuten ensimmäinen ansaittu mestari
+    if (srData?.diplomas?.gm?.earned) id = 'gm';
+    else {
+      const firstEarned = DIPLOMAS.find(d => srData?.diplomas?.[d.id]?.earned);
+      id = firstEarned ? firstEarned.id : 'gm';
+    }
+  }
+  const def = DIPLOMAS.find(d => d.id === id);
+  if (!def) return;
+  currentOpenDiplomaId = id;
+
+  const modal = document.getElementById('diplomaModal');
+  if (modal) modal.setAttribute('data-diploma-id', id);
+
   const av = pChar === 'boy' ? '🤴' : '👸';
   document.getElementById('diplomaName').textContent = av + ' ' + pName;
 
-  // Tilastot Supabasesta tai laskettuna
-  const totalPts = parseInt(document.getElementById('sPts')?.textContent || '0') || 0;
+  // Päivitä otsikko dynaamisesti — viittaa diploma-title-elementtiin
+  const titleEl = document.getElementById('diplomaTitleText');
+  if (titleEl) {
+    titleEl.textContent = `${def.title} — Taso 50`;
+    titleEl.style.color = def.color;
+  }
+  // Päivitä alaotsikko
+  const subEl = document.getElementById('diplomaSubtitle');
+  if (subEl) subEl.textContent = def.subtitle;
+  // Päivitä iso ikoni ylhäällä
+  const iconEl = document.getElementById('diplomaTopIcon');
+  if (iconEl) iconEl.textContent = def.icon;
+
+  // CSS-muuttuja border-väriä varten
+  const content = document.getElementById('diplomaContent');
+  if (content) content.style.setProperty('--diploma-accent', def.color);
+
   const date = new Date().toLocaleDateString('fi-FI', { day:'numeric', month:'long', year:'numeric' });
   document.getElementById('diplomaDate').textContent = date;
 
-  // Hae kokonaistilastot scores-taulusta
-  fetch(`${SB_URL}/rest/v1/scores?name=eq.${encodeURIComponent(pName)}&char=eq.${encodeURIComponent(pChar)}&select=pts,pct,corr,total`, { headers: SB_HEADERS })
+  // Hae kokonaistilastot scores-taulusta (moodi-kohtaiset jos mode annettu)
+  const modeFilter = def.mode ? `&mode=eq.${encodeURIComponent(def.mode)}` : '';
+  fetch(`${SB_URL}/rest/v1/scores?name=eq.${encodeURIComponent(pName)}&char=eq.${encodeURIComponent(pChar)}${modeFilter}&select=pts,pct,corr,total`, { headers: SB_HEADERS })
     .then(r => r.json())
     .then(rows => {
       const sumPts   = rows.reduce((s,r) => s + (r.pts||0), 0);
@@ -5719,8 +6223,8 @@ function openDiploma() {
       const avgPct   = rounds > 0 ? Math.round(rows.reduce((s,r) => s + (r.pct||0), 0) / rounds) : 0;
       document.getElementById('diplomaStats').innerHTML = `
         <div style="text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#c9a84c;">${sumPts.toLocaleString('fi-FI')}</div>
-          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Yhteispisteet</div>
+          <div style="font-size:22px;font-weight:700;color:${def.color};">${sumPts.toLocaleString('fi-FI')}</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">${def.mode ? 'Moodin pisteet' : 'Yhteispisteet'}</div>
         </div>
         <div style="text-align:center;">
           <div style="font-size:22px;font-weight:700;color:#1a3a6e;">${rounds}</div>
@@ -5734,19 +6238,62 @@ function openDiploma() {
     }).catch(() => {
       document.getElementById('diplomaStats').innerHTML = `
         <div style="text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#c9a84c;">Taso 50</div>
-          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">Grand Master</div>
+          <div style="font-size:22px;font-weight:700;color:${def.color};">Taso 50</div>
+          <div style="font-size:10px;color:#8a6a1a;letter-spacing:1px;text-transform:uppercase;">${def.name}</div>
         </div>`;
     });
 
-  const modal = document.getElementById('diplomaModal');
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+}
+
+// MAT-89: Näytä lista ansaituista diplomeista, valitaan joka avataan
+function showDiplomaList() {
+  if (!srData?.diplomas) return;
+  const earned = DIPLOMAS.filter(d => srData.diplomas[d.id]?.earned);
+  if (!earned.length) return;
+  if (earned.length === 1) { openDiploma(earned[0].id); return; }
+  // Rakenna yksinkertainen lista overlay:iin
+  let overlay = document.getElementById('diplomaListOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'diplomaListOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;z-index:9050;background:rgba(0,0,0,.72);align-items:center;justify-content:center;padding:20px;';
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.style.display = 'none'; });
+    document.body.appendChild(overlay);
+  }
+  overlay.innerHTML = `
+    <div style="background:var(--card,#162030);border-radius:18px;padding:24px;max-width:420px;width:100%;border:1px solid rgba(255,255,255,.1);">
+      <div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:14px;text-align:center;">🎓 Omat diplomit</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${earned.map(d => `
+          <button onclick="document.getElementById('diplomaListOverlay').style.display='none';openDiploma('${d.id}')"
+            style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;border:1.5px solid ${d.color};background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:.95rem;text-align:left;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background='rgba(255,255,255,.03)'">
+            <span style="font-size:1.6rem;">${d.icon}</span>
+            <div style="flex:1;">
+              <div style="color:${d.color};">${d.name}</div>
+              <div style="font-size:.72rem;color:var(--muted);font-weight:700;">${d.subtitle}</div>
+            </div>
+            <span style="color:var(--muted);">→</span>
+          </button>
+        `).join('')}
+      </div>
+      <button onclick="document.getElementById('diplomaListOverlay').style.display='none'"
+        style="width:100%;margin-top:14px;padding:10px;border-radius:40px;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:var(--muted);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;cursor:pointer;">Sulje</button>
+    </div>`;
+  overlay.style.display = 'flex';
 }
 
 function closeDiploma() {
   document.getElementById('diplomaModal').style.display = 'none';
   document.body.style.overflow = '';
+  // MAT-89: Jatka queueta
+  if (diplomaQueue.length) {
+    diplomaQueueRunning = true;
+    setTimeout(() => runDiplomaQueue(), 400);
+  } else {
+    diplomaQueueRunning = false;
+  }
 }
 
 function printDiploma() {
@@ -5776,10 +6323,18 @@ function printDiploma() {
   setTimeout(() => { win.focus(); win.print(); }, 500);
 }
 
-// Näytä diplomi-nappi jos tasolla 50
+// MAT-89: Näytä diplomi-nappi jos MIKÄ TAHANSA diplomi on ansaittu
 function updateDiplomaBtn() {
   const btn = document.getElementById('diplomaBtn');
-  if (btn) btn.style.display = srData.diffLevel >= DIFF_LEVELS.length ? 'inline-flex' : 'none';
+  if (!btn) return;
+  const anyEarned = srData?.diplomas && DIPLOMAS.some(d => srData.diplomas[d.id]?.earned);
+  btn.style.display = anyEarned ? 'inline-flex' : 'none';
+  // Vaihda painikkeen klikki — näytä lista jos useita
+  btn.onclick = () => {
+    const earned = DIPLOMAS.filter(d => srData.diplomas?.[d.id]?.earned);
+    if (earned.length > 1) showDiplomaList();
+    else if (earned.length === 1) openDiploma(earned[0].id);
+  };
 }
 
 // ══ ASETUKSET MODAL ══════════════════════════════
@@ -5788,7 +6343,10 @@ function openSettings() {
   // Päivitä pelaajan tiedot
   document.getElementById('settingsAvatar').textContent = pChar === 'boy' ? '🤴' : '👸';
   document.getElementById('settingsName').textContent   = pName;
-  document.getElementById('settingsLevel').textContent  = `Taso ${srData.diffLevel} / 50`;
+  // MAT-89: Näytä korkein taso kaikista moodeista + diplomien määrä
+  const maxLvl = maxModeLevel();
+  const diplomaCount = srData?.diplomas ? DIPLOMAS.filter(d => srData.diplomas[d.id]?.earned).length : 0;
+  document.getElementById('settingsLevel').textContent  = `Taso ${maxLvl} / 50 · 🎓 ${diplomaCount}/6 diplomia`;
 
   // Luokkakoodi — näytä oikea tila
   const savedCode  = localStorage.getItem(`matikka_classCode_${pName}:${pChar}`);
@@ -5809,6 +6367,8 @@ function openSettings() {
   // Ääniasetus
   updateSettingsMuteBtn();
   updateSettingsThemeBtn();
+  // MAT-90: Tunne-mörkö toggle
+  updateTunneMorkoBtn();
 
   document.getElementById('settingsModal').style.display = 'flex';
 }
@@ -5848,6 +6408,57 @@ function initTheme() {
 function toggleMuteFromSettings() {
   toggleMute();
   updateSettingsMuteBtn();
+}
+
+// MAT-90: Tunne-mörkö toggle
+function toggleTunneMorko() {
+  srData.tunneMorkoEnabled = srData.tunneMorkoEnabled === false ? true : false;
+  srSave(srData);
+  updateTunneMorkoBtn();
+}
+function updateTunneMorkoBtn() {
+  const btn = document.getElementById('settingsTunneMorkoBtn');
+  if (!btn) return;
+  const on = srData.tunneMorkoEnabled !== false;
+  btn.textContent = on ? '🥺 Tunne-mörkö päällä — klikkaa pois' : '💤 Tunne-mörkö pois — klikkaa päällä';
+}
+
+// MAT-90: Rauhoittava kierros — tarjotaan huonon päivän jälkeen
+function offerCalmingRound() {
+  if (srData.tunneMorkoEnabled === false) return;
+  const panel = document.getElementById('resultsPanel');
+  if (!panel) return;
+  // Estä duplikaattinappi
+  if (document.getElementById('calmingRoundBtn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'calmingRoundBtn';
+  btn.textContent = '🌿 Kokeile rauhoittavaa kierrosta';
+  btn.onclick = () => startCalmingRound();
+  btn.style.cssText = 'margin-top:10px;padding:11px 16px;border-radius:12px;border:1.5px solid rgba(93,232,181,.45);background:rgba(93,232,181,.12);color:var(--accent3);font-family:inherit;font-weight:800;font-size:.9rem;cursor:pointer;transition:all .2s;width:100%;';
+  btn.onmouseover = () => { btn.style.background = 'rgba(93,232,181,.22)'; };
+  btn.onmouseout  = () => { btn.style.background = 'rgba(93,232,181,.12)'; };
+  // Lisää tulosnappien alapuolelle
+  const btns = panel.querySelector('.results-btns');
+  if (btns && btns.parentNode) {
+    btns.parentNode.insertBefore(btn, btns.nextSibling);
+  } else {
+    panel.appendChild(btn);
+  }
+}
+
+function startCalmingRound() {
+  // Poista mahdollinen nappi
+  const existing = document.getElementById('calmingRoundBtn');
+  if (existing) existing.remove();
+  // Tallenna edellinen taso, laske 2 alaspäin (min 1)
+  srData._calmingPrevLevel = srData.diffLevel;
+  srData.diffLevel = Math.max(1, (srData.diffLevel || 1) - 2);
+  if (srData.diffLevels) srData.diffLevels[mode] = srData.diffLevel;
+  srData._calmingMode = true;
+  srSave(srData);
+  updDiffLabel();
+  // Käynnistä uusi kierros olemassaolevalla restartRound-funktiolla
+  restartRound();
 }
 
 async function saveSettingsClass() {
