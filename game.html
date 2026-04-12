@@ -1272,6 +1272,109 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
 .panel-heading{
   display:none;
 }
+
+/* ══ MOBILE HOF — iPhone-optimoitu layout ══ */
+@media(max-width:479px){
+  /* Tiivistetty header — otsikko ja nappi samalle riville */
+  #scoreScreen .score-header{
+    margin-bottom:8px;
+    gap:6px;
+  }
+  #scoreScreen .score-title{
+    font-size:1.15rem;
+    line-height:1.2;
+  }
+  #scoreScreen .score-screen-sub{
+    display:none; /* Subtitle pois mobiilissa — otsikko riittää */
+  }
+  /* Player info pienempi ja tiiviimpi */
+  #hofPanel .map-player-info,
+  #achPanel .map-player-info,
+  #mapPanel .map-player-info{
+    margin-bottom:8px !important;
+    gap:8px;
+  }
+  #hofPanel .map-hname,
+  #achPanel .map-hname,
+  #mapPanel .map-hname{
+    font-size:.9rem;
+  }
+  /* Main tabs tiiviimpi */
+  .main-tabs{
+    margin-bottom:8px;
+    padding:3px;
+  }
+  .mtab{
+    padding:6px 3px;
+    font-size:1.1rem;
+  }
+  /* Filter tabs — ei leikkaudu */
+  .filter-tabs{
+    margin-bottom:8px;
+    margin-left:-10px;
+    margin-right:-10px;
+    padding-left:10px;
+    padding-right:10px;
+  }
+  /* HOF-kortit — tiiviimpi mobiilissa */
+  .hof-grid{
+    gap:7px;
+  }
+  .hof-card{
+    padding:10px 12px 10px 16px;
+    border-radius:12px;
+    gap:0 8px;
+    grid-template-columns:26px auto minmax(0,1fr) auto;
+  }
+  .hof-card::before{
+    width:3px;
+  }
+  .hof-rank{
+    font-size:.88rem;
+  }
+  .hof-avatar{
+    font-size:1.25rem;
+  }
+  .hof-name-text{
+    font-size:.88rem;
+  }
+  .hof-me-badge,
+  .hof-goat-badge{
+    font-size:.52rem;
+    padding:1px 5px;
+  }
+  .hof-correct{
+    font-size:.62rem;
+  }
+  .hof-rounds{
+    font-size:.58rem;
+  }
+  .hof-pts{
+    font-size:1rem;
+  }
+  .hof-pts-label{
+    font-size:.5rem;
+  }
+  .hof-crown{
+    font-size:.8rem;
+  }
+  /* Back-button mobiilissa */
+  .back-btn{
+    padding:6px 10px;
+    font-size:.68rem;
+    border-radius:10px;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  /* Varmista ettei sisältö vuoda */
+  #scoreScreen{
+    overflow-x:hidden;
+    padding:10px 10px 24px;
+  }
+  .panel-content{
+    overflow:hidden;
+  }
+}
 .ach-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
