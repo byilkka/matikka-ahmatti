@@ -3125,20 +3125,35 @@ async function startGame(){
     // TASO-002 FIX: tallennetaan kierroksen alussa lukittu taso
     // Taustasync ei saa muuttaa tasoa kesken kierroksen
     srRemoteLoad(pName, pChar, mode).then(remote => {
-      if (remote && remote.diffLevel > srData.diffLevel) {
-        // Päivitä vain jos kierros EI ole käynnissä (rDone === 0)
-        // tai kierros on juuri alkanut
+      if (!remote) return;
+      // Per-mode max-wins merge: ota kustakin moodista suurempi taso
+      let anyLevelUp = false;
+      if (remote.diffLevels && srData.diffLevels) {
+        for (const k of Object.keys(remote.diffLevels)) {
+          if ((remote.diffLevels[k] || 1) > (srData.diffLevels[k] || 1)) {
+            srData.diffLevels[k] = remote.diffLevels[k];
+            anyLevelUp = true;
+          }
+        }
+      }
+      // Päivitä nykyisen moodin taso diffLevels-lähteestä
+      const mergedLevel = (srData.diffLevels && srData.diffLevels[mode]) || srData.diffLevel;
+      if (mergedLevel > srData.diffLevel) {
+        srData.diffLevel = mergedLevel;
+        anyLevelUp = true;
+      }
+      // Päivitä painot remotesta (moodi-kohtaiset, ei tasoriippuvaisia)
+      if (remote.weights && Object.keys(remote.weights).length) {
+        srData.weights = remote.weights;
+      }
+      if (anyLevelUp) {
         if (rDone === 0) {
-          // MAT-89 fix: Object.assign säilyttääkseen lokaalit kentät (diplomas, streakShields, dailyQuests jne.)
-          Object.assign(srData, remote);
           srLocalSave(pName, pChar, mode, srData);
           updDiffLabel();
-          // MAT-89: Tarkista diplomit jos remote-merge nosti tasoa toiselle laitteelle saavutetun tason myötä
           if (typeof checkDiplomas === 'function') checkDiplomas();
-        }
-        // Muussa tapauksessa tallenna muistiin ja sovella ensi kierroksella
-        else {
-          srLocalSave(pName, pChar, mode, remote);
+        } else {
+          // Kierros käynnissä — tallenna mergeatut tasot localStorageen ensi kierrosta varten
+          srLocalSave(pName, pChar, mode, srData);
         }
       }
     }).catch(()=>{});
