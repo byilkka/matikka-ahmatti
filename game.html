@@ -1256,6 +1256,15 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;b
   display:contents; /* rank ja avatar ovat erillisiä grid-kolumneja */
 }
 .hof-tags{display:none;}
+.hof-separator{
+  text-align:center;
+  color:var(--muted);
+  opacity:.5;
+  padding:8px 0;
+  font-size:1.2rem;
+  letter-spacing:4px;
+  font-weight:700;
+}
 
 /* ach-player-info: korvattu map-player-info:lla (MAT-66) */
 
@@ -5524,10 +5533,9 @@ async function renderScores(f) {
     }
   });
 
-  // Järjestä kumulatiivisten pisteiden mukaan — näytä TOP 50
+  // Järjestä kumulatiivisten pisteiden mukaan
   let players = Array.from(playerMap.values())
-    .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound)
-    .slice(0, 50);
+    .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound);
 
   // FARM-004 FIX: Yhdistä saman nimen eri hahmot (boy/girl)
   // Estää HOF:n täyttämisen useilla nimimerkeillä
@@ -5543,6 +5551,14 @@ async function renderScores(f) {
   players = Array.from(nameDedup.values())
     .sort((a,b) => b.totalPts - a.totalPts || b.bestRound - a.bestRound);
 
+  // MAT-81: Etsi pelaajan oma sijoitus KOKO listasta ennen TOP 50 -rajausta
+  const myRank = pName ? players.findIndex(p => p.name.toLowerCase() === pName.toLowerCase()) + 1 : 0;
+  const myEntry = myRank > 0 ? players[myRank - 1] : null;
+  const myInTop = myRank > 0 && myRank <= 50;
+
+  // Rajaa TOP 50
+  players = players.slice(0, 50);
+
   if (!players.length) {
     list.innerHTML = `<div class="no-scores"><span class="big">🎮</span>Ei tuloksia vielä!<br>Pelaa kierros ja tule takaisin.</div>`;
     return;
@@ -5554,7 +5570,7 @@ async function renderScores(f) {
     const rc     = r===1?'r1':r===2?'r2':r===3?'r3':'';
     const medal  = r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`;
     const av     = s.char==='boy'?'🤴':'👸';
-    const isMe   = s.name===pName && s.char===pChar;
+    const isMe   = pName && s.name.toLowerCase()===pName.toLowerCase();
     const acc    = s.totalPlayed > 0 ? Math.round(s.totalCorr/s.totalPlayed*100) : 0;
     const ptsColor = isGoat ? 'color:#ffd700;' : '';
     const cardClass = `hof-card${r<=3?' rank-'+r:''}${isGoat?' goat-card':''}${isMe?' me-card':''}`;
@@ -5583,6 +5599,30 @@ async function renderScores(f) {
       </div>
     </div>`;
   }).join('');
+
+  // MAT-81: Näytä oma sijoitus listan lopussa jos ei TOP 50:ssä
+  if (myEntry && !myInTop) {
+    const av = myEntry.char === 'boy' ? '🤴' : '👸';
+    const acc = myEntry.totalPlayed > 0 ? Math.round(myEntry.totalCorr / myEntry.totalPlayed * 100) : 0;
+    list.innerHTML += `<div class="hof-separator">· · ·</div>
+      <div class="hof-card me-card">
+        <div class="hof-left-col">
+          <div class="hof-rank">#${myRank}</div>
+          <div class="hof-avatar">${av}</div>
+        </div>
+        <div class="hof-info">
+          <div class="hof-name"><span class="hof-name-text">${escHtml(myEntry.name)}</span><span class="hof-me-badge">Sinä ⭐</span></div>
+          <div class="hof-meta">
+            <span class="hof-correct">${acc}% tarkkuus</span>
+            <span class="hof-rounds">· ${myEntry.rounds} kierr.</span>
+          </div>
+        </div>
+        <div class="hof-right">
+          <div class="hof-pts">${myEntry.totalPts.toLocaleString('fi-FI')}</div>
+          <div class="hof-pts-label">pistettä</div>
+        </div>
+      </div>`;
+  }
 }
 
 // ══ ACHIEVEMENTS SYSTEM ══════════════════════════
