@@ -701,10 +701,15 @@ footer{
     padding-bottom:24px;
   }
   .hero-content{text-align:center;width:100%;}
-  .hero-actions{justify-content:center;margin-bottom:16px;}
+  .hero-actions{justify-content:center;margin-bottom:0;}
   .hero-monster{
     position:relative;right:auto;top:auto;transform:none;
-    width:clamp(120px,28vw,160px);margin:0 auto 16px;
+    width:clamp(110px,26vw,150px);margin:24px auto 12px;
+    animation:monsterFloatMobile 5s ease-in-out infinite;
+  }
+  @keyframes monsterFloatMobile{
+    0%,100%{transform:rotate(-1deg);}
+    50%{transform:translateY(-6px) rotate(1deg);}
   }
   .hero-stats{justify-content:center;}
 }
