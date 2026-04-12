@@ -1,0 +1,17 @@
+# GDPR admin — vain paikallinen
+gdpr-admin.html
+GDPR Tietopyyntö — Matikka-Ahmatti Admin.pdf
+
+# Ympäristömuuttujat
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Superpowers plugin temp
+.superpowers/
