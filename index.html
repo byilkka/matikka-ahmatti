@@ -695,18 +695,17 @@ footer{
   .bento-grid{grid-template-columns:repeat(2,1fr);}
   .bento-card.span-3{grid-column:span 2;}
   .diploma-inner{grid-template-columns:1fr;}
+  .hero{
+    min-height:auto;overflow:visible;
+    display:flex;flex-direction:column;align-items:center;gap:0;
+    padding-bottom:24px;
+  }
+  .hero-content{text-align:center;width:100%;}
+  .hero-actions{justify-content:center;margin-bottom:16px;}
   .hero-monster{
     position:relative;right:auto;top:auto;transform:none;
-    width:clamp(130px,32vw,180px);margin:0 auto;
-    animation:monsterFloat 5s ease-in-out infinite;
+    width:clamp(120px,28vw,160px);margin:0 auto 16px;
   }
-  @keyframes monsterFloat{
-    0%,100%{transform:rotate(-2deg);}
-    50%{transform:translateY(-10px) rotate(2deg);}
-  }
-  .hero{display:flex;flex-direction:column;align-items:center;gap:0;}
-  .hero-content{text-align:center;width:100%;}
-  .hero-actions{justify-content:center;margin-bottom:clamp(12px,3vw,24px);}
   .hero-stats{justify-content:center;}
 }
 @media(max-width:600px){
